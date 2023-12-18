@@ -1,5 +1,7 @@
 package kr.co.cocean.personnel.dto;
 
-public class test {
+
+
+public class PersonnelDTO {
 
 }
