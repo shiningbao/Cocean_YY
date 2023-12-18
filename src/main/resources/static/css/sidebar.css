@@ -1,0 +1,134 @@
+
+@font-face {
+  font-family: 'SOYOMapleBoldTTF';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'SOYOMapleBoldTTF';
+}
+body {
+  font-family: 'SOYOMapleBoldTTF';
+}
+#sidebar{
+  border-right: 1px solid #dedede;
+}
+
+/* 실질적인 각 내비게이션 메뉴들의 색상 등을 정의 */
+#sidebar .list-group-item {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #DEDEDE;
+    border-left: 0;
+    border-right: 1px;
+    border-radius: 0;
+    white-space: nowrap;
+    border-top: 0;
+    border-bottom: 0;
+}
+
+/* 부모 마우스 오버 스타일 */
+#sidebar .list-group-item:hover{
+  background-color: #86B0F3;
+}
+
+#sidebar .list-group-item:nth-child(1){
+  border-top: 0;
+}
+/* 내비게이션을 아래 끝까지 나열 */
+#sidebar .list-group {
+    background-color: #ffffff;
+    min-height: 100vh;
+    border-right: 1px solid #DEDEDE;
+}
+/* 메뉴를 선택했을 때  부모의 색상을 변경해 줌 */
+#sidebar .list-group .list-group-item[aria-expanded="true"] {
+  background-color: #86B0F3;
+}
+/* 메뉴를 선택했을 때 자식의 색상을 변경해 줌 */
+#sidebar .list-group-item:not(.collapsed) {
+  background-color: #ffffff;
+  border: 1px solid #86B0F3;
+}
+
+#sidebar .list-group-item:hover{
+  background-color: #86B0F3;
+}
+
+/* 작은 화면일 때 아이콘 선택을 가능케 함 */
+#sidebar {
+    overflow: hidden;
+    z-index: 2;
+}
+
+#header{
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid #dedede;
+  background-color: #ffffff;
+}
+
+@media (max-width:768px) {
+    /* 작은 화면에서는 왼쪽 내비게이션 너비를 정해진 크기로 설정 */
+    #sidebar {
+        min-width: 35px;
+        max-width: 40px;
+        overflow-y: auto;
+        overflow-x: visible;
+        transition: all 0.25s ease;
+        transform: translateX(0px);
+        /*position: fixed;*/
+        border-right: 1px solid #DEDEDE;
+        
+    }
+    /* 작은 화면에서 서브 메뉴를 열었을 때 글자가 보이도록 함 */
+    #sidebar, #sidebar .list-group {
+        min-width: 35px;
+        overflow: visible;
+    }
+    /* 작은 화면에서 서브 메뉴를 열었을 때 정해진 너비로 보이게 함 */
+    #sidebar .list-group .collapse.show, #sidebar .list-group .collapsing {
+        position: relative;
+        z-index: 1;
+        width: 190px;
+        top: 0;
+    }
+    /* 작아졌을 때 아이콘을 가운데 정렬해 줌 */
+    #sidebar .list-group > .list-group-item {
+        text-align: center;
+        padding: .75rem .5rem;
+    }
+    #sidebar::-webkit-scrollbar { width: 0px; }
+}
+
+#main {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+@media (max-width:768px) {
+  /* 작은 화면에서는 왼쪽 내비게이션 너비를 정해진 크기로 설정 */
+  #main {
+      margin-left: 38px;
+
+  }
+}
+
+@media (max-width:560px) {
+    .mobile {
+      display: none;
+    }
+}
+
+/* 모달창 */
+.modal {
+  -webkit-transform: translate(0,-50%);
+   -o-transform: translate(0,-50%);
+   transform: translate(0,-50%);
+   top: 50%;
+   margin: 0 auto;
+   height: 720px;
+}
+
