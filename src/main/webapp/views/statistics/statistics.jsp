@@ -3,10 +3,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<jsp:include page="../side.jsp"/>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-test
+통계
 </body>
 </html>
