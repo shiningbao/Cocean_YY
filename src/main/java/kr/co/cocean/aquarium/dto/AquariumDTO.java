@@ -1,5 +1,5 @@
 package kr.co.cocean.aquarium.dto;
 
-public class test {
+public class AquariumDTO {
 
 }

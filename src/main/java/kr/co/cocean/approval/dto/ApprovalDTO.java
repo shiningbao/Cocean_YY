@@ -1,5 +1,5 @@
 package kr.co.cocean.approval.dto;
 
-public class test {
+public class ApprovalDTO {
 
 }
