@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>cocean</title>
-        <link rel="icon" href="/resource/img/favi.png" type="image/x-icon">
-        <!-- MDN 라이브러리 CND -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet"/>
-		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <style>
+	<link rel="icon" href="<c:url value='/resource/img/favi.png'/>" type="image/x-icon">
+	<!-- MDN 라이브러리 CND -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet"/>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<style>
         @font-face {
             font-family: 'SOYOMapleBoldTTF';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
