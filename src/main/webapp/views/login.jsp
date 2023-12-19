@@ -23,7 +23,7 @@
 
         body{
             font-family: 'SOYOMapleBoldTTF';
-            background-image: url(resource/img/main_2.png);
+            background-image: url(/resource/img/main_2.png);
             background-position: center;
             background-size: cover;
             height: 100vh;
