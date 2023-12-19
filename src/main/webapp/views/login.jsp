@@ -44,6 +44,7 @@
             margin-right: 90px;
             margin-top: 170px;
             position: fixed;
+            font-size: 22px;
         }
 
         #login{
@@ -55,13 +56,24 @@
             margin-left: 10px;
             background-color: #2F80ED ;
         }
-
-        input:focus{
-            color: #2F80ED;
-            text-shadow: 0px 0px 0px #555555;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
+        
+        input:focus+label,
+        input:valid+label {
+        -webkit-transform: translateY(-10px) scale(.70);
+        -ms-transform: translateY(-10px) scale(.70);
+        transform: translateY(-10px) scale(.70);
+        -webkit-transform-origin: top left;
+        -ms-transform-origin: top left;
+        transform-origin: top left;
+        letter-spacing: -.28px;
         }
+        
+        .form-control{
+            line-height: 2.5;
+        }
+        
+
+
     </style>
 </head>
     <body>
