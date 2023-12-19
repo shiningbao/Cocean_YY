@@ -15,7 +15,7 @@
 	
 <!-- 부트스트랩 자바스크립트 -->
 <script src="/resource/js/bootstrap.min.js"></script>
-<link rel="icon" href="/resource/img/favi.png" type="image/x-icon">
+<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
 <!-- 부트스트랩 CSS/favicon -->
 <link rel="stylesheet" href="/resource/css/bootstrap.min.css">

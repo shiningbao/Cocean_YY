@@ -15,18 +15,18 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <!-- 부트스트랩 자바스크립트 -->
 <script src="/resource/js/bootstrap.min.js"></script>
-<link rel="icon" href="/resource/img/favi.png" type="image/x-icon">
+<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
 <!-- 부트스트랩 CSS/favicon -->
-<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resource/css/sidebar.css">
+<link rel="stylesheet" href="resource/css/bootstrap.min.css">
+<link rel="stylesheet" href="resource/css/sidebar.css">
 </head>
 <body>
 	<header>
 		<div id="header">
 			<img
 				style="width: 75px; height: 75px; margin-left: 20px; margin-top: -3px;"
-				src="/resource/img/logo.svg" ;/>
+				src="resource/img/logo.svg" ;/>
 		</div>
 	</header>
 	<div class="container-fluid">
@@ -37,13 +37,13 @@
 					<a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 25px; margin-right: 5px;"
-						src="/resource/img/Home_light.svg"><span
+						src="resource/img/Home_light.svg"><span
 						class="d-none d-md-inline ml-1">메인</span>
 					</a> <a href="#myPage_bar"
 						class="list-group-item d-inline-block collapsed"
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
-						style="width: 25px; margin-right: 5px;" src="/resource/img/my.svg"><span
+						style="width: 25px; margin-right: 5px;" src="resource/img/my.svg"><span
 						class="d-none d-md-inline ml-1">마이페이지</span>
 					</a>
 					<div class="collapse" id="myPage_bar">
@@ -55,24 +55,24 @@
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
 						style="width: 25px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/Star_fill.svg"><span
+						src="resource/img/Star_fill.svg"><span
 						class="d-none d-md-inline ml-1">코션친구들</span>
 					</a> <a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 24px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/house.svg"><span
+						src="resource/img/house.svg"><span
 						class="d-none d-md-inline ml-1">코션하우스</span>
 					</a> <a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 25px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/Chart_alt.svg"><span
+						src="resource/img/Chart_alt.svg"><span
 						class="d-none d-md-inline ml-1">통계</span>
 					</a> <a href="#store_bar"
 						class="list-group-item d-inline-block collapsed"
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 3px;"
-						src="/resource/img/marketing.svg"><span
+						src="resource/img/marketing.svg"><span
 						class="d-none d-md-inline ml-1">스토어 관리</span>
 					</a>
 					<div class="collapse" id="store_bar">
@@ -85,7 +85,7 @@
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 3px;"
-						src="/resource/img/group.svg"><span
+						src="resource/img/group.svg"><span
 						class="d-none d-md-inline ml-1">인사 관리</span>
 					</a>
 					<div class="collapse" id="group_bar">
@@ -97,14 +97,14 @@
 					<a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 3px;"
-						src="/resource/img/facility.svg"><span
+						src="resource/img/facility.svg"><span
 						class="d-none d-md-inline ml-1">시설 관리</span>
 					</a> <a href="#approval_bar"
 						class="list-group-item d-inline-block collapsed"
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/Desk_alt.svg"><span
+						src="resource/img/Desk_alt.svg"><span
 						class="d-none d-md-inline ml-1">전자결재</span>
 					</a>
 					<div class="collapse" id="approval_bar">
@@ -121,7 +121,7 @@
 						data-toggle="collapse" data-parent="#sidebar"
 						aria-expanded="false"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/board.svg"><span
+						src="resource/img/board.svg"><span
 						class="d-none d-md-inline ml-1">게시판</span>
 					</a>
 					<div class="collapse" id="board_bar">
@@ -134,17 +134,17 @@
 					<a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/calender.svg"><span
+						src="resource/img/calender.svg"><span
 						class="d-none d-md-inline ml-1">캘린더</span>
 					</a> <a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
-						src="/resource/img/mall.svg"><span
+						src="resource/img/mall.svg"><span
 						class="d-none d-md-inline ml-1">복지몰</span>
 					</a> <a href="#" class="list-group-item d-inline-block collapsed"
 						data-parent="#sidebar"> <img
 						style="width: 25px; margin-right: 7px; margin-bottom: 5px;"
-						src="/resource/img/out.svg"><span
+						src="resource/img/out.svg"><span
 						class="d-none d-md-inline ml-1">로그아웃</span>
 					</a>
 				</div>
