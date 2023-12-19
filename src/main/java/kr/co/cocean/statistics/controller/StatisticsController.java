@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class StatisticsController {
 
-	@GetMapping(value="statistics/list.do")
+	@GetMapping(value="statistics.list.do")
 	public String statisticsList() {
-		return "/statistics/statistics";
+		
+		return "statistics/statistics";
 	}
 }
