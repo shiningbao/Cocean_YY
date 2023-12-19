@@ -1,0 +1,39 @@
+
+@font-face {
+  font-family: 'SOYOMapleBoldTTF';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'SOYOMapleBoldTTF';
+}
+body {
+  font-family: 'SOYOMapleBoldTTF';
+}
+
+#modalBtn{
+  width: 100px;
+  height: 35px;
+  font-size: 15px;
+  color: #2F80ED;
+  border: 2px solid #2F80ED;
+  border-radius: 5px;
+  background-color: white;
+}
+#modalBtn:hover{
+  background-color: #2F80ED;
+  color: white;
+  border-color: #2F80ED;
+}
+
+.modal {
+  -webkit-transform: translate(0,-50%);
+   -o-transform: translate(0,-50%);
+   transform: translate(0,-50%);
+   top: 50%;
+   margin: 0 auto;
+   height: 720px;
+   color: black;
+}
