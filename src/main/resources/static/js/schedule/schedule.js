@@ -11,10 +11,9 @@
       },
       navLinks: true, // 날짜 선택하면 day 캘린더나 week 캘린더로 이동
       businessHours: true, //
-      editable: true, // 수정 가능
-      selectable: false, // 드래그 일정변경
+      editable: false, // 수정 가능
+      selectable: true, // 드래그 일정변경
       nowIndicator: true,
-      locale: 'ko', // 한국어 설정
       events: [
         {
           title: 'Business Lunch',
