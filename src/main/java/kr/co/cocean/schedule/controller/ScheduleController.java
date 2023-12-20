@@ -50,11 +50,11 @@ public class ScheduleController {
 	}
 	
 	@RequestMapping(value="/schedule/scheduleWrite.do")
-	public ModelAndView scheduleWrite(ScheduleDTO dto , RedirectAttributes rAttr) {
+	public ModelAndView scheduleWrite(ScheduleDTO dto) {
 		logger.info("write 정보" +dto.getTitle());
-		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
+		ModelAndView mav = new ModelAndView("/schedule/schedule");
 		service.scheduleWrite(dto);
-//		rAttr.addFlashAttribute("msg", "일정을 작성 하시겠습니까?");
+		mav.addObject("msg", "일정 등록 완료");
 		return mav;
 	}
 	

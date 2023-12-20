@@ -37,9 +37,11 @@ public class LoginController {
 		String page = "mypage/login"; 
 		logger.info("userNum : "+userNum+" / password :"+password);
 		LoginDTO dto = service.login(userNum,password);
+		
 		ModelAndView mav = new ModelAndView();
 		if(dto != null) {//로그인 성공
 			session.setAttribute("userInfo", dto);
+			logger.info("사번 =="+dto.getEmployeeID());
 			page = "mypage/side";
 		}else {// 로그인 실패시
 			mav.addObject("msg","비밀번호를 잊어버린 경우 인사과로 문의 해주세요");
