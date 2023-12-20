@@ -17,19 +17,26 @@ public class StoreController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StoreService service;
 	
-	@GetMapping(value="storeList.go")
+	@GetMapping(value="/storeList.go")
 	public String storeListGo(){
 		return "store/store";
 	}
 	
-	@GetMapping(value="storeList.do")
+	@GetMapping(value="/storeList.do")
 	@ResponseBody
 	public Map<String, Object> storeList(Model model) {
 		logger.info("스토어 리스트");
 		return service.loadLocation(model);
 	}
 	
-	@GetMapping(value="branch.map.do")
+	@GetMapping(value="/storeList.ajax")
+	@ResponseBody
+	public Map<String, Object> storeListAjax(Model model) {
+		logger.info("스토어 아작스");
+		return service.storeList(model);
+	}
+	
+	@GetMapping(value="/branch.map.do")
 	public String branchMap() {
 		return "";
 	}

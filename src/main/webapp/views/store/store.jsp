@@ -11,8 +11,11 @@
 <jsp:include page="../side.jsp"></jsp:include>
 
 <div>스토어 관리</div>
-<div>지점 위치 <button id="branch">가산점</button><div>${branch.branchLocation}</div></div> 
+<div class="branchLocation">지점 위치 </div>
+
 <div id="map" style="width:500px;height:400px;"></div>
+<div class="produectList">상품 리스트</div>
+<div class="ticketList">티켓 리스트</div>
 
 </body>
 <script>
@@ -25,55 +28,83 @@ var marker = {
     position: markerPosition
 }; */
 
-
-
 // 지점 리스트
-$(document).ready(function () {
+new Promise((resolve, reject) => {
+    // 첫 번째 Ajax 호출
     $.ajax({
         type: 'get',
         url: 'storeList.do',
         dataType: 'json',
         success: function (data) {
-            if (data.length > 0) { // 배열에 데이터가 하나 이상 있는 경우
-                console.log("경도 : " + data[0].x);
-                console.log("위도 : " + data[0].y);
-                initializeMap(data[0]);
-                	console.log(data);
-            } else {
-                console.log("데이터가 없습니다.");
-                console.log(data);
-                	console.log("x / " +data.x);
-            }
+            console.log(data);
+            console.log("x : " + data.documents[0].x);
+            console.log("y : " + data.documents[0].y);
+            initializeMap(data);
+            resolve(); // 첫 번째 Ajax 호출 성공 시 resolve 호출
         },
         error: function (e) {
             console.log(e);
-            console.log("데이터 가져오기 실패");
+            console.log("첫 번째 Ajax 호출 실패");
+            reject("첫 번째 Ajax 호출 실패"); // 첫 번째 Ajax 호출 실패 시 reject 호출
         }
     });
+}).then(() => {
+    // 두 번째 Ajax 호출
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            type: 'get',
+            url: 'storeList.ajax',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                	console.log("두번째 ajax 호출 성공");
+                	console.log(data.branchList[0].branchName);
+                	
+                	for (var i = 0; i < data.branchList.length; i++) {
+                        console.log("지점 이름: " + data.branchList[i].branchName);
+
+                        // 지점 정보를 <div class="branchLocation">에 동적으로 추가
+                        $('.branchLocation').append('<button>' + data.branchList[i].branchName + '</button>');
+                    } $('.branchLocation').append('<div>' + data.branchList[0].branchLocation + '</div>');
+
+                	
+                // infowindow(data);
+                resolve(); // 두 번째 Ajax 호출 성공 시 resolve 호출
+            },
+            error: function (e) {
+                console.log(e);
+                console.log("두 번째 ajax 호출 실패");
+                reject(); // 두 번째 Ajax 호출 실패 시 reject 호출
+            }
+        });
+    });
+}).catch((error) => {
+    console.log("에러 발생: " + error);
 });
 
+	// 지도 그리기
     function initializeMap(data) {
         var mapContainer = document.getElementById('map');
         var options = {
-            center: new kakao.maps.LatLng(data.y, data.x),
+            center: new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x),
             level: 3
         };
-
+		// 마커 표시
         var map = new kakao.maps.Map(mapContainer, options);
 
-        for (var i = 0; i < branchList.length; i++) {
-            var markerPosition = new kakao.maps.LatLng(branchList[i].latitude, branchList[i].longitude);
-
+            var markerPosition = new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x);
+	
             var marker = new kakao.maps.Marker({
                 position: markerPosition,
-                title: branchList[i].branchName
+                title: data.documents[0].region_3depth_name
             });
 
             marker.setMap(map);
 
             // 지점명을 인포윈도우로 표시
-            var infowindow = new kakao.maps.InfoWindow({
-                content: '<div style="padding:5px;">' + branchList[i].branchName + '</div>'
+    }
+           /*  var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="padding:5px;">' + data.documents[0].region_3depth_name + '</div>'
             });
 
             kakao.maps.event.addListener(marker, 'mouseover', function () {
@@ -82,9 +113,12 @@ $(document).ready(function () {
 
             kakao.maps.event.addListener(marker, 'mouseout', function () {
                 infowindow.close();
-            });
-        }
-    }
+            }); */
+    function drawList(data){
+    	console.log("drawList data : "+data);
+    	 $('#branch').append(content);
+    };
+    
 
 </script>
 </html>
