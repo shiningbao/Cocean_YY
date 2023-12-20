@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.mypage.dao.LoginDAO">
+
+<select id="login" resultType="kr.co.cocean.mypage.dto.LoginDTO"> 
+select
+e.employeeID ,e.password ,e.name ,e.status ,e.joinDate ,e.phoneNumber ,e.address,
+e.remainingAnnualLeave ,d.departmentName ,d.rankLevel ,d.positionLevel
+from employee e
+left join departmentChangeLog d on e.employeeID = d.employeeID
+where e.employeeID= #{param1} and e.password = #{param2};
+
+
+</select>
+
+
+
+</mapper>

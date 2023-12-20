@@ -12,7 +12,7 @@
 	<artifactId>Cocoean</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Cocoean</name>
+	<name>Cocean</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -50,13 +50,11 @@
 		
 		<!-- log4jdbc -->
 		<!-- https://mvnrepository.com/artifact/org.bgee.log4jdbc-log4j2/log4jdbc-log4j2-jdbc4.1 -->
-		<dependency>
-		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
-		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
-		    <version>1.16</version>
-		</dependency>	
-
-
+ 		<dependency> 
+ 		    <groupId>org.bgee.log4jdbc-log4j2</groupId> 
+ 		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId> 
+ 		    <version>1.16</version> 
+ 		</dependency>	
 
 
 
@@ -73,6 +71,7 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>

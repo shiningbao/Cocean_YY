@@ -13,20 +13,15 @@
 <input type="text" id="keyword"/>
 <button id="search" onclick="classficationSearch()">검색</button>
 <table>
-	<tr>
-		<th>분류</th>
-		<th>학명</th>
-		<th>국명</th>
-	</tr>
-	<c:forEach items="list" var="item">
-	<tr>
-		<td>${item}</td>
-		<td>${item}</td>
-		<td>${item}</td>
-	</tr>
-	</c:forEach>
-
-
+	<thead>
+		<tr>
+			<th>분류</th>
+			<th>학명</th>
+			<th>국명</th>
+		</tr>
+	</thead>
+	<tbody id="con">
+	</tbody>
 </table>
 </body>
 <script>
@@ -39,6 +34,7 @@ function classficationSearch(){
 		dataType:'JSON',
 		success:function(data){
 			console.log(data);
+			drowList(data.list);
 		},
 		error:function(e){
 			console.log(e);
@@ -46,9 +42,55 @@ function classficationSearch(){
 	});
 }
 
+function drowList(list){
+	list.forEach(item){
+		$('#con').val('');
+		var content = '<tr><th>0</th><th>1</th><th>2</th></tr>';
+		$('#con').val(content);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
