@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Alias("schedule")
 public class ScheduleDTO {
 	
-	private String departmentName;
 	private String callendarTitle;
 	private int scheduleID;
 	
@@ -116,13 +115,6 @@ public class ScheduleDTO {
 		this.callendarTitle = callederTitle;
 	}
 
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
 
 	
 }

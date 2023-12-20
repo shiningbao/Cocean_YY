@@ -9,7 +9,7 @@ import kr.co.cocean.schedule.dto.ScheduleDTO;
 @Mapper
 public interface ScheduleDAO {
 
-	List<ScheduleDTO> getTeams();
+	List<String> getTeams();
 
 	List<ScheduleDTO> getCallender(String loginEmployeeID);
 
