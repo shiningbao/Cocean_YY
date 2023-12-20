@@ -164,7 +164,7 @@ img{
 							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
 							    </select>
 							</p>
-							<p>개인캘린더
+							<p class="writeViewCallender">개인캘린더
 							    <select id="myCallender" name="category">
 							    </select>
 							</p>
@@ -260,10 +260,10 @@ img{
 		var myCallenderBtn = $('#myCallenderBtn'); // 일정에서 버튼
 		var myCallenderList =$('.myCallenderList'); // 일정 리스트 드롭다운
 		console.log(selectVal); 
-		myCallender.hide();
+		$('.writeViewCallender').hide();
 		subSelect.empty();
 		if(selectVal == '팀'){
-			
+			console.log(selectVal+'+++확인중!!!!!');
 			$.ajax({
 				url:'getTeams.do',
 				method:'GET',
@@ -281,9 +281,9 @@ img{
 				}
 			});
 		}else if(selectVal=='개인'){
-			
-			myCallender.show();
-			$('#myCallendar').val('내 일정(기본)').trigger('change');
+			console.log(selectVal+'+++확인중!!!!!');
+			$('.writeViewCallender').show();
+// 			$('#myCallendar').val('내 일정(기본)').trigger('change');
 // 			myCallenderSelect.empty();
 			function callendarCall(){
 				$.ajax({
