@@ -1,5 +1,5 @@
 package kr.co.cocean.main.dto;
 
-public class MainDAO {
+public class MainDTO {
 
 }

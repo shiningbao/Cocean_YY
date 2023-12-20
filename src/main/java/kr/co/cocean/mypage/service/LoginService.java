@@ -53,8 +53,15 @@ public class LoginService {
 
 	/*
 	public LoginDTO login(String userNum, String password) {
+<<<<<<< HEAD
+		return dao.login(userNum,password);
+	}
+	
+	
+=======
 		return dao.login(userNum,password );
 	}*/
+
 
 
 	

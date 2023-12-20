@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,18 +30,21 @@ public class LoginController {
 		return "mypage/login";
 	}
 	
+	//로그인
 
 	@PostMapping(value="/logingo")
-	public ModelAndView logingo(HttpSession session, @RequestParam String  password , String userNum) {
+	public ModelAndView logingo(HttpSession session , @RequestParam String password, String userNum){
 		logger.info("test");
 		String page = "mypage/login"; 
 		logger.info("userNum : "+userNum+" / password :"+password);
 		ModelAndView mav = new ModelAndView();
+
 		LoginDTO dto = service.login(userNum);
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
 			session.setAttribute("userinfo",dto);
 			page = "mypage/side";
+
 		}else {// 로그인 실패시
 			mav.addObject("msg","비밀번호를 잊어버린 경우 인사과로 문의 해주세요");
 		}
