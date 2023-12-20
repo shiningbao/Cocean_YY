@@ -14,4 +14,10 @@ public interface AnimalDAO {
 
 	ArrayList<ClassficationDTO> classficationSearch(String keyword);
 
+	ArrayList<String> tankList(String branch);
+
+	void animalWrte(AnimalDTO param);
+
+	String classfication(int speciesID);
+
 }

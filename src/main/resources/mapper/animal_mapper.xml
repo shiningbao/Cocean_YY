@@ -15,5 +15,33 @@
 			WHERE taxonomy LIKE CONCAT('%',#{keyword},'%')
 				OR scientificName LIKE CONCAT('%',#{keyword},'%')
 				OR commonName LIKE CONCAT('%',#{keyword},'%')				
-	</select>	
+	</select>
+	
+	<select id="tankList" resultType="String">
+		SELECT tankID FROM tankManagement WHERE branchID = #{param1}
+	</select>
+	
+	<insert id="animalWrte" parameterType="animal" useGeneratedKeys="true" keyColumn="animalID" keyProperty="animalID">
+    INSERT INTO animalManagement
+	(speciesID, tankID, branchID, classificationCode, CodeNumber, nickname, individual, birthDate, entryDate, status, details)
+    	SELECT #{speciesID},#{tankID},#{branchID},#{classificationCode},
+			IFNULL((SELECT MAX(CodeNumber) FROM animalManagement WHERE classificationCode = #{classificationCode}), 0) + 1,
+			#{nickname},#{individual},#{birthDate},#{entryDate},#{status},#{details}
+	</insert>
+
+	
+	
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

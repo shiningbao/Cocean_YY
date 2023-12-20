@@ -25,11 +25,13 @@
 		<th>상태</th>
 	</tr>
 	<c:forEach items="${list}" var="item">
+		<tr>
 		<td>${item.getAnimalID()}</td>
 		<td>${item.getNickname()}</td>
 		<td>${item.getCommonName()}</td>
 		<td>${item.getClassificationCode()}</td>
 		<td>${item.getStatus()}</td>
+		</tr>
 	</c:forEach>
 </table>
 </body>

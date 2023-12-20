@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
@@ -37,14 +38,22 @@ public class AnimalController {
 	}
 	
 	@GetMapping(value = "/animal/write.go")
-	public String writeGo() {
-		return "/aquarium/animalWrite";
+	public ModelAndView writeGo() {
+		
+		String branch = "1";
+		
+		ModelAndView mav = new ModelAndView("/aquarium/animalWrite");
+		
+		ArrayList<String> tankList = service.tankList(branch);
+		mav.addObject("tankList", tankList);
+		return mav;
 	}
 	
 	@PostMapping(value = "/animal/write.do")
-	public String writeDo(@RequestParam HashMap<String,String> param) {
+	public String writeDo(MultipartFile[] files, AnimalDTO param) {
+		logger.info("files : {}",files);
 		logger.info("param : {}",param);
-		return "/aquarium/animalWrite";
+		return service.animalWrite(files,param);
 	}
 	
 	@GetMapping(value = "/animal/classficationPopup")

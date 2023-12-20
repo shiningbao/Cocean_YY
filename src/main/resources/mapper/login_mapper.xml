@@ -4,17 +4,21 @@
 >
 <mapper namespace="kr.co.cocean.mypage.dao.LoginDAO">
 
+
 <select id="login" resultType="kr.co.cocean.mypage.dto.LoginDTO"> 
 
 SELECT e.employeeID ,e.positionID ,e.name,e.status ,e.joinDate ,e.phoneNumber ,e.address ,e.remainingAnnualLeave ,e.departmentID ,e.rankID,d.responsibility,h.branchID  
 FROM department d JOIN headquarters h 
 ON d.hqID = h.hqID JOIN employee e 
 ON e.departmentID = d.departmentID
-where e.employeeID= #{param1} and e.password = #{param2}
-
+where e.employeeID= #{param1} 
 
 </select>
+  
 
-
-
+<select id="getPw" > 
+select password FROM employee WHERE employeeID = #{param1}
+</select>
+  
+ 
 </mapper>
