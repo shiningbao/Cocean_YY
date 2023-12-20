@@ -80,11 +80,11 @@
         <div id="loginBox">
             <form action="logingo" method="post">
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="text" id="userNum" class="form-control" />
+                  <input type="text" name="userNum" class="form-control" />
                   <label class="form-label" for="userNum">사번</label>
                 </div>
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="password" id="password" class="form-control" />
+                  <input type="password" name="password" class="form-control" />
                   <label class="form-label" for="password">비밀번호</label>
                 </div>
                 <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block" id="login">로그인</button>
@@ -92,5 +92,9 @@
         </div>
     </body>
     <script>
+    var msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	}
     </script>
 </html>
