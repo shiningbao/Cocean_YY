@@ -21,7 +21,7 @@ public class ApprovalController {
 	
 	@Autowired ApprovalService service;
 	
-	@GetMapping(value="/formList.go")
+	@GetMapping(value="/approval/formList.go")
 	public ModelAndView formList() {
 		ModelAndView mav = new ModelAndView();
 		
@@ -33,14 +33,14 @@ public class ApprovalController {
 	}
 	
 
-	@PostMapping(value="/searchList.do")
+	@PostMapping(value="/approval/searchList.do")
 	public ModelAndView formSearch(@RequestParam List<String> keyword) {
 		logger.info("keyword : {}", keyword);
 
 		return service.formSearch(keyword);
 	}
 	
-	@GetMapping(value="/writeDraft.go")
+	@GetMapping(value="/approval/writeDraft.go")
 	public ModelAndView writeDraft(@RequestParam String title) {
 		ModelAndView mav = new ModelAndView();
 		logger.info(title);
