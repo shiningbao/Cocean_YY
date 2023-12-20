@@ -46,6 +46,10 @@ body {
 	float: right;
 }
 
+.myCallenderList{
+	list-style-type: none;
+}
+
 </style>
 </head>
 
@@ -161,24 +165,37 @@ body {
 		</section>
 		<section class="myCalendar">
 
-			<h3>
-				<button>접기</button>
+			<div>
+				<button class="myCallenderHide">접기</button>
 				내 캘린더
-			</h3>
+			</div>
 			<ul>
 				<li class="myCallenderList">
 					<!-- 동적으로 캘린더리스트 -->
 				</li>
 			</ul>
+			<div>
+				<span class="addMyCallender">내 캘린더 추가</span>
+			</div>
 		</section>
 		<section class="interestCalendar">
 			<h3>관심 캘린더</h3>
+			<div>
+				<span class="addInterestCallender">관심 캘린더 추가</span>
+			</div>
 		</section>
 		<section class="teamCalendar">
 			<h3>팀 캘린더</h3>
+			<div>
+				<span class="addTeamCallender">팀 캘린더 추가</span>
+			</div>
 		</section>
 		<section class="rsvCalendar">
 			<h3>예약 캘린더</h3>
+			<label>
+				<input type="checkbox" value="예약 일정(기본)" class="rsvCallender"/>
+				예약 일정(기본)
+			</label>
 		</section>
 	</div>
 	<div class="calendarBtn">
@@ -233,9 +250,16 @@ body {
 							text:option.callenderTitle
 						}))
 						var listItem = $('<li>');
-			            var paragraph = $('<p>').text(option.callenderTitle);
-			            listItem.append(paragraph);
-			            myCallenderList.append(listItem);
+
+						var checkbox = $('<input>').attr({
+						    type: 'checkbox',
+						    value: option.callenderTitle, // 선택된 옵션의 값 설정
+						    class: 'calendarCheckbox' // 필요한 경우 클래스 추가
+						});
+						var label = $('<label>').text(option.callenderTitle); // 체크박스 설명을 라벨에 추가
+						label.prepend(checkbox); // 체크박스를 라벨 내부에 추가
+						listItem.append(label); // 라벨을 리스트 아이템에 추가
+						myCallenderList.append(listItem); // 리스트 아이템을 리스트에 추가
 					})
 					
 				},
@@ -252,7 +276,10 @@ body {
 			});
 		}
 	});
-
+$('.myCallenderHide').click(function(){
+	console.log('click');
+})
+	
 $('#midSelect').val('individual').trigger('change');
 
 var msg = "${msg}";
