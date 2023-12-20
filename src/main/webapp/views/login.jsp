@@ -78,7 +78,7 @@
 </head>
     <body>
         <div id="loginBox">
-            <form>
+            <form action="logingo" method="post">
                 <div data-mdb-input-init class="form-outline mb-4">
                   <input type="text" id="userNum" class="form-control" />
                   <label class="form-label" for="userNum">사번</label>
