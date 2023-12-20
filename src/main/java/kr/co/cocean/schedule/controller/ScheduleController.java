@@ -32,9 +32,9 @@ public class ScheduleController {
 	
 	@GetMapping(value="/schedule/getTeams.do")
 	@ResponseBody
-	public List<ScheduleDTO> getTeams() {
+	public List<String> getTeams() {
 		logger.info("중분류 팀선택 팀리스트 호출");
-		List<ScheduleDTO> teams = service.getTeams();
+		List<String> teams = service.getTeams();
 
 		return teams;
 	}

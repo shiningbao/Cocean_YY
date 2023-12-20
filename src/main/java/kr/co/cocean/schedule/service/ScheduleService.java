@@ -14,7 +14,7 @@ import kr.co.cocean.schedule.dto.ScheduleDTO;
 public class ScheduleService {
 	@Autowired ScheduleDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	public List<ScheduleDTO> getTeams() {
+	public List<String> getTeams() {
 		
 		return dao.getTeams();
 	}
