@@ -73,7 +73,7 @@
 						<span class="d-none d-md-inline ml-1">스토어 관리</span>
 					</a>
 					<div class="collapse" id="store_bar">
-						<a href='<c:url value="/stroe/storelist.go"/>' class="list-group-item" data-parent="#sidebar">지점 관리</a>
+						<a href='<c:url value="/store/storeList.go"/>' class="list-group-item" data-parent="#sidebar">지점 관리</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">상품 관리</a>
 					</div>
 					<a href="#group_bar" class="list-group-item d-inline-block collapsed"
