@@ -43,18 +43,18 @@ public class ScheduleController {
 	@ResponseBody
 	public List<ScheduleDTO> getCallender(@RequestParam String loginEmployeeID) {
 		logger.info("로그인 사번 :"+loginEmployeeID);
-		
+		logger.info("스케줄컨트롤러 도착!!!!!!!!!!!!!!!!!!!");
 		List<ScheduleDTO> myCallenders = service.getCallender(loginEmployeeID);
 
 		return myCallenders;
 	}
 	
 	@RequestMapping(value="/schedule/scheduleWrite.do")
-	public ModelAndView scheduleWrite(ScheduleDTO dto , RedirectAttributes rAttr) {
+	public ModelAndView scheduleWrite(ScheduleDTO dto) {
 		logger.info("write 정보" +dto.getTitle());
-		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
+		ModelAndView mav = new ModelAndView("/schedule/schedule");
 		service.scheduleWrite(dto);
-//		rAttr.addFlashAttribute("msg", "일정을 작성 하시겠습니까?");
+		mav.addObject("msg", "일정 등록 완료");
 		return mav;
 	}
 	

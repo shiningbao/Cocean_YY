@@ -49,7 +49,33 @@ body {
 .myCallenderList{
 	list-style-type: none;
 }
+.addCal{
+	font-size: 12px;
+}
 
+.addCal:hover{
+	cursor: pointer;
+	color: #DEDEDE;
+}
+
+.Hide {
+    border: none;
+    background: none;
+    padding: 0; /* 내부 여백 제거 */
+    cursor: pointer;
+}
+
+section{
+	margin-bottom: 50px;
+}
+
+.Hide{
+	float:left;
+}
+img{
+	weight:25px;
+	height:25px;
+}
 </style>
 </head>
 
@@ -129,8 +155,8 @@ body {
 							</p>
 							<p>중분류    
 								<select id="midSelect" name="mainCategory">
-									<option value="individual">개인</option>
-									<option value="team">팀</option>
+									<option value="개인">개인</option>
+									<option value="팀">팀</option>
 								</select>
 							</p>
 							<p>소분류
@@ -138,7 +164,7 @@ body {
 							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
 							    </select>
 							</p>
-							<p class="myCallender">개인캘린더
+							<p class="writeViewCallender">개인캘린더
 							    <select id="myCallender" name="category">
 							    </select>
 							</p>
@@ -163,35 +189,51 @@ body {
 		<section class="gnb_title">
 			<h1>캘린더</h1>
 		</section>
-		<section class="myCalendar">
+		
+		<section>
 
-			<div>
-				<button class="myCallenderHide">접기</button>
-				내 캘린더
+				<button class="myCallenderbtn Hide">
+					<img src="<c:url value='/resource/img/carrot-side.PNG'/>">
+				</button>
+			<h5>내 캘린더</h5>
+			<div>	
+				<ul>
+					<li class="myCallenderList">
+						<!-- 동적으로 캘린더리스트 -->
+					</li>
+				</ul>
 			</div>
-			<ul>
-				<li class="myCallenderList">
-					<!-- 동적으로 캘린더리스트 -->
-				</li>
-			</ul>
-			<div>
+			<div class="addCal">
 				<span class="addMyCallender">내 캘린더 추가</span>
 			</div>
 		</section>
+		
 		<section class="interestCalendar">
-			<h3>관심 캘린더</h3>
 			<div>
+				<button class="interestCalendar Hide">
+					<img src="<c:url value='/resource/img/carrot-side.PNG'/>">
+				</button>
+			</div>
+			<h5>관심 캘린더</h5>
+			<div class="addCal">
 				<span class="addInterestCallender">관심 캘린더 추가</span>
 			</div>
 		</section>
-		<section class="teamCalendar">
-			<h3>팀 캘린더</h3>
+		
+		<section class="teamCalendarHide">
 			<div>
+				<button class="interestCalendar Hide">
+					<img src="<c:url value='/resource/img/carrot-side.PNG'/>">
+				</button>
+			</div>
+			<h5>팀 캘린더</h5>
+			<div class="addCal">
 				<span class="addTeamCallender">팀 캘린더 추가</span>
 			</div>
 		</section>
+		
 		<section class="rsvCalendar">
-			<h3>예약 캘린더</h3>
+			<h5>예약 캘린더</h5>
 			<label>
 				<input type="checkbox" value="예약 일정(기본)" class="rsvCallender"/>
 				예약 일정(기본)
@@ -207,17 +249,21 @@ body {
 </body>
 
 <script>
-	var loginEmployeeID = '230001';
+	var loginEmployeeID = ${userInfo.employeeID};
+	var img= $('.myCallenderbtn img');
+	var isDown = false;
+	console.log(loginEmployeeID);
 	$('#midSelect').change(function(){
-		var selectVal = $(this).val();
-		var subSelect = $('#subSelect');
-		var myCallender = $('.myCallender');
-		var myCallenderSelect = $('#myCallender');
-		var myCallenderList =$('.myCallenderList');
+		var selectVal = $(this).val(); 
+		var subSelect = $('#subSelect'); // 드롭다운 소분류
+		var myCallender = $('#myCallender'); // 드롭다운 개인캘린더
+		var myCallenderBtn = $('#myCallenderBtn'); // 일정에서 버튼
+		var myCallenderList =$('.myCallenderList'); // 일정 리스트 드롭다운
 		console.log(selectVal); 
-		myCallender.hide();
+		$('.writeViewCallender').hide();
 		subSelect.empty();
-		if(selectVal == 'team'){
+		if(selectVal == '팀'){
+			console.log(selectVal+'+++확인중!!!!!');
 			$.ajax({
 				url:'getTeams.do',
 				method:'GET',
@@ -234,39 +280,50 @@ body {
 					console.log(e);
 				}
 			});
-		}else if(selectVal=='individual'){
+		}else if(selectVal=='개인'){
+			console.log(selectVal+'+++확인중!!!!!');
+			$('.writeViewCallender').show();
+// 			$('#myCallendar').val('내 일정(기본)').trigger('change');
+// 			myCallenderSelect.empty();
+			function callendarCall(){
+				$.ajax({
+					url:'getCallender.do',
+					data:{loginEmployeeID:loginEmployeeID},
+					method:'get',
+					success:function(data){
+						console.log(data);
+						
+						for(var i=0; i<data.length; i++){
+							var option = data[i];
+							console.log('몇번도는거야');
+							myCallender.append($('<option>',{
+								value:option.callenderTitle,
+								text:option.callenderTitle			
+						    
+							}))
+								
+							var listItem = $('<li>');
+							
+						    var checkbox = $('<input>').attr({
+						        type: 'checkbox',
+						        value: option.callenderTitle,
+						        class: 'calendarCheckbox'
+						    });
+							console.log(option.callenderTitle);
+						    var label = $('<label>').text(option.callenderTitle);
+						    label.prepend(checkbox);
+						    listItem.append(label);
+							$('.myCallenderList').append(listItem);
+						};
+							
+						
+					},
+					error:function(e){
+						console.log(e);
+					}
+				});
+			};
 			
-			myCallender.show();
-			myCallenderSelect.empty();
-			$.ajax({
-				url:'getCallender.do',
-				data:{loginEmployeeID:loginEmployeeID},
-				method:'get',
-				success:function(data){
-					console.log(data);
-					data.forEach(function(option){
-						myCallenderSelect.append($('<option>',{
-							value:option.callenderTitle,
-							text:option.callenderTitle
-						}))
-						var listItem = $('<li>');
-
-						var checkbox = $('<input>').attr({
-						    type: 'checkbox',
-						    value: option.callenderTitle, // 선택된 옵션의 값 설정
-						    class: 'calendarCheckbox' // 필요한 경우 클래스 추가
-						});
-						var label = $('<label>').text(option.callenderTitle); // 체크박스 설명을 라벨에 추가
-						label.prepend(checkbox); // 체크박스를 라벨 내부에 추가
-						listItem.append(label); // 라벨을 리스트 아이템에 추가
-						myCallenderList.append(listItem); // 리스트 아이템을 리스트에 추가
-					})
-					
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
 			var options =['반차','연차','출장','기타'];
 			options.forEach(function(option){
 				subSelect.append($('<option>',{
@@ -274,13 +331,32 @@ body {
 					text:option
 				}))
 			});
+			$('.myCallenderbtn').off().click(function(){
+			    console.log('click');
+
+			    if (isDown) {
+			        img.attr('src', '<c:url value="/resource/img/carrot-side.PNG"/>');
+			        console.log('false');
+			        $('.myCallenderList').empty();
+			    } else {
+			        img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
+			        console.log('true');
+			        callendarCall();
+			       
+			    }
+			    
+			    isDown = !isDown; // true 이면 false로 false면 true로
+			   
+			});
+			
 		}
 	});
-$('.myCallenderHide').click(function(){
+
+$('.addMyCallender').click(function(){
 	console.log('click');
-})
+});
 	
-$('#midSelect').val('individual').trigger('change');
+$('#midSelect').val('개인').trigger('change');
 
 var msg = "${msg}";
 if(msg!=""){

@@ -7,26 +7,52 @@ import java.sql.Date;
 public class LoginDTO {
 
 	//사원(e)
-	private int employeleeID; //사번
+	private int employeeID; //사번
 	private String password; //비번
 	private String name;//이름
 	private String status;//상태
 	private Date joinDate;//입사일
 	private String phoneNumber; //전화번호
 	private String address;//주소
-	private int remainingAnnualLeaver;// 잔여연차	
-	
+	private int remainingAnnualLeave;// 잔여연차	
+	private int branchID;
 	//부서 변경로그(d)
-	private String departmentName; //부서 
-	private String rankLevel;//직급
-	private String positionLevel;//직책
+	private int departmentID; //부서 
+	private int rankID;//직급
+	private int positionID;//직책
 	
 	
-	public int getEmployeleeID() {
-		return employeleeID;
+	
+	
+	public int getBranchID() {
+		return branchID;
 	}
-	public void setEmployeleeID(int employeleeID) {
-		this.employeleeID = employeleeID;
+	public void setBranchID(int branchID) {
+		this.branchID = branchID;
+	}
+	public int getDepartmentID() {
+		return departmentID;
+	}
+	public void setDepartmentID(int departmentID) {
+		this.departmentID = departmentID;
+	}
+	public int getRankID() {
+		return rankID;
+	}
+	public void setRankID(int rankID) {
+		this.rankID = rankID;
+	}
+	public int getPositionID() {
+		return positionID;
+	}
+	public void setPositionID(int positionID) {
+		this.positionID = positionID;
+	}
+	public int getEmployeeID() {
+		return employeeID;
+	}
+	public void setEmployeeID(int employeeID) {
+		this.employeeID = employeeID;
 	}
 	public String getPassword() {
 		return password;
@@ -64,31 +90,14 @@ public class LoginDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getRemainingAnnualLeaver() {
-		return remainingAnnualLeaver;
+	public int getRemainingAnnualLeave() {
+		return remainingAnnualLeave;
 	}
-	public void setRemainingAnnualLeaver(int remainingAnnualLeaver) {
-		this.remainingAnnualLeaver = remainingAnnualLeaver;
-	}
-	public String getDepartmentName() {
-		return departmentName;
-	}
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-	public String getRankLevel() {
-		return rankLevel;
-	}
-	public void setRankLevel(String rankLevel) {
-		this.rankLevel = rankLevel;
-	}
-	public String getPositionLevel() {
-		return positionLevel;
-	}
-	public void setPositionLevel(String positionLevel) {
-		this.positionLevel = positionLevel;
+	public void setRemainingAnnualLeave(int remainingAnnualLeave) {
+		this.remainingAnnualLeave = remainingAnnualLeave;
 	}
 	
+
 	
 	
 	
