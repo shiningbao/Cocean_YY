@@ -1,6 +1,7 @@
 package kr.co.cocean.approval.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value="/approval/writeDraft.go")
-	public ModelAndView writeDraft(@RequestParam String title) {
+	public ModelAndView writeDraftgo(@RequestParam String title) {
 		ModelAndView mav = new ModelAndView();
 		logger.info(title);
 		
@@ -61,6 +62,13 @@ public class ApprovalController {
 //		logger.info("list:"+list);
 //		return mav;
 //	}
+	
+	@PostMapping(value="/approval/writeDraft.do")
+	public String writeDraft(@RequestParam HashMap<String, String> param) {
+		logger.info("params : {}", param);
+		// service.write(param);
+		return "approval/draft";
+	}
 	
 	
 }

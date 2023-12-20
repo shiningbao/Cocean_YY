@@ -1,6 +1,7 @@
 package kr.co.cocean.approval.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -33,6 +34,11 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> draftInfo() {
 		return dao.draftInfo();
+	}
+
+	public void write(HashMap<String, String> param) {
+		dao.write(param);
+		
 	}
 
 }

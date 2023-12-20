@@ -1,6 +1,7 @@
 package kr.co.cocean.approval.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -14,6 +15,8 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> formSearch(List<String> keyword);
 
 	ArrayList<ApprovalDTO> draftInfo();
+
+	void write(HashMap<String, String> param);
 
 
 }
