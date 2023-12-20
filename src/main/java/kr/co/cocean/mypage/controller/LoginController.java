@@ -42,7 +42,7 @@ public class LoginController {
 		LoginDTO dto = service.login(userNum);
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
-			session.setAttribute("userinfo",dto);
+			session.setAttribute("userInfo",dto);
 			page = "mypage/side";
 
 		}else {// 로그인 실패시
