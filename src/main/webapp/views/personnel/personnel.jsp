@@ -16,17 +16,18 @@
 </style>
 </head>
 <body>
-<form action="join.go" method="post">
+<jsp:include page="../side.jsp"></jsp:include>
+<form action="join.do" method="post">
 	<table>
 		<tr>
 			<th>사번</th>
 			<td>
-				<input type="text"/>
+				<input type="text" name="employeeID"/>
 			</td>
 		<tr>
 			<th>이름</th>
 			<td>
-				<input type="text"/>
+				<input type="text" name="name"/>
 			</td>
 		</tr>
 		<tr>
@@ -72,31 +73,35 @@
 		<tr>
 			<th>상태</th>
 			<td>
-				<input type="text"/>
+				<select id="selectStatus" name="status">
+					<option value="재직">재직</option>
+					<option value="휴직">휴직</option>
+					<option value="퇴사">퇴사</option>
+				</select>
 			</td>
 		</tr>
 		<tr>
 			<th>입사일</th>
 			<td>
-				<input type="date"/>
+				<input type="date" name="joinDate"/>
 			</td>
 		</tr>
 		<tr>
 			<th>전화번호</th>
 			<td>
-				<input type="text"/>
+				<input type="text" name="phoneNumber" placeholder="일단 010-0000-0000 으로해봐용"/>
 			</td>
 		</tr>
 		<tr>
 			<th>주소</th>
 			<td>
-				<input type="text"/>
+				<input type="text" name="address"/>
 			</td>
 		</tr>
 		<tr>
 			<th>잔여연차</th>
 			<td>
-				<input type="text"/>
+				<input type="text" name="remainingAnnualLeave"placeholder="일단 15로 입력 해봐용"/>
 			</td>
 		</tr>
 		<tr>
@@ -111,21 +116,50 @@
 </body>
 <script>
  	var departmentID = $('#departmentSelect');
+ 	var resSelect = $('#resSelect');
+
 	$.ajax({
 		url:'getTeams.do',
 		method:'GET',
 		success:function(data){
 			console.log(data);
-			data.forEach(function(option){
+			data.forEach(function(option,index){
 				departmentID.append($('<option>',{
-					value:option.departmentName,
-					text:option.departmentName
+					value:index,
+					text:option
 				}))
 			})
+		$('#departmentSelect').val('0').trigger('change');
+			console.log($('#departmentSelect').val());
 		},
 		error:function(e){
 			console.log(e);
 		}
+	});
+	
+	
+	$('#departmentSelect').change(function(){
+		resSelect.empty();
+		var val =$(this).find('option:selected').text();
+		console.log(val);
+		$.ajax({
+			url:'getResponsibility.do',
+			data:{val:val},
+			success:function(data){
+				console.log(data);
+				data.forEach(function(option,index){
+					resSelect.append($('<option>',{
+						value:option,
+						text:option
+					}))
+				})
+				console.log($('#resSelect').val());
+			},
+			error:function(e){
+				console.log(e);
+			}
+			
+		});
 	});
 </script>
 </html>
