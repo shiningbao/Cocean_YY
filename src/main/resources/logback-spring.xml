@@ -28,7 +28,7 @@
 	<!-- 쿼리의 결과를 보여줄 때 -->
 	<logger name="jdbc.resultset" level="OFF"/>
 	<!-- 쿼리 결과물을 테이블처럼 그림으로 보여줄때 -->
-	<logger name="jdbc.resultsettable" level="INFO"/>	
+	<logger name="jdbc.resultsettable" level="OFF"/>	
 	
    	<!-- Root Logger -->
 	<root>
