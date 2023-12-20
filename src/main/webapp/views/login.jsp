@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>cocean</title>
-        <link rel="icon" href="/resource/img/favi.png" type="image/x-icon">
-        <!-- MDN 라이브러리 CND -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet"/>
-		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <style>
+	<link rel="icon" href="<c:url value='/resource/img/favi.png'/>" type="image/x-icon">
+	<!-- MDN 라이브러리 CND -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css" rel="stylesheet"/>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<style>
         @font-face {
             font-family: 'SOYOMapleBoldTTF';
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
@@ -44,6 +44,7 @@
             margin-right: 90px;
             margin-top: 170px;
             position: fixed;
+            font-size: 22px;
         }
 
         #login{
@@ -55,13 +56,24 @@
             margin-left: 10px;
             background-color: #2F80ED ;
         }
-
-        input:focus{
-            color: #2F80ED;
-            text-shadow: 0px 0px 0px #555555;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
+        
+        input:focus+label,
+        input:valid+label {
+        -webkit-transform: translateY(-10px) scale(.70);
+        -ms-transform: translateY(-10px) scale(.70);
+        transform: translateY(-10px) scale(.70);
+        -webkit-transform-origin: top left;
+        -ms-transform-origin: top left;
+        transform-origin: top left;
+        letter-spacing: -.28px;
         }
+        
+        .form-control{
+            line-height: 2.5;
+        }
+        
+
+
     </style>
 </head>
     <body>

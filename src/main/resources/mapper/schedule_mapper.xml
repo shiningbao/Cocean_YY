@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.schedule.dao.ScheduleDAO">	
+	
+	<select id="getTeams">
+		SELECT departmentName FROM department
+	</select>
+	
+	<select id="getCallender" resultType="schedule">
+		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID};
+	</select>
+	
+	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
+		keyProperty="scheduleID" parameterType="schedule">
+		INSERT INTO schedule VALUES(NULL,'230001',#{title},#{startDate},#{endDate},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
+	</insert>
+	
+</mapper>
