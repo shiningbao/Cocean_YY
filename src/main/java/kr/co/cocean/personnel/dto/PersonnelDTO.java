@@ -7,25 +7,28 @@ import org.springframework.stereotype.Service;
 
 @Alias("personnel")
 public class PersonnelDTO {
-	private String departmentName;
 	private int employeeID;
+	private String name;
 	private int departmentID;
 	private int positionID;
 	private int rankID;
 	private String password;
-	private String name;
+	
 	private String status;
-	private Date joinDate;
+	private String joinDate;
 	private String phoneNumber;
 	private String address;
+	private String responsibility;
+	
+	
+	public String getResponsibility() {
+		return responsibility;
+	}
+	public void setResponsibility(String responsibility) {
+		this.responsibility = responsibility;
+	}
 	private int remainingAnnualLeave;
 	
-	public String getDepartmentName() {
-		return departmentName;
-	}
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
 	public int getEmployeeID() {
 		return employeeID;
 	}
@@ -68,10 +71,11 @@ public class PersonnelDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public Date getJoinDate() {
+	
+	public String getJoinDate() {
 		return joinDate;
 	}
-	public void setJoinDate(Date joinDate) {
+	public void setJoinDate(String joinDate) {
 		this.joinDate = joinDate;
 	}
 	public String getPhoneNumber() {

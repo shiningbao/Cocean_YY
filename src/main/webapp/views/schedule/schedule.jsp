@@ -223,10 +223,10 @@ body {
 				method:'GET',
 				success:function(data){
 					console.log(data);
-					data.forEach(function(option){
+					data.forEach(function(option,index){
 						subSelect.append($('<option>',{
-							value:option.departmentName,
-							text:option.departmentName
+							value:index,
+							text:option
 						}))
 					})
 				},
