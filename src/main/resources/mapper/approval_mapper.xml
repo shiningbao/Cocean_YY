@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.approval.dao.ApprovalDAO">	
+	
+	<select id="list" resultType="form">
+		 SELECT * FROM draftForm
+	</select>
+	
+	<select id="formSearch" parameterType="list" resultType="form">
+		SELECT * FROM draftForm WHERE title IN
+			<foreach collection="list" item="item" open ="(" separator = "," close=")">
+			 #{item}
+			</foreach>
+	</select>
+	
+	<select id="draftInfo" resultType="form">
+		 SELECT DISTINCT name,e.departmentID,departmentName,workDate FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID
+ LEFT OUTER JOIN work w ON e.employeeID=w.employeeID WHERE e.employeeID=230001
+	</select>
+
+</mapper>
