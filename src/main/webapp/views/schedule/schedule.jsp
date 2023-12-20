@@ -114,29 +114,37 @@ body {
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="">
+					<form action="scheduleWrite.do">
 						<!-- 입력폼 -->
-							<p>제목 <input type="text" placeholder="제목을 입력해주세요."></p>
+							<p>제목 <input type="text" name="title" placeholder="제목을 입력해주세요."></p>
 							<p>시작일
-								<input type="date" id='start'>
-							    <input type="time">
+								<input type="datetime-local" name="startDate">
 							</p>
 							<p>종료일
-								<input type="date" id='end'>
-							    <input type="time">
+								<input type="datetime-local" name="endDate">
 							</p>
 							<p>중분류    
-								<select id="midSelect">
+								<select id="midSelect" name="mainCategory">
 									<option value="individual">개인</option>
 									<option value="team">팀</option>
 								</select>
 							</p>
 							<p>소분류
-							    <select id="subSelect">
+							    <select id="subSelect" name="subCategory">
 							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
 							    </select>
 							</p>
-
+							<p class="myCallender">개인캘린더
+							    <select id="myCallender" name="category">
+							    </select>
+							</p>
+							<p>비고
+								<input type="text" name="remarks">
+							</p>
+							<p>내용
+								<textarea name="description"></textarea>
+							</p>
+							
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-primary">저장</button>
 							<button type="button" class="btn btn-secondary"data-dismiss="modal">취소</button>
@@ -158,11 +166,8 @@ body {
 				내 캘린더
 			</h3>
 			<ul>
-				<li>
-					<p>내 일정(기본)</p>
-				</li>
-				<li>
-					<p>fff</p>
+				<li class="myCallenderList">
+					<!-- 동적으로 캘린더리스트 -->
 				</li>
 			</ul>
 		</section>
@@ -185,15 +190,19 @@ body {
 </body>
 
 <script>
-
+	var loginEmployeeID = '230001';
 	$('#midSelect').change(function(){
 		var selectVal = $(this).val();
 		var subSelect = $('#subSelect');
+		var myCallender = $('.myCallender');
+		var myCallenderSelect = $('#myCallender');
+		var myCallenderList =$('.myCallenderList');
 		console.log(selectVal); 
+		myCallender.hide();
 		subSelect.empty();
 		if(selectVal == 'team'){
 			$.ajax({
-				url:'schedule/getTeams.do',
+				url:'getTeams.do',
 				method:'GET',
 				success:function(data){
 					console.log(data);
@@ -209,6 +218,31 @@ body {
 				}
 			});
 		}else if(selectVal=='individual'){
+			
+			myCallender.show();
+			myCallenderSelect.empty();
+			$.ajax({
+				url:'getCallender.do',
+				data:{loginEmployeeID:loginEmployeeID},
+				method:'get',
+				success:function(data){
+					console.log(data);
+					data.forEach(function(option){
+						myCallenderSelect.append($('<option>',{
+							value:option.callenderTitle,
+							text:option.callenderTitle
+						}))
+						var listItem = $('<li>');
+			            var paragraph = $('<p>').text(option.callenderTitle);
+			            listItem.append(paragraph);
+			            myCallenderList.append(listItem);
+					})
+					
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 			var options =['반차','연차','출장','기타'];
 			options.forEach(function(option){
 				subSelect.append($('<option>',{
@@ -220,5 +254,11 @@ body {
 	});
 
 $('#midSelect').val('individual').trigger('change');
+
+var msg = "${msg}";
+if(msg!=""){
+	confirm(msg);
+}
+
 </script>
 </html>

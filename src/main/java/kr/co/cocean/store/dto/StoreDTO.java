@@ -39,5 +39,4 @@ public class StoreDTO {
 	public void setBranchLongitude(double branchLongitude) {
 		this.branchLongitude = branchLongitude;
 	}
-	
 }

@@ -8,4 +8,13 @@
 		SELECT departmentName FROM department
 	</select>
 	
+	<select id="getCallender" resultType="schedule">
+		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID};
+	</select>
+	
+	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
+		keyProperty="scheduleID" parameterType="schedule">
+		INSERT INTO schedule VALUES(NULL,'230001',#{title},#{startDate},#{endDate},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
+	</insert>
+	
 </mapper>
