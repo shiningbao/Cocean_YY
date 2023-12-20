@@ -129,7 +129,7 @@
 					text:option
 				}))
 			})
-		$('#departmentSelect').val('0').trigger('change');
+		$('#departmentSelect').val('1').trigger('change');
 			console.log($('#departmentSelect').val());
 		},
 		error:function(e){
@@ -149,7 +149,7 @@
 				console.log(data);
 				data.forEach(function(option,index){
 					resSelect.append($('<option>',{
-						value:option,
+						value:option+1,
 						text:option
 					}))
 				})
