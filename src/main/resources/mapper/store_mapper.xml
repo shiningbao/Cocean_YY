@@ -8,4 +8,12 @@
 		SELECT * FROM branch
 	</select>
 	
+	<select id="productList" resultType="product">
+		SELECT * FROM product
+	</select>
+	
+	<select id="searchProduct" resultType="product">
+		SELECT * FROM product WHERE productName = #{param1} AND branch = #{param2} 
+	</select>
+	
 </mapper>

@@ -24,7 +24,7 @@
 
 <body>
     <jsp:include page="../side.jsp"></jsp:include>
-
+	${string }
     <div class="chartContainer">
         <div class="chartBox1">
         	<div class="coceanFriends"></div>
