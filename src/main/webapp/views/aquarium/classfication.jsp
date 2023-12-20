@@ -22,9 +22,21 @@
 	</thead>
 	<tbody id="con">
 	</tbody>
+	<tr>
+		<th colspan="4">
+			<button onclick="sendVal()">확인</button>
+			<button onclick="window.close()">취소</button>
+		</th>
+	</tr>
 </table>
 </body>
 <script>
+
+var speciesID;
+var taxo;
+var scien;
+var common;
+
 function classficationSearch(){
 	var keyword = $('#keyword').val();
 	$.ajax({
@@ -43,26 +55,39 @@ function classficationSearch(){
 }
 
 function drowList(list){
-	list.forEach(item){
-		$('#con').val('');
-		var content = '<tr><th>0</th><th>1</th><th>2</th></tr>';
-		$('#con').val(content);
-	}
+	var content = '';
+	$('#con').html('');
+	list.forEach(function(item){
+		var value = "\'"+item.speciesID+"','"+item.taxonomy+"','"+item.scientificName+"','"+item.commonName+"\'";
+		content += '<tr onclick="clickList(this,'+value+')" ondblclick="sendVal()">';
+		content += '<th>'+item.taxonomy+'</th>';
+		content += '<th>'+item.scientificName+'</th>';
+		content += '<th>'+item.commonName+'</th>';
+		content += '</tr>';
+	});
+	$('#con').html(content);
 }
 
+function clickList(e,id,t,s,c){
+	var list = $(e).siblings();
+	for (var i = 0; i < list.length; i++) {
+		list[i].style.backgroundColor = 'white';
+	};
+	$(e).css({'background-color' : 'grey'});
+	speciesID = id;
+	taxo = t;
+	scien = s;
+	common = c;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+function sendVal(){
+	if(speciesID != null){
+		window.opener.setClassfication(speciesID,taxo,scien,common);
+		window.close();
+	}else{
+		alert('동물 분류를 선택해 주세요.');
+	}
+}
 
 </script>
 
