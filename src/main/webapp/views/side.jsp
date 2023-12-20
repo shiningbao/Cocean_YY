@@ -49,8 +49,7 @@
 						<a href="#" class="list-group-item" data-parent="#sidebar">주소록</a>
 					</div>
 					<a href="<c:url value='/animal/list.go'/>" class="list-group-item d-inline-block collapsed"
-						data-toggle="collapse" data-parent="#sidebar"
-						aria-expanded="false">
+						 data-parent="#sidebar">
 						<img style="width: 25px; margin-right: 5px; margin-bottom: 5px;"
 							src="<c:url value='/resource/img/Star_fill.svg'/>">
 						<span class="d-none d-md-inline ml-1">코션친구들</span>
@@ -74,7 +73,7 @@
 						<span class="d-none d-md-inline ml-1">스토어 관리</span>
 					</a>
 					<div class="collapse" id="store_bar">
-						<a href="#" class="list-group-item" data-parent="#sidebar">지점 관리</a>
+						<a href='<c:url value="/stroe/storelist.go"/>' class="list-group-item" data-parent="#sidebar">지점 관리</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">상품 관리</a>
 					</div>
 					<a href="#group_bar" class="list-group-item d-inline-block collapsed"
@@ -120,7 +119,7 @@
 						<a href="#" class="list-group-item" data-parent="#sidebar">부서게시판</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">프로그램 일정</a>
 					</div>
-					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+					<a href='<c:url value="/schedule/schedule.go"/>' class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
 						<img style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
 							src="<c:url value='/resource/img/calender.svg'/>">
 						<span class="d-none d-md-inline ml-1">캘린더</span>
