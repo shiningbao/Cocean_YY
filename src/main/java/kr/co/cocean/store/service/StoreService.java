@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.cocean.store.dao.StoreDAO;
 import kr.co.cocean.store.dto.StoreDTO;
+import kr.co.cocean.store.dto.StoreProductDTO;
 
 @Service
 public class StoreService {
@@ -27,12 +28,15 @@ public class StoreService {
 	@Autowired StoreDAO dao;
 	
 	StoreDTO storedto = new StoreDTO();
+	// 상품 사진 경로
+	private String root = "/Users/chajaeho/Desktop/upload/cocean/product";
 	
 	public Map<String, Object> storeList(Model model) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		ArrayList<StoreDTO> branchList = dao.branchList();
+		ArrayList<StoreProductDTO> productList = dao.productList();
 		map.put("branchList", branchList);
-		model.addAttribute("branchList",branchList);
+		map.put("productList", productList);
 		return map;
 	}
 	
@@ -89,6 +93,14 @@ public class StoreService {
 	    logger.info("obj = " + obj.toString());
 	    
 	    return obj;
+	}
+
+	public Map<String, Object> searchProduct(String searchKeyword, String branchName) {
+		Map<String, Object> map =  new HashMap<String, Object>();
+		ArrayList<StoreDTO> list = dao.searchProduct(searchKeyword, branchName);
+		map.put("searchedList", list);
+		logger.info("list : "+list);
+		return map;
 	}
 
 }
