@@ -18,5 +18,12 @@ public class ScheduleService {
 		
 		return dao.getTeams();
 	}
+	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
+		logger.info("나의 캘린더 가져오기 서비스 접근");
+		return dao.getCallender(loginEmployeeID);
+	}
+	public void scheduleWrite(ScheduleDTO dto) {
+		dao.scheduleWrite(dto);
+	}
 
 }

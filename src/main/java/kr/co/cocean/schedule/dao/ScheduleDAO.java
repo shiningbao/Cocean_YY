@@ -11,4 +11,8 @@ public interface ScheduleDAO {
 
 	List<ScheduleDTO> getTeams();
 
+	List<ScheduleDTO> getCallender(String loginEmployeeID);
+
+	void scheduleWrite(ScheduleDTO dto);
+
 }
