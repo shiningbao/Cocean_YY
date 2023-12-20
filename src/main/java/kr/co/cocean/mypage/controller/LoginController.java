@@ -42,8 +42,6 @@ public class LoginController {
 		LoginDTO dto = service.login(userNum);
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
-			session.setAttribute("userInfo",dto);
-			page = "mypage/side";
 			logger.info("userNum"+userNum);
 			session.setAttribute("userinfo",dto);
 			page = "redirect:/home";
