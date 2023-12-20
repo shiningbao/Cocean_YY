@@ -59,7 +59,7 @@ public class PersonnelController {
 		ModelAndView mav = new ModelAndView("personnel/personnel");
 		logger.info("params =="+params);
 		String page= "";
-		String pw = "cocean1111";
+		String pw = "11";
 		
 		String password = encoder.encode(pw);
 		params.put("password", password);
