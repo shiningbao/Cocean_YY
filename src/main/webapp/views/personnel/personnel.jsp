@@ -125,7 +125,7 @@
 			console.log(data);
 			data.forEach(function(option,index){
 				departmentID.append($('<option>',{
-					value:index,
+					value:index+1,
 					text:option
 				}))
 			})
@@ -149,7 +149,7 @@
 				console.log(data);
 				data.forEach(function(option,index){
 					resSelect.append($('<option>',{
-						value:option+1,
+						value:option,
 						text:option
 					}))
 				})
