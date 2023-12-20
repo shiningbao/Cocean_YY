@@ -43,7 +43,7 @@ public class LoginController {
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
 			logger.info("userNum"+userNum);
-			session.setAttribute("userinfo",dto);
+			session.setAttribute("userInfo",dto);
 			page = "redirect:/home";
 		}else {// 로그인 실패시
 			mav.addObject("msg","비밀번호를 잊어버린 경우 인사과로 문의 해주세요");
