@@ -1,5 +1,8 @@
 package kr.co.cocean.statistics.dao;
 
-public class StatisticsDAO {
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface StatisticsDAO {
 
 }
