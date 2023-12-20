@@ -6,7 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.cocean.store.service.StoreService;
 	
@@ -21,9 +23,10 @@ public class StoreController {
 	}
 	
 	@GetMapping(value="storeList.do")
-	public Map<String, Object> storeList() {
+	@ResponseBody
+	public Map<String, Object> storeList(Model model) {
 		logger.info("스토어 리스트");
-		return service.storeList();
+		return service.loadLocation(model);
 	}
 	
 	@GetMapping(value="branch.map.do")

@@ -11,7 +11,7 @@
 <jsp:include page="../side.jsp"></jsp:include>
 
 <div>스토어 관리</div>
-<div>지점 위치 <button id="branch">가산점</button></div> 
+<div>지점 위치 <button id="branch">가산점</button><div>${branch.branchLocation}</div></div> 
 <div id="map" style="width:500px;height:400px;"></div>
 
 </body>
@@ -26,54 +26,65 @@ var marker = {
 }; */
 
 
-//store.jsp
-storeList();
 
 // 지점 리스트
-function storeList() {
+$(document).ready(function () {
     $.ajax({
         type: 'get',
         url: 'storeList.do',
-        data: {},
         dataType: 'json',
         success: function (data) {
-            console.log(data);
-            console.log("성공");
-            initializeMap(data.branchList);
+            if (data.length > 0) { // 배열에 데이터가 하나 이상 있는 경우
+                console.log("경도 : " + data[0].x);
+                console.log("위도 : " + data[0].y);
+                initializeMap(data[0]);
+                	console.log(data);
+            } else {
+                console.log("데이터가 없습니다.");
+                console.log(data);
+                	console.log("x / " +data.x);
+            }
         },
         error: function (e) {
             console.log(e);
-            console.log("실패");
+            console.log("데이터 가져오기 실패");
         }
     });
-}
+});
 
-function drawList(branchList) {
-}
-
-function initializeMap(branchList) {
-    var container = document.getElementById('map');
-    var firstBranch = branchList;
-
-    if (firstBranch) {
+    function initializeMap(data) {
+        var mapContainer = document.getElementById('map');
         var options = {
-            center: new kakao.maps.LatLng(firstBranch.branchLatitude, firstBranch.branchLongitude),
+            center: new kakao.maps.LatLng(data.y, data.x),
             level: 3
         };
 
-        var map = new kakao.maps.Map(container, options);
+        var map = new kakao.maps.Map(mapContainer, options);
 
-        // 지도에 모든 지점의 마커를 추가할 수 있습니다.
         for (var i = 0; i < branchList.length; i++) {
-            var markerPosition = new kakao.maps.LatLng(branchList[i].branchLatitude, branchList[i].branchLongitude);
+            var markerPosition = new kakao.maps.LatLng(branchList[i].latitude, branchList[i].longitude);
+
             var marker = new kakao.maps.Marker({
-                position: markerPosition
+                position: markerPosition,
+                title: branchList[i].branchName
             });
 
             marker.setMap(map);
+
+            // 지점명을 인포윈도우로 표시
+            var infowindow = new kakao.maps.InfoWindow({
+                content: '<div style="padding:5px;">' + branchList[i].branchName + '</div>'
+            });
+
+            kakao.maps.event.addListener(marker, 'mouseover', function () {
+                infowindow.open(map, marker);
+            });
+
+            kakao.maps.event.addListener(marker, 'mouseout', function () {
+                infowindow.close();
+            });
         }
     }
-}
 
 </script>
 </html>
