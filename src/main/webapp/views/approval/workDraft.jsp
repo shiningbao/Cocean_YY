@@ -26,20 +26,24 @@ button{
 </style>
 </head>
 <body>
-	<table>
-		<tr>
-			<th>기안자</th>
-			<td>${draftInfo.name}</td>
-		</tr>
-		<tr>
-			<th>소속부서</th>
-			<td>${draftInfo.departmentName}</td>
-		</tr>
-		<tr>
-			<th>기안일</th>
-			<td>${draftInfo.workDate}</td>
-		</tr>
-	</table>
+	
+		<c:forEach var="draft" items="${draftInfo}">
+        <table>
+            <tr>
+                <th>기안자</th>
+                <td>${draft.name}</td>
+            </tr>
+            <tr>
+                <th>소속부서</th>
+                <td>${draft.departmentName}</td>
+            </tr>
+            <tr>
+                <th>기안일</th>
+                <td>${draft.workDate}</td>
+            </tr>
+        </table>
+    </c:forEach>
+	
 
 </body>
 <script>

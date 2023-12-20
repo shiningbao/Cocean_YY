@@ -1,5 +1,7 @@
 package kr.co.cocean.approval.dto;
 
+import java.sql.Date;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("form")
@@ -8,7 +10,29 @@ public class ApprovalDTO {
 	private String titleID;
 	private String category;
 	private String title;
+	private String name;
+	private String departmentName;
+	private Date workDate;
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public Date getWorkDate() {
+		return workDate;
+	}
+	public void setWorkDate(Date workDate) {
+		this.workDate = workDate;
+	}
 	public String getTitle() {
 		return title;
 	}

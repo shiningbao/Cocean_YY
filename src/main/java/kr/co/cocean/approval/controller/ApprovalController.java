@@ -45,7 +45,7 @@ public class ApprovalController {
 		ModelAndView mav = new ModelAndView();
 		logger.info(title);
 		
-		ApprovalDTO draftInfo = service.draftInfo();
+		ArrayList<ApprovalDTO> draftInfo = service.draftInfo();
 		mav.addObject("draftInfo",draftInfo);
 		mav.setViewName("approval/workDraft");
 		

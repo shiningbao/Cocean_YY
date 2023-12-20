@@ -16,7 +16,7 @@ public class LoginService {
 	@Autowired LoginDAO dao;
 
 	public LoginDTO login(String userNum, String password) {
-		return dao.login(userNum,password );
+		return dao.login(userNum,password);
 	}
 	
 	

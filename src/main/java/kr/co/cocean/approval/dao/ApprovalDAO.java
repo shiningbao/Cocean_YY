@@ -13,7 +13,7 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> formSearch(List<String> keyword);
 
-	ApprovalDTO draftInfo();
+	ArrayList<ApprovalDTO> draftInfo();
 
 
 }

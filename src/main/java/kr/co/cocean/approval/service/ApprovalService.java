@@ -31,7 +31,7 @@ public class ApprovalService {
 		return mav;
 	}
 
-	public ApprovalDTO draftInfo() {
+	public ArrayList<ApprovalDTO> draftInfo() {
 		return dao.draftInfo();
 	}
 
