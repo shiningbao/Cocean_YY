@@ -286,20 +286,20 @@ img{
 
 // 			$('#myCallendar').val('내 일정(기본)').trigger('change');
 // 			myCallenderSelect.empty();
-			function callendarCall(){
-				$.ajax({
-					url:'getCallender.do',
-					data:{loginEmployeeID:loginEmployeeID},
-					method:'get',
-					success:function(data){
-						console.log(data);
+// 			function callendarCall(){
+// 				$.ajax({
+// 					url:'getCallender.do',
+// 					data:{loginEmployeeID:loginEmployeeID},
+// 					method:'get',
+// 					success:function(data){
+// 						console.log(data);
 						
-					},
-					error:function(e){
-						console.log(e);
-					}
-				});
-			};
+// 					},
+// 					error:function(e){
+// 						console.log(e);
+// 					}
+// 				});
+// 			};
 			
 			var options =['반차','연차','출장','기타'];
 			options.forEach(function(option){

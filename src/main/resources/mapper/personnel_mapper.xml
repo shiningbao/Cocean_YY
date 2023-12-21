@@ -4,24 +4,26 @@
 >
 <mapper namespace="kr.co.cocean.personnel.dao.PersonnelDAO">	
 	
-	<select id="getResponsibility" resultType="String" parameterType="String">
-		SELECT responsibility
-    	FROM department d
-        <if test="val != null">
-            WHERE departmentName = #{val}
-        </if>
-	</select>
+
 	
 	<insert id="join" parameterType="map">
 		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responsibility})
 	</insert>
 	
-	<insert id="addMyCallendar" parameterType="String">
-		INSERT INTO myCallender VALUES(#{myCallender},#{perNum})
-	</insert>
+	<select id="getBranch">
+		SELECT branchName FROM branch
+	</select>
 	
-	<insert id="addRsvCallendar" parameterType="String">
-		INSERT INTO myCallender VALUES(#{rsvCallendar},#{perNum})
-	</insert>
+	<select id="getBranchID">
+		SELECT hqName FROM headquarters h WHERE branchID =#{branchID}
+	</select>
+	
+	<select id="getHqID">
+		select DISTINCT departmentName FROM department d WHERE hqID=#{hqID}
+	</select>
+	
+	<select id="getDepartmentText">
+		SELECT responsibility es FROM department d WHERE departmentName = #{departmentText}
+	</select>
 
 </mapper>
