@@ -17,21 +17,75 @@
 table, th, td{
 border: 1px solid gray;
 }
+
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* 닫기 버튼 스타일 */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button{
+	background-color: white;
+	border-color: #2F80ED;
+	color: #2F80ED;
+	border-radius: 6px;
+}
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
 
-<div>스토어 관리 </div>
+<div>스토어 관리 
 <div class="branchLocation">지점 위치 </div>
 <div id="map" style="width:500px;height:400px;"></div>
+<button type="button" class="button" id="branchRegister">등록</button>
+</div>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <!-- 모달 내용 -->
+    <p>모달 내용을 입력하세요.</p>
+  </div>
+</div>
+
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
-	<button id="search">검색</button>
+	<button id="search" class="button">검색</button>
 	<div class="listTable">
 	<table>
 	</table>
 	</div>
-	<button type="button" onclick="location.href='storeProductRegister.go'">등록</button>
+	<button type="button" class="button" onclick="location.href='storeProductRegister.go'">등록</button>
 </div>
 
 <div class="ticketList">티켓 리스트</div>
@@ -272,7 +326,42 @@ new Promise((resolve, reject) => {
 	
     
     
+	
+	
+ // 모달 열기
+    function openModal() {
+      var modal = document.getElementById('myModal');
+      modal.style.display = 'block';
+    }
 
+    // 모달 닫기
+    function closeModal() {
+      var modal = document.getElementById('myModal');
+      modal.style.display = 'none';
+    }
+
+    // 버튼 클릭 시 모달 열기
+    document.getElementById('branchRegister').addEventListener('click', openModal);
+
+    // 모달 내 닫기 버튼 클릭 시 모달 닫기
+    document.getElementsByClassName('close')[0].addEventListener('click', closeModal);
+
+    // 모달 외 다른 부분 클릭 시 모달 닫기
+    window.addEventListener('click', function (event) {
+      var modal = document.getElementById('myModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    /* function registerConfirm(){
+    	if(confirm("등록하시겠습니까?")){
+    		alert("등록되었습니다!");
+    	}
+    	
+  	function validationConfirm(){
+      		alert("모든 내용을 입력해주세요!");
+  	} */
 
 </script>
 </html>
