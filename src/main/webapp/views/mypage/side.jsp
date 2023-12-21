@@ -44,9 +44,9 @@
                   <span class="d-none d-md-inline ml-1">마이페이지</span>
                </a>
                <div class="collapse" id="myPage_bar">
-                  <a href="#" class="list-group-item" data-parent="#sidebar">내정보</a>
-                  <a href="#" class="list-group-item" data-parent="#sidebar">근태기록</a>
-                  <a href="#" class="list-group-item" data-parent="#sidebar">주소록</a>
+                  <a href="<c:url value='/mypage'/>" class="list-group-item" data-parent="#sidebar">내정보</a>
+                  <a href="" class="list-group-item" data-parent="#sidebar">근태기록</a>
+                  <a href="<c:url value='/address'/>" class="list-group-item" data-parent="#sidebar">주소록</a>
                </div>
                <a href="#" class="list-group-item d-inline-block collapsed"
                   data-toggle="collapse" data-parent="#sidebar"
@@ -130,7 +130,7 @@
                      src="<c:url value='/resource/img/mall.svg'/>">
                   <span class="d-none d-md-inline ml-1">복지몰</span>
                </a>
-               <a href="#" class="list-group-item d-inline-block collapsed"   data-parent="#sidebar">
+               <a href="<c:url value='/mypage/logout'/>" class="list-group-item d-inline-block collapsed"   data-parent="#sidebar">
                   <img style="width: 25px; margin-right: 7px; margin-bottom: 5px;"
                      src="<c:url value='/resource/img/out.svg'/>">
                   <span class="d-none d-md-inline ml-1">로그아웃</span>
