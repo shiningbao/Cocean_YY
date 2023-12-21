@@ -39,11 +39,13 @@ public class LoginController {
 		logger.info("userNum : "+userNum+" / password :"+password);
 		ModelAndView mav = new ModelAndView();
 
-		LoginDTO dto = service.login(userNum);
+		LoginDTO userInfo = service.login(userNum);
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
 			logger.info("userNum"+userNum);
-			session.setAttribute("userInfo",dto);
+
+			session.setAttribute("userInfo",userInfo);
+
 			page = "redirect:/home";
 
 		}else {// 로그인 실패시
