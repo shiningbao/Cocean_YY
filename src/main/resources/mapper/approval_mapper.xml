@@ -16,12 +16,24 @@
 	</select>
 	
 	<select id="draftInfo" resultType="form">
-		SELECT DISTINCT name,departmentName,workDate FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID
- 		LEFT OUTER JOIN work w ON e.employeeID=w.employeeID WHERE e.employeeID=230001
+		SELECT DISTINCT name,r.rankName, departmentName,workDate FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID
+ 		LEFT OUTER JOIN work w ON e.employeeID=w.employeeID LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID} ORDER BY workDate DESC LIMIT 1
 	</select>
 	
-	<insert id="write" parameterType="map">
-    INSERT INTO draft (employeeID,publicStatus,tempSave,draftStatus) VALUES (#{param1},#{param2},#{param3},'대기')
+	<insert 
+		id="write" 
+		useGeneratedKeys="true"
+		keyColumn="idx"
+		keyProperty="idx">
+    	INSERT INTO draft (employeeID,publicStatus,tempSave,draftStatus,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},'대기',#{title})
+	</insert>
+	
+	<insert id="writeWorkDraft">
+    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
+	</insert>
+	
+	<insert id="writeAttendanceDraftContent">
+    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
 	</insert>
 
 </mapper>

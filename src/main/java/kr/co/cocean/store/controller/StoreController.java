@@ -46,4 +46,10 @@ public class StoreController {
 		return service.searchProduct(searchKeyword,branchName);
 	}
 	
+	@GetMapping(value="/store/storeProductRegister.go")
+	public String storeProductRegisterGo() {
+		logger.info("상품 등록 페이지 이동");
+		return "store/storeProductRegister";
+	}
+	
 }
