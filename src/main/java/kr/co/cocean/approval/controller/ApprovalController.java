@@ -3,6 +3,7 @@ package kr.co.cocean.approval.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -30,11 +31,12 @@ public class ApprovalController {
 	public ModelAndView formList(HttpSession session,RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		
 		if(dto!=null) {
 			ArrayList<ApprovalDTO> list = service.list();
 			mav.addObject("list",list);
 			mav.setViewName("approval/formList");
-		}else {
+		}else{
 			mav.setViewName("redirect:/");
 			rAttr.addFlashAttribute("msg","로그인이 필요한 서비스입니다");
 		}
@@ -43,21 +45,28 @@ public class ApprovalController {
 	
 
 	@PostMapping(value="/approval/searchList.do")
-	public ModelAndView formSearch(HttpSession session, @RequestParam List<String> keyword) {
+	public ModelAndView formSearch(HttpSession session, RedirectAttributes rAttr, @RequestParam List<String> keyword) {
 		logger.info("keyword : {}", keyword);
 
-		return service.formSearch(keyword);
+		return service.formSearch(session, rAttr, keyword);
 	}
 	
 	@GetMapping(value="/approval/writeDraft.go")
-	public ModelAndView writeDraftgo(@RequestParam String title) {
+	public ModelAndView writeDraftgo(HttpSession session,RedirectAttributes rAttr,  @RequestParam String title) {
 		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		logger.info(title);
-		
-		ArrayList<ApprovalDTO> draftInfo = service.draftInfo();
-		mav.addObject("draftInfo",draftInfo);
-		mav.setViewName("approval/workDraft");
-		
+		if(dto!=null) {
+			int employeeID = dto.getEmployeeID();
+			logger.info("사번:"+employeeID);
+			ArrayList<ApprovalDTO> draftInfo = service.draftInfo(employeeID);
+			mav.addObject("draftInfo",draftInfo);
+			mav.addObject("title",title);
+			mav.setViewName("approval/writeDraftForm");
+		}else{
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg","로그인이 필요한 서비스입니다");
+		}
 		return mav;
 	}
 	
@@ -72,10 +81,21 @@ public class ApprovalController {
 //	}
 	
 	@PostMapping(value="/approval/writeDraft.do")
-	public String writeDraft(HttpSession session, @RequestParam HashMap<String, String> param) {
-		logger.info("params : {}", param);
-		// service.write(param);
-		return "approval/draft";
+	public ModelAndView writeDraft(HttpSession session, RedirectAttributes rAttr, @RequestParam HashMap<String, String> param) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if(dto!=null) {
+			int employeeID = dto.getEmployeeID();
+		    param.put("employeeID", String.valueOf(employeeID));
+		    logger.info("params : {}", param);
+			service.write(param);
+			mav.setViewName("redirect:/approval/formList.go");
+		}else{
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg","로그인이 필요한 서비스입니다");
+		}
+		
+		return mav;
 	}
 	
 	
