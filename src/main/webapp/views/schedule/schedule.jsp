@@ -166,13 +166,16 @@ img{
 							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
 							    </select>
 							</p>
-							<p class="writeViewCallender">개인캘린더
-							    <select id="myCallender" name="category">
-							    	<option value="내 일정(기본)">내 일정(기본)</option>
-							    </select>
-							</p>
+<!-- 							<p class="writeViewCallender">개인캘린더 -->
+<!-- 							    <select id="myCallender" name="category"> -->
+<!-- 							    	<option value="내 일정(기본)">내 일정(기본)</option> -->
+<!-- 							    </select> -->
+<!-- 							</p> -->
 							<p>비고
 								<input type="text" name="remarks">
+							</p>
+							<p>공개여부
+								<input type="checkbox" name="publicCategory">
 							</p>
 							<p>내용
 								<textarea name="description"></textarea>

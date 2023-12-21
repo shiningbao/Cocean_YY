@@ -62,6 +62,7 @@ public class ScheduleController {
 		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
 		dto.setEmployeeID(employeeID);
+		logger.info("공개여부"+dto.getPublicCategory());
 		service.scheduleWrite(dto);
 
 		
