@@ -8,6 +8,12 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=530dd95ca9b426f51d6a8307877fcb3f"></script>
 </head>
 <style>
+.listTable {
+    overflow: auto;
+    width: 500px;
+    height: 100px; /* 디자인에 맞게 더 큰 값을 설정하세요 */
+}
+
 table, th, td{
 border: 1px solid gray;
 }
@@ -21,45 +27,29 @@ border: 1px solid gray;
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
 	<button id="search">검색</button>
+	<div class="listTable">
 	<table>
 	</table>
+	</div>
+	<button type="button" onclick="location.href='storeProductRegister.go'">등록</button>
 </div>
 
-	
-	
 <div class="ticketList">티켓 리스트</div>
 
-<!-- <div>스토어 관리</div>
-<div class="left-container">
-        <div class="branchLocation">지점 위치</div>
-        <div id="map"></div>
-    </div>
-
-    오른쪽 영역: 상품 리스트 및 티켓 리스트
-    <div class="right-container">
-        <div class="productList">상품 리스트</div>
-        <div class="ticketList">티켓 리스트</div>
-    </div>
- -->
 </body>
 <script>
-//이미지 지도에서 마커가 표시될 위치입니다 
-/* var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667); 
+var matchedProductList;
 
-// 이미지 지도에 표시할 마커입니다
-// 이미지 지도에 표시할 마커는 Object 형태입니다
-var marker = {
-    position: markerPosition
-}; */
-var branchName;
-// 지점 리스트
+// 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
     // 첫 번째 Ajax 호출
+    // 카카오 지도 api 를 사용해서 지도 그리기
     $.ajax({
         type: 'get',
         url: 'storeList.do',
         dataType: 'json',
         success: function (data) {
+        	console.log("첫번째 ajax 호출 성공");
             console.log(data);
             console.log("x : " + data.documents[0].x);
             console.log("y : " + data.documents[0].y);
@@ -75,14 +65,15 @@ new Promise((resolve, reject) => {
     });
 }).then((apiResult) => {
     // 두 번째 Ajax 호출
+    // 데이터로 받아온 지점의 위도,경도를 가지고 그 지점에 해당하는 상품, 티켓 리스트 뿌려주기
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'get',
             url: 'storeList.ajax',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 	console.log("두번째 ajax 호출 성공");
+                	console.log(data);
                 	
                  	// 첫 번째 Ajax 결과의 x, y 값과 일치하는 branch 찾기
                     var matchedBranch = null;
@@ -101,22 +92,69 @@ new Promise((resolve, reject) => {
                         }
                     }
 
-                    console.log("matchedBranch : "+matchedBranch);
-                    if (matchedBranch) {
-                    	console.log("matchedBranch : "+matchedBranch);
-                        // 지점 정보를 <div class="branchLocation">에 동적으로 추가
-                        $('.branchLocation').append('<button id="branchName">' + matchedBranch.branchName + '</button>');
-                    }
+    				// 지점 탭 추가
+	    			console.log("------------------");
+    				for (var i = 0; i < data.branchList.length; i++) {
+    				    console.log(data.branchList[i].branchName);
+    				    var branchButton = $('<button class="branchButton">' + data.branchList[i].branchName + '</button>');
+    				    branchButton.data('branchName', data.branchList[i].branchName);
+    				    $('.branchLocation').append(branchButton);
+    				}
+    				
+    				// 지점 탭 클릭
+    				$('.branchButton').click(function () {
+    					console.log("------------------");
+    			    	console.log("지점 버튼 클릭");
+    			        branchName = $(this).data('branchName');
+    			        console.log(branchName);
+    			        for (var i = 0; i < data.branchList.length; i++) {
+    			        	var branch = data.branchList[i];
+    			        	if(branchName == branch.branchName){
+    			        		console.log("클릭된 지점명과 일치하는 지점명");
+    			        		console.log("탭 지점명 : "+branchName);
+    			        		console.log("클릭된 지점명 값 : "+branch.branchName);
+    			        		console.log(branch.branchLongitude);
+    			        		console.log(branch.branchLatitude);
+    			        		
+    			        		 initializeMap({
+    			                     documents: [{
+    			                         x: branch.branchLongitude,
+    			                         y: branch.branchLatitude
+    			                     }]
+    			                 });
+    			        		 matchedProductList = data.productList.filter(function (product) {
+    			                     return product.branch === branch.branchName;
+    			                 });
 
+    			                 // 상품 데이터로 테이블을 업데이트합니다.
+    			                 var productListTable = $('.productList table');
+    			                 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+
+    			                 // 데이터를 테이블에 추가
+    			                 for (var j = 0; j < matchedProductList.length; j++) {
+    			                     var product = matchedProductList[j];
+    			                     var productInfo = '<tr>' +
+    			                         '<td>' + product.productID + '</td>' +
+    			                         '<td>' + product.productName + '</td>' +
+    			                         '<td>' + product.price + '</td>' +
+    			                         '</tr>';
+    			                     productListTable.append(productInfo);
+    			                 }
+    			                 break;
+    			        	}
+						}
+    			        
+    			    });
+    				
                     // 첫 번째 Ajax 결과의 x, y 값과 일치하는 productList 찾기
-                    const matchedProductList = data.productList.filter(function(product) {
-				    const matchedBranch = data.branchList.find(function(branch) {
+                    var matchedProductList = data.productList.filter(function(product) {
+				    var matchedBranch = data.branchList.find(function(branch) {
 				        return branch.branchLongitude === apiResult.documents[0].x && branch.branchLatitude === apiResult.documents[0].y;
 				    });
 				    return matchedBranch && product.branch === matchedBranch.branchName;
 				});
 
-                    var productListTable = $('.productList table');
+                 var productListTable = $('.productList table');
 
                  // 기존 내용을 지우고 테이블 헤더를 추가
                  productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
@@ -124,13 +162,20 @@ new Promise((resolve, reject) => {
                  // 데이터를 테이블에 추가
                  for (var i = 0; i < matchedProductList.length; i++) {
                      var product = matchedProductList[i];
-                     var rowHtml = '<tr>' +
+                     var productInfo = '<tr>' +
                          '<td>' + product.productID + '</td>' +
                          '<td>' + product.productName + '</td>' +
                          '<td>' + product.price + '</td>' +
                          '</tr>';
-                     productListTable.append(rowHtml);
-                 }
+                     productListTable.append(productInfo);
+                 } 
+                 
+                 
+                 
+                 
+    				
+                 
+                 // 검색 버튼 클릭
                  $('#search').click(function () {
                      searchKeyword = $('#searchProduct').val();
                      branchName = matchedBranch.branchName;
@@ -138,7 +183,8 @@ new Promise((resolve, reject) => {
                  });
              	
                  function searchProduct(searchKeyword, branchName) {
-                 	console.log("keyword/Name : "+searchKeyword+"/"+branchName);
+                	 console.log("------------------");
+                 	 console.log("keyword/Name : "+searchKeyword+"/"+branchName);
                      $.ajax({
                          type: 'get',	
                          url: 'searchProduct.do',
@@ -158,7 +204,6 @@ new Promise((resolve, reject) => {
                          }
                      });
                  }
-                // infowindow(data);
                 resolve(); // 두 번째 Ajax 호출 성공 시 resolve 호출
             },
             error: function (e) {
@@ -200,65 +245,34 @@ new Promise((resolve, reject) => {
             infowindow.open(map, marker);
         
     }
-	// 상품 검색
-    
-    /* function drawList(obj) {
-        var content = '';
-        var totalItems = obj.list.length;
-    	
-        if (totalItems === 0) {
-        		content = '<tr><td colspan="5">검색 결과가 없습니다.</td></tr>';
-        } else {
-            obj.list.forEach(function (item, board_id) {
-            	content += '<tr>';
-            	content += '<td>' + item.board_id + '</td>';
-            	content += '<td><a class="icon" href="detail?board_id=' + item.board_id + '">' + item.board_subject;
-            	if (item.img > 0) {
-            	    content += '<a class="icon"><img src="resources/img/image.png" width="20px" height="20px"></a>';
-            	}
-            	if (item.reply > 0) {
-            	    content += '<a id="reply" class="icon">[' + item.reply + ']</a>';
-            	}
-            	content += '</td>';
-            	content += '<td>' + item.member_nickName + '</td>';
-            	var regDate = new Date(item.board_regDate);
-            	var formattedRegDate = regDate.getFullYear() + "-" + (regDate.getMonth() + 1) + "-" + regDate.getDate();
-            	content += '<td>' + formattedRegDate + '</td>';
-            	content += '<td>' + item.board_bHit.toLocaleString() + '</td>';
-            	content += '<td>' + item.likeCount.toLocaleString() + '</td>';
-            	content += '</tr>';
-            });
-            $('#list').empty();
-            $('#list').append(content);
+	// 검색된 상품 그리기
+    function drawProduct(data) {
+		console.log("drawProduct 함수");
+		console.log(data.searchedList[0].productName);
+    // 기존 내용을 지우고 테이블 헤더를 추가
+    var searchedProduct = $('.productList table');
+    searchedProduct.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
 
-            // 검색 결과가 있으면 페이징 UI 그리기
-            if (searchType !== '' && searchKeyword !== '') {
-                $('#pagination').twbsPagination({
-                    startPage: obj.currPage,
-                    totalPages: obj.pages,
-                    visiblePages: 5,
-                    onPageClick: function (e, page) {
-                        if (showPage != page) {
-                            showPage = page;
-                            searchCall(page, searchType, searchKeyword); // 검색 결과로 페이지 이동
-                        }
-                    }
-                });
-            } else {
-                $('#pagination').twbsPagination({
-                    startPage: obj.currPage,
-                    totalPages: obj.pages,
-                    visiblePages: 5,
-                    onPageClick: function (e, page) {
-                        if (showPage != page) {
-                            showPage = page;
-                            listCall(page); // 일반 목록으로 페이지 이동
-                        }
-                    }
-                });
-            }
-        } 
-    }*/
+    // 데이터를 테이블에 추가
+    for (var i = 0; i < data.searchedList.length; i++) {
+        var product = data.searchedList[i];
+        console.log(product.productID);
+        console.log(product.productName);
+        console.log(product.price);
+        console.log(data.searchedList[i].productName);
+        
+        var productInfo = '<tr>' +
+            '<td>' + product.productID + '</td>' +
+            '<td>' + product.productName + '</td>' +
+            '<td>' + product.price + '</td>' +
+            '</tr>';
+            searchedProduct.append(productInfo);
+    }
+}
+	
+    
+    
+
 
 </script>
 </html>

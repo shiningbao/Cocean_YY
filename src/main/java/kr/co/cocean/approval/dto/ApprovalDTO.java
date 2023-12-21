@@ -13,8 +13,15 @@ public class ApprovalDTO {
 	private String name;
 	private String departmentName;
 	private Date workDate;
+	private String rankName;
 	
 	
+	public String getRankName() {
+		return rankName;
+	}
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
 	public String getName() {
 		return name;
 	}

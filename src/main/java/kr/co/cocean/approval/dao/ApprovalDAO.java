@@ -14,9 +14,13 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> formSearch(List<String> keyword);
 
-	ArrayList<ApprovalDTO> draftInfo();
+	ArrayList<ApprovalDTO> draftInfo(int employeeID);
 
 	void write(HashMap<String, String> param);
+
+	void writeWorkDraft(HashMap<String, String> param);
+
+	void writeAttendanceDraftContent(HashMap<String, String> param);
 
 
 }
