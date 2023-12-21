@@ -20,6 +20,10 @@ public interface AddressDAO {
 	int insert(HashMap<String, Object> params);
 	
 	
+	//상세보기
+	Object detail(HashMap<String, Object> params);
+	
+	
 	
 
 }
