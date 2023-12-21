@@ -177,7 +177,7 @@ img{
 							
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-primary">저장</button>
-							<button type="button" class="btn btn-secondary"data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
 							
 						</div>
 					</form>
@@ -250,6 +250,7 @@ img{
 
 <script>
 	var loginEmployeeID = ${userInfo.employeeID};
+	$('.myCallenderList').css('display', 'none');
 	var img= $('.myCallenderbtn img');
 	var isDown = false;
 	console.log(loginEmployeeID);
@@ -260,9 +261,10 @@ img{
 		var myCallenderBtn = $('#myCallenderBtn'); // 일정에서 버튼
 		var myCallenderList =$('.myCallenderList'); // 일정 리스트 드롭다운
 		console.log(selectVal); 
-		$('.writeViewCallender').hide();
+
 		subSelect.empty();
 		if(selectVal == '팀'){
+			$('.writeViewCallender').hide();
 			console.log(selectVal+'+++확인중!!!!!');
 			$.ajax({
 				url:'getTeams.do',
@@ -281,8 +283,13 @@ img{
 				}
 			});
 		}else if(selectVal=='개인'){
-			console.log(selectVal+'+++확인중!!!!!');
+			console.log(selectVal+'+++확인중!!!!!'); 	
+//			$('.myCallenderList').empty();
+			$('#myCallender').empty();
+			$('.myCallenderList').empty();
+			callendarCall(); 
 			$('.writeViewCallender').show();
+
 // 			$('#myCallendar').val('내 일정(기본)').trigger('change');
 // 			myCallenderSelect.empty();
 			function callendarCall(){
@@ -331,21 +338,27 @@ img{
 					text:option
 				}))
 			});
+			
 			$('.myCallenderbtn').off().click(function(){
 			    console.log('click');
-
+			    $('.myCallenderList').css('display', 'block');
+			    $('.myCallenderList').empty();
+			    isDown = !isDown; // true 이면 false로 false면 true로
 			    if (isDown) {
+			    	img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
+			        console.log('true');
+			        callendarCall();
+			        $('#myCallender').empty();
+			        
+			    } else {
+			        
 			        img.attr('src', '<c:url value="/resource/img/carrot-side.PNG"/>');
 			        console.log('false');
 			        $('.myCallenderList').empty();
-			    } else {
-			        img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
-			        console.log('true');
-			        callendarCall();
 			       
 			    }
 			    
-			    isDown = !isDown; // true 이면 false로 false면 true로
+			    
 			   
 			});
 			

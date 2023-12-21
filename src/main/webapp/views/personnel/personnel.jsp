@@ -125,11 +125,11 @@
 			console.log(data);
 			data.forEach(function(option,index){
 				departmentID.append($('<option>',{
-					value:index,
+					value:index+1,
 					text:option
 				}))
 			})
-		$('#departmentSelect').val('0').trigger('change');
+		$('#departmentSelect').val('1').trigger('change');
 			console.log($('#departmentSelect').val());
 		},
 		error:function(e){
