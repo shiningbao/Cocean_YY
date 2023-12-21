@@ -10,22 +10,23 @@
 
 </head>
 <body>
-<h1>Animal Write</h1>
+<h1>ANIMAL WRITE</h1>
 <form action="write.do" method="post" enctype="multipart/form-data">
 <table>
-	<tr>
+	<tr class="classfi">
 		<th>분류</th>
 		<td>
 			<input type="text" name="speciesID" style="display: none;" readonly/>
 			<input type="text" name="classificationCode" style="display: none;" readonly/>
 			<input type="text" id="taxo" readonly/>
+			<button type="button" onclick=classfication()>분류창</button>
 		</td>
 	</tr>
-	<tr>
+	<tr class="classfi">
 		<th>학명</th>
 		<td><input type="text" id="scien" readonly/></td>
 	</tr>
-	<tr>
+	<tr class="classfi">
 		<th>국명</th>
 		<td><input type="text" id="common" readonly/></td>
 	</tr>
@@ -85,7 +86,7 @@
 	</tr>
 </table>
 </form>
-<button onclick=classfication()>분류창</button>
+
 <button onclick=aa()>분류창</button>
 </body>
 <script>

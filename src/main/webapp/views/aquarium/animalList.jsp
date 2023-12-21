@@ -8,7 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 <body>
-<h1>Animal List</h1>
+<h1>ANIMAL LIST</h1>
 담당자 <input type="text" name="personnel"/>
 국명/애칭 <input type="text" name="search"/><br/>
 <input type="checkbox" name="all"/>전체
@@ -26,7 +26,7 @@
 	</tr>
 	<c:forEach items="${list}" var="item">
 		<tr>
-		<td>${item.getAnimalID()}</td>
+		<td><a href="detail?animalID=${item.getAnimalID()}">${item.getAnimalID()}</a></td>
 		<td>${item.getNickname()}</td>
 		<td>${item.getCommonName()}</td>
 		<td>${item.getClassificationCode()}</td>
@@ -37,10 +37,14 @@
 </body>
 
 <script>
+	var msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	}
+	
 	$('#write').on('click',function(){
 		location.href='write.go';
 	});
-
 
 
 

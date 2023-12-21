@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
@@ -28,7 +29,7 @@ public class AnimalController {
 	@GetMapping(value = "/animal/list.go")
 	public ModelAndView animalList() {
 		
-		ModelAndView mav = new ModelAndView("/aquarium/animalList");
+		ModelAndView mav = new ModelAndView("aquarium/animalList");
 		
 		// 코션친구들 리스트
 		ArrayList<AnimalDTO> list = service.animalList();
@@ -38,7 +39,7 @@ public class AnimalController {
 	}
 	
 	@GetMapping(value = "/animal/write.go")
-	public ModelAndView writeGo() {
+	public ModelAndView animalWriteGo() {
 		
 		String branch = "1";
 		
@@ -50,15 +51,15 @@ public class AnimalController {
 	}
 	
 	@PostMapping(value = "/animal/write.do")
-	public String writeDo(MultipartFile[] files, AnimalDTO param) {
+	public ModelAndView animalWrite(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr) {
 		logger.info("files : {}",files);
 		logger.info("param : {}",param);
-		return service.animalWrite(files,param);
+		return service.animalWrite(files,param, rAttr);
 	}
 	
 	@GetMapping(value = "/animal/classficationPopup")
 	public String classficationPopup() {
-		return "/aquarium/classfication";
+		return "aquarium/classfication";
 	}
 	
 	@GetMapping(value = "/animal/classficationSearch")
@@ -69,6 +70,13 @@ public class AnimalController {
 		ArrayList<ClassficationDTO> list = service.classficationSearch(keyword);
 		result.put("list", list);
 		return result;
+	}
+	
+	@GetMapping(value = "/animal/detail")
+	public ModelAndView animalDetail(@RequestParam int animalID) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail");	
+		
+		return service.animalDetail(animalID);
 	}
 	
 }
