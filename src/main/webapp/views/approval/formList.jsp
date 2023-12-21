@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
 	
 table, th, td{
@@ -19,14 +21,14 @@ table, th, td{
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
 	
+	<form action="searchList.do" method="POST">
 	<select id="category" name="formCategory">
-	  <option value="유형" selected="selected">유형</option>
+	  <option value="전체" selected="selected">전체</option>
 	  <option value="일반">일반</option>
 	  <option value="근태">근태</option>
 	  <option value="인사">인사</option>
 	</select>
 
-	<form action="searchList.do" method="POST">
 		<input type="text" name="keyword" placeholder="문서양식을 검색하세요"/>
 		<button>검색</button>
 	</form>
@@ -49,17 +51,20 @@ table, th, td{
 
     $("#category").change(function () {
         var selectedCategory = $(this).val();
+        var keyword = $("input[name='keyword']").val();
         console.log(selectedCategory);
-        filterList(selectedCategory);
+        filterList(selectedCategory, keyword);
     });
 
-    function filterList(category) {
-        if (category === "유형") {
+    function filterList(category, keyword) {
+        if (category === "전체") {
             $("table tr").show();
         } else {
             $("table tr:gt(0)").hide();
             $("table tr").filter(function () {
-                return $(this).find("td:first").text() === category;
+            	 var categoryMatch = $(this).find("td:first").text() === category;
+                 var keywordMatch = $(this).find("td:last").text().includes(keyword);
+                 return categoryMatch && keywordMatch;
             }).show();
         }
     }

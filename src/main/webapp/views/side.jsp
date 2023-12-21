@@ -99,7 +99,7 @@
 						<span class="d-none d-md-inline ml-1">전자결재</span>
 					</a>
 					<div class="collapse" id="approval_bar">
-						<a href="#" class="list-group-item" data-parent="#sidebar">결재문서작성</a>
+						<a href='<c:url value="/approval/formList.go"/>' class="list-group-item" data-parent="#sidebar">결재문서작성</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">결재대기함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">수신함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">발신함</a>
