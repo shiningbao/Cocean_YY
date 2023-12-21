@@ -15,5 +15,13 @@
 	<insert id="join" parameterType="map">
 		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responsibility})
 	</insert>
+	
+	<insert id="addMyCallendar" parameterType="String">
+		INSERT INTO myCallender VALUES(#{myCallender},#{perNum})
+	</insert>
+	
+	<insert id="addRsvCallendar" parameterType="String">
+		INSERT INTO myCallender VALUES(#{rsvCallendar},#{perNum})
+	</insert>
 
 </mapper>

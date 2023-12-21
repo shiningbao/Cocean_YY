@@ -14,7 +14,10 @@
 	
 	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
 		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule VALUES(NULL,'230001',#{title},#{startDate},#{endDate},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
+		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
 	</insert>
 	
+	<select id="getCallenderEvents">
+		SELECT title,start,end FROM schedule s WHERE employeeID = #{employeeID}
+	</select>
 </mapper>

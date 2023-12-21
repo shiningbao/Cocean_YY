@@ -14,4 +14,9 @@ public interface PersonnelDAO {
 
 	int join(HashMap<String, Object> params);
 
+
+	void addMyCallendar(String perNum, String myCallender);
+
+	void addRsvCallendar(String perNum, String rsvCallendar);
+
 }
