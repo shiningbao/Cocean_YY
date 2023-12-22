@@ -8,11 +8,13 @@ import org.apache.ibatis.type.Alias;
 public class LogPlanDTO {
 
 	private int logID;
+	private String departmentName;
+	private String name;
 	private int employeeID;
 	private String manageCategory;
 	private String coceanCategory;
-	private Date idx;
-	private int creationDate;
+	private int idx;
+	private Date creationDate;
 	private String content;
 	private String status;
 	
@@ -22,6 +24,18 @@ public class LogPlanDTO {
 	}
 	public void setLogID(int logID) {
 		this.logID = logID;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getEmployeeID() {
 		return employeeID;
@@ -41,16 +55,16 @@ public class LogPlanDTO {
 	public void setCoceanCategory(String coceanCategory) {
 		this.coceanCategory = coceanCategory;
 	}
-	public Date getIdx() {
+	public int getIdx() {
 		return idx;
 	}
-	public void setIdx(Date idx) {
+	public void setIdx(int idx) {
 		this.idx = idx;
 	}
-	public int getCreationDate() {
+	public Date getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(int creationDate) {
+	public void setCreationDate(Date creationDate) {
 		this.creationDate = creationDate;
 	}
 	public String getContent() {

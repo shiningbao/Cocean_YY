@@ -4,16 +4,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
+<style>
+</style>
 
 </head>
 <body>
+<c:import url="/side"/>
 <h1>ANIMAL WRITE</h1>
+<div style="width: 500px">
 <form action="write.do" method="post" enctype="multipart/form-data">
-<table>
-	<tr class="classfi">
+<table style="width: 100%">
+	<colgroup>
+		<col style="width:30%">
+		<col style="width:70%">
+	</colgroup>
+	<tr>
 		<th>분류</th>
 		<td>
 			<input type="text" name="speciesID" style="display: none;" readonly/>
@@ -22,11 +30,11 @@
 			<button type="button" onclick=classfication()>분류창</button>
 		</td>
 	</tr>
-	<tr class="classfi">
+	<tr>
 		<th>학명</th>
 		<td><input type="text" id="scien" readonly/></td>
 	</tr>
-	<tr class="classfi">
+	<tr>
 		<th>국명</th>
 		<td><input type="text" id="common" readonly/></td>
 	</tr>
@@ -86,8 +94,7 @@
 	</tr>
 </table>
 </form>
-
-<button onclick=aa()>분류창</button>
+</div>
 </body>
 <script>
 
@@ -101,38 +108,13 @@ function classfication(){
 }
 
 // 분류체계 자동 입력
-function setClassfication(id,t,s,c){
+function setClassfication(id,t,cl,s,c){
 	console.log(id);
 	$('input[name="speciesID"]').val(id);
 	$('#taxo').val(t);
+	$('input[name="classificationCode"]').val(cl);
 	$('#scien').val(s);
 	$('#common').val(c);
-	var $classfi = $('input[name="classificationCode"]');
-	switch (t) {
-		case "무척추동물류":
-			$classfi.val("In");
-			break;
-		case "미삭동물":
-			$classfi.val("Ch");
-			break;
-		case "양서류":
-			$classfi.val("Am");
-			break;
-		case "어류":
-			$classfi.val("Fi");
-			break;
-		case "조류":
-			$classfi.val("Av");
-			break;
-		case "파충류":
-			$classfi.val("Re");
-			break;
-		case "포유류":
-			$classfi.val("Ma");
-			break;
-	}
-	
-	
 }
 
 // date 기본값 지정 : 오늘 날짜

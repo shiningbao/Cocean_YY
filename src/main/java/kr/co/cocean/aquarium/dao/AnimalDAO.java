@@ -29,6 +29,10 @@ public interface AnimalDAO {
 
 	ArrayList<InChargeDTO> animalInCharge(int animalID);
 
-	ArrayList<LogPlanDTO> animalLogPlan(int animalID);
+	ArrayList<LogPlanDTO> animalLogPlan(int animalID, String con, String month);
+
+	ArrayList<FileDTO> animalImage(int animalID);
+
+	void logplanWrite(LogPlanDTO param);
 
 }

@@ -8,6 +8,7 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 </head>
 <body>
+<c:import url="/side"/>
 <h1>ANIMAL LIST</h1>
 담당자 <input type="text" name="personnel"/>
 국명/애칭 <input type="text" name="search"/><br/>
@@ -26,7 +27,7 @@
 	</tr>
 	<c:forEach items="${list}" var="item">
 		<tr>
-		<td><a href="detail?animalID=${item.getAnimalID()}">${item.getAnimalID()}</a></td>
+		<td><a href="detail.go?animalID=${item.getAnimalID()}">${item.getAnimalID()}</a></td>
 		<td>${item.getNickname()}</td>
 		<td>${item.getCommonName()}</td>
 		<td>${item.getClassificationCode()}</td>
