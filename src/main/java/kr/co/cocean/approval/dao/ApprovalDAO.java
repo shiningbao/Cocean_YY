@@ -1,5 +1,6 @@
 package kr.co.cocean.approval.dao;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +17,13 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> draftInfo(int employeeID);
 
-	void write(HashMap<String, String> param);
+	void write(ApprovalDTO dto);
 
 	void writeWorkDraft(HashMap<String, String> param);
 
 	void writeAttendanceDraftContent(HashMap<String, String> param);
+
+	void writeFile(int idx, String oriFileName, String newFileName, String pathName);
 
 
 }
