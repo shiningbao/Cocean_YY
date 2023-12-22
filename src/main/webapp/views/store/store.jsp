@@ -100,7 +100,7 @@ new Promise((resolve, reject) => {
     // 카카오 지도 api 를 사용해서 지도 그리기
     $.ajax({
         type: 'get',
-        url: 'storeList.do',
+        url: 'storeMap.do',
         dataType: 'json',
         success: function (data) {
         	console.log("첫번째 ajax 호출 성공");
@@ -123,7 +123,7 @@ new Promise((resolve, reject) => {
     return new Promise((resolve, reject) => {
         $.ajax({
             type: 'get',
-            url: 'storeList.ajax',
+            url: 'storeList.do',
             dataType: 'json',
             success: function (data) {
                 	console.log("두번째 ajax 호출 성공");
@@ -131,8 +131,8 @@ new Promise((resolve, reject) => {
                 	
                  	// 첫 번째 Ajax 결과의 x, y 값과 일치하는 branch 찾기
                     var matchedBranch = null;
-                    for (var i = 0; i < data.branchList.length; i++) {
-                        var branch = data.branchList[i];
+                    for (var i = 0; i < data.branchProductList.length; i++) {
+                        var branch = data.branchProductList[i];
                         console.log(branch);
                         console.log("api x 값 / "+ apiResult.documents[0].x);
                         console.log("api y 값 / "+ apiResult.documents[0].y);
@@ -161,8 +161,8 @@ new Promise((resolve, reject) => {
     			    	console.log("지점 버튼 클릭");
     			        branchName = $(this).data('branchName');
     			        console.log(branchName);
-    			        for (var i = 0; i < data.branchList.length; i++) {
-    			        	var branch = data.branchList[i];
+    			        for (var i = 0; i < data.branchProductList.length; i++) {
+    			        	var branch = data.branchProductList[i];
     			        	if(branchName == branch.branchName){
     			        		console.log("클릭된 지점명과 일치하는 지점명");
     			        		console.log("탭 지점명 : "+branchName);
@@ -176,14 +176,19 @@ new Promise((resolve, reject) => {
     			                         y: branch.branchLatitude
     			                     }]
     			                 });
-    			        		 matchedProductList = data.productList.filter(function (product) {
-    			                     return product.branch === branch.branchName;
+    			        		 matchedProductList = data.branchProductList.filter(function (product) {
+    			                     return product.branchName === branch.branchName;
     			                 });
-
+    			        		 	console.log("------------------");
+    			        		 	console.log("지점 상품 리스트");
+    			        		 	console.log(matchedProductList);
     			                 // 상품 데이터로 테이블을 업데이트합니다.
     			                 var productListTable = $('.productList table');
     			                 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
 
+    			                 
+    			                 // 가산점 기본값일떄는 상품 안 보임
+    			                 // 탭을 눌러야만 상품 보여줌
     			                 // 데이터를 테이블에 추가
     			                 for (var j = 0; j < matchedProductList.length; j++) {
     			                     var product = matchedProductList[j];
@@ -200,9 +205,17 @@ new Promise((resolve, reject) => {
     			        
     			    });
     				
+    				// 
+	                 // 해결 해야함
+	                 // 
+	                 //
+	                 // 
+	                 //
+	                 // 
+	                 //
                     // 첫 번째 Ajax 결과의 x, y 값과 일치하는 productList 찾기
-                    var matchedProductList = data.productList.filter(function(product) {
-				    var matchedBranch = data.branchList.find(function(branch) {
+                    var matchedProductList = data.branchProductList.filter(function(product) {
+				    var matchedBranch = data.branchProductList.find(function(branch) {
 				        return branch.branchLongitude === apiResult.documents[0].x && branch.branchLatitude === apiResult.documents[0].y;
 				    });
 				    return matchedBranch && product.branch === matchedBranch.branchName;

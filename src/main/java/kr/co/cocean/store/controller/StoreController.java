@@ -23,14 +23,14 @@ public class StoreController {
 		return "store/store";
 	}
 	
-	@GetMapping(value="/store/storeList.do")
+	@GetMapping(value="/store/storeMap.do")
 	@ResponseBody
 	public Map<String, Object> storeList(Model model) {
 		logger.info("스토어 리스트");
-		return service.loadLocation(model);
+		return service.kakaoAPi(model);
 	}
 	
-	@GetMapping(value="/store/storeList.ajax")
+	@GetMapping(value="/store/storeList.do")
 	@ResponseBody
 	public Map<String, Object> storeListAjax(Model model) {
 		logger.info("스토어 아작스");

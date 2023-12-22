@@ -31,16 +31,8 @@ public class StoreService {
 	// 상품 사진 경로
 	private String root = "/Users/chajaeho/Desktop/upload/cocean/product";
 	
-	public Map<String, Object> storeList(Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		ArrayList<StoreDTO> branchList = dao.branchList();
-		ArrayList<StoreProductDTO> productList = dao.productList();
-		map.put("branchList", branchList);
-		map.put("productList", productList);
-		return map;
-	}
-	
-	public JSONObject loadLocation(Model model) {
+	// 카카오 지도 api 사용
+	public JSONObject kakaoAPi(Model model) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    ArrayList<StoreDTO> branchList = dao.branchList();
 	    map.put("branchList", branchList);
@@ -93,6 +85,15 @@ public class StoreService {
 	    logger.info("obj = " + obj.toString());
 	    
 	    return obj;
+	}
+	
+	public Map<String, Object> storeList(Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		ArrayList<StoreProductDTO> list = dao.branchProductList();
+		ArrayList<StoreDTO> branchList = dao.branchList();
+		map.put("branchProductList", list);
+		map.put("branchList", branchList);
+		return map;
 	}
 
 	public Map<String, Object> searchProduct(String searchKeyword, String branchName) {
