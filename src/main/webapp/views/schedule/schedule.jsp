@@ -5,11 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
+<!--cs 파일관리  -->
 <link href='<c:url value="/resource/css/schedule/main.css"/>' rel='stylesheet' />
+<!--js 파일관리  -->
 <script src='<c:url value="/resource/js/schedule/main.js"/>'></script>
 <script src='<c:url value="/resource/js/schedule/startEndDate.js"/>'></script>
 <script src='<c:url value="/resource/js/schedule/schedule.js"/>'></script>
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -31,7 +33,7 @@ body {
 }
 
 #calendar {
-	max-width: 700px;
+	max-width: 1100px;
 	margin: 0 auto;
 	margin-top: 100px;
 }
@@ -144,14 +146,14 @@ img{
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="scheduleWrite.do">
+					<form action="scheduleWrite.do" method="POST" id="calForm">
 						<!-- 입력폼 -->
 							<p>제목 <input type="text" name="title" placeholder="제목을 입력해주세요."></p>
 							<p>시작일
-								<input type="datetime-local" name="startDate">
+								<input type="datetime-local" name="start" value="${dto.start}" >
 							</p>
 							<p>종료일
-								<input type="datetime-local" name="endDate">
+								<input type="datetime-local" name="end" value="${dto.end}" >
 							</p>
 							<p>중분류    
 								<select id="midSelect" name="mainCategory">
@@ -164,19 +166,23 @@ img{
 							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
 							    </select>
 							</p>
-							<p class="writeViewCallender">개인캘린더
-							    <select id="myCallender" name="category">
-							    </select>
-							</p>
+<!-- 							<p class="writeViewCallender">개인캘린더 -->
+<!-- 							    <select id="myCallender" name="category"> -->
+<!-- 							    	<option value="내 일정(기본)">내 일정(기본)</option> -->
+<!-- 							    </select> -->
+<!-- 							</p> -->
 							<p>비고
 								<input type="text" name="remarks">
+							</p>
+							<p>공개여부
+								<input type="checkbox" name="publicCategory">
 							</p>
 							<p>내용
 								<textarea name="description"></textarea>
 							</p>
 							
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-primary">저장</button>
+							<button type="button" id="calSubmit" class="btn btn-primary">저장</button>
 							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
 							
 						</div>
@@ -191,23 +197,20 @@ img{
 		</section>
 		
 		<section>
-
-				<button class="myCallenderbtn Hide">
-					<img src="<c:url value='/resource/img/carrot-side.PNG'/>">
-				</button>
 			<h5>내 캘린더</h5>
-			<div>	
-				<ul>
-					<li class="myCallenderList">
-						<!-- 동적으로 캘린더리스트 -->
-					</li>
-				</ul>
-			</div>
-			<div class="addCal">
-				<span class="addMyCallender">내 캘린더 추가</span>
-			</div>
+			<label>
+				<input type="checkbox" value="예약 일정(기본)" class="myCallender" checked/>
+				내 일정(기본)
+			</label>
+
 		</section>
-		
+		<section class="rsvCallendar">
+			<h5>예약 캘린더</h5>
+			<label>
+				<input type="checkbox" value="예약 일정(기본)" class="rsvCallender" checked/>
+				예약 일정(기본)
+			</label>
+		</section>
 		<section class="interestCalendar">
 			<div>
 				<button class="interestCalendar Hide">
@@ -232,13 +235,7 @@ img{
 			</div>
 		</section>
 		
-		<section class="rsvCalendar">
-			<h5>예약 캘린더</h5>
-			<label>
-				<input type="checkbox" value="예약 일정(기본)" class="rsvCallender"/>
-				예약 일정(기본)
-			</label>
-		</section>
+		
 	</div>
 	<div class="calendarBtn">
 		<button type="button" class="btn btn-primary" id="modalBtn" data-toggle="modal" data-target="#modal">시설 예약</button>
@@ -250,7 +247,6 @@ img{
 
 <script>
 	var loginEmployeeID = ${userInfo.employeeID};
-	$('.myCallenderList').css('display', 'none');
 	var img= $('.myCallenderbtn img');
 	var isDown = false;
 	console.log(loginEmployeeID);
@@ -285,51 +281,25 @@ img{
 		}else if(selectVal=='개인'){
 			console.log(selectVal+'+++확인중!!!!!'); 	
 //			$('.myCallenderList').empty();
-			$('#myCallender').empty();
-			$('.myCallenderList').empty();
-			callendarCall(); 
+// 			callendarCall(); 
 			$('.writeViewCallender').show();
 
 // 			$('#myCallendar').val('내 일정(기본)').trigger('change');
 // 			myCallenderSelect.empty();
-			function callendarCall(){
-				$.ajax({
-					url:'getCallender.do',
-					data:{loginEmployeeID:loginEmployeeID},
-					method:'get',
-					success:function(data){
-						console.log(data);
+// 			function callendarCall(){
+// 				$.ajax({
+// 					url:'getCallender.do',
+// 					data:{loginEmployeeID:loginEmployeeID},
+// 					method:'get',
+// 					success:function(data){
+// 						console.log(data);
 						
-						for(var i=0; i<data.length; i++){
-							var option = data[i];
-							console.log('몇번도는거야');
-							myCallender.append($('<option>',{
-								value:option.callenderTitle,
-								text:option.callenderTitle			
-						    
-							}))
-								
-							var listItem = $('<li>');
-							
-						    var checkbox = $('<input>').attr({
-						        type: 'checkbox',
-						        value: option.callenderTitle,
-						        class: 'calendarCheckbox'
-						    });
-							console.log(option.callenderTitle);
-						    var label = $('<label>').text(option.callenderTitle);
-						    label.prepend(checkbox);
-						    listItem.append(label);
-							$('.myCallenderList').append(listItem);
-						};
-							
-						
-					},
-					error:function(e){
-						console.log(e);
-					}
-				});
-			};
+// 					},
+// 					error:function(e){
+// 						console.log(e);
+// 					}
+// 				});
+// 			};
 			
 			var options =['반차','연차','출장','기타'];
 			options.forEach(function(option){
@@ -339,41 +309,107 @@ img{
 				}))
 			});
 			
-			$('.myCallenderbtn').off().click(function(){
-			    console.log('click');
-			    $('.myCallenderList').css('display', 'block');
-			    $('.myCallenderList').empty();
-			    isDown = !isDown; // true 이면 false로 false면 true로
-			    if (isDown) {
-			    	img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
-			        console.log('true');
-			        callendarCall();
-			        $('#myCallender').empty();
-			        
-			    } else {
-			        
-			        img.attr('src', '<c:url value="/resource/img/carrot-side.PNG"/>');
-			        console.log('false');
-			        $('.myCallenderList').empty();
-			       
-			    }
-			    
-			    
-			   
-			});
 			
 		}
 	});
 
+	
+
+	/* $('.interestCalendar').off().click(function(){
+	    console.log('click');
+	    $('.myCallenderList').css('display', 'block');
+	    $('.myCallenderList').empty();
+	    isDown = !isDown; // true 이면 false로 false면 true로
+	    if (isDown) {
+	    	img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
+	        console.log('true');
+	        callendarCall();
+	        $('#myCallender').empty();
+	        
+	    } else {
+	        
+	        img.attr('src', '<c:url value="/resource/img/carrot-side.PNG"/>');
+	        console.log('false');
+	        $('.myCallenderList').empty();
+	       
+	    }
+	    
+	    
+	   
+	}); */
 $('.addMyCallender').click(function(){
 	console.log('click');
 });
 	
 $('#midSelect').val('개인').trigger('change');
 
+
+//캘린더 js
+document.addEventListener('DOMContentLoaded', function() {
+   var calendarEl = document.getElementById('calendar');
+
+   var calendar = new FullCalendar.Calendar(calendarEl, {
+     
+     headerToolbar: {
+       left: 'prev,next today',
+       center: 'title',
+       right: 'dayGridMonth,timeGridDay'
+     },
+     navLinks: true, // 날짜 선택하면 day 캘린더나 week 캘린더로 이동
+     businessHours: true, //
+     editable: false, // 수정 가능
+     selectable: true, // 드래그 일정변경
+     default: false,
+     nowIndicator: true,
+     dayMaxEventRows: true,
+     views: {
+    	    timeGrid: {
+    	      dayMaxEventRows: 6
+    	    }
+    	  },
+     eventClick: function(info) {
+
+    	// 일정 클릭 시 발생할 이벤트
+    	//클릭한 일정 Id
+    	var id = info.event._def.defId;
+    	console.log(id);
+    	console.log('click');
+    	},
+     events: [ ]
+   });
+
+   calendar.render();
+   
+   function fetchEvents() {
+	    $.ajax({
+	      url: 'getCallenderEvents.do',
+	      dataType: 'json',
+	      success: function(data) {
+	    	console.log(data);
+	        calendar.addEventSource(data);
+	      },
+	      error: function(xhr, status, error) {
+	        console.error('에러 발생:', status, error);
+	      }
+	    });
+	  }
+
+	  // 페이지 로드 시 DB에서 일정을 가져와서 events 배열에 추가합니다.
+	  fetchEvents();
+ }); 
+
+	$('#calSubmit').click(function(){
+		if(confirm('일정을 등록하시겠습니까?')){
+		calForm.submit();
+		/* location.href='schedule.go'; */ 
+		}else{
+			
+		}
+	})
+
 var msg = "${msg}";
 if(msg!=""){
-	confirm(msg);
+	alert(msg);
 }
 
 </script>

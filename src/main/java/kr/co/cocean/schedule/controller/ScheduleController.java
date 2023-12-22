@@ -1,21 +1,27 @@
 package kr.co.cocean.schedule.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
 
@@ -39,24 +45,45 @@ public class ScheduleController {
 		return teams;
 	}
 	
-	@GetMapping(value="/schedule/getCallender.do")
-	@ResponseBody
-	public List<ScheduleDTO> getCallender(@RequestParam String loginEmployeeID) {
-		logger.info("로그인 사번 :"+loginEmployeeID);
-		logger.info("스케줄컨트롤러 도착!!!!!!!!!!!!!!!!!!!");
-		List<ScheduleDTO> myCallenders = service.getCallender(loginEmployeeID);
-
-		return myCallenders;
-	}
+//	@GetMapping(value="/schedule/getCallender.do")
+//	@ResponseBody
+//	public List<ScheduleDTO> getCallender(@RequestParam String loginEmployeeID) {
+//		logger.info("로그인 사번 :"+loginEmployeeID);
+//		logger.info("스케줄컨트롤러 도착!!!!!!!!!!!!!!!!!!!");
+//		List<ScheduleDTO> myCallenders = service.getCallender(loginEmployeeID);
+//
+//		return myCallenders;
+//	}
 	
-	@RequestMapping(value="/schedule/scheduleWrite.do")
-	public ModelAndView scheduleWrite(ScheduleDTO dto) {
+	@PostMapping(value="/schedule/scheduleWrite.do")
+	public ModelAndView scheduleWrite(ScheduleDTO dto, HttpSession session) {
 		logger.info("write 정보" +dto.getTitle());
-		ModelAndView mav = new ModelAndView("/schedule/schedule");
+		ModelAndView mav = new ModelAndView();
+		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
+		int employeeID = userInfo.getEmployeeID();
+		dto.setEmployeeID(employeeID);
+		logger.info("공개여부"+dto.getPublicCategory());
 		service.scheduleWrite(dto);
-		mav.addObject("msg", "일정 등록 완료");
+		mav.setViewName("/schedule/schedule");
+
+		
 		return mav;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/schedule/getCallenderEvents.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getCallenderEvents(HttpSession session) {
+		logger.info("캘린더이벤트 추가 컨트롤러");
+		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
+		int employeeID = userInfo.getEmployeeID();
+		List<HashMap<String,Object>> eventList = service.getCallenderEvents(employeeID);
+		
+		logger.info("eventList=="+eventList);
+		return eventList;
+	}
+	
+	
 	
 		
 	

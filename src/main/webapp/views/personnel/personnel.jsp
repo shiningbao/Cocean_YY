@@ -31,6 +31,22 @@
 			</td>
 		</tr>
 		<tr>
+			<th>지점</th>
+			<td>
+				<select id ="branchSelect">
+
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<th>본부</th>
+			<td>
+				<select id ="deSelect">
+
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<th>부서</th>
 			<td>
 				 <select id="departmentSelect" name="departmentID">
@@ -55,6 +71,7 @@
 					<option value="3">선임</option>
 					<option value="4">책임</option>
 					<option value="5">수석</option>
+					<option value="6">-</option>
 				</select>
 			</td>
 		</tr>
@@ -67,6 +84,7 @@
 					<option value="3">본부장</option>
 					<option value="4">관장</option>
 					<option value="5">대표이사</option>
+					
 				</select>
 			</td>
 		</tr>
@@ -115,51 +133,128 @@
 </form>
 </body>
 <script>
- 	var departmentID = $('#departmentSelect');
- 	var resSelect = $('#resSelect');
+var departmentSelect = $('#departmentSelect');
+var resSelect = $('#resSelect');
+var branchSelect = $('#branchSelect');
 
-	$.ajax({
-		url:'getTeams.do',
-		method:'GET',
-		success:function(data){
-			console.log(data);
-			data.forEach(function(option,index){
-				departmentID.append($('<option>',{
-					value:index+1,
-					text:option
-				}))
-			})
-		$('#departmentSelect').val('1').trigger('change');
-			console.log($('#departmentSelect').val());
-		},
-		error:function(e){
-			console.log(e);
-		}
-	});
-	
-	
-	$('#departmentSelect').change(function(){
-		resSelect.empty();
-		var val =$(this).find('option:selected').text();
-		console.log(val);
-		$.ajax({
-			url:'getResponsibility.do',
-			data:{val:val},
-			success:function(data){
-				console.log(data);
-				data.forEach(function(option,index){
-					resSelect.append($('<option>',{
-						value:option,
-						text:option
-					}))
-				})
-				console.log($('#resSelect').val());
-			},
-			error:function(e){
-				console.log(e);
-			}
-			
-		});
-	});
+function onBranchSelectChange() {
+    console.log('지점 선택시 본부항목 변경!!!!!!!!!!!!!!!!!');
+    var branchID = $('#branchSelect').val();
+    console.log(branchID);
+    $.ajax({
+        url: 'getBranchID.do',
+        method: 'GET',
+        data: { branchID: branchID },
+        success: function(data) {
+            console.log(data);
+            $('#deSelect').empty();
+            data.forEach(function(option, index) {
+                var value = branchID == 2 ? index + 4 : index + 1;
+                $('#deSelect').append($('<option>', {
+                    value: value,
+                    text: option
+                }))
+            });
+
+            if (branchID == 1) {
+                $('#deSelect').val('1').trigger('change');
+            } else {
+                $('#deSelect').val('4').trigger('change');
+            }
+
+            console.log($('#branchSelect').val());
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function onDeSelectChange() {
+    console.log('본부 선택시 부서항목 변경!!!!!!!!!!!!');
+    departmentSelect.empty();
+    var hqID = $('#deSelect').val();
+    console.log(hqID);
+    $.ajax({
+        url: 'getHqID.do',
+        data: { hqID: hqID },
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                departmentSelect.append($('<option>', {
+                    value: index + 1,
+                    text: option
+                }))
+            })
+            $('#departmentSelect').val('1').trigger('change');
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function onDepartmentSelect() {
+    console.log('부서 선택시 담당 변경!!!!!!!!!!!!');
+    resSelect.empty();
+    var departmentText = $('#departmentSelect option:selected').text()
+    console.log(departmentText);
+    $.ajax({
+        url: 'getDepartmentText.do',
+        data: { departmentText: departmentText },
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                $('#resSelect').append($('<option>', {
+                    value: index + 1,
+                    text: option
+                }))
+            });
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+$(document).ready(function() {
+    $('#branchSelect').change(function() {
+        onBranchSelectChange();
+        console.log('지점변경!!!');
+    });
+
+    $('#deSelect').off('change').on('change', function() {
+        console.log('본부변경!!!');
+        onDeSelectChange();
+        console.log($('#deSelect').val());
+    });
+
+    $('#departmentSelect').change(function() {
+        console.log('부서변경!!!');
+        onDepartmentSelect();
+    });
+
+    $.ajax({
+        url: 'getBranch.do',
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                $('#branchSelect').append($('<option>', {
+                    value: index + 1,
+                    text: option
+                }))
+            });
+            $('#branchSelect').val('1').trigger('change');
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+
+    departmentSelect.empty();
+    resSelect.empty();
+    $('#deSelect').empty();
+});
+		
 </script>
 </html>

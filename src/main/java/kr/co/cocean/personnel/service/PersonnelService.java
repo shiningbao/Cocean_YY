@@ -15,13 +15,27 @@ import kr.co.cocean.personnel.dto.PersonnelDTO;
 public class PersonnelService {
 	@Autowired PersonnelDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	public List<String> getResponsibility(String val) {
-		
-		return dao.getResponsibility(val);
-	}
+
 	public int join(HashMap<String, Object> params) {
 
 		logger.info("join 서비스접근 "+ params.get("employeeID"));
 		return dao.join(params);
 	}
+	public List<String> getBranch() {
+		return dao.getBranch();
+	}
+	
+	
+	
+	public List<String> getBranchID(String branchID) {
+		// TODO Auto-generated method stub
+		return dao.getBranchID(branchID);
+	}
+	public List<String> getHqID(String hqID) {
+		return dao.getHqID(hqID);
+	}
+	public List<String> getDepartmentText(String departmentText) {
+		return dao.getDepartmentText(departmentText);
+	}
+	
 }
