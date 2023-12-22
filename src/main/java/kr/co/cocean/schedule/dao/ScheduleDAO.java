@@ -12,7 +12,7 @@ public interface ScheduleDAO {
 
 	List<String> getTeams();
 
-	List<ScheduleDTO> getCallender(String loginEmployeeID);
+//	List<ScheduleDTO> getCallender(String loginEmployeeID);
 
 	void scheduleWrite(ScheduleDTO dto);
 
