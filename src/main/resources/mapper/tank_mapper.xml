@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.tank.dao.TankDAO">
+
+	<select id="tankList" resultType="Tank">
+		SELECT tm.tankID , tm.tankName ,
+		tc.tankType, b.branchName, tm.tankStatus, e.name FROM tankManagement tm
+		,inCharge ic ,branch b, tankCategory tc, employee e
+		WHERE ic.category = 'tank' and ic.employeeID = e.employeeID and tm.tankID =
+		ic.idx and tm.categoryID = tc.categoryID and tm.branchID = b.branchID
+		GROUP BY tankID ORDER BY tankID ASC 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

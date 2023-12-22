@@ -54,8 +54,8 @@
 							src="<c:url value='/resource/img/Star_fill.svg'/>">
 						<span class="d-none d-md-inline ml-1">코션친구들</span>
 					</a>
-					<a href="#" class="list-group-item d-inline-block collapsed"
-						data-parent="#sidebar">
+					<a href="<c:url value='/tank/list.go'/>" class="list-group-item d-inline-block collapsed"
+						data-parent="#sidebar" id="house">
 						<img style="width: 24px; margin-right: 5px; margin-bottom: 5px;"
 							src="<c:url value='/resource/img/house.svg'/>">
 						<span class="d-none d-md-inline ml-1">코션하우스</span>
