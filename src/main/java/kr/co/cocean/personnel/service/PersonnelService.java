@@ -24,4 +24,12 @@ public class PersonnelService {
 		logger.info("join 서비스접근 "+ params.get("employeeID"));
 		return dao.join(params);
 	}
+	public void addCallender(String perNum) {
+		
+		String myCallender = "내 일정(기본)";
+		String rsvCallendar = "예약 일정(기본)";
+		
+		dao.addMyCallendar(perNum,myCallender);
+		dao.addRsvCallendar(perNum,rsvCallendar);
+	}
 }

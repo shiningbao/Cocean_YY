@@ -13,6 +13,7 @@
       businessHours: true, //
       editable: false, // 수정 가능
       selectable: true, // 드래그 일정변경
+      default: false,
       nowIndicator: true,
       events: [
         {

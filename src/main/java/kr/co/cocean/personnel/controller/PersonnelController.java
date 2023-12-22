@@ -65,6 +65,8 @@ public class PersonnelController {
 		params.put("password", password);
 		int row= service.join(params);
 		if(row>0) {
+			String perNum = (String) params.get("employeeID");
+			service.addCallender(perNum);
 			page="personnel/personnel";
 			mav.addObject("msg", "사원 등록 성공");
 		}else {

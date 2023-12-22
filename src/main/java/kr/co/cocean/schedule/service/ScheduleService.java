@@ -1,5 +1,6 @@
 package kr.co.cocean.schedule.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -24,6 +25,10 @@ public class ScheduleService {
 	}
 	public void scheduleWrite(ScheduleDTO dto) {
 		dao.scheduleWrite(dto);
+	}
+	public List<HashMap<String, Object>> getCallenderEvents(int employeeID) {
+		
+		return dao.getCallenderEvents(employeeID);
 	}
 
 }

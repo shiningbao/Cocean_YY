@@ -3,7 +3,9 @@ package kr.co.cocean.schedule.dto;
 
 
 
+import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.apache.ibatis.type.Alias;
 
@@ -14,10 +16,9 @@ public class ScheduleDTO {
 	
 	private String callendarTitle;
 	private int scheduleID;
-	
+	private int employeeID;
 	private String title;
-	private String startDate;
-	private String endDate;
+	
 	private String mainCategory;
 	private String subCategory;
 	private String description;
@@ -25,6 +26,14 @@ public class ScheduleDTO {
 	private String category;
 	
 	
+	public int getEmployeeID() {
+		return employeeID;
+	}
+
+	public void setEmployeeID(int employeeID) {
+		this.employeeID = employeeID;
+	}
+
 	public int getScheduleID() {
 		return scheduleID;
 	}
@@ -32,21 +41,25 @@ public class ScheduleDTO {
 	public void setScheduleID(int scheduleID) {
 		this.scheduleID = scheduleID;
 	}
+	private String start;
+	private String end;
 
-	public String getStartDate() {
-		return startDate;
+
+	
+	public LocalDateTime getStart() {
+		return LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
 	}
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
+	public void setStart(String start) {
+		this.start = start;
 	}
 
-	public String getEndDate() {
-		return endDate;
+	public LocalDateTime getEnd() {
+		return LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
 	}
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setEnd(String end) {
+		this.end = end;
 	}
 
 	public String getCallendarTitle() {
