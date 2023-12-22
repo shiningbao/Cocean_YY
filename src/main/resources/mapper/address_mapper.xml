@@ -28,7 +28,29 @@ e.rankID = r.rankID ;
 		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
 values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber});
 	</insert>
-	
 
+ <delete id="del">
+      DELETE FROM personalAddressBook WHERE addressNumber=#{param1};
+   </delete>
+
+
+	
+<select id="interioraddressBooklist" resultType="address">
+SELECT d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID ;
+</select>
+
+<select id="list" resultType="address">
+
+		SELECT addressNumber, name, positionLevel,rankLevel,departmentName,phoneNumber 
+		FROM personalAddressBook
+	</select>
+
+
+	<select id="detail" resultType="address">
+		SELECT * FROM 
+			personalAddressBook WHERE addressNumber = #{param1}
+	</select>
 
 </mapper>
