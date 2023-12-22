@@ -14,8 +14,50 @@ public class ApprovalDTO {
 	private String departmentName;
 	private Date workDate;
 	private String rankName;
+	private String hqName;
+	private int idx;
+	private int employeeID;
+	private int publicStatus;
+	private int tempSave;
+	private String documentNo;
 	
 	
+	public int getEmployeeID() {
+		return employeeID;
+	}
+	public void setEmployeeID(int employeeID) {
+		this.employeeID = employeeID;
+	}
+	public int getPublicStatus() {
+		return publicStatus;
+	}
+	public void setPublicStatus(int publicStatus) {
+		this.publicStatus = publicStatus;
+	}
+	public int getTempSave() {
+		return tempSave;
+	}
+	public void setTempSave(int tempSave) {
+		this.tempSave = tempSave;
+	}
+	public String getDocumentNo() {
+		return documentNo;
+	}
+	public void setDocumentNo(String documentNo) {
+		this.documentNo = documentNo;
+	}
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public String getHqName() {
+		return hqName;
+	}
+	public void setHqName(String hqName) {
+		this.hqName = hqName;
+	}
 	public String getRankName() {
 		return rankName;
 	}
@@ -58,5 +100,6 @@ public class ApprovalDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
 }
 

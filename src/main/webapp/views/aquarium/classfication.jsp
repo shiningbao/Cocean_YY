@@ -82,7 +82,31 @@ function clickList(e,id,t,s,c){
 
 function sendVal(){
 	if(speciesID != null){
-		window.opener.setClassfication(speciesID,taxo,scien,common);
+		var classifi;
+		switch (taxo) {
+		case "무척추동물류":
+			classifi = "In";
+			break;
+		case "미삭동물":
+			classifi = "Ch";
+			break;
+		case "양서류":
+			classifi = "Am";
+			break;
+		case "어류":
+			classifi = "Fi";
+			break;
+		case "조류":
+			classifi = "Av";
+			break;
+		case "파충류":
+			classifi = "Re";
+			break;
+		case "포유류":
+			classifi = "Ma";
+			break;
+	}
+		window.opener.setClassfication(speciesID,taxo,classifi,scien,common);
 		window.close();
 	}else{
 		alert('동물 분류를 선택해 주세요.');

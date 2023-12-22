@@ -16,7 +16,7 @@
 	</select>
 	
 	<select id="draftInfo" resultType="form">
-		SELECT DISTINCT name,r.rankName, departmentName,workDate FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID
+		SELECT DISTINCT name,r.rankName, departmentName,workDate,h.hqName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID
  		LEFT OUTER JOIN work w ON e.employeeID=w.employeeID LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID} ORDER BY workDate DESC LIMIT 1
 	</select>
 	
@@ -25,11 +25,15 @@
 		useGeneratedKeys="true"
 		keyColumn="idx"
 		keyProperty="idx">
-    	INSERT INTO draft (employeeID,publicStatus,tempSave,draftStatus,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},'대기',#{title})
+    	INSERT INTO draft (employeeID,publicStatus,tempSave,draftStatus,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},'대기',#{documentNo})
 	</insert>
 	
 	<insert id="writeWorkDraft">
     	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
+	</insert>
+	
+	<insert id="writeFile">
+    	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},#{pathName},#{newFileName},#{oriFileName})
 	</insert>
 	
 	<insert id="writeAttendanceDraftContent">

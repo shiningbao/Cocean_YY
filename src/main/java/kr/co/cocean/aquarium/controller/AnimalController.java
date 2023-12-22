@@ -3,11 +3,16 @@ package kr.co.cocean.aquarium.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.server.PathParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,7 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
+import kr.co.cocean.aquarium.dto.LogPlanDTO;
 import kr.co.cocean.aquarium.service.AnimalService;
+import kr.co.cocean.mypage.dto.LoginDTO;
 
 @Controller
 public class AnimalController {
@@ -72,11 +79,46 @@ public class AnimalController {
 		return result;
 	}
 	
-	@GetMapping(value = "/animal/detail")
-	public ModelAndView animalDetail(@RequestParam int animalID) {
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail");	
-		
-		return service.animalDetail(animalID);
+	
+	@GetMapping(value = "/animal/detail.go")
+	public ModelAndView animalDetailGo(@RequestParam int animalID) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail");
+		mav.addObject("animalID", animalID);
+		return mav;
 	}
+	
+	@PostMapping(value = "/animal/detail.ajax")
+	public String animalDetailAjax(@RequestParam String animalID, @RequestParam String con, Model model) {
+		logger.info("animalID : {}",animalID);
+		int intAnimalID = Integer.parseInt(animalID);
+		logger.info("con : {}",con);
+		return service.animalDetailAjax(intAnimalID, con, model);
+	}
+	
+	@PostMapping(value = "/animal/detail.ajax.month")
+	public String animalDetailAjaxMonth(@RequestParam String animalID, @RequestParam String con, Model model, @RequestParam String month) {
+		logger.info("animalID : {}",animalID);
+		int intAnimalID = Integer.parseInt(animalID);
+		logger.info("con : {}",con);
+		return service.animalDetailAjax(intAnimalID, con, month, model);
+	}
+	
+	
+	@PostMapping(value = "/animal/logplanWrite.go")
+	@ResponseBody
+	public HashMap<String, Object> logplanWrite(LogPlanDTO param, HttpSession session) {
+		logger.info("param.con : {}",param.getContent());
+		
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = userInfo.getEmployeeID();
+		param.setEmployeeID(employeeID);
+		
+		service.logplanWrite(param);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("result", "gg");
+		return result;
+	}
+
+	
 	
 }

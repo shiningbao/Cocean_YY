@@ -38,17 +38,34 @@
 		SELECT * FROM animalManagement WHERE animalID = #{param1}
 	</select>
 	
+	<select id="animalImage" resultType="file">
+	 	SELECT idx, serverFileName FROM file WHERE path = 'animal' AND idx = #{param1}
+	</select>
+	
 	<select id="animalInCharge" resultType="incharge">
 		SELECT ic.idx, e.employeeID, de.hqName, de.departmentName, e.name FROM employee e 
 			LEFT JOIN (SELECT d.departmentID, h.hqName, d.departmentName FROM department d NATURAL JOIN headquarters h WHERE d.isActive =1) AS de
 				ON e.departmentID = de.departmentID
 			INNER JOIN (SELECT employeeID, idx FROM inCharge WHERE category = 'animal' AND idx = #{param1}) AS ic ON e.employeeID = ic.employeeID
-			WHERE e.status = '재직
+			WHERE e.status = '재직'
 	</select>
 	
 	<select id="animalLogPlan" resultType="logplan">
-		SELECT * FROM logPlanTable WHERE coceanCategory = 'animal' AND idx = #{param1}
+		SELECT lpt.logID, lpt.creationDate, lpt.content ,em.*
+			<if test="param2.equals('log')">,lpt.status</if>
+			FROM logPlanTable lpt
+			NATURAL JOIN (SELECT e.employeeID, d.departmentName, e.name FROM employee e LEFT JOIN department d ON e.departmentID = d.departmentID) AS em
+			WHERE lpt.coceanCategory = 'animal'
+				AND lpt.idx = #{param1}
+				AND lpt.manageCategory = #{param2}
+				AND DATE_FORMAT(creationDate, '%Y-%m') = #{param3}
 	</select>
+	
+	<insert id="logplanWrite" parameterType="logplan">
+		INSERT INTO logPlanTable(employeeID, idx, content, manageCategory, status, coceanCategory)
+			VALUES(#{employeeID},#{idx},#{content},#{manageCategory},#{status},#{coceanCategory})
+	</insert>
+	
 	
 </mapper>
 

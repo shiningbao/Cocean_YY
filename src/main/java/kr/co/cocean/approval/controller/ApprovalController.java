@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -81,14 +82,14 @@ public class ApprovalController {
 //	}
 	
 	@PostMapping(value="/approval/writeDraft.do")
-	public ModelAndView writeDraft(HttpSession session, RedirectAttributes rAttr, @RequestParam HashMap<String, String> param) {
+	public ModelAndView writeDraft(MultipartFile[] files, HttpSession session, RedirectAttributes rAttr, @RequestParam HashMap<String, String> param) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if(dto!=null) {
 			int employeeID = dto.getEmployeeID();
 		    param.put("employeeID", String.valueOf(employeeID));
 		    logger.info("params : {}", param);
-			service.write(param);
+			service.write(files,param);
 			mav.setViewName("redirect:/approval/formList.go");
 		}else{
 			mav.setViewName("redirect:/");

@@ -5,12 +5,13 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/rte_theme_default.css'/>">
-<link href='<c:url value="/resource/css/approval/jquery.timepicker.min.css"/>' rel='stylesheet' />
+<!-- <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/runtime/richtexteditor_content.css'/>"> -->
+<!-- <link rel="stylesheet" href="<c:url value='/resource/css/approval/jquery.timepicker.css'/>"> -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
-<script src='<c:url value="/resource/js/approval/jquery.timepicker.min.js"/>'></script>
+<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
+<!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
 <style>
 table,th,td{
 		border : 1px solid black;
@@ -42,6 +43,17 @@ button{
 	width : 50%;
 }
 
+#leaveDraftContent{
+	width : 50%;
+}
+
+#leaveDraftContent th{
+	text-align : center;
+}
+
+#attendanceDraftContent th{
+	text-align : center;
+}
 
 #draftInfoTop{
 	width : 840.8px;
@@ -50,8 +62,23 @@ button{
 #approvalLine{
 	font-size : 10px;
 }
+
 #approvalLine, #approvalLine th, #approvalLine td {
   border: none;
+}
+
+#textarea{
+	width : 100%;
+	height: 200px;
+	resize: none;
+}
+
+#reference, #reference th, #reference td {
+  border: none;
+}
+
+#reference{
+	font-size : 10px;
 }
 
 </style>
@@ -59,31 +86,9 @@ button{
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog"
-		aria-labelledby="modal" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<!-- 모달창 제목 -->
-					<h5 class="modal-title">조직도</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form action="">
-						<!-- 입력폼 -->
-						<div class="form-group">
-							
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<c:forEach items="${draftInfo}" var="draft">
-<div id="container" style="display: flex;">
+<div id="container">
 <div id="draftInfoTop" style="display: flex;">
 		<table id="draftInfo">
 			<tr>
@@ -92,7 +97,7 @@ button{
 			</tr>
 			<tr>
 			    <th>소속부서</th>
-			    <td>${draft.departmentName}</td>
+			    <td>${draft.hqName}/${draft.departmentName}</td>
 			</tr>
 			<tr>
 			    <th>상신일</th>
@@ -113,21 +118,57 @@ button{
 		    </tr>
 		</table>
 	</div>
-	
-
-<div style="padding: 0px 30px; "><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">결재라인<input type="text" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 13px;" onclick="openModal()"></h6>
-<hr/>
-<table id="approvalLine">
-		<tr>
-			<th>1</th>
-			<td>상신</td>
-			<td>${draft.departmentName}</td>
-			<td>${draft.rankName}</td>
-			<td>${draft.name}</td>
-			</tr>
-	</table>
-	</div>
 </div>	
+	<div style="display: flex; flex-direction: column; width: 22%; float: right;">
+	<div style="padding: 0px 30px;"><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">결재라인<input type="text" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 13px;" onclick="openModal()"></h6>
+	<hr/>
+		<table id="approvalLine">
+			<tr>
+				<th>1</th>
+				<td>상신</td>
+				<td>${draft.hqName}/${draft.departmentName}</td>
+				<td>${draft.rankName}</td>
+				<td>${draft.name}</td>
+			</tr>
+		</table>
+	</div>
+	<div style="padding: 0px 30px; "><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">참조자<input type="text" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 25px;" onclick="openModal()"></h6>
+	<hr/>
+	<table id="reference">
+		<tr>
+			<td>본부/부서</td>
+			<td>직급</td>
+			<td>참조자 이름</td>
+		</tr>
+		</table>	
+	</div>
+	</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<!-- 모달창 제목 -->
+				<h5 class="modal-title">조직도</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form action="">
+					<!-- 입력폼 -->
+					<div class="form-group">
+						
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 	
 </c:forEach>
 
@@ -159,43 +200,51 @@ button{
 <table id="attendanceDraftContent">
 	<tr>
 		<th>휴가 종류</th>
-			<td colspan="3"><select id="vacationCategory" name="vacationCategory">
+			<td colspan="2"><select id="vacationCategory" name="vacationCategory">
 					  <option value="연차" selected="selected">연차</option>
 					  <option value="반차">반차</option>
 					  <option value="조퇴">조퇴</option>
 					  <option value="지각">지각</option>
 					  <option value="병가">병가</option>
+					  <option value="공가">공가</option>
 					  <option value="경조사">경조사</option>
 					</select>
 			</td>
 		</tr>
 	<tr>
-	    <th>사용 시간</th>
-	    <td colspan="2"><input type="date" name="startDate">~<input type="date" name="endDate"></td>
-	    <td>사용 시간</td>
+	    <th>사용 날짜</th>
+	    <td><input type="date" name="startDate">~<input type="date" name="endDate"></td>
+	</tr>
+	<tr>
+		<th>사용 시간</th>
+		<td><input type="text"></td>
 	</tr>
 	<tr>
 		<th>사유</th>
-		<td colspan="3">
-			<div id="rich_editor"></div>
-			<!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
-			<input type="hidden" name="content" value=""/>
-		</td>
+		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력"></textarea></td>
+	</tr>
+</table>
+</c:if>
+
+<c:if test="${title eq '휴직원' or title eq '복직원'}">
+<table id="leaveDraftContent">
+	<tr>
+		<th>휴직 기간</th>
+			<td><input type="date" name="startDate">~<input type="date" name="endDate"></td>
+		</tr>
+	<tr>
+		<th>사유</th>
+		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력"></textarea></td>
 	</tr>
 </table>
 </c:if>
 
 
-
-
-
-
-
 <br/>
 <input type="file" name="files" multiple="multiple"/>
 <br/>
-<input type="radio" name="publicStatus" value=0 checked/>공개
-<input type="radio" name="publicStatus" value=1 />비공개
+<input type="radio" name="publicStatus" value=0 />공개
+<input type="radio" name="publicStatus" value=1 checked/>비공개
 <div style="font-size:12px; color:gray;">
 *공개 설정시 모든 임직원이 열람 가능합니다.
 <br/>
@@ -208,7 +257,25 @@ button{
 <input type="button" value="취소"/>
 </form>
 </body>
+
+
+
+
+
+
 <script>
+	/* $("#time1").timepicker({	
+		step: 30,            //시간간격 : 30분	
+		timeFormat: "H:i"    //시간:분 으로표시	
+
+	}); */
+		
+	const handleResizeHeight = () => {
+	    textarea.current.style.height = 'auto'; //height 초기화
+	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
+	};
+		
+	
 	function openModal() {
 	    $('#modal').modal('show');
 	}
@@ -231,6 +298,5 @@ button{
 		 $('form').submit();
 		} 
 	 }
-	
 </script>
 </html>
