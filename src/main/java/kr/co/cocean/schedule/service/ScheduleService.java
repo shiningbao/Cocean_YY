@@ -16,13 +16,13 @@ public class ScheduleService {
 	@Autowired ScheduleDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	public List<String> getTeams() {
-			
-			return dao.getTeams();
-		}
-//	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
-//		logger.info("나의 캘린더 가져오기 서비스 접근");
-//		return dao.getCallender(loginEmployeeID);
-//	}
+		
+		return dao.getTeams();
+	}
+	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
+		logger.info("나의 캘린더 가져오기 서비스 접근");
+		return dao.getCallender(loginEmployeeID);
+	}
 	public void scheduleWrite(ScheduleDTO dto) {
 		dao.scheduleWrite(dto);
 	}
@@ -30,6 +30,5 @@ public class ScheduleService {
 		
 		return dao.getCallenderEvents(employeeID);
 	}
-	
 
 }

@@ -20,6 +20,7 @@ public class AddressService {
 
 	@Autowired AddressDAO dao;
 	
+	/*
 	public HashMap<String, Object> interioraddressBook(String page, int userId) {
 		int pa = Integer.parseInt(page);
 		int set = (pa*10)-10;
@@ -30,8 +31,9 @@ public class AddressService {
 		map.put("addressList", list);
 		return map;
 		
-	}
+	}*/
 
+	//통과
 	public String outsidejoin(HashMap<String, Object> params) {
 		logger.info("서비스 도착");
 		int row = dao.insert(params);		
@@ -41,6 +43,33 @@ public class AddressService {
 	public Object detail(HashMap<String, Object> params) {
 		return dao.detail(params);
 	}
+
+
+	public ArrayList<AddressDTO> interioraddressBooklist() {
+		
+		return dao.interioraddressBooklist();
+	}
+
+	public void del(String addressNumber) {
+		dao.del(addressNumber);
+		
+	}
+
+	public ArrayList<AddressDTO> list() {
+		
+		return dao.list();
+	}
+
+	public void delete(String addressNumber) {
+		dao.delete(addressNumber);
+		
+	}
+
+	public AddressDTO detail(int addressNumber) {
+		
+		return dao.detail(addressNumber);
+	}
+
 	
 	
 

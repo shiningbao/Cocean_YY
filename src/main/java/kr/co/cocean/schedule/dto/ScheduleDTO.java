@@ -23,7 +23,7 @@ public class ScheduleDTO {
 	private String subCategory;
 	private String description;
 	private String remarks;
-	private boolean publicCategory;
+	private String category;
 	
 	
 	public int getEmployeeID() {
@@ -111,14 +111,13 @@ public class ScheduleDTO {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-	
-	
-	public boolean getPublicCategory() {
-		return publicCategory;
+
+	public String getCategory() {
+		return category;
 	}
 
-	public void setPublicCategory(boolean publicCategory) {
-		this.publicCategory = publicCategory;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getCallenderTitle() {

@@ -45,15 +45,15 @@ public class ScheduleController {
 		return teams;
 	}
 	
-//	@GetMapping(value="/schedule/getCallender.do")
-//	@ResponseBody
-//	public List<ScheduleDTO> getCallender(@RequestParam String loginEmployeeID) {
-//		logger.info("로그인 사번 :"+loginEmployeeID);
-//		logger.info("스케줄컨트롤러 도착!!!!!!!!!!!!!!!!!!!");
-//		List<ScheduleDTO> myCallenders = service.getCallender(loginEmployeeID);
-//
-//		return myCallenders;
-//	}
+	@GetMapping(value="/schedule/getCallender.do")
+	@ResponseBody
+	public List<ScheduleDTO> getCallender(@RequestParam String loginEmployeeID) {
+		logger.info("로그인 사번 :"+loginEmployeeID);
+		logger.info("스케줄컨트롤러 도착!!!!!!!!!!!!!!!!!!!");
+		List<ScheduleDTO> myCallenders = service.getCallender(loginEmployeeID);
+
+		return myCallenders;
+	}
 	
 	@PostMapping(value="/schedule/scheduleWrite.do")
 	public ModelAndView scheduleWrite(ScheduleDTO dto, HttpSession session) {
@@ -62,9 +62,7 @@ public class ScheduleController {
 		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
 		dto.setEmployeeID(employeeID);
-		logger.info("공개여부"+dto.getPublicCategory());
 		service.scheduleWrite(dto);
-		mav.setViewName("/schedule/schedule");
 
 		
 		return mav;

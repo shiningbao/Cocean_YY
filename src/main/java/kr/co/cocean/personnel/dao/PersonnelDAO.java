@@ -10,22 +10,13 @@ import kr.co.cocean.personnel.dto.PersonnelDTO;
 @Mapper
 public interface PersonnelDAO {
 
+	List<String> getResponsibility(String val);
 
 	int join(HashMap<String, Object> params);
-//
-//
-//	void addMyCallendar(String perNum, String myCallender);
-//
-//	void addRsvCallendar(String perNum, String rsvCallendar);
-
-	List<String> getBranch();
 
 
-	List<String> getBranchID(String branchID);
+	void addMyCallendar(String perNum, String myCallender);
 
-
-	List<String> getHqID(String hqID);
-
-	List<String> getDepartmentText(String departmentText);
+	void addRsvCallendar(String perNum, String rsvCallendar);
 
 }

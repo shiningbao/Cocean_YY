@@ -36,22 +36,21 @@ public class PersonnelController {
 		return "personnel/personnel";
 	}
 	
-	@GetMapping(value="/personnel/getBranchID.do")
+	@GetMapping(value="/personnel/getTeams.do")
 	@ResponseBody
-	public List<String> getBranchID(String branchID) {
+	public List<String> getTeams() {
 		logger.info("인사등록 팀리스트 호출");
-		logger.info("지점번호 =="+branchID);
-		List<String> teams = service.getBranchID(branchID);
+		List<String> teams = scService.getTeams();
 
 		return teams;
 	}
 	
-	@GetMapping(value="/personnel/getHqID.do")
+	@GetMapping(value="/personnel/getResponsibility.do")
 	@ResponseBody
-	public List<String> getHqID(String hqID) {
+	public List<String> getResponsibility(String val) {
 		logger.info("인사등록 담당리스트 호출");
-		logger.info("val =="+hqID);
-		List<String> res = service.getHqID(hqID);
+		logger.info("val =="+val);
+		List<String> res = service.getResponsibility(val);
 
 		return res;
 	}
@@ -67,6 +66,7 @@ public class PersonnelController {
 		int row= service.join(params);
 		if(row>0) {
 			String perNum = (String) params.get("employeeID");
+			service.addCallender(perNum);
 			page="personnel/personnel";
 			mav.addObject("msg", "사원 등록 성공");
 		}else {
@@ -75,25 +75,6 @@ public class PersonnelController {
 		}
 		return mav;
 	}
-	
-	@RequestMapping(value="/personnel/getBranch.do")
-	@ResponseBody
-	public List<String> getBranch(){
-		
-		List<String> getbranch = service.getBranch();
-		
-		return getbranch;
-	}
-	
-	@RequestMapping(value="/personnel/getDepartmentText.do")
-	@ResponseBody
-	public List<String> getDepartmentText(String departmentText){
-		
-		List<String> getDepartmentText = service.getDepartmentText(departmentText);
-		
-		return getDepartmentText;
-	}
-	
 	
 	
 }
