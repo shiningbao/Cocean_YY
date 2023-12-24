@@ -96,17 +96,7 @@ public class PersonnelService {
 	public void joinTree(HashMap<String, Object> params) {
 	    int departmentID = (int) params.get("departmentID");
 	    String positionID = String.valueOf(params.get("positionID"));
-	    if (positionID.equals("1")) {
-	        params.put("positionID", "팀원");
-	    } else if (positionID.equals("2")) {
-	        params.put("positionID", "팀장");
-	    } else if (positionID.equals("3")) {
-	        params.put("positionID", "본부장");
-	    } else if (positionID.equals("4")) {
-	        params.put("positionID", "관장");
-	    } else if (positionID.equals("5")) {
-	        params.put("positionID", "대표이사");
-	    }
+	    
 	    if (departmentID >= 1 && departmentID <= 3) {
 	        params.put("departmentID", "1-h1-team1");
 	    }else if(departmentID >= 4 && departmentID <= 5) {
@@ -138,7 +128,18 @@ public class PersonnelService {
 	    }else if(departmentID == 21) {
 	    	params.put("departmentID", "headquarters2Jeju");
 	    }
-	    
+	    if (positionID.equals("1")) {
+	        params.put("positionID", "팀원");
+	    } else if (positionID.equals("2")) {
+	        params.put("positionID", "팀장");
+	    } else if (positionID.equals("3")) {
+	        params.put("positionID", "본부장");
+	    } else if (positionID.equals("4")) {
+	        params.put("positionID", "관장");
+	    } else if (positionID.equals("5")) {
+	        params.put("positionID", "대표이사");
+	        params.put("departmentID", "#");
+	    }
 	    dao.joinTree(params);
 	    logger.info("Tree구조확인 params" + params);
 	}
