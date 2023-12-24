@@ -20,8 +20,14 @@ public class ApprovalDTO {
 	private int publicStatus;
 	private int tempSave;
 	private String documentNo;
+	private String content;
 	
-	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	public int getEmployeeID() {
 		return employeeID;
 	}

@@ -4,14 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="<c:url value='/resource/richtexteditor/rte_theme_default.css'/>">
-<!-- <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/runtime/richtexteditor_content.css'/>"> -->
-<!-- <link rel="stylesheet" href="<c:url value='/resource/css/approval/jquery.timepicker.css'/>"> -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/rte_theme_default.css'/>">
+    <!-- <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/runtime/richtexteditor_content.css'/>"> -->
+    <!-- <link rel="stylesheet" href="<c:url value='/resource/css/approval/jquery.timepicker.css'/>"> -->
 <style>
 table,th,td{
 		border : 1px solid black;
@@ -80,12 +76,41 @@ button{
 #reference{
 	font-size : 10px;
 }
+.dropdown-content {
+    display: none;
+    width: 290px;
+    font-size: 10px;
+    position: absolute;
+    padding: 0px 0px 0px 10px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content label{
+	padding: 5px 10px 0px 0px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.show {display:block;}
 
 </style>
 </head>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
-
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
+<!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
 	
 	<c:forEach items="${draftInfo}" var="draft">
 <div id="container">
@@ -120,7 +145,10 @@ button{
 	</div>
 </div>	
 	<div style="display: flex; flex-direction: column; width: 22%; float: right;">
-	<div style="padding: 0px 30px;"><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">결재라인<input type="text" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 13px;" onclick="openModal()"></h6>
+	<div style="padding: 0px 30px;"><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">결재라인<input type="text" class="employeeSearch" id="employeeSearch" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 13px;" onclick="dropdown()"></h6>
+	<div id="myDropdown" class="dropdown-content">
+
+  	</div>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -132,7 +160,9 @@ button{
 			</tr>
 		</table>
 	</div>
-	<div style="padding: 0px 30px; "><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">참조자<input type="text" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 25px;" onclick="openModal()"></h6>
+	<div style="padding: 0px 30px; "><h6 style="margin:0px; display: flex; padding:10px 0px 0px 0px; font-size:13px;">참조자<input type="text" class="employeeSearch" id="employeeSearchSec" name="employeeSearch" placeholder="이름/부서/직급" style="width:70%; font-size:12px; margin:0px 0px 0px 25px;" onclick="dropdownSec()"></h6>
+	<div id="myDropdown2" class="dropdown-content">
+  	</div>
 	<hr/>
 	<table id="reference">
 		<tr>
@@ -144,29 +174,6 @@ button{
 	</div>
 	</div>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog"
-		aria-labelledby="modal" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<!-- 모달창 제목 -->
-				<h5 class="modal-title">조직도</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form action="">
-					<!-- 입력폼 -->
-					<div class="form-group">
-						
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 
 
 	
@@ -256,6 +263,7 @@ button{
 <input type="button" value="등록" onclick="save(false)"/>
 <input type="button" value="취소"/>
 </form>
+
 </body>
 
 
@@ -269,16 +277,39 @@ button{
 		timeFormat: "H:i"    //시간:분 으로표시	
 
 	}); */
+	
+	function dropdown() {
+	    document.getElementById("myDropdown").classList.toggle("show");
+	}
+	function dropdownSec() {
+	    document.getElementById("myDropdown2").classList.toggle("show");
+	}
+
+	window.onclick = function (event) {
+		var isSelectClicked = event.target.tagName.toLowerCase() === 'select';
+		 
+	    if (!event.target.matches('#employeeSearch')) {
+	        var dropdown1 = document.getElementById("myDropdown");
+	        if (dropdown1.classList.contains('show')) {
+	            dropdown1.classList.remove('show');
+	        }
+	    }
+
+	    if (!event.target.matches('#employeeSearchSec')) {
+	        var dropdown2 = document.getElementById("myDropdown2");
+	        if (dropdown2.classList.contains('show')) {
+	            dropdown2.classList.remove('show');
+	        }
+	    }
+	}
+	
+	
 		
 	const handleResizeHeight = () => {
 	    textarea.current.style.height = 'auto'; //height 초기화
 	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
 	};
-		
-	
-	function openModal() {
-	    $('#modal').modal('show');
-	}
+
 	var config = {}
 	config.editorResizeMode = "none";
 	var editor = new RichTextEditor("#rich_editor", config);
@@ -298,5 +329,40 @@ button{
 		 $('form').submit();
 		} 
 	 }
+	
+	$.ajax({
+	      type:'get', 
+	      url:'employeeList', 
+	      data:{}, 
+	      dataType:'JSON', 
+	      success:function(data){
+	         console.log(data);
+	        	 var content='';
+	        	 var contents='';
+	        	 
+	        	 for(var i=0; i<data.size; i++){	  
+	        		 content += '<select id="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option></select>'
+	        		 content += '<label style="padding:0px 10px 0px 10px;">'+data.list[i].hqName+'/'+data.list[i].departmentName+'</label>';
+	        		 content += '<label>'+data.list[i].rankName+'</label>';
+	        		 content += '<label>'+data.list[i].name+'</label>'+'<br/>';
+	        	 }
+	        	 $('#myDropdown').append(content);
+	        	 
+	        	 for(var i=0; i<data.size; i++){	  
+	        		 contents += '<label style="padding:0px 10px 0px 10px;">'+data.list[i].hqName+'/'+data.list[i].departmentName+'</label>';
+	        		 contents += '<label>'+data.list[i].rankName+'</label>';
+	        		 contents += '<label>'+data.list[i].name+'</label>'+'<br/>';
+	        	 }
+	        	 $('#myDropdown2').append(contents);
+	        	 
+	        	 document.getElementById("category").onclick = function (event) {
+	        		    event.stopPropagation();
+	        		};
+
+	      },
+	      error:function(e){
+	         console.log(e);
+	      } 
+	   });
 </script>
 </html>

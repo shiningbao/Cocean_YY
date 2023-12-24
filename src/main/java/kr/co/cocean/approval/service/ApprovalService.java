@@ -66,17 +66,21 @@ public class ApprovalService {
 		dto.setPublicStatus(publicStatus);
 		dto.setTempSave(tempSave);
 		dto.setDocumentNo(title);
+		logger.info("params:{}",param);
 		
 		dao.write(dto);
 		int idx=dto.getIdx();
+		if(files[0].getSize()!=0) {
 		for (MultipartFile file : files) {
 			upload(file,idx);
-		}
-		dao.writeWorkDraft(param);
+		}}
+		String content = param.get("content");
+		
+		dao.writeWorkDraft(title,content,idx);
 		// dao.writeAttendanceDraftContent(param);
 		
 	}
-	
+	// file 테이블에 insert 
 	public void upload(MultipartFile uploadFile, int idx) {
 		
 		String oriFileName = uploadFile.getOriginalFilename();
@@ -86,12 +90,15 @@ public class ApprovalService {
 		try {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
-			String pathName = root+"draft/"+newFileName;
 			Files.write(path, bytes);
-			dao.writeFile(idx,oriFileName,newFileName,pathName);
+			dao.writeFile(idx,oriFileName,newFileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ArrayList<HashMap<String, Object>> employeeList() {
+		return dao.employeeList();
 	}
 
 }

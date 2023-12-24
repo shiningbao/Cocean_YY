@@ -29,15 +29,15 @@
 	</insert>
 	
 	<insert id="writeWorkDraft">
-    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
+    	INSERT INTO workDraft (title,content,idx) VALUES (#{title},#{content},#{idx})
 	</insert>
 	
 	<insert id="writeFile">
-    	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},#{pathName},#{newFileName},#{oriFileName})
+    	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},'draft',#{newFileName},#{oriFileName})
 	</insert>
 	
-	<insert id="writeAttendanceDraftContent">
-    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
-	</insert>
-
+	<select id="employeeList" resultType="Map">
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID
+ 		LEFT OUTER JOIN work w ON e.employeeID=w.employeeID LEFT OUTER JOIN rank r ON e.rankID=r.rankID
+	</select>
 </mapper>

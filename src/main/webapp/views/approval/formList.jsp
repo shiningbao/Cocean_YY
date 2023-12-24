@@ -10,10 +10,19 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
 	
-table, th, td{
-    border: 1px solid black;
+table,th,td{
+	border-bottom: 1px solid lightgray;
     border-collapse: collapse;
     padding: 5px 10px;
+}
+
+#formTableHead{
+	background-color: #86B0F3;
+}
+
+#formTable{
+	width: 500px;
+	text-align: center;
 }
 
 </style>
@@ -29,12 +38,12 @@ table, th, td{
 	  <option value="인사">인사</option>
 	</select>
 
-		<input type="text" name="keyword" placeholder="문서양식을 검색하세요"/>
-		<button>검색</button>
+		<input type="search" name="keyword" placeholder="문서양식을 검색하세요"/>
+		<button class="btn btn-primary">검색</button>
 	</form>
 		
-	<table>
-		<tr>
+	<table id="formTable">
+		<tr id="formTableHead">
 			<th>유형</th>
 			<th>문서양식</th>
 		</tr>

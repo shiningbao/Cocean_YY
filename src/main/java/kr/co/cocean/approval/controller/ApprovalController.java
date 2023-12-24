@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -89,6 +90,7 @@ public class ApprovalController {
 			int employeeID = dto.getEmployeeID();
 		    param.put("employeeID", String.valueOf(employeeID));
 		    logger.info("params : {}", param);
+		    logger.info("파일:"+files[0].getSize());
 			service.write(files,param);
 			mav.setViewName("redirect:/approval/formList.go");
 		}else{
@@ -97,6 +99,17 @@ public class ApprovalController {
 		}
 		
 		return mav;
+	}
+	
+
+	@GetMapping(value="/approval/employeeList")
+	@ResponseBody
+	public HashMap<String,Object> employeeSearch() {
+		HashMap<String,Object> result = new HashMap<String,Object>();
+		ArrayList<HashMap<String, Object>> list = service.employeeList();
+		result.put("list", list);
+		result.put("size", list.size());
+		return result;
 	}
 	
 	
