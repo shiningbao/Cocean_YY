@@ -4,19 +4,29 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.util.MultiValueMap;
 
 import kr.co.cocean.personnel.dto.PersonnelDTO;
+import kr.co.cocean.personnel.dto.TreeDTO;
 
 @Mapper
 public interface PersonnelDAO {
 
-	List<String> getResponsibility(String val);
 
 	int join(HashMap<String, Object> params);
+	
+    List<String> getBranch();
 
 
-	void addMyCallendar(String perNum, String myCallender);
 
-	void addRsvCallendar(String perNum, String rsvCallendar);
+	List<TreeDTO> getChart();
+
+	void joinTree(HashMap<String, Object> params);
+
+	List<String> getBranchID(String branchID);
+
+	List<String> getHqID(String hqID);
+
+	List<String> getDepartmentText(String departmentText);
 
 }

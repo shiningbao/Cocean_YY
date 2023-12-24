@@ -12,9 +12,9 @@
 <script src='<c:url value="/resource/js/schedule/startEndDate.js"/>'></script>
 <script src='<c:url value="/resource/js/schedule/schedule.js"/>'></script>
 
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
@@ -83,7 +83,24 @@ img{
 
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-
+	<div class="modal fade" id="chartModal" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 모달창 제목 -->
+					<h5 class="modal-title">관리일지</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<jsp:include page="../personnel/organization.jsp"></jsp:include>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- 시설예약 모달창 -->
 	<div class="modal fade" id="modal" tabindex="-1" role="dialog"
@@ -228,7 +245,7 @@ img{
 			</div>
 			<h5>팀 캘린더</h5>
 			<div class="addCal">
-				<span class="addTeamCallender">팀 캘린더 추가</span>
+				<a href="#" class="addTeamCallender" data-toggle="modal" data-target="#chartModal">팀 캘린더 추가</a>
 			</div>
 		</section>
 		
