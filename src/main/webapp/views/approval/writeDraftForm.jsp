@@ -98,7 +98,10 @@ button{
     display: block;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content div:hover {
+	background-color: #237deb;
+
+}
 
 .show {display:block;}
 
@@ -341,23 +344,27 @@ button{
 	        	 var contents='';
 	        	 
 	        	 for(var i=0; i<data.size; i++){	  
-	        		 content += '<select id="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option></select>'
+	        		 content += '<div id=oneRow>';
+	        		 content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option></select>'
 	        		 content += '<label style="padding:0px 10px 0px 10px;">'+data.list[i].hqName+'/'+data.list[i].departmentName+'</label>';
 	        		 content += '<label>'+data.list[i].rankName+'</label>';
 	        		 content += '<label>'+data.list[i].name+'</label>'+'<br/>';
+	        		 content += '</div>';
 	        	 }
 	        	 $('#myDropdown').append(content);
 	        	 
 	        	 for(var i=0; i<data.size; i++){	  
+	        		 contents += '<div id=oneRow>';
 	        		 contents += '<label style="padding:0px 10px 0px 10px;">'+data.list[i].hqName+'/'+data.list[i].departmentName+'</label>';
 	        		 contents += '<label>'+data.list[i].rankName+'</label>';
 	        		 contents += '<label>'+data.list[i].name+'</label>'+'<br/>';
+	        		 contents += '</div>';
 	        	 }
 	        	 $('#myDropdown2').append(contents);
 	        	 
-	        	 document.getElementById("category").onclick = function (event) {
+	        	 $('.category').on('click', function (event) {
 	        		    event.stopPropagation();
-	        		};
+	        		});
 
 	      },
 	      error:function(e){
