@@ -7,12 +7,96 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+ 
 
 <div id="animalDetailBase">
-	<div>${base}</div>
-	<div>${image}</div>
+	<div class="animalImg" style="width: 400px; height: 500px;">
+		<div class="mainImgDiv">
+			<div class="imgButton"></div>
+			<div class="mainImg" style="width: 300px; height: 200px; background-color: red"></div>
+			<div class="imgButton"></div>
+		</div>
+		<div class="subImgDiv" style="width: 100%; height: 100px;">
+			<div class="subImg">
+				<img alt="" src="/photo/cocean/animal/1703417309246.jpg" width="100px" height="100px">
+			</div>
+			<div class="subImg">
+				<img alt="" src="/photo/cocean/animal/1703417309246.jpg" width="100px" height="100px">
+			</div>
+			<div class="subImg">
+				<img alt="" src="/photo/cocean/animal/1703417309246.jpg" width="100px" height="100px">
+			</div>
+		</div>
+	</div>
+<%-- 		<c:forEach items="${image}" var="item"> --%>
+<%-- 			<img alt="${item.serverFileName}" src="/photo/cocean/animal/${item.serverFileName}" width="200px" height="200px"> --%>
+<%-- 		</c:forEach> --%>
+	<div class="animalBase">
+		<table style="width:100%">
+			<colgroup>
+				<col style="width:30%">
+				<col style="width:70%">
+			</colgroup>
+			<tr>
+				<th>코션친구들코드</th>
+				<td>${base.animalCode}</td>
+			</tr>
+			<tr>
+				<th>분류</th>
+				<td>${base.taxonomy}</td>
+			</tr>
+			<tr>
+				<th>학명</th>
+				<td>${base.scientificName}</td>
+			</tr>
+			<tr>
+				<th>국명</th>
+				<td>${base.commonName}</td>
+				
+			<tr>
+				<th>지점</th>
+				<td>${base.branchID}</td>
+			</tr>
+			<tr>
+				<th>코션하우스</th>
+				<td>${base.tankID}</td>
+			</tr>
+			<tr>
+				<th>마리 수</th>
+				<td>${base.individual}</td>
+			</tr>
+			<tr>
+				<th>태어난 날</th>
+				<td>${base.birthDate}</td>
+			</tr>
+			<tr>
+				<th>들어온 날</th>
+				<td>${base.entryDate}</td>
+			</tr>
+			<tr>
+				<th>세부 정보</th>
+				<td>${base.details}</td>
+			</tr>
+			<tr>
+				<th>담당자</th>
+				<td>
+					<button id="inchargeAdd()">담당자 지정</button><br/>
+					<c:if test="${incharge eq null}">담당자 없음</c:if>
+					<c:forEach items="${incharge}" var="ic" >${ic}</c:forEach>
+				</td>
+			</tr>
+		</table>
+	</div>
 	<div>${incharge}</div>
+	<script>
+		$('.subImg').css({'margin':'1px auto', 'display':'inline'});
+		
+// 		function(){
+// 			$.ajax({
+				
+// 			});
+// 		}
+	</script>
 </div>
 
 

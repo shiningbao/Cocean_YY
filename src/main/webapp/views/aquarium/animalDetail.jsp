@@ -4,24 +4,49 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Cocean</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<style>
+	.animalDetail{
+		width: 900px;
+		margin: 0 auto;
+		border: 1px solid black;
+	}
+</style>
 </head>
 <body>
-<c:import url="/side"/>
-<h1>ANIMAL DETAIL</h1>
-<ul style="display: flex;">
-	<li style="margin-right: 40px" id="base">기본 정보</li>
-	<li style="margin-right: 40px" id="log">일지</li>
-	<li style="margin-right: 40px" id="plan">계획</li>
-</ul>
-
-<div id="drawContent"></div>
-
+	<c:import url="/side"/>
+	<div class="animalContent">
+		<h1>코션친구들</h1>
+		<div class="animalDetail">
+			<h2 id="nick">${nickname}</h2>
+			<ul style="display: flex;">
+				<li style="margin-right: 40px" id="base">기본 정보</li>
+				<li style="margin-right: 40px" id="log">일지</li>
+				<li style="margin-right: 40px" id="plan">계획</li>
+			</ul>
+			
+			<div class="drawContent"></div>
+		</div>
+	</div>
 </body>
 <script>
+
+resizeWidth();
+window.addEventListener('resize',resizeWidth);
+function resizeWidth(){
+	var winWidth = window.innerWidth;
+	//console.log(winWidth);
+	var sideWidth = $('nav').outerWidth();
+	//console.log(sideWidth);
+	var contentWidth = winWidth-sideWidth;
+	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
+}
+
 var animalID = '${animalID}';
+var nickname = '${nickname}';
 var con;
+console.log(nickname);
 
 getContents('base');
 
@@ -50,7 +75,7 @@ $('li').on('click',function(){
 function drawContent(data, con){
 	var html = jQuery('<div>').html(data);
 	var view = '';
-	$('#drawContent').html('');
+	$('.drawContent').html('');
 	switch (con) {
 		case 'base':
 			view += html.find('#animalDetailBase').html();
@@ -62,7 +87,7 @@ function drawContent(data, con){
 			view += html.find('#animalDetailPlan').html();
 			break;
 	}
-	$('#drawContent').html(view);
+	$('.drawContent').html(view);
 }
 
 function logplanWrite(){
@@ -112,6 +137,11 @@ function monthchange(){
 			console.log(e);
 		}
 	});
+
+	
+
+
+	
 	
 	
 }

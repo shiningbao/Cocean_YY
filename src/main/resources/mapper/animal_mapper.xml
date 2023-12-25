@@ -35,7 +35,11 @@
 	</insert>
 	
 	<select id="animalDetail" resultType="animal">
-		SELECT * FROM animalManagement WHERE animalID = #{param1}
+		SELECT am.*, bct.commonName, bct.taxonomy, bct.scientificName
+			,CONCAT(am.classificationCode, LPAD(am.CodeNumber,6,'0')) AS animalCode
+			FROM animalManagement am NATURAL JOIN biologicalClassificationTable bct
+			WHERE animalID = #{param1}
+
 	</select>
 	
 	<select id="animalImage" resultType="file">

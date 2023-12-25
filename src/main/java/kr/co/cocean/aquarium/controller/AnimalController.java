@@ -81,9 +81,10 @@ public class AnimalController {
 	
 	
 	@GetMapping(value = "/animal/detail.go")
-	public ModelAndView animalDetailGo(@RequestParam int animalID) {
+	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail");
 		mav.addObject("animalID", animalID);
+		mav.addObject("nickname", nickname);
 		return mav;
 	}
 	
@@ -119,6 +120,9 @@ public class AnimalController {
 		return result;
 	}
 
-	
+	@GetMapping(value = "/animal/classifi")
+	public String classifi() {
+		return "aquarium/classification";
+	}
 	
 }
