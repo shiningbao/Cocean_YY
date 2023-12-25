@@ -63,6 +63,23 @@ label {
 	padding-right: 25px;
 	padding-left: 10px;
 }
+
+#search{
+    padding-left: 755px;
+    margin-top: 15px;
+}
+
+#search input{
+	z-index: 99999;
+}
+#tankSubmit{
+	margin-top: 380px;
+    position: absolute;
+    left: 1280px;
+    width: 100px;
+
+}
+
 </style>
 </head>
 <body>
@@ -96,21 +113,21 @@ label {
     </div>
     <div id="box2">
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option1">
-            <label class="form-check-label" for="option1">해수&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option5">
+            <label class="form-check-label" for="option5">해수&nbsp;&nbsp;</label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option2">
-            <label class="form-check-label" for="option2">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option6">
+            <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option3">
-            <label class="form-check-label" for="option3">반수생&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option7">
+            <label class="form-check-label" for="option7">반수생&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option4">
-            <label class="form-check-label" for="option4">육상&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option8">
+            <label class="form-check-label" for="option8">육상&nbsp;&nbsp;</label>
         </div>
     </div>
 
@@ -151,6 +168,8 @@ label {
 			</tbody>
 		</table>
 	</div>
+	<button type="button" id="tankSubmit" class="btn btn-primary">등록</button>
+	
 </body>
 <script>
 
