@@ -74,9 +74,75 @@ border: 1px solid gray;
   <div class="modal-content">
     <span class="close">&times;</span>
     <!-- 모달 내용 -->
-    <p>모달 내용을 입력하세요.</p>
+    <p/>주소
+		     <p/><input type="text" id="postcode" placeholder="우편번호" style="width: 50%;">
+			 <input type="button" id="findpostcode" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
+			 <input type="text" id="roadAddress"  name = member_roadAddr placeholder="도로명주소" style="width: 50%;"><br/>
+			 <input type="text" id="jibunAddress" name = member_parcelAddr placeholder="지번주소" style="width: 50%;"><br/>
+			 <span id="guide" style="color:#999; display:none"></span><br/>
+			 <input type="text" id="detailAddress" name = member_detailAddr placeholder="상세주소">		  
+			 <input type="text" id="extraAddress" placeholder="참고항목">              
   </div>
 </div>
+
+<div class="modal fade" id="regModal" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 모달창 제목 -->
+					<h5 class="modal-title">일정등록</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="scheduleWrite.do" method="POST" id="calForm">
+						<!-- 입력폼 -->
+							<p>제목 <input type="text" name="title" placeholder="제목을 입력해주세요."></p>
+							<p>시작일
+								<input type="datetime-local" name="start" value="${dto.start}" >
+							</p>
+							<p>종료일
+								<input type="datetime-local" name="end" value="${dto.end}" >
+							</p>
+							<p>중분류    
+								<select id="midSelect" name="mainCategory">
+									<option value="개인">개인</option>
+									<option value="팀">팀</option>
+								</select>
+							</p>
+							<p>소분류
+							    <select id="subSelect" name="subCategory">
+							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
+							    </select>
+							</p>
+<!-- 							<p class="writeViewCallender">개인캘린더 -->
+<!-- 							    <select id="myCallender" name="category"> -->
+<!-- 							    	<option value="내 일정(기본)">내 일정(기본)</option> -->
+<!-- 							    </select> -->
+<!-- 							</p> -->
+							<p>비고
+								<input type="text" name="remarks">
+							</p>
+							<p>공개여부
+								<input type="checkbox" name="publicCategory">
+							</p>
+							<p>내용
+								<textarea name="description"></textarea>
+							</p>
+							
+						<div class="modal-footer">
+							<button type="button" id="calSubmit" class="btn btn-primary">저장</button>
+							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
+							
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
@@ -93,6 +159,8 @@ border: 1px solid gray;
 </body>
 <script>
 var matchedProductList;
+var productListTable = $('.productList table');
+productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
 
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
@@ -130,6 +198,7 @@ new Promise((resolve, reject) => {
                 	console.log(data);
                 	
                  	// 첫 번째 Ajax 결과의 x, y 값과 일치하는 branch 찾기
+                    var productListTable = $('.productList table');
                     var matchedBranch = null;
                     for (var i = 0; i < data.branchProductList.length; i++) {
                         var branch = data.branchProductList[i];
@@ -145,7 +214,9 @@ new Promise((resolve, reject) => {
                             break;
                         }
                     }
-
+                    $(document).ready(function() {
+                        // 테이블에 상품 정보를 추가하는 코드를 여기에 배치
+                    });
     				// 지점 탭 추가
 	    			console.log("------------------");
     				for (var i = 0; i < data.branchList.length; i++) {
@@ -154,56 +225,72 @@ new Promise((resolve, reject) => {
     				    branchButton.data('branchName', data.branchList[i].branchName);
     				    $('.branchLocation').append(branchButton);
     				}
+    				console.log("------------------");
+    				for (var i = 0; i < data.branchProductList.length; i++) {
+						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
+								data.branchProductList[i].category === "상품"){
+							var product = data.branchProductList[i];
+							console.log(product);
+							var productInfo = '<tr>' +
+	                         '<td>' + product.productID + '</td>' +
+	                         '<td>' + product.productName + '</td>' +
+	                         '<td>' + product.price + '</td>' +
+	                         '</tr>';
+	                         console.log("프로덕트");
+			                 console.log(productInfo);
+	                     productListTable.append(productInfo);
+						}
+					}
     				
     				// 지점 탭 클릭
     				$('.branchButton').click(function () {
-    					console.log("------------------");
-    			    	console.log("지점 버튼 클릭");
-    			        branchName = $(this).data('branchName');
-    			        console.log(branchName);
-    			        for (var i = 0; i < data.branchProductList.length; i++) {
-    			        	var branch = data.branchProductList[i];
-    			        	if(branchName == branch.branchName){
-    			        		console.log("클릭된 지점명과 일치하는 지점명");
-    			        		console.log("탭 지점명 : "+branchName);
-    			        		console.log("클릭된 지점명 값 : "+branch.branchName);
-    			        		console.log(branch.branchLongitude);
-    			        		console.log(branch.branchLatitude);
-    			        		
-    			        		 initializeMap({
-    			                     documents: [{
-    			                         x: branch.branchLongitude,
-    			                         y: branch.branchLatitude
-    			                     }]
-    			                 });
-    			        		 matchedProductList = data.branchProductList.filter(function (product) {
-    			                     return product.branchName === branch.branchName;
-    			                 });
-    			        		 	console.log("------------------");
-    			        		 	console.log("지점 상품 리스트");
-    			        		 	console.log(matchedProductList);
-    			                 // 상품 데이터로 테이블을 업데이트합니다.
-    			                 var productListTable = $('.productList table');
-    			                 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+					    console.log("------------------");
+					    console.log("지점 버튼 클릭");
+					    branchName = $(this).data('branchName');
+					    console.log(branchName);
+					
+					    // 선택된 branchName에 해당하는 지점 찾기
+					    var matchedBranch = data.branchProductList.find(function (branch) {
+					        return branch.branchName === branchName;
+					    });
+					
+					    if (matchedBranch) {
+					        console.log("클릭된 지점명과 일치하는 지점명");
+					        console.log("탭 지점명 : " + branchName);
+					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
+					        console.log(matchedBranch.branchLongitude);
+					        console.log(matchedBranch.branchLatitude);
+					
+					        initializeMap({
+					            documents: [{
+					                x: matchedBranch.branchLongitude,
+					                y: matchedBranch.branchLatitude
+					            }]
+					        });
+					
+					        // 상품 데이터로 테이블을 업데이트합니다.
+					        var productListTable = $('.productList table');
+					        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+					
+					        // 데이터를 테이블에 추가
+					        for (var j = 0; j < data.branchProductList.length; j++) {
+					            var product = data.branchProductList[j];
+					
+					            // 여기서 category가 "상품"인 경우에만 추가
+					            if (product.category === "상품" && product.branchName === matchedBranch.branchName) {
+					                var productInfo = '<tr>' +
+					                    '<td>' + product.productID + '</td>' +
+					                    '<td>' + product.productName + '</td>' +
+					                    '<td>' + product.price + '</td>' +
+					                    '</tr>';
+					                productListTable.append(productInfo);
+					            }
+					        }
+					    } else {
+					        console.log("일치하는 지점을 찾을 수 없습니다.");
+					    }
+					});
 
-    			                 
-    			                 // 가산점 기본값일떄는 상품 안 보임
-    			                 // 탭을 눌러야만 상품 보여줌
-    			                 // 데이터를 테이블에 추가
-    			                 for (var j = 0; j < matchedProductList.length; j++) {
-    			                     var product = matchedProductList[j];
-    			                     var productInfo = '<tr>' +
-    			                         '<td>' + product.productID + '</td>' +
-    			                         '<td>' + product.productName + '</td>' +
-    			                         '<td>' + product.price + '</td>' +
-    			                         '</tr>';
-    			                     productListTable.append(productInfo);
-    			                 }
-    			                 break;
-    			        	}
-						}
-    			        
-    			    });
     				
     				// 
 	                 // 해결 해야함
@@ -214,7 +301,7 @@ new Promise((resolve, reject) => {
 	                 // 
 	                 //
                     // 첫 번째 Ajax 결과의 x, y 값과 일치하는 productList 찾기
-                    var matchedProductList = data.branchProductList.filter(function(product) {
+                    /* var matchedProductList = data.branchProductList.filter(function(product) {
 				    var matchedBranch = data.branchProductList.find(function(branch) {
 				        return branch.branchLongitude === apiResult.documents[0].x && branch.branchLatitude === apiResult.documents[0].y;
 				    });
@@ -236,7 +323,7 @@ new Promise((resolve, reject) => {
                          '</tr>';
                      productListTable.append(productInfo);
                  } 
-                 
+                  */
                  
                  
                  

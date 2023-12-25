@@ -14,7 +14,7 @@ public interface StoreDAO {
 	
 	ArrayList<StoreProductDTO> branchProductList();
 
-	ArrayList<StoreDTO> searchProduct( String branchName,String searchKeyword);
+	ArrayList<StoreDTO> searchProduct( String searchKeyword,String branchName);
 
 
 

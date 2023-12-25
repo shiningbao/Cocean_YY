@@ -19,8 +19,13 @@
 		    branch b ON bp.branchID = b.branchID
 	</select>
 	
-	<!-- <select id="searchProduct" resultType="product">
-		SELECT * FROM product WHERE productName = #{param1} AND branch = #{param2} 
-	</select> -->
+	<select id="searchProduct" resultType="branchProduct">
+	SELECT pi.productID, pi.productName, pi.price
+FROM productInformation pi
+JOIN branchProduct bp ON pi.productID = bp.productID
+JOIN branch b ON bp.branchID = b.branchID
+WHERE pi.productName = #{param1} AND b.branchName = #{param2};
+
+	</select>
 	
 </mapper>
