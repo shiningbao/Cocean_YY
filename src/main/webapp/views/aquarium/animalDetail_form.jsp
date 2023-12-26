@@ -6,9 +6,15 @@
 <meta charset="UTF-8">
 <title>Cocean</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <style>
+	.animalContent{
+		position: absolute;
+		top: 80px;
+	}
 	.animalDetail{
-		width: 900px;
+		width: 90%;
+		min-width: 900px;
 		margin: 0 auto;
 		border: 1px solid black;
 	}
@@ -46,7 +52,7 @@ function resizeWidth(){
 var animalID = '${animalID}';
 var nickname = '${nickname}';
 var con;
-console.log(nickname);
+//console.log(nickname);
 
 getContents('base');
 
@@ -57,8 +63,7 @@ function getContents(con){
 		data:{'animalID':animalID, 'con':con},
 		dataType:'text',
 		success:function(data){
-			//console.log(data);
-			drawContent(data, con);
+			drawContent(data);
 		},
 		error:function(e){
 			console.log(e);
@@ -72,22 +77,10 @@ $('li').on('click',function(){
 });
 
 
-function drawContent(data, con){
-	var html = jQuery('<div>').html(data);
-	var view = '';
+function drawContent(data){
+	var content = jQuery('<div>').html(data);
 	$('.drawContent').html('');
-	switch (con) {
-		case 'base':
-			view += html.find('#animalDetailBase').html();
-			break;
-		case 'log':
-			view += html.find('#animalDetailLog').html();
-			break;
-		case 'plan':
-			view += html.find('#animalDetailPlan').html();
-			break;
-	}
-	$('.drawContent').html(view);
+	$('.drawContent').html(content);
 }
 
 function logplanWrite(){
@@ -131,19 +124,12 @@ function monthchange(){
 		dataType:'text',
 		success:function(data){
 			//console.log(data);
-			drawContent(data, con);
+			drawContent(data);
 		},
 		error:function(e){
 			console.log(e);
 		}
 	});
-
-	
-	console.log(aa);
-
-	
-	
-	
 }
 
 </script>

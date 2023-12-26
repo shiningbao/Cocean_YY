@@ -100,7 +100,6 @@ $(function () {
    			sendEmployeedID(employeeID);
     	}
     });
-});
     function fSch() {
         console.log("껌색할께영");
         $('#jstree').jstree(true).search($("#schName").val());
@@ -109,6 +108,7 @@ $(function () {
     	//console.log('값 보내기');
     	getEmployeeID(employeeID);
     }
+});
 
 </script>
 </body>
