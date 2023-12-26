@@ -16,11 +16,11 @@ table,th,td{
     padding: 5px 10px;
 }
 
-#formTableHead{
+#waitingTableHead{
 	background-color: #86B0F3;
 }
 
-#formTable{
+#waitingTable{
 	width: 500px;
 	text-align: center;
 }
@@ -38,19 +38,25 @@ table,th,td{
 	  <option value="인사">인사</option>
 	</select>
 
-		<input type="search" name="keyword" placeholder="문서양식을 검색하세요"/>
+		<input type="search" name="keyword" placeholder="제목/기안자"/>
 		<button class="btn btn-primary">검색</button>
 	</form>
 		
-	<table id="formTable">
-		<tr id="formTableHead">
+	<table id="waitingTable">
+		<tr id="waitingTableHead">
+			<th>기안일</th>
 			<th>유형</th>
-			<th>문서양식</th>
+			<th>제목</th>
+			<th>상태</th>
+			<th>기안자</th>
 		</tr>
-		<c:forEach items="${list}" var="form">
+		<c:forEach items="${list}" var="list">
 		<tr>
-			<td>${form.category}</td>
-			<td><a href="writeDraft.go?title=${form.title}">${form.title}</a></td>
+			<td>${list.draftDate}</td>
+			<td>일반</td>
+			<td><a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a></td>
+			<td>${list.approvalStatus}</td>
+			<td>${list.name}</td>
 		</tr>	
 		</c:forEach>
 	</table>

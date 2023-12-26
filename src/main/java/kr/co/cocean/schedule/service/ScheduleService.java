@@ -40,5 +40,17 @@ public class ScheduleService {
 		}
 		
 	}
+	public List<HashMap<String, Object>> getFacilityEvents() {
+		return dao.getFacilityEvents();
+	}
+	public List<HashMap<String, Object>> addInterestCallender(String employeeID) {
+		return dao.addInterestCallender(employeeID);
+	}
+	public int addCalender(String loginEmployeeID, String nodeText) {
+		return dao.addCalender(loginEmployeeID,nodeText);
+	}
+	public List<String> showInterestCalendar(String loginEmployeeID) {
+		return dao.showInterestCalendar(loginEmployeeID);
+	}
 
 }

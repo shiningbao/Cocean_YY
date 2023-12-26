@@ -29,15 +29,29 @@
 	</insert>
 	
 	<insert id="writeWorkDraft">
-    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
+    	INSERT INTO workDraft (title,content,idx) VALUES (#{title},#{content},#{idx})
 	</insert>
 	
 	<insert id="writeFile">
-    	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},#{pathName},#{newFileName},#{oriFileName})
+    	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},'draft',#{newFileName},#{oriFileName})
 	</insert>
 	
-	<insert id="writeAttendanceDraftContent">
-    	INSERT INTO workDraft (idx,title,content) VALUES (#{idx},#{title},#{content})
+	<select id="employeeInfo" resultType="form">
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID};
+	</select>
+	
+	<select id="waitingList" resultType="form">
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx RIGHT OUTER JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기';
+	</select>
+	
+	<select id="draftDetail" resultType="form">
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID LEFT OUTER JOIN workDraft w ON df.idx=w.idx WHERE e.employeeID=#{employeeID} AND df.idx=#{idx};
+	</select>
+	
+	<insert id="saveApprovalLine">
+    	INSERT INTO draft (employeeID,documentNo) VALUES (#{employeeID},#{employeeID})
 	</insert>
-
 </mapper>

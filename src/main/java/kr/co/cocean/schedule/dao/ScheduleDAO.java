@@ -23,4 +23,12 @@ public interface ScheduleDAO {
 
 	void updateFacility(String facilityName);
 
+	List<HashMap<String, Object>> getFacilityEvents();
+
+	List<HashMap<String, Object>> addInterestCallender(String employeeID);
+
+	int addCalender(String loginEmployeeID, String nodeText);
+
+	List<String> showInterestCalendar(String loginEmployeeID);
+
 }

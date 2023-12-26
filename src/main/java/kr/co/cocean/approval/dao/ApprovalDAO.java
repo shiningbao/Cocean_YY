@@ -1,9 +1,9 @@
 package kr.co.cocean.approval.dao;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,11 +19,18 @@ public interface ApprovalDAO {
 
 	void write(ApprovalDTO dto);
 
-	void writeWorkDraft(HashMap<String, String> param);
+	void writeWorkDraft(String title,String content, int idx);
 
-	void writeAttendanceDraftContent(HashMap<String, String> param);
+	void writeFile(int idx, String oriFileName, String newFileName);
 
-	void writeFile(int idx, String oriFileName, String newFileName, String pathName);
+	ArrayList<ApprovalDTO> employeeInfo(String employeeID);
+
+	ArrayList<ApprovalDTO> waitingList(int employeeID);
+
+	ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID);
+
+	void saveApprovalLine(int employeeID, String category);
+
 
 
 }

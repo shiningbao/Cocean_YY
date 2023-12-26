@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -66,17 +67,21 @@ public class ApprovalService {
 		dto.setPublicStatus(publicStatus);
 		dto.setTempSave(tempSave);
 		dto.setDocumentNo(title);
+		logger.info("params:{}",param);
 		
 		dao.write(dto);
 		int idx=dto.getIdx();
+		if(files[0].getSize()!=0) {
 		for (MultipartFile file : files) {
 			upload(file,idx);
-		}
-		dao.writeWorkDraft(param);
+		}}
+		String content = param.get("content");
+		
+		dao.writeWorkDraft(title,content,idx);
 		// dao.writeAttendanceDraftContent(param);
 		
 	}
-	
+	// file 테이블에 insert 
 	public void upload(MultipartFile uploadFile, int idx) {
 		
 		String oriFileName = uploadFile.getOriginalFilename();
@@ -86,12 +91,35 @@ public class ApprovalService {
 		try {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
-			String pathName = root+"draft/"+newFileName;
 			Files.write(path, bytes);
-			dao.writeFile(idx,oriFileName,newFileName,pathName);
+			dao.writeFile(idx,oriFileName,newFileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public ArrayList<ApprovalDTO> employeeInfo(String employeeID) {
+		return dao.employeeInfo(employeeID);
+		
+	}
+
+	public ArrayList<ApprovalDTO> waitingList(int employeeID) {
+		return dao.waitingList(employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID) {
+		return dao.draftDetail(idx,employeeID);
+	}
+
+
+	public void saveApprovalLine(int employeeID, String category) {
+		dao.saveApprovalLine(employeeID,category);
+		
+	}
+
+	/*
+	 * public ArrayList<HashMap<String, Object>> employeeList() { return
+	 * dao.employeeList(); }
+	 */
 
 }
