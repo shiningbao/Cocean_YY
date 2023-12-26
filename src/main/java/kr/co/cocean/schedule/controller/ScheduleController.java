@@ -36,14 +36,7 @@ public class ScheduleController {
 		return "schedule/schedule";
 	}
 	
-	@GetMapping(value="/schedule/getTeams.do")
-	@ResponseBody
-	public List<String> getTeams() {
-		logger.info("중분류 팀선택 팀리스트 호출");
-		List<String> teams = service.getTeams();
-
-		return teams;
-	}
+	
 	
 	@GetMapping(value="/schedule/getCallender.do")
 	@ResponseBody
@@ -55,15 +48,31 @@ public class ScheduleController {
 		return myCallenders;
 	}
 	
-	@PostMapping(value="/schedule/scheduleWrite.do")
-	public ModelAndView scheduleWrite(ScheduleDTO dto, HttpSession session) {
+	@PostMapping(value = {"/schedule/scheduleWrite.do", "/schedule/facility.do"})
+	public ModelAndView scheduleWrite(@RequestParam(required = false) String requestType,ScheduleDTO dto, HttpSession session,
+			@RequestParam String start,@RequestParam String startTime,
+			@RequestParam String end, @RequestParam String endTime) {
 		logger.info("write 정보" +dto.getTitle());
 		ModelAndView mav = new ModelAndView();
 		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
 		dto.setEmployeeID(employeeID);
-		service.scheduleWrite(dto);
-
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime startDateTime = LocalDateTime.parse(start+ " "+ startTime, formatter);
+		LocalDateTime endDateTime = LocalDateTime.parse(end+ " "+ endTime, formatter);
+		dto.setStart(startDateTime.toString());
+		dto.setEnd(endDateTime.toString());
+		
+		if("scheduleWrite".equals(requestType)) {
+			dto.setSubCategory("개인");
+			service.scheduleWrite(dto);
+		}else {
+			dto.setBackgroundColor("#FF82FF");
+			service.facilityWrite(dto);
+		}
+		
+		mav.setViewName("redirect:/schedule/schedule.go");
 		
 		return mav;
 	}
@@ -71,16 +80,43 @@ public class ScheduleController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/schedule/getCallenderEvents.do")
 	@ResponseBody
-	public List<HashMap<String, Object>> getCallenderEvents(HttpSession session) {
+	public List<HashMap<String, Object>> getCallenderEvents(HttpSession session,@RequestParam Boolean isChecked) {
 		logger.info("캘린더이벤트 추가 컨트롤러");
 		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
-		List<HashMap<String,Object>> eventList = service.getCallenderEvents(employeeID);
+		List<HashMap<String,Object>> eventList = new ArrayList<HashMap<String,Object>>();
+		if(isChecked) {
+			
+			eventList = service.getCallenderEvents(employeeID);
+		}else {
+			
+		}
 		
 		logger.info("eventList=="+eventList);
 		return eventList;
 	}
 	
+	@RequestMapping(value="/schedule/getFacility.do")
+	@ResponseBody
+	public List<String> getFacility(@RequestParam String text) {
+		logger.info("text=="+text);
+			
+		 List<String> getFacility = service.getFacility(text);
+		
+		return getFacility;
+	}
+	
+	
+//	@RequestMapping(value="/schedule/facility.do")
+//	public ModelAndView facilityWrite(ScheduleDTO dto, @Request) {
+//		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
+//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//		LocalDateTime startDateTime = LocalDateTime.parse(start+ " "+ startTime, formatter);
+//		LocalDateTime endDateTime = LocalDateTime.parse(end+ " "+ endTime, formatter);
+//		dto.setStart(startDateTime.toString());
+//		dto.setEnd(endDateTime.toString());
+//		return mav;
+//	}
 	
 	
 		

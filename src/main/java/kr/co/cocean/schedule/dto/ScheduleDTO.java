@@ -19,13 +19,21 @@ public class ScheduleDTO {
 	private int employeeID;
 	private String title;
 	
-	private String mainCategory;
 	private String subCategory;
 	private String description;
 	private String remarks;
 	private String category;
+	private String backgroundColor;
+	private boolean publicCategory;
 	
-	
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
+
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
 	public int getEmployeeID() {
 		return employeeID;
 	}
@@ -79,13 +87,13 @@ public class ScheduleDTO {
 	}
 
 
-
-	public String getMainCategory() {
-		return mainCategory;
+	
+	public boolean isPublicCategory() {
+		return publicCategory;
 	}
 
-	public void setMainCategory(String mainCategory) {
-		this.mainCategory = mainCategory;
+	public void setPublicCategory(boolean publicCategory) {
+		this.publicCategory = publicCategory;
 	}
 
 	public String getSubCategory() {
