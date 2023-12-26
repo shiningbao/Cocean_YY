@@ -21,7 +21,28 @@ public class ApprovalDTO {
 	private int tempSave;
 	private String documentNo;
 	private String content;
+	private Date draftDate;
+	private int approvalID;
+	private String approvalStatus;
 	
+	public Date getDraftDate() {
+		return draftDate;
+	}
+	public void setDraftDate(Date draftDate) {
+		this.draftDate = draftDate;
+	}
+	public int getApprovalID() {
+		return approvalID;
+	}
+	public void setApprovalID(int approvalID) {
+		this.approvalID = approvalID;
+	}
+	public String getApprovalStatus() {
+		return approvalStatus;
+	}
+	public void setApprovalStatus(String approvalStatus) {
+		this.approvalStatus = approvalStatus;
+	}
 	public String getContent() {
 		return content;
 	}

@@ -3,6 +3,7 @@ package kr.co.cocean.approval.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,7 +23,14 @@ public interface ApprovalDAO {
 
 	void writeFile(int idx, String oriFileName, String newFileName);
 
-	ArrayList<HashMap<String, Object>> employeeList();
+	ArrayList<ApprovalDTO> employeeInfo(String employeeID);
+
+	ArrayList<ApprovalDTO> waitingList(int employeeID);
+
+	ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID);
+
+	void saveApprovalLine(int employeeID, String category);
+
 
 
 }

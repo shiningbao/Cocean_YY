@@ -9,6 +9,7 @@
 <!-- jsTree theme -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <style>
 	
 .jstree-default .jstree-themeicon-custom{
@@ -29,7 +30,6 @@ background-size: 16px 16px; /* 이미지 크기를 기본 jstree 아이콘과 �
 <input type="text" id="schName" value="">
 <button onclick="fSch()">탐색</button>
 <div id="jstree"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
 <script>
 /* $(function () {

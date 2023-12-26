@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -97,8 +98,28 @@ public class ApprovalService {
 		}
 	}
 
-	public ArrayList<HashMap<String, Object>> employeeList() {
-		return dao.employeeList();
+	public ArrayList<ApprovalDTO> employeeInfo(String employeeID) {
+		return dao.employeeInfo(employeeID);
+		
 	}
+
+	public ArrayList<ApprovalDTO> waitingList(int employeeID) {
+		return dao.waitingList(employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID) {
+		return dao.draftDetail(idx,employeeID);
+	}
+
+
+	public void saveApprovalLine(int employeeID, String category) {
+		dao.saveApprovalLine(employeeID,category);
+		
+	}
+
+	/*
+	 * public ArrayList<HashMap<String, Object>> employeeList() { return
+	 * dao.employeeList(); }
+	 */
 
 }
