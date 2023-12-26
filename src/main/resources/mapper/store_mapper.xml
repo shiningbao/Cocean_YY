@@ -40,4 +40,7 @@
 	INSERT INTO branchProduct(branchID, productID) VALUES(#{param1}, #{param2})
 	</insert>
 	
+	<insert id="ticketRegister">
+	INSERT INTO brachProduct(branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
 </mapper>

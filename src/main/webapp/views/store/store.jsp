@@ -81,7 +81,7 @@ border: 1px solid gray;
     <p>지점 등록<p/>
     		 지점명 <input type="text" id="branchName"  name = branchName placeholder="지점명을 입력해주세요" style="width: 50%;"><br/>
 			 도로명주소 <input type="text" id="branchLocation"  name = branchLocation placeholder="도로명주소" style="width: 50%;">
-			 <input type="button" id="findpostcode" onclick="init()" value="도로명주소 찾기"><br/>
+			 <input type="button" onclick="roadAddr()" value="도로명주소 찾기"><br/>
 			 <button type="button" class="button" onclick="branchRegisterConfirm()">등록</button>
   </div>
 </div>
@@ -89,11 +89,12 @@ border: 1px solid gray;
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
 	<button id="search" class="button">검색</button>
+	<button id="productInfoRegister" class="button" onclick="location.href='storeProductRegister.go'">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
 	</div>
-	<button type="button" class="button" onclick="location.href='storeProductRegister.go'">등록</button>
+	<button type="button" class="button" onclick="location.href='storeProductRegister.do'">등록</button>
 </div>
 
 <div class="ticketList">티켓 리스트
@@ -138,7 +139,7 @@ new Promise((resolve, reject) => {
             console.log("y : " + data.documents[0].y);
             console.log("------------------");
             
-            initializeMap(data);
+            roadAddrializeMap(data);
             resolve(data); // 첫 번째 Ajax 호출 성공 시 resolve 호출
         },
         error: function (e) {
@@ -228,14 +229,9 @@ new Promise((resolve, reject) => {
 					    var matchedProducts = data.branchProductList.filter(function (product) {
 					        return product.branchName === matchedBranch.branchName && product.category === "상품";
 					    });
-					    console.log("매치매치");
-					    console.log(matchedProducts);
 					    var matchedTickets = data.branchProductList.filter(function (product) {
 					        return product.branchName === matchedBranch.branchName && product.category === "티켓";
 					    });
-					    console.log("티켓티켓");
-					    console.log(matchedTickets);
-					    
 					    
 					    if (matchedBranch) {
 					        console.log("클릭된 지점명과 일치하는 지점명");
@@ -245,7 +241,7 @@ new Promise((resolve, reject) => {
 					        console.log(matchedBranch.branchLongitude);
 					        console.log(matchedBranch.branchLatitude);
 							
-					        initializeMap({
+					        roadAddrializeMap({
 					            documents: [{
 					                x: matchedBranch.branchLongitude,
 					                y: matchedBranch.branchLatitude
@@ -305,8 +301,7 @@ new Promise((resolve, reject) => {
 					        console.log("지점에 등록된 상품이 없습니다");
 					    }
 					});
-                 
-    			// 상품 검색 ajax
+    			 // 상품 검색 ajax
                  function searchProduct(searchKeyword, branchName) {
                 	 console.log("------------------");
                  	 console.log("keyword/Name : "+searchKeyword+"/"+branchName);
@@ -343,7 +338,7 @@ new Promise((resolve, reject) => {
 });
 
 	// 지도 그리기
-    function initializeMap(data) {
+    function roadAddrializeMap(data) {
 		
         var mapContainer = document.getElementById('map');
         var options = {
@@ -369,10 +364,8 @@ new Promise((resolve, reject) => {
 
             // 초기에 InfoWindow를 열어둠
             infowindow.open(map, marker);
-            
-            
-        
     }
+	
 	// 검색된 상품 그리기
     function drawProduct(data) {
 		console.log("drawProduct 함수");
@@ -397,58 +390,57 @@ new Promise((resolve, reject) => {
             searchedProduct.append(productInfo);
     }
 }
-	
- // 카카오 우편번호 api
-    function init() {
+    // 공통으로 사용될 모달 열기 함수
+    function openModal(modalId) {
+      var modal = document.getElementById(modalId);
+      modal.style.display = 'block';
+    }
+
+    // 공통으로 사용될 모달 닫기 함수
+    function closeModal(modalId) {
+      var modal = document.getElementById(modalId);
+      modal.style.display = 'none';
+    }
+
+    // 버튼 클릭 이벤트 핸들러 동적으로 추가하는 함수
+    function addButtonClickListener(buttonId, modalId) {
+      document.getElementById(buttonId).addEventListener('click', function () {
+        openModal(modalId);
+      });
+
+      document.getElementsByClassName('close')[0].addEventListener('click', function () {
+        closeModal(modalId);
+      });
+
+      window.addEventListener('click', function (event) {
+        var modal = document.getElementById(modalId);
+        if (event.target === modal) {
+          closeModal(modalId);
+        }
+      });
+    }
+	// 버튼 클릭 이벤트 핸들러 등록
+    addButtonClickListener('branchRegisterConfirm', 'myBranchModal');
+    addButtonClickListener('ticketRegisterConfirm', 'myTicketModal');
+    
+ 	// 카카오 우편번호 api
+    function roadAddr() {
         new daum.Postcode({
             oncomplete: function(data) {
-                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
                 var roadAddr = data.roadAddress; // 도로명 주소 변수
 
-                // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById("branchLocation").value = roadAddr;
                 
                 var guideTextBox = document.getElementById("guide");
-                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                 if(data.autoRoadAddress) {
                     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
                     guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
                     guideTextBox.style.display = 'block';
-
                 }
             }
         }).open();
     }
 
- 	// 지점등록 모달 열기
-    function openBranchModal() {
-      var modal = document.getElementById('myBranchModal');
-      modal.style.display = 'block';
-    }
- 
-    // 모달 닫기
-    function closeBranchModal() {
-      var modal = document.getElementById('myBranchModal');
-      modal.style.display = 'none';
-    }
-
-    // 버튼 클릭 시 지점 등록 모달 열기
-    document.getElementById('branchRegisterConfirm').addEventListener('click', openBranchModal);
-
-    // 모달 내 닫기 버튼 클릭 시 지점 등록 모달 닫기
-    document.getElementsByClassName('close')[0].addEventListener('click', closeBranchModal);
-
-    // 모달 외 다른 부분 클릭 시 지점 등록 모달 닫기
-    window.addEventListener('click', function (event) {
-      var modal = document.getElementById('myBranchModal');
-      if (event.target === modal) {
-        closeBranchModal();
-      }
-    });
-	
     function branchRegisterConfirm() {
         if (confirm("등록하시겠습니까?")) {
             // 필요한 데이터를 추출
@@ -475,60 +467,65 @@ new Promise((resolve, reject) => {
             };
             // 주소 검색 요청을 수행합니다.
             geocoder.addressSearch(branchLocation, callback);
-        }alert("등록되었습니다!");
-        closeBranchModal();
+            alert("등록되었습니다!");
+            closeModal();
+        }
     }
+    
 
-    // 데이터를 서버로 보내는 함수
+    // 지점등록 데이터를 서버로 보내는 함수
     function branchReigster(branchName, branchLocation, branchLatitude, branchLongitude) {
-        // 여기에 데이터를 서버로 보내는 Ajax 요청 또는 다른 로직을 추가
-        // 예: jQuery를 사용한 Ajax 요청
         $.ajax({
             type: 'get',
-            url: 'branchRegister.do',  // 서버 엔드포인트 URL
+            url: 'branchRegister.do',
             data: {
                 branchName: branchName,
                 branchLocation: branchLocation,
                 branchLatitude: branchLatitude,
                 branchLongitude: branchLongitude
             },
-            success: function(response) {
-                // 서버로부터의 응답을 처리하는 로직
-                console.log(response);
+            success: function(data) {
+                console.log(data);
                 console.log("성공");
             },
             error: function(error) {
-                // 오류 발생 시 처리하는 로직
                 console.error(error);
             }
         });
     }
 
- 	// 버튼 클릭 시 모달 열기
-    document.getElementById('ticketRegisterConfirm').addEventListener('click', openTicketModal);
-	 // 지점등록 모달 열기
-	    function openTicketModal() {
-	      var modal = document.getElementById('myTicketModal');
-	      modal.style.display = 'block';
-	    }
-    // 모달 내 닫기 버튼 클릭 시 모달 닫기
-    document.getElementsByClassName('close')[0].addEventListener('click', closeTicketModal);
- // 모달 닫기
-    function closeTicketModal() {
-      var modal = document.getElementById('myTicketModal');
-      modal.style.display = 'none';
-    }
-    // 모달 외 다른 부분 클릭 시 모달 닫기
-    window.addEventListener('click', function (event) {
-      var modal = document.getElementById('myTicketModal');
-      if (event.target === modal) {
-        closeTicketModal();
-      }
-    });
-    
     function ticketRegisterConfirm(){
     	if (confirm("등록하시겠습니까?")) {
-    		}alert("등록되었습니다!");
+    		var branchName = document.getElementById('branchName').value;
+    		var productName = document.getElementById('productName').value;
+            var price = document.getElementById('price').value;
+			var category = "티켓";
+			
+			ticketRegister(productName, price, category);
+			
+    		alert("등록되었습니다!");
+    		}
+    }
+    
+ 	// 티켓등록 데이터를 서버로 보내는 함수
+    function ticketRegister(branchName, productName, price, category) {
+        $.ajax({
+            type: 'get',
+            url: 'ticketRegister.do',
+            data: {
+            		branchName: branchName,
+            		productName: productName,
+            		price: price,
+            		category: category
+            },
+            success: function(data) {
+                console.log(data);
+                console.log("성공");
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
     }
   	function validationConfirm(){
       		alert("모든 내용을 입력해주세요!");

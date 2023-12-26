@@ -63,5 +63,17 @@ public class StoreController {
 		return "store/storeProductRegister";
 	}
 	
+//	@GetMapping(value="/store/ticketRegister.do")
+//	@ResponseBody
+//	public int ticketRegister(@RequestParam String branchName, @RequestParam String productName,@RequestParam int price, @RequestParam String category) {
+//		logger.info("티켓 등록");
+//		logger.info("branchName : "+branchName);
+//		logger.info("productName : "+productName);
+//		logger.info("price : "+price);
+//		logger.info("category : "+category);
+//		return service.ticketRegister(branchName,productName,price,category);
+//	}
+	
+	
 	
 }
