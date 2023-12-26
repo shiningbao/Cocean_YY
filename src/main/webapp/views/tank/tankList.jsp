@@ -157,7 +157,7 @@ label {
 			<tbody id=tankList>
 				<c:forEach items="${list}" var="item">
 					<tr>
-						<td>${item.getTankID()}</td>
+						<td scope="row">${item.getTankID()}</td>
 						<td><a href="detail?tankID=${item.getTankID()}">${item.getTankName()}</a></td>
 						<td>${item.getTankType()}</td>
 						<td>${item.getBranchName()}</td>
@@ -173,6 +173,10 @@ label {
 </body>
 <script>
 
+
+$('#tankSubmit').on('click',function(){
+	location.href='write.go';
+});
 
 </script>
 </html>
