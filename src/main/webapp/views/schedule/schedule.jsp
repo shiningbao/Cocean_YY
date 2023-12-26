@@ -67,15 +67,14 @@ body {
     background: none;
     padding: 0; /* 내부 여백 제거 */
     cursor: pointer;
+    float:right;
 }
 
 section{
 	margin-bottom: 50px;
 }
 
-.Hide{
-	float:left;
-}
+
 img{
 	weight:25px;
 	height:25px;
@@ -261,22 +260,29 @@ img{
 	<div class="side-bar-right">	
 		<div class="cal-css-myCallender"><p class="cal-font">캘린더</p>
 				<label>
-					<input type="checkbox" value="예약 일정(기본)" class="myCallender" checked/>
+					<input type="checkbox" value="예약 일정(기본)" id="myCallender" class="myCallender" checked/>
 					내 일정(기본)
 				</label>
 			</div>
-			<div class="cal-css"><p class="cal-font">예약 캘린더</p>
+			<div class="cal-css">
+			<p class="cal-font">예약 캘린더</p>
 				<label>
-					<input type="checkbox" value="예약 일정(기본)" class="rsvCallender" checked/>
+					<input type="checkbox" value="예약 일정(기본)"  id="rsvCallender" class="rsvCallender" checked/>
 					예약 일정(기본)
 				</label>
 			</div>
-			<div>
-				<button class="interestCalendar Hide">
-					<img src="<c:url value='/resource/img/carrot-side.PNG'/>">
-				</button>
 			
-			<p class="cal-font">관심 캘린더</p>
+			<div>
+			<p class="cal-font">
+			    <button class="interestCalendar Hide">
+			        <img src="<c:url value='/resource/img/carrot-down.PNG'/>" alt="버튼 이미지">
+			    </button>
+			    관심 캘린더 
+			</p>
+			<div class="itCallenderList">
+				
+			</div>
+			
 				<div class="addCal">
 					<a href="#" class="addInterestCallender" data-toggle="modal" data-target="#chartModal">관심 캘린더 추가</a>
 				</div>
@@ -286,38 +292,58 @@ img{
 
 </body>
 
+				
+
 <script>
 
 	
 	var loginEmployeeID = ${userInfo.employeeID};
 	var img= $('.myCallenderbtn img');
 	var isDown = false;
+	var carrotSideImgUrl = '<c:url value="/resource/img/carrot-side2.png"/>';
+    var carrotDownImgUrl = '<c:url value="/resource/img/carrot-down.PNG"/>';
 	console.log(loginEmployeeID);
 	
 	
 
-	/* $('.interestCalendar').off().click(function(){
+	$('.interestCalendar').on('click', function() {
 	    console.log('click');
-	    $('.myCallenderList').css('display', 'block');
-	    $('.myCallenderList').empty();
+	    var img = $(this).find('img'); // 버튼 내의 이미지 요소를 찾습니다.
 	    isDown = !isDown; // true 이면 false로 false면 true로
 	    if (isDown) {
-	    	img.attr('src', '<c:url value="/resource/img/carrot-down.PNG"/>');
+	        img.attr('src', carrotSideImgUrl); // 이미지 경로를 직접 지정합니다.
 	        console.log('true');
-	        callendarCall();
-	        $('#myCallender').empty();
-	        
+	        $.ajax({
+	        	url:'showInterestCalendar.do',
+	        	data:{loginEmployeeID:loginEmployeeID},
+	        	type:'POST',
+	        	success:function(data){
+	        		console.log(data);
+	        		data.forEach(function(item) {
+	        		    var label = $('<label>'); // 라벨 생성
+
+	        		    var checkbox = $('<input>').attr({
+	        		        type: 'checkbox',
+	        		        value: '',
+	        		        class: '',
+	        		        checked: 'checked'
+	        		    });
+
+	        		    label.append(checkbox).append(item); // 라벨에 체크박스와 데이터 추가
+
+	        		    $('.itCallenderList').append(label).append('<br>'); // itCallenderList에 라벨 추가
+	        		});
+	        	},
+	        	error:function(e){
+	        		console.log(e);
+	        	}
+	        	
+	        });
 	    } else {
-	        
-	        img.attr('src', '<c:url value="/resource/img/carrot-side.PNG"/>');
+	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
 	        console.log('false');
-	        $('.myCallenderList').empty();
-	       
 	    }
-	    
-	    
-	   
-	}); */
+	});
 $('.addMyCallender').click(function(){
 	console.log('click');
 });
@@ -358,28 +384,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
    calendar.render();
    fetchEvents();
-   $('.myCallender').on('change',function(){
+   $('#myCallender').on('change',function(){
 	   if($(this).prop('checked')){
-		   fetchEvents(); 
+		   calendar.addEventSource(eventList);
 	   }else{
-		   calendar.removeAllEvents();
+		   removePersonalEvents()
 	   }
    });
+   
+   $('#rsvCallender').on('change',function(){
+	   if($(this).prop('checked')){
+		   calendar.addEventSource(facilityList);
+	   }else{
+		   removeFacilityEvents()
+	   }
+   });
+   
+var eventList;
+var facilityList;
    function fetchEvents() {
-	   var isChecked = $('.myCallender').prop('checked');
+/* 	   var isChecked = $('.myCallender').prop('checked');
+	   var isCheckedrsv = $('.rsvCallender').prop('checked'); */
 	    $.ajax({
 	      url: 'getCallenderEvents.do',
-	      data:{isChecked:isChecked},
+	      data:{},
 	      dataType: 'json',
 	      success: function(data) {
-	    	console.log(data);
-	        calendar.addEventSource(data);
+	    	  eventList = data.eventList;
+	    	  facilityList = data.facilityList;
+	    	console.log(data.eventList);
+	    	console.log(data.facilityList);
+	        calendar.addEventSource(eventList);
+	        calendar.addEventSource(facilityList);
 	      },
 	      error: function(xhr, status, error) {
 	        console.error('에러 발생:', status, error);
 	      }
 	    });
 	  }
+   
+   
+   function removePersonalEvents() {
+	    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
+	    events.forEach(function(event) {
+	        if (event.extendedProps.subCategory == '개인') {
+	            event.remove(); // subCategory가 '개인'인 이벤트 제거
+	        }
+	    });
+	}
+   function removeFacilityEvents() {
+	    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
+	    events.forEach(function(event) {
+	        if (event.extendedProps.subCategory == '예약') {
+	            event.remove(); // subCategory가 '개인'인 이벤트 제거
+	        }
+	    });
+	}
 
 	
    
@@ -387,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	$('#calSubmit').click(function(){
 		if(confirm('일정을 등록하시겠습니까?')){
+		$('#calForm').append('<input type="hidden" name="requestType" value="scheduleWrite">');
 		calForm.submit();
 		/* location.href='schedule.go'; */ 
 		}else{
@@ -480,13 +541,46 @@ $('.form-group').on('click', '.close-btn', function() {
     $('.facilityAdd').empty(); // 데이터 삭제
 });
 $('#facilitySubmit').on('click',function(){
-	
+	$('#facilitySubmit').append('<input type="hidden" name="requestType" value="facility">');
 	$('#facilityForm').submit();
 })
-function getEmployeeID(employeeID){
-	console.log(employeeID);
-}
 
+
+
+function getEmployeeID(employeeID, nodeText) {
+    console.log(employeeID);
+    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
+        $.ajax({
+            url: 'addCalender.do',
+            type: 'POST',
+            data: { loginEmployeeID: loginEmployeeID,
+            	employeeID:employeeID,
+            	nodeText:nodeText},
+            success: function (data) {
+            	console.log(data);
+/*                 console.log(data.addInterestCallender);
+ */				
+               /*  // 동적으로 HTML을 생성하여 itCallenderList에 추가
+                var label = $('<label>');
+                var checkbox = $('<input>').attr({
+                    type: 'checkbox',
+                    value: '',
+                    class: '',
+                    checked: 'checked'
+                });
+                // label.append(checkbox).append(nodeText + '의 캘린더');
+                
+                // 이전 요소의 끝에 추가
+                $('.itCallenderList').append('<br>').append(label); */
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+    } else {
+
+    }
+}
 
 var msg = "${msg}";
 if(msg!=""){
