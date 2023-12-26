@@ -5,10 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
-import kr.co.cocean.aquarium.dto.InChargeDTO;
+import kr.co.cocean.aquarium.dto.InChargeChangeDTO;
 import kr.co.cocean.aquarium.dto.LogPlanDTO;
 import kr.co.cocean.main.dto.FileDTO;
 
@@ -44,8 +44,8 @@ public class AnimalService {
 		return dao.classficationSearch(keyword);
 	}
 
-	public ArrayList<String> tankList(String branch) {
-		return dao.tankList(branch);
+	public ArrayList<HashMap<String, String>> tankList(int branchID) {
+		return dao.tankList(branchID);
 	}
 	
 	
@@ -92,7 +92,7 @@ public class AnimalService {
 	}
 
 	public String animalDetailAjax(int animalID, String con, Model model) {
-		
+		String page = "aquarium/animalDetail_"+con;
 		if(con.equals("base")) {
 			// 기본 정보
 			model.addAttribute("base", dao.animalDetail(animalID));
@@ -100,34 +100,128 @@ public class AnimalService {
 			model.addAttribute("image", dao.animalImage(animalID));
 			// 담당자
 			model.addAttribute("incharge", dao.animalInCharge(animalID));
-		}else if(con.equals("log") || con.equals("plan")) {
+		}else{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 			String month = sdf.format(System.currentTimeMillis());
 			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
 			model.addAttribute("month", month);
 		}
 		
-		return "aquarium/tab/tabList";
+		return page;
 	}
 	
 	public String animalDetailAjax(int animalID, String con, String month, Model model) {
-		if(con.equals("log") || con.equals("plan")) {
-			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
-			model.addAttribute("month", month);
-		}
-		return "aquarium/tab/tabList";
-	}
-	
-	
-	
-	public AnimalDTO test() {
+		String page = "aquarium/animalDetail_"+con;
 		
-		return dao.animalDetail(8);
+		model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+		model.addAttribute("month", month);
+		
+		return page;
 	}
 
 	public void logplanWrite(LogPlanDTO param) {
 		dao.logplanWrite(param);
 		
+	}
+
+	public HashMap<String, Object> employeeInfo(int employeeID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		HashMap<String, String> info = dao.employeeInfo(employeeID);
+		logger.info("info : {}",info);
+		if(info != null) {
+			String departnemtname = info.get("departmentName");
+			if(departnemtname.equals("사육팀") || departnemtname.equals("질병관리팀")) {
+				result.put("info", info);			
+			}else {
+				result.put("msg","사육팀 또는 질병관리팀만 선택할 수 있습니다.");
+			}
+			
+		}else {
+			result.put("msg", "직원 정보를 확인할 수 없습니다.");
+		}
+		
+		return result;
+	}
+/*
+	public HashMap<String, Object> inchargeChange(Map<String, Object> param) {
+		
+		int animalID = (int) param.get("animalID");
+
+		int[] inchargeList_before = (int[]) param.get("inchargeList_before");
+		int[] inchargeList_after = (int[]) param.get("inchargeList_after");
+			
+		ArrayList<Integer> before = new ArrayList<Integer>();
+		ArrayList<Integer> after = new ArrayList<Integer>();
+		
+		ArrayList<Integer> delList = new ArrayList<Integer>();
+		ArrayList<Integer> insertList = new ArrayList<Integer>();
+		
+		for (int i : inchargeList_before) {
+			before.add(i);
+		}
+		
+		for (int i : inchargeList_after) {
+			after.add(i);
+		}
+		
+		for (Integer integer : before) {
+			if(!after.contains(integer)) {
+				delList.add(integer);
+			}
+		}
+		
+		for (Integer integer : after) {
+			if(!before.contains(integer)) {
+				insertList.add(integer);
+			}
+		}
+		
+		dao.inchargeDel(animalID,delList);
+		dao.inchargeInsert(animalID,insertList);
+		
+		
+		return null;
+	}
+*/
+	public HashMap<String, Object> inchargeChange(InChargeChangeDTO dto) {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		
+		int animalID = dto.getAnimalID();
+		
+		ArrayList<Integer> inchargeList_before = dto.getInchargeList_before();
+		ArrayList<Integer> inchargeList_after = dto.getInchargeList_after();	
+		
+		ArrayList<Integer> delList = new ArrayList<Integer>();
+		ArrayList<Integer> insertList = new ArrayList<Integer>();
+		
+		for (Integer integer : inchargeList_before) {
+			if(!inchargeList_after.contains(integer)) {
+				delList.add(integer);
+			}
+		}
+		
+		for (Integer integer : inchargeList_after) {
+			if(!inchargeList_before.contains(integer)) {
+				insertList.add(integer);
+			}
+		}
+		
+		// int aa = Integer.parseInt(animalID);
+		if(delList.size() > 0) {
+			logger.info("delList : {}",delList);
+			dao.inchargeDel(animalID,delList);			
+		}
+		if(insertList.size() > 0) {
+			logger.info("insertList : {}",insertList);
+			dao.inchargeInsert(animalID,insertList);		
+		}
+		
+		result.put("msg", "담당자를 변경하였습니다.");
+		
+		return result;
 	}
 
 

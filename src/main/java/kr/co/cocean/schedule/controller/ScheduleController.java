@@ -49,7 +49,7 @@ public class ScheduleController {
 	}
 	
 	@PostMapping(value = {"/schedule/scheduleWrite.do", "/schedule/facility.do"})
-	public ModelAndView scheduleWrite(@RequestParam(required = false) String requestType,ScheduleDTO dto, HttpSession session,
+	public ModelAndView scheduleWrite(@RequestParam("requestType") String requestType,ScheduleDTO dto, HttpSession session,
 			@RequestParam String start,@RequestParam String startTime,
 			@RequestParam String end, @RequestParam String endTime) {
 		logger.info("write 정보" +dto.getTitle());
@@ -65,9 +65,12 @@ public class ScheduleController {
 		dto.setEnd(endDateTime.toString());
 		
 		if("scheduleWrite".equals(requestType)) {
+			logger.info("일정등록요청@@@@@@@@@@@@@");
+			dto.setBackgroundColor("#18CCA8");
 			dto.setSubCategory("개인");
 			service.scheduleWrite(dto);
-		}else {
+		}else if("facility".equals(requestType)){
+			logger.info("시설예약요청@@@@@@@@@@@@@");
 			dto.setBackgroundColor("#FF82FF");
 			service.facilityWrite(dto);
 		}
@@ -80,20 +83,23 @@ public class ScheduleController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/schedule/getCallenderEvents.do")
 	@ResponseBody
-	public List<HashMap<String, Object>> getCallenderEvents(HttpSession session,@RequestParam Boolean isChecked) {
+	public HashMap<String, Object> getCallenderEvents(HttpSession session) {
 		logger.info("캘린더이벤트 추가 컨트롤러");
 		LoginDTO userInfo  =(LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
-		List<HashMap<String,Object>> eventList = new ArrayList<HashMap<String,Object>>();
-		if(isChecked) {
+		List<HashMap<String,Object>> eventList = service.getCallenderEvents(employeeID);
+
+		List<HashMap<String,Object>> facilityList = service.getFacilityEvents();
+
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("eventList", eventList);
+		result.put("facilityList", facilityList);
+			logger.info("개인 일정%%%%"+eventList);
 			
-			eventList = service.getCallenderEvents(employeeID);
-		}else {
 			
-		}
 		
-		logger.info("eventList=="+eventList);
-		return eventList;
+		logger.info("eventList=="+result);
+		return result;
 	}
 	
 	@RequestMapping(value="/schedule/getFacility.do")
@@ -106,6 +112,32 @@ public class ScheduleController {
 		return getFacility;
 	}
 	
+
+	 
+	
+	@PostMapping(value="/schedule/addCalender.do")
+	@ResponseBody
+	public HashMap<String, Object> addCallender(@RequestParam String loginEmployeeID , @RequestParam String nodeText, @RequestParam String employeeID) {
+		
+		int row = service.addCalender(loginEmployeeID,nodeText);
+		 
+		List<HashMap<String,Object>> addInterestCallender = service.addInterestCallender(employeeID);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("addInterestCallender", addInterestCallender); 
+		
+		return result; 
+
+	}
+	
+	@PostMapping(value="/schedule/showInterestCalendar.do")
+	@ResponseBody
+	public List<String> showInterestCalendar(@RequestParam String loginEmployeeID){
+		
+		List<String> showInterestCalendar = service.showInterestCalendar(loginEmployeeID);
+		return showInterestCalendar;
+	}
+	
+
 	
 //	@RequestMapping(value="/schedule/facility.do")
 //	public ModelAndView facilityWrite(ScheduleDTO dto, @Request) {

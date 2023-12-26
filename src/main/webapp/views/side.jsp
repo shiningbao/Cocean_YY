@@ -100,7 +100,7 @@
 					</a>
 					<div class="collapse" id="approval_bar">
 						<a href='<c:url value="/approval/formList.go"/>' class="list-group-item" data-parent="#sidebar">결재문서작성</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">결재대기함</a>
+						<a href='<c:url value="/approval/waitingList.go"/>' class="list-group-item" data-parent="#sidebar">결재대기함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">수신함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">발신함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">완료함</a>

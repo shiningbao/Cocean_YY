@@ -60,12 +60,6 @@ var speciesID_click;
 var taxo_click;
 var scien_click;
 var common_click;
-
-var speciesID;
-var taxo;
-var scien;
-var common;
-var classifi;
  
 function classficationSearch(){
 	var keyword = $('#keyword').val();
@@ -112,7 +106,8 @@ function clickList(e,id,t,s,c){
 
 function sendVal(){
 	if(speciesID_click != null){
-		switch (taxo) {
+		var classifi;
+		switch (taxo_click) {
 			case "무척추동물류":
 				classifi = "In";
 				break;
@@ -135,11 +130,11 @@ function sendVal(){
 				classifi = "Ma";
 				break;
 		}
-		speciesID = speciesID_click;
-		taxo = taxo_click;
-		scien = scien_click;
-		common = common_click;
-		drawClassifi();
+// 		speciesID = speciesID_click;
+// 		taxo = taxo_click;
+// 		scien = scien_click;
+// 		common = common_click;
+		drawClassifi(speciesID_click,taxo_click,classifi,scien_click,common_click);
 	}else{
 		alert('동물 분류를 선택해 주세요.');
 	}
