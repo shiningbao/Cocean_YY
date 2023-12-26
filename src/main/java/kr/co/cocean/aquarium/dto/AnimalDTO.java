@@ -20,8 +20,11 @@ public class AnimalDTO {
 	private String status;
 	private String details;
 	private String commonName;
+	private String scientificName;
+	private String taxonomy;
+	private String animalCode;
 	
-
+	
 	public int getAnimalID() {
 		return animalID;
 	}
@@ -100,4 +103,25 @@ public class AnimalDTO {
 	public void setCommonName(String commonName) {
 		this.commonName = commonName;
 	}
+	public String getScientificName() {
+		return scientificName;
+	}
+	public void setScientificName(String scientificName) {
+		this.scientificName = scientificName;
+	}
+	public String getTaxonomy() {
+		return taxonomy;
+	}
+	public void setTaxonomy(String taxonomy) {
+		this.taxonomy = taxonomy;
+	}
+	public String getAnimalCode() {
+		return animalCode;
+	}
+	public void setAnimalCode(String animalCode) {
+		this.animalCode = animalCode;
+	}
+	
+
+
 }
