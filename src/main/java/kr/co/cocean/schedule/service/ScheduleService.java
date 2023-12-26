@@ -15,10 +15,7 @@ import kr.co.cocean.schedule.dto.ScheduleDTO;
 public class ScheduleService {
 	@Autowired ScheduleDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	public List<String> getTeams() {
-		
-		return dao.getTeams();
-	}
+
 	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
 		logger.info("나의 캘린더 가져오기 서비스 접근");
 		return dao.getCallender(loginEmployeeID);
@@ -29,6 +26,19 @@ public class ScheduleService {
 	public List<HashMap<String, Object>> getCallenderEvents(int employeeID) {
 		
 		return dao.getCallenderEvents(employeeID);
+	}
+	public List<String> getFacility(String text) {
+		
+				
+		return dao.getFacility(text);
+	}
+	public void facilityWrite(ScheduleDTO dto) {
+		String facilityName = dto.getTitle();
+		int row =dao.facilityWrite(dto);
+		if(row>0) {
+			dao.updateFacility(facilityName);
+		}
+		
 	}
 
 }
