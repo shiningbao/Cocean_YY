@@ -80,16 +80,25 @@ $(function () {
     
     var employeeID;
     
+    
     // jstree 클릭 이벤트 처리
     $("#jstree").on('click', '.jstree-anchor', function (e) {
         var clickedNode = $(e.target).closest('li');
         employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
+        
         //console.log(employeeID);
     });
     // 더블클릭시 이벤트
-    $("#jstree").on('dblclick', '.jstree-anchor',function(){
+    $("#jstree").on('dblclick', '.jstree-anchor',function(e){
     	// 더블클릭시 값 전송
-   		sendEmployeedID(employeeID);
+    	var clickedNode = $(e.target).closest('li');
+    	var node = $("#jstree").jstree(true).get_node(clickedNode);
+    	var icon = node.icon;
+    	console.log(icon);
+    	if(icon!=true){
+    		
+   			sendEmployeedID(employeeID);
+    	}
     });
 });
     function fSch() {
