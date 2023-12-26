@@ -20,12 +20,24 @@
 	</select>
 	
 	<select id="searchProduct" resultType="branchProduct">
-	SELECT pi.productID, pi.productName, pi.price
-FROM productInformation pi
-JOIN branchProduct bp ON pi.productID = bp.productID
-JOIN branch b ON bp.branchID = b.branchID
-WHERE pi.productName = #{param1} AND b.branchName = #{param2};
-
+	SELECT pi.productID, pi.productName, pi.price, bp.branchID 
+	FROM productInformation pi
+	JOIN branchProduct bp ON pi.productID = bp.productID
+	JOIN branch b ON bp.branchID = b.branchID
+	WHERE pi.productName = #{param1} AND b.branchName = #{param2}
 	</select>
+	
+	<insert id="brachRegister">
+	INSERT INTO branch(branchName, branchLocation, branchLatitude, branchLongitude) 
+	VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<select id="branchSelect">
+	SELECT branchID FROM branch WHERE branchName=#{param1}
+	</select>
+	
+	<insert id="branchRegisterProduct">
+	INSERT INTO branchProduct(branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
 	
 </mapper>

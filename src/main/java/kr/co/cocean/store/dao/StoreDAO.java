@@ -16,6 +16,12 @@ public interface StoreDAO {
 
 	ArrayList<StoreDTO> searchProduct( String searchKeyword,String branchName);
 
+	int brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude);
+
+	int branchSelect(String branchName);
+
+	int branchRegisterProduct(int branchID, int i);
+
 
 
 }

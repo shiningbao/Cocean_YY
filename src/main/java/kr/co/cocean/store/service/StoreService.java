@@ -35,8 +35,6 @@ public class StoreService {
 	public JSONObject kakaoAPi(Model model) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    ArrayList<StoreDTO> branchList = dao.branchList();
-	    map.put("branchList", branchList);
-	    model.addAttribute("branchList", branchList);
 	    
 	    // 카카오 REST api key
 	    String REST_KEY = "01be87ade0ecf17b7ce8981fd0711323";
@@ -102,6 +100,15 @@ public class StoreService {
 		map.put("searchedList", list);
 		logger.info("list : "+list);
 		return map;
+	}
+
+	public String brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude) {
+		dao.brachRegister(branchName, branchLocation, branchLatitude, branchLongitude);
+		int branchID = dao.branchSelect(branchName);
+		for (int i = 1;  i< 5; i++) {
+			 dao.branchRegisterProduct(branchID, i);
+		}
+		return "성공";
 	}
 
 }

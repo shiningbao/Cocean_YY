@@ -5,7 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=530dd95ca9b426f51d6a8307877fcb3f"></script>
+<!-- 카카오 지도 api -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=530dd95ca9b426f51d6a8307877fcb3f&libraries=services"></script>
+<!-- 다음 도로명주소 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <style>
 .listTable {
@@ -67,82 +71,20 @@ border: 1px solid gray;
 <div>스토어 관리 
 <div class="branchLocation">지점 위치 </div>
 <div id="map" style="width:500px;height:400px;"></div>
-<button type="button" class="button" id="branchRegister">등록</button>
+<button type="button" class="button" id="branchRegisterConfirm">등록</button>
 </div>
 
-<div id="myModal" class="modal">
+<div id="myBranchModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
     <!-- 모달 내용 -->
-    <p/>주소
-		     <p/><input type="text" id="postcode" placeholder="우편번호" style="width: 50%;">
-			 <input type="button" id="findpostcode" onclick="execDaumPostcode()" value="우편번호 찾기"><br>
-			 <input type="text" id="roadAddress"  name = member_roadAddr placeholder="도로명주소" style="width: 50%;"><br/>
-			 <input type="text" id="jibunAddress" name = member_parcelAddr placeholder="지번주소" style="width: 50%;"><br/>
-			 <span id="guide" style="color:#999; display:none"></span><br/>
-			 <input type="text" id="detailAddress" name = member_detailAddr placeholder="상세주소">		  
-			 <input type="text" id="extraAddress" placeholder="참고항목">              
+    <p>지점 등록<p/>
+    		 지점명 <input type="text" id="branchName"  name = branchName placeholder="지점명을 입력해주세요" style="width: 50%;"><br/>
+			 도로명주소 <input type="text" id="branchLocation"  name = branchLocation placeholder="도로명주소" style="width: 50%;">
+			 <input type="button" id="findpostcode" onclick="init()" value="도로명주소 찾기"><br/>
+			 <button type="button" class="button" onclick="branchRegisterConfirm()">등록</button>
   </div>
 </div>
-
-<div class="modal fade" id="regModal" tabindex="-1" role="dialog"
-		aria-labelledby="modal" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<!-- 모달창 제목 -->
-					<h5 class="modal-title">일정등록</h5>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form action="scheduleWrite.do" method="POST" id="calForm">
-						<!-- 입력폼 -->
-							<p>제목 <input type="text" name="title" placeholder="제목을 입력해주세요."></p>
-							<p>시작일
-								<input type="datetime-local" name="start" value="${dto.start}" >
-							</p>
-							<p>종료일
-								<input type="datetime-local" name="end" value="${dto.end}" >
-							</p>
-							<p>중분류    
-								<select id="midSelect" name="mainCategory">
-									<option value="개인">개인</option>
-									<option value="팀">팀</option>
-								</select>
-							</p>
-							<p>소분류
-							    <select id="subSelect" name="subCategory">
-							        <!-- 선택된 중분류에 따라 옵션이 동적으로 추가될 것입니다 -->
-							    </select>
-							</p>
-<!-- 							<p class="writeViewCallender">개인캘린더 -->
-<!-- 							    <select id="myCallender" name="category"> -->
-<!-- 							    	<option value="내 일정(기본)">내 일정(기본)</option> -->
-<!-- 							    </select> -->
-<!-- 							</p> -->
-							<p>비고
-								<input type="text" name="remarks">
-							</p>
-							<p>공개여부
-								<input type="checkbox" name="publicCategory">
-							</p>
-							<p>내용
-								<textarea name="description"></textarea>
-							</p>
-							
-						<div class="modal-footer">
-							<button type="button" id="calSubmit" class="btn btn-primary">저장</button>
-							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
-							
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
 
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
@@ -154,13 +96,32 @@ border: 1px solid gray;
 	<button type="button" class="button" onclick="location.href='storeProductRegister.go'">등록</button>
 </div>
 
-<div class="ticketList">티켓 리스트</div>
-
+<div class="ticketList">티켓 리스트
+	<input type="text" id="searchProduct" placeholder="검색어 입력">
+	<button id="search" class="button">검색</button>
+	<div class="listTable">
+	<table>
+	</table>
+	</div>
+	<button type="button" class="button" id="ticketRegisterConfirm">등록</button>
+	<div id="myTicketModal" class="modal">
+	<div class="modal-content">
+    <span class="close">&times;</span>
+	<p>티켓 등록<p/>
+    		 티켓명 <input type="text" id="productName"  name = productName placeholder="티켓명을 입력해주세요" style="width: 50%;"><br/>
+			 가격 <input type="text" id="price" name = price placeholder="가격을 입력해주세요"><br/>
+			 <button type="button" class="button" onclick="ticketRegisterConfirm()">등록</button>
+  </div>
+  </div>
+</div>
 </body>
 <script>
+
 var matchedProductList;
 var productListTable = $('.productList table');
 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+var ticketListTable = $('.ticketList table');
+ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
 
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
@@ -176,6 +137,7 @@ new Promise((resolve, reject) => {
             console.log("x : " + data.documents[0].x);
             console.log("y : " + data.documents[0].y);
             console.log("------------------");
+            
             initializeMap(data);
             resolve(data); // 첫 번째 Ajax 호출 성공 시 resolve 호출
         },
@@ -214,9 +176,6 @@ new Promise((resolve, reject) => {
                             break;
                         }
                     }
-                    $(document).ready(function() {
-                        // 테이블에 상품 정보를 추가하는 코드를 여기에 배치
-                    });
     				// 지점 탭 추가
 	    			console.log("------------------");
     				for (var i = 0; i < data.branchList.length; i++) {
@@ -225,20 +184,32 @@ new Promise((resolve, reject) => {
     				    branchButton.data('branchName', data.branchList[i].branchName);
     				    $('.branchLocation').append(branchButton);
     				}
+    				// 상품 리스트 추가
     				console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
 								data.branchProductList[i].category === "상품"){
 							var product = data.branchProductList[i];
-							console.log(product);
 							var productInfo = '<tr>' +
 	                         '<td>' + product.productID + '</td>' +
 	                         '<td>' + product.productName + '</td>' +
 	                         '<td>' + product.price + '</td>' +
 	                         '</tr>';
-	                         console.log("프로덕트");
-			                 console.log(productInfo);
 	                     productListTable.append(productInfo);
+						}
+					}
+    				// 티켓 리스트 추가
+    				console.log("------------------");
+    				for (var i = 0; i < data.branchProductList.length; i++) {
+						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
+								data.branchProductList[i].category === "티켓"){
+							var ticket = data.branchProductList[i];
+							var ticketInfo = '<tr>' +
+	                         '<td>' + ticket.productID + '</td>' +
+	                         '<td>' + ticket.productName + '</td>' +
+	                         '<td>' + ticket.price + '</td>' +
+	                         '</tr>';
+                         ticketListTable.append(ticketInfo);
 						}
 					}
     				
@@ -254,13 +225,26 @@ new Promise((resolve, reject) => {
 					        return branch.branchName === branchName;
 					    });
 					
+					    var matchedProducts = data.branchProductList.filter(function (product) {
+					        return product.branchName === matchedBranch.branchName && product.category === "상품";
+					    });
+					    console.log("매치매치");
+					    console.log(matchedProducts);
+					    var matchedTickets = data.branchProductList.filter(function (product) {
+					        return product.branchName === matchedBranch.branchName && product.category === "티켓";
+					    });
+					    console.log("티켓티켓");
+					    console.log(matchedTickets);
+					    
+					    
 					    if (matchedBranch) {
 					        console.log("클릭된 지점명과 일치하는 지점명");
 					        console.log("탭 지점명 : " + branchName);
+					        var branchName = $(this).data('branchName');
 					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
 					        console.log(matchedBranch.branchLongitude);
 					        console.log(matchedBranch.branchLatitude);
-					
+							
 					        initializeMap({
 					            documents: [{
 					                x: matchedBranch.branchLongitude,
@@ -268,74 +252,61 @@ new Promise((resolve, reject) => {
 					            }]
 					        });
 					
-					        // 상품 데이터로 테이블을 업데이트합니다.
+					        // 상품리스트로 테이블 업데이트
 					        var productListTable = $('.productList table');
 					        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-					
-					        // 데이터를 테이블에 추가
-					        for (var j = 0; j < data.branchProductList.length; j++) {
-					            var product = data.branchProductList[j];
-					
-					            // 여기서 category가 "상품"인 경우에만 추가
-					            if (product.category === "상품" && product.branchName === matchedBranch.branchName) {
-					                var productInfo = '<tr>' +
-					                    '<td>' + product.productID + '</td>' +
-					                    '<td>' + product.productName + '</td>' +
-					                    '<td>' + product.price + '</td>' +
-					                    '</tr>';
-					                productListTable.append(productInfo);
-					            }
-					        }
-					    } else {
-					        console.log("일치하는 지점을 찾을 수 없습니다.");
+							// 티켓리스트로 테이블 업데이트
+							var ticketListTable = $('.ticketList table');
+							ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
+							
+					        // 상품 데이터를 테이블에 추가
+					        if (matchedProducts.length > 0) {
+							    for (var j = 0; j < matchedProducts.length; j++) {
+							        var product = matchedProducts[j];
+							        var productInfo = '<tr>' +
+							            '<td>' + product.productID + '</td>' +
+							            '<td>' + product.productName + '</td>' +
+							            '<td>' + product.price + '</td>' +
+							            '</tr>';
+							        productListTable.append(productInfo);
+							    }
+							} else {
+							    // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+							    var productInfo = '<tr>' +
+							        '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+							        '</tr>';
+							    productListTable.append(productInfo);
+							}
+					        // 티켓 데이터를 테이블에 추가
+					        if (matchedTickets.length > 0) {
+							    for (var j = 0; j < matchedTickets.length; j++) {
+							        var ticket = matchedTickets[j];
+							        var ticketInfo = '<tr>' +
+							            '<td>' + ticket.productID + '</td>' +
+							            '<td>' + ticket.productName + '</td>' +
+							            '<td>' + ticket.price + '</td>' +
+							            '</tr>';
+							        ticketListTable.append(ticketInfo);
+							    }
+							} else {
+							    // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+							    var productInfo = '<tr>' +
+							        '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+							        '</tr>';
+							    productListTable.append(productInfo);
+							}
+					     	 // 검색 버튼 클릭
+			                 $('#search').click(function () {
+			                     searchKeyword = $('#searchProduct').val();
+			                     searchProduct(searchKeyword, branchName);
+			                 });
+					    }
+					        else {
+					        console.log("지점에 등록된 상품이 없습니다");
 					    }
 					});
-
-    				
-    				// 
-	                 // 해결 해야함
-	                 // 
-	                 //
-	                 // 
-	                 //
-	                 // 
-	                 //
-                    // 첫 번째 Ajax 결과의 x, y 값과 일치하는 productList 찾기
-                    /* var matchedProductList = data.branchProductList.filter(function(product) {
-				    var matchedBranch = data.branchProductList.find(function(branch) {
-				        return branch.branchLongitude === apiResult.documents[0].x && branch.branchLatitude === apiResult.documents[0].y;
-				    });
-				    return matchedBranch && product.branch === matchedBranch.branchName;
-				});
-
-                 var productListTable = $('.productList table');
-
-                 // 기존 내용을 지우고 테이블 헤더를 추가
-                 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-
-                 // 데이터를 테이블에 추가
-                 for (var i = 0; i < matchedProductList.length; i++) {
-                     var product = matchedProductList[i];
-                     var productInfo = '<tr>' +
-                         '<td>' + product.productID + '</td>' +
-                         '<td>' + product.productName + '</td>' +
-                         '<td>' + product.price + '</td>' +
-                         '</tr>';
-                     productListTable.append(productInfo);
-                 } 
-                  */
                  
-                 
-                 
-    				
-                 
-                 // 검색 버튼 클릭
-                 $('#search').click(function () {
-                     searchKeyword = $('#searchProduct').val();
-                     branchName = matchedBranch.branchName;
-                     searchProduct(searchKeyword, branchName);
-                 });
-             	
+    			// 상품 검색 ajax
                  function searchProduct(searchKeyword, branchName) {
                 	 console.log("------------------");
                  	 console.log("keyword/Name : "+searchKeyword+"/"+branchName);
@@ -373,6 +344,7 @@ new Promise((resolve, reject) => {
 
 	// 지도 그리기
     function initializeMap(data) {
+		
         var mapContainer = document.getElementById('map');
         var options = {
             center: new kakao.maps.LatLng(data.documents[0].y, data.documents[0].x),
@@ -397,6 +369,8 @@ new Promise((resolve, reject) => {
 
             // 초기에 InfoWindow를 열어둠
             infowindow.open(map, marker);
+            
+            
         
     }
 	// 검색된 상품 그리기
@@ -424,44 +398,141 @@ new Promise((resolve, reject) => {
     }
 }
 	
-    
-    
-	
-	
- // 모달 열기
-    function openModal() {
-      var modal = document.getElementById('myModal');
-      modal.style.display = 'block';
+ // 카카오 우편번호 api
+    function init() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("branchLocation").value = roadAddr;
+                
+                var guideTextBox = document.getElementById("guide");
+                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                if(data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                }
+            }
+        }).open();
     }
 
+ 	// 지점등록 모달 열기
+    function openBranchModal() {
+      var modal = document.getElementById('myBranchModal');
+      modal.style.display = 'block';
+    }
+ 
     // 모달 닫기
-    function closeModal() {
-      var modal = document.getElementById('myModal');
+    function closeBranchModal() {
+      var modal = document.getElementById('myBranchModal');
       modal.style.display = 'none';
     }
 
-    // 버튼 클릭 시 모달 열기
-    document.getElementById('branchRegister').addEventListener('click', openModal);
+    // 버튼 클릭 시 지점 등록 모달 열기
+    document.getElementById('branchRegisterConfirm').addEventListener('click', openBranchModal);
 
-    // 모달 내 닫기 버튼 클릭 시 모달 닫기
-    document.getElementsByClassName('close')[0].addEventListener('click', closeModal);
+    // 모달 내 닫기 버튼 클릭 시 지점 등록 모달 닫기
+    document.getElementsByClassName('close')[0].addEventListener('click', closeBranchModal);
 
-    // 모달 외 다른 부분 클릭 시 모달 닫기
+    // 모달 외 다른 부분 클릭 시 지점 등록 모달 닫기
     window.addEventListener('click', function (event) {
-      var modal = document.getElementById('myModal');
+      var modal = document.getElementById('myBranchModal');
       if (event.target === modal) {
-        closeModal();
+        closeBranchModal();
       }
     });
+	
+    function branchRegisterConfirm() {
+        if (confirm("등록하시겠습니까?")) {
+            // 필요한 데이터를 추출
+            var branchName = document.getElementById('branchName').value;
+            var branchLocation = document.getElementById('branchLocation').value;
 
-    /* function registerConfirm(){
-    	if(confirm("등록하시겠습니까?")){
-    		alert("등록되었습니다!");
-    	}
-    	
+            // 카카오 맵 지오코더 생성자
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            // 주소 검색 결과를 처리할 콜백 함수를 정의합니다.
+            var callback = function(result, status) {
+                // 검색 상태가 OK인 경우에만 처리합니다.
+                if (status === kakao.maps.services.Status.OK) {
+                    // 검색 결과에서 위도(latitude)와 경도(longitude)를 추출합니다.
+                    var result = result[0];
+                    var branchLatitude = result.y; // 위도
+                    var branchLongitude = result.x; // 경도
+
+                    branchReigster(branchName, branchLocation, branchLatitude, branchLongitude);
+                } else {
+                    // 검색 상태가 OK가 아닌 경우에는 에러 메시지를 출력합니다.
+                    console.error("주소 검색 실패: " + status);
+                }
+            };
+            // 주소 검색 요청을 수행합니다.
+            geocoder.addressSearch(branchLocation, callback);
+        }alert("등록되었습니다!");
+        closeBranchModal();
+    }
+
+    // 데이터를 서버로 보내는 함수
+    function branchReigster(branchName, branchLocation, branchLatitude, branchLongitude) {
+        // 여기에 데이터를 서버로 보내는 Ajax 요청 또는 다른 로직을 추가
+        // 예: jQuery를 사용한 Ajax 요청
+        $.ajax({
+            type: 'get',
+            url: 'branchRegister.do',  // 서버 엔드포인트 URL
+            data: {
+                branchName: branchName,
+                branchLocation: branchLocation,
+                branchLatitude: branchLatitude,
+                branchLongitude: branchLongitude
+            },
+            success: function(response) {
+                // 서버로부터의 응답을 처리하는 로직
+                console.log(response);
+                console.log("성공");
+            },
+            error: function(error) {
+                // 오류 발생 시 처리하는 로직
+                console.error(error);
+            }
+        });
+    }
+
+ 	// 버튼 클릭 시 모달 열기
+    document.getElementById('ticketRegisterConfirm').addEventListener('click', openTicketModal);
+	 // 지점등록 모달 열기
+	    function openTicketModal() {
+	      var modal = document.getElementById('myTicketModal');
+	      modal.style.display = 'block';
+	    }
+    // 모달 내 닫기 버튼 클릭 시 모달 닫기
+    document.getElementsByClassName('close')[0].addEventListener('click', closeTicketModal);
+ // 모달 닫기
+    function closeTicketModal() {
+      var modal = document.getElementById('myTicketModal');
+      modal.style.display = 'none';
+    }
+    // 모달 외 다른 부분 클릭 시 모달 닫기
+    window.addEventListener('click', function (event) {
+      var modal = document.getElementById('myTicketModal');
+      if (event.target === modal) {
+        closeTicketModal();
+      }
+    });
+    
+    function ticketRegisterConfirm(){
+    	if (confirm("등록하시겠습니까?")) {
+    		}alert("등록되었습니다!");
+    }
   	function validationConfirm(){
       		alert("모든 내용을 입력해주세요!");
-  	} */
+  	}
 
 </script>
 </html>
