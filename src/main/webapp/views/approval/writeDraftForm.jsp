@@ -296,6 +296,23 @@ button{
 	}); 
 	*/
 	
+	function getEmployeeID(employeeID){
+		console.log(employeeID);
+	}
+	
+	function getApprovalLine(lineData){
+		console.log(lineData);
+		 for (var i = 0; i < lineData.length; i++) {
+             console.log("Category:", lineData[i].category);
+             console.log("HQ:", lineData[i].hqName);
+             console.log("dpName:"+lineData[i].departmentName);
+             console.log("Rank:", lineData[i].rank);
+             console.log("Name:", lineData[i].name);
+             
+             addLineToTable(lineData[i]);
+         }
+	}
+
 	const handleResizeHeight = () => {
 	    textarea.current.style.height = 'auto'; //height 초기화
 	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
@@ -321,7 +338,7 @@ button{
 		} 
 	 }
 
-	 $(document).ready(function () {
+	/*  $(document).ready(function () {
          $.ajax({
              url: "getData.do",
              type: "GET",
@@ -342,7 +359,7 @@ button{
                  console.log(e);
              }
          });
-     });
+     }); */
 
 	 function addLineToTable(lineData) {
 		    var table = $("#approvalLine");

@@ -84,37 +84,53 @@ $(function () {
     // jstree 생성 후, --
     $("#jstree").on("ready.jstree", function () {
 
-});
-
-    // jstree 클릭 이벤트 처리
-    $("#jstree").on('dblclick', '.jstree-anchor', function (e) {
-        var clickedNode = $(e.target).closest('li');
-        var employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
-        console.log(employeeID);
-        if(confirm('추가하시겠습니까?')){
-        $.ajax({
-        	url:"/Cocean/approval/getEmployeeID.do",
-        	data:{employeeID:employeeID},
-        	success:function(data){
-        		console.log(data);
-        		drawLine(data.employeeInfo);
-
-        	},
-        	error:function(e){
-        		console.log(e);
-        	}
-        });
-        }
-        
-    });
+	});
     
-});
+    var employeeID;
+    
+    
+    // jstree 클릭 이벤트 처리
+    $("#jstree").on('click', '.jstree-anchor', function (e) {
+        var clickedNode = $(e.target).closest('li');
+        employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
+        
+        //console.log(employeeID);
+    });
+    // 더블클릭시 이벤트
+    $("#jstree").on('dblclick', '.jstree-anchor',function(e){
+    	// 더블클릭시 값 전송
+    	var clickedNode = $(e.target).closest('li');
+    	var node = $("#jstree").jstree(true).get_node(clickedNode);
+    	var icon = node.icon;
+    	console.log(icon);
+    	if(icon!=true){	
+    		 $.ajax({
+    	        	url:"/Cocean/approval/getEmployeeID.do",
+    	        	data:{employeeID:employeeID},
+    	        	success:function(data){
+    	        		console.log(data);
+    	        		console.log(data.employeeInfo);
+    	        		drawLine(data.employeeInfo);
 
+    	        	},
+    	        	error:function(e){
+    	        		console.log(e);
+    	        	}
+    	        });
+    		 
+   			sendEmployeedID(employeeID);
+    	}
+    });
+});
 function fSch() {
     console.log("껌색할께영");
     $('#jstree').jstree(true).search($("#schName").val());
 }
 
+function sendEmployeedID(employeeID){
+	// console.log('값 보내기');
+	getEmployeeID(employeeID);
+}
 
 function drawLine(employeeInfo) {
     var content = '';
@@ -170,10 +186,10 @@ $('.cancel').off('click').on('click', function() {
 	console.log(employeeID);
 });
 }
-
+var lineData;
 // 결재라인 저장
-function saveApprovalLine() {
-    var lineData = [];
+function saveApprovalLine(lineData) {
+   	lineData = [];
     $('.lineItem').each(function () {
         var category = $(this).find('.category').val();
         var hqName = $(this).find('.hqName').text();
@@ -191,7 +207,8 @@ function saveApprovalLine() {
         });
     });
     console.log(lineData);
-     $.ajax({
+    getApprovalLine(lineData);
+    /*  $.ajax({
         url: "/Cocean/approval/saveApprovalLine.do",
         type: "POST",
         contentType: "application/json",
@@ -204,9 +221,10 @@ function saveApprovalLine() {
         error: function (e) {
             console.log(e);
         }
-    }); 
+    });  */
     
 }
+
 
 </script>
 </body>
