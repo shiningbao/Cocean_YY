@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <!-- jsTree theme -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
 	
 .jstree-default .jstree-themeicon-custom{

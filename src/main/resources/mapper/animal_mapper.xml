@@ -70,6 +70,13 @@
 			VALUES(#{employeeID},#{idx},#{content},#{manageCategory},#{status},#{coceanCategory})
 	</insert>
 	
+	<select id="employeeInfo" parameterType="int" resultType="map">
+		SELECT de.departmentName, de.hqName, e.name FROM employee e
+			NATURAL JOIN (SELECT d.departmentID, d.departmentName, h.hqName FROM department d
+				NATURAL JOIN (SELECT hqID, hqName FROM headquarters) AS h
+			) AS de
+			WHERE e.employeeID = #{param1}
+	</select>
 	
 </mapper>
 

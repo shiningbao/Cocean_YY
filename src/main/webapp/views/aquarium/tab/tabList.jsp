@@ -94,9 +94,15 @@
 			<div id="oraganizationDiv">
 				<jsp:include page="../../personnel/organization.jsp"></jsp:include>
 			</div>
-			<div id="inchrgeList">
-				<table>
-					<tr>
+			<div id="inchargeList">
+				<table id="inchargeTable" style="width:100%">
+					<colgroup>
+						<col style="width:27%">
+						<col style="width:27%">
+						<col style="width:27%">
+						<col style="width:19%">
+					</colgroup>
+					<tr style="text-align:center">
 						<th>본부</th>
 						<th>부서</th>
 						<th>이름</th>
@@ -107,12 +113,13 @@
 						<th>${item.hqName}</th>
 						<th>${item.departmentName}</th>
 						<th>${item.name}</th>
-						<th><button onclick="inchargeDel(this)">삭제클릭</button></th>
+						<th><button onclick="inchargeDel(this,${item.employeeID})">삭제</button></th>
 						<th class="inchargeEmployeeID" style="display:none">${item.employeeID}</th>			
 					</tr>
 					</c:forEach>
 				</table>
-				<button onclick="inchargeChange()"></button>
+				<button onclick="inchargeChange()">확인</button>
+				<button onclick="inchargeNone()">취소</button>
 			</div>
 		</div>
 	</div>
@@ -130,38 +137,127 @@
 		});
 		$('#inchargeDiv').css({
 			'position':'fixed',
+			'display':'flex',
 			'border':'1px solid black',
-			'width':'600px',
+			'width':'700px',
 			'height':'500px',
 			'top':'20%',
 			'left':'30%',
-			'padding':'5px 5px',
 			'background-color':'white',
 		});
 		$('#oraganizationDiv').css({
-			'display':'inline',
+			'border':'1px solid black',
+			'width':'350px',
+			'height':'480px',
+			'margin':'10px',
+			'padding':'5px'
 		});
-		$('#inchrgeList').css({
-			'display':'inline',
+		$('#jstree').css({
+			'height':'435px',
+			'overflow-y':'auto'
 		});
 		
+		$('#inchargeList').css({
+			'border':'1px solid black',
+			'width':'312px',
+			'height':'480px',
+			'margin':'10px',
+			'padding':'5px'
+		});
+
+		
+		var list = [];
+		<c:forEach items='${incharge}' var='item'>
+			list.push('${item.employeeID}');
+		</c:forEach>
+		
+		// 조직도 값 가져오기
 		function getEmployeeID(emp){
 			console.log('get');
 			console.log(emp);
+			inchargeDraw(emp);
 		}
 		
 		
-		// 담당자 지정 관련 모달
+		/* 담당자 관련 */
+		
+		// 담당자 모달 표시
 		function inchargeAdd(){
 			$('#inchargeModal').css({'display':'block'});
 		}
-		function inchargeDel(s){
-			$('s').parent().parent().remove();
+		
+		// 담당자 그리기
+		function inchargeDraw(emp){
+			if(list.includes(emp)){
+				alert('이미 지정된 담당자입니다.');
+			}else{
+				$.ajax({
+					type:'post',
+					url:'employeeInfo',
+					data:{'employeeID':emp},
+					success:function(data){
+						//console.log(data);
+						if(data.msg != null){
+							alert(data.msg);
+						}else{
+							var info = data.info
+							var con = '<tr><th>'+info.hqName+'</th><th>'+info.departmentName+'</th><th>'+info.name+'</th>';
+							con += '<th><button onclick="inchargeDel(this,'+emp+')">삭제</button></th>';
+							con += '<th class="inchargeEmployeeID" style="display:none">'+emp+'</th></tr>';
+							$('#inchargeTable').append(con);
+							list.push(emp);
+							console.log(list);
+						}
+					},
+					error:function(e){
+						console.log(e);
+					}
+				});	
+			}
+			
 		}
+		
+		// 담당자 삭제
+		function inchargeDel(button,emp){
+			$(button).parent().parent().remove();
+			for(var i = 0; i<list.length; i++){
+				if(list[i] == emp){
+					list.splice(i,1);
+					break;
+				}
+			}
+			console.log(list);
+		}
+		
+		// 담당자 변경
+		function inchargeChange(){
+			console.log('담당자 변경');
+			console.log(list.length);
+			if(list.length == 0){
+				alert('담당자가 없습니다.');
+			}else{
+				console.log(list);
+				$.ajax({
+					type:'post',
+					url:'inchargeChange',
+					contentType:'application/json; charset=utf-8',
+					data:JSON.stringify({'animalID':${base.animalID},'inchargeArray':list}),
+					dataType:'JSON',
+					success:function(data){
+						console.log(data);
+					},
+					error:function(e){console.log(e);}
+				});
+				inchargeNone();
+			}
+				
+			
+		}
+		
+		// 담당자 모달 숨기기
 		function inchargeNone(){
 			$('#inchargeModal').css({'display':'none'});
 		}
-		
 		window.addEventListener('click',function(event) {
 			if (event.target === $('#inchargeModal')[0]) {
 				inchargeNone();

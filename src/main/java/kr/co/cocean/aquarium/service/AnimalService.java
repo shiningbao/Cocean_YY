@@ -130,6 +130,26 @@ public class AnimalService {
 		
 	}
 
+	public HashMap<String, Object> employeeInfo(int employeeID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		HashMap<String, String> info = dao.employeeInfo(employeeID);
+		logger.info("info : {}",info);
+		if(info != null) {
+			String departnemtname = info.get("departmentName");
+			if(departnemtname.equals("사육팀") || departnemtname.equals("질병관리팀")) {
+				result.put("info", info);			
+			}else {
+				result.put("msg","사육팀 또는 질병관리팀만 선택할 수 있습니다.");
+			}
+			
+		}else {
+			result.put("msg", "직원 정보를 확인할 수 없습니다.");
+		}
+		
+		return result;
+	}
+
 
 	
 	
