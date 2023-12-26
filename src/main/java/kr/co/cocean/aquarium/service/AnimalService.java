@@ -4,13 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -87,27 +91,67 @@ public class AnimalService {
 		}
 	}
 
-	public ModelAndView animalDetail(int animalID) {
+	public String animalDetailAjax(int animalID, String con, Model model) {
 		
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail");
+		if(con.equals("base")) {
+			// 기본 정보
+			model.addAttribute("base", dao.animalDetail(animalID));
+			// 이미지
+			model.addAttribute("image", dao.animalImage(animalID));
+			// 담당자
+			model.addAttribute("incharge", dao.animalInCharge(animalID));
+		}else if(con.equals("log") || con.equals("plan")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String month = sdf.format(System.currentTimeMillis());
+			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("month", month);
+		}
 		
-		// 기본 정보
-		AnimalDTO dto = dao.animalDetail(animalID);
-		mav.addObject("dto", dto);
-		
-		// 이미지
-		
-		
-		// 담당자
-		ArrayList<InChargeDTO> incharge = dao.animalInCharge(animalID);
-		mav.addObject("incharge", incharge);
-		
-		// 일지 계획
-		ArrayList<LogPlanDTO> logPlan = dao.animalLogPlan(animalID);
-		mav.addObject("logPlan", logPlan);
-		
-		return mav;
+		return "aquarium/tab/tabList";
 	}
+	
+	public String animalDetailAjax(int animalID, String con, String month, Model model) {
+		if(con.equals("log") || con.equals("plan")) {
+			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("month", month);
+		}
+		return "aquarium/tab/tabList";
+	}
+	
+	
+	
+	public AnimalDTO test() {
+		
+		return dao.animalDetail(8);
+	}
+
+	public void logplanWrite(LogPlanDTO param) {
+		dao.logplanWrite(param);
+		
+	}
+
+	public HashMap<String, Object> employeeInfo(int employeeID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		HashMap<String, String> info = dao.employeeInfo(employeeID);
+		logger.info("info : {}",info);
+		if(info != null) {
+			String departnemtname = info.get("departmentName");
+			if(departnemtname.equals("사육팀") || departnemtname.equals("질병관리팀")) {
+				result.put("info", info);			
+			}else {
+				result.put("msg","사육팀 또는 질병관리팀만 선택할 수 있습니다.");
+			}
+			
+		}else {
+			result.put("msg", "직원 정보를 확인할 수 없습니다.");
+		}
+		
+		return result;
+	}
+
+
+	
 	
 	
 	

@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
 <style>
 	 table, th, td{
         border: 1px solid black;
@@ -30,22 +31,22 @@
 				<input type="text" name="name"/>
 			</td>
 		</tr>
-		<tr>
-			<th>지점</th>
-			<td>
-				<select id ="branchSelect">
+		 <tr>
+            <th>지점</th>
+            <td>
+                <select id ="branchSelect">
 
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<th>본부</th>
-			<td>
-				<select id ="deSelect">
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>본부</th>
+            <td>
+                <select id ="deSelect">
 
-				</select>
-			</td>
-		</tr>
+                </select>
+            </td>
+        </tr>
 		<tr>
 			<th>부서</th>
 			<td>
@@ -84,7 +85,6 @@
 					<option value="3">본부장</option>
 					<option value="4">관장</option>
 					<option value="5">대표이사</option>
-					
 				</select>
 			</td>
 		</tr>
@@ -170,6 +170,8 @@ function onBranchSelectChange() {
     });
 }
 
+var departmentText = $('#departmentSelect option:selected').text();
+
 function onDeSelectChange() {
     console.log('본부 선택시 부서항목 변경!!!!!!!!!!!!');
     departmentSelect.empty();
@@ -180,15 +182,17 @@ function onDeSelectChange() {
         data: { hqID: hqID },
         success: function(data) {
             console.log(data);
+            
             data.forEach(function(option, index) {
+                var value = index + 1;
                 departmentSelect.append($('<option>', {
-                    value: index + 1,
+                    value: option,
                     text: option
                 }))
-            })
-            $('#departmentSelect').val('1').trigger('change');
+            });
+            $('#departmentSelect').val('사육팀').trigger('change');
         },
-        error: function(e) {
+        error: function(e) {	
             console.log(e);
         }
     });
@@ -197,24 +201,27 @@ function onDeSelectChange() {
 function onDepartmentSelect() {
     console.log('부서 선택시 담당 변경!!!!!!!!!!!!');
     resSelect.empty();
-    var departmentText = $('#departmentSelect option:selected').text()
+    var departmentText = $('#departmentSelect option:selected').text();
+    var selectPositionID = $('#selectPositionID').val();
+    
     console.log(departmentText);
-    $.ajax({
-        url: 'getDepartmentText.do',
-        data: { departmentText: departmentText },
-        success: function(data) {
-            console.log(data);
-            data.forEach(function(option, index) {
-                $('#resSelect').append($('<option>', {
-                    value: index + 1,
-                    text: option
-                }))
-            });
-        },
-        error: function(e) {
-            console.log(e);
-        }
-    });
+    
+        $.ajax({
+            url: 'getDepartmentText.do',
+            data: { departmentText: departmentText },
+            success: function(data) {
+                console.log(data);
+                data.forEach(function(option, index) {
+                    $('#resSelect').append($('<option>', {
+                        value: option,
+                        text: option
+                    }))
+                });
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
 }
 
 $(document).ready(function() {
@@ -226,11 +233,12 @@ $(document).ready(function() {
     $('#deSelect').off('change').on('change', function() {
         console.log('본부변경!!!');
         onDeSelectChange();
-        console.log($('#deSelect').val());
+        console.log($('#deSelect').val() + '!!!!!!!!!!!!!');
     });
 
     $('#departmentSelect').change(function() {
         console.log('부서변경!!!');
+        console.log('@@@@@@@@@' + $(this).val());
         onDepartmentSelect();
     });
 
@@ -250,11 +258,11 @@ $(document).ready(function() {
             console.log(e);
         }
     });
-
     departmentSelect.empty();
     resSelect.empty();
     $('#deSelect').empty();
 });
-		
+        
+
 </script>
 </html>

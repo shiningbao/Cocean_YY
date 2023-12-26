@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,22 +39,20 @@ public class PersonnelController {
 		return "personnel/personnel";
 	}
 	
-	@GetMapping(value="/personnel/getBranchID.do")
+    @GetMapping(value="/personnel/getBranchID.do")
 	@ResponseBody
-	public List<String> getBranchID(String branchID) {
-		logger.info("인사등록 팀리스트 호출");
-		logger.info("지점번호 =="+branchID);
-		List<String> teams = service.getBranchID(branchID);
+    public List<String> getBranchID(String branchID) {
+        logger.info("지점번호 =="+branchID);
+        List<String> teams = service.getBranchID(branchID);
 
 		return teams;
 	}
 	
-	@GetMapping(value="/personnel/getHqID.do")
+    @GetMapping(value="/personnel/getHqID.do")
 	@ResponseBody
-	public List<String> getHqID(String hqID) {
-		logger.info("인사등록 담당리스트 호출");
-		logger.info("val =="+hqID);
-		List<String> res = service.getHqID(hqID);
+    public List<String> getHqID(String hqID) {
+        logger.info("val =="+hqID);
+        List<String> res = service.getHqID(hqID);
 
 		return res;
 	}
@@ -64,8 +65,12 @@ public class PersonnelController {
 		
 		String password = encoder.encode(pw);
 		params.put("password", password);
+		logger.info("aaa=="+params.get("positionID"));
+		
 		int row= service.join(params);
+		
 		if(row>0) {
+			service.joinTree(params);
 			String perNum = (String) params.get("employeeID");
 			page="personnel/personnel";
 			mav.addObject("msg", "사원 등록 성공");
@@ -76,15 +81,17 @@ public class PersonnelController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/personnel/getBranch.do")
-	@ResponseBody
-	public List<String> getBranch(){
-		
-		List<String> getbranch = service.getBranch();
-		
-		return getbranch;
-	}
-	
+
+    @RequestMapping(value="/personnel/getBranch.do")
+    @ResponseBody
+    public List<String> getBranch(){
+        
+        List<String> getbranch = service.getBranch();
+        
+        return getbranch;
+    }
+ 
+    
 	@RequestMapping(value="/personnel/getDepartmentText.do")
 	@ResponseBody
 	public List<String> getDepartmentText(String departmentText){
@@ -93,7 +100,27 @@ public class PersonnelController {
 		
 		return getDepartmentText;
 	}
+	@RequestMapping(value="/personnel/getChart.go")
+	public String goChart() {
+		
+		return "personnel/organization";
+	}
 	
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value="/personnel/getChart.do" ,produces= {org.springframework.http.MediaType.APPLICATION_XML_VALUE, org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity getChart() {
+		
+		return new ResponseEntity(service.getChart(),HttpStatus.OK); 
+	}
+	
+	@RequestMapping(value="/personnel/getEmployeeID.do")
+	@ResponseBody
+	public ModelAndView getEmployeeID(String employeeID) {
+		logger.info("employeeID==========="+employeeID);
+		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
+		return mav;
+	}
+
 	
 }

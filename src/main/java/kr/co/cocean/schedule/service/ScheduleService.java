@@ -15,14 +15,11 @@ import kr.co.cocean.schedule.dto.ScheduleDTO;
 public class ScheduleService {
 	@Autowired ScheduleDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	public List<String> getTeams() {
-			
-			return dao.getTeams();
-		}
-//	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
-//		logger.info("나의 캘린더 가져오기 서비스 접근");
-//		return dao.getCallender(loginEmployeeID);
-//	}
+
+	public List<ScheduleDTO> getCallender(String loginEmployeeID) {
+		logger.info("나의 캘린더 가져오기 서비스 접근");
+		return dao.getCallender(loginEmployeeID);
+	}
 	public void scheduleWrite(ScheduleDTO dto) {
 		dao.scheduleWrite(dto);
 	}
@@ -30,6 +27,30 @@ public class ScheduleService {
 		
 		return dao.getCallenderEvents(employeeID);
 	}
-	
+	public List<String> getFacility(String text) {
+		
+				
+		return dao.getFacility(text);
+	}
+	public void facilityWrite(ScheduleDTO dto) {
+		String facilityName = dto.getTitle();
+		int row =dao.facilityWrite(dto);
+		if(row>0) {
+			dao.updateFacility(facilityName);
+		}
+		
+	}
+	public List<HashMap<String, Object>> getFacilityEvents() {
+		return dao.getFacilityEvents();
+	}
+	public List<HashMap<String, Object>> addInterestCallender(String employeeID) {
+		return dao.addInterestCallender(employeeID);
+	}
+	public int addCalender(String loginEmployeeID, String nodeText) {
+		return dao.addCalender(loginEmployeeID,nodeText);
+	}
+	public List<String> showInterestCalendar(String loginEmployeeID) {
+		return dao.showInterestCalendar(loginEmployeeID);
+	}
 
 }

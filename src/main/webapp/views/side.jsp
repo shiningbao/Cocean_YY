@@ -54,8 +54,8 @@
 							src="<c:url value='/resource/img/Star_fill.svg'/>">
 						<span class="d-none d-md-inline ml-1">코션친구들</span>
 					</a>
-					<a href="#" class="list-group-item d-inline-block collapsed"
-						data-parent="#sidebar">
+					<a href="<c:url value='/tank/list.go'/>" class="list-group-item d-inline-block collapsed"
+						data-parent="#sidebar" id="house">
 						<img style="width: 24px; margin-right: 5px; margin-bottom: 5px;"
 							src="<c:url value='/resource/img/house.svg'/>">
 						<span class="d-none d-md-inline ml-1">코션하우스</span>
@@ -83,8 +83,8 @@
 						<span class="d-none d-md-inline ml-1">인사 관리</span>
 					</a>
 					<div class="collapse" id="group_bar">
-						<a href="#" class="list-group-item" data-parent="#sidebar">조직 관리</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">사원 관리</a>
+						<a href='<c:url value="/personnel/getChart.go"/>' class="list-group-item" data-parent="#sidebar">조직 관리</a>
+						<a href='<c:url value="/personnel/join.go"/>' class="list-group-item" data-parent="#sidebar">사원 관리</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">연차 관리</a>
 					</div>
 					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
@@ -100,7 +100,7 @@
 					</a>
 					<div class="collapse" id="approval_bar">
 						<a href='<c:url value="/approval/formList.go"/>' class="list-group-item" data-parent="#sidebar">결재문서작성</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">결재대기함</a>
+						<a href='<c:url value="/approval/waitingList.go"/>' class="list-group-item" data-parent="#sidebar">결재대기함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">수신함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">발신함</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">완료함</a>

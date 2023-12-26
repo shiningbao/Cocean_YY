@@ -4,20 +4,48 @@
 >
 <mapper namespace="kr.co.cocean.schedule.dao.ScheduleDAO">	
 	
-	<select id="getTeams">
-		select DISTINCT  departmentName  from department
-	</select>
 	
-<!-- 	<select id="getCallender" resultType="schedule"> -->
-<!-- 		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID}; -->
-<!-- 	</select> -->
+
 	
 	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
 		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{mainCategory},#{subCategory},#{description},#{remarks},#{publicCategory});
+		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{subCategory},#{description},#{remarks},#{publicCategory},#{backgroundColor});
 	</insert>
 	
 	<select id="getCallenderEvents">
-		SELECT title,start,end FROM schedule s WHERE employeeID = #{employeeID}
+		SELECT title,start,end,backgroundColor,subCategory FROM schedule s WHERE employeeID = #{employeeID} AND subCategory='개인';
+	</select>
+	
+	<select id="addInterestCallender">
+		SELECT title, start, end, backgroundColor, subCategory,CONCAT(e.name, ' ', p.positionName) AS name
+		FROM schedule s
+		JOIN employee e ON e.employeeID = s.employeeID
+		JOIN `position` p ON e.positionID = p.positionID 
+		WHERE s.employeeID = #{employeeID} AND s.subCategory = '개인';
+	</select>
+	
+	<select id="getFacilityEvents">
+		SELECT title,start,end,backgroundColor,subCategory FROM schedule s WHERE subCategory ='예약';
+	</select>
+	
+	<select id="getFacility">
+		SELECT  facilityName FROM facility f  WHERE category=#{text} AND isUse=0;
+	</select>
+	
+	<insert id="facilityWrite" useGeneratedKeys="true" keyColumn="scheduleID"
+		keyProperty="scheduleID" parameterType="schedule">
+		INSERT INTO schedule values(NULL,#{employeeID},#{title},#{start},#{end},'예약',#{description},'-','1',#{backgroundColor});
+	</insert>
+	
+	<update id="updateFacility">
+		update facility SET isUSE='1' WHERE facilityName = #{facilityName}
+	</update>
+	
+	<insert id="addCalender" parameterType="String">
+	INSERT INTO calendar(employeeID,calendarName) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'));
+	</insert>
+	
+	<select id="showInterestCalendar">
+		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
 	</select>
 </mapper>

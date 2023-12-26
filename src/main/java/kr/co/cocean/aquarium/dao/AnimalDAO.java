@@ -1,6 +1,7 @@
 package kr.co.cocean.aquarium.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,6 +30,12 @@ public interface AnimalDAO {
 
 	ArrayList<InChargeDTO> animalInCharge(int animalID);
 
-	ArrayList<LogPlanDTO> animalLogPlan(int animalID);
+	ArrayList<LogPlanDTO> animalLogPlan(int animalID, String con, String month);
+
+	ArrayList<FileDTO> animalImage(int animalID);
+
+	void logplanWrite(LogPlanDTO param);
+
+	HashMap<String, String> employeeInfo(int employeeID);
 
 }

@@ -9,11 +9,11 @@
 	<insert id="join" parameterType="map">
 		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responsibility})
 	</insert>
+	 <select id="getBranch">
+        SELECT branchName FROM branch
+    </select>
 	
-	<select id="getBranch">
-		SELECT branchName FROM branch
-	</select>
-	
+
 	<select id="getBranchID">
 		SELECT hqName FROM headquarters h WHERE branchID =#{branchID}
 	</select>
@@ -25,5 +25,16 @@
 	<select id="getDepartmentText">
 		SELECT responsibility es FROM department d WHERE departmentName = #{departmentText}
 	</select>
+	
+	<select id="getChart" resultType="tree">
+		SELECT * FROM jsTree ORDER BY CASE WHEN text LIKE '%장' THEN 0 ELSE 1 END, text;
+	</select>
+	
+	<insert id="joinTree">
+    INSERT INTO jsTree VALUES
+    (#{employeeID}, #{departmentID}, CONCAT(#{name}, ' ', #{positionID}), 'jstree-icon-worker')
+	</insert>
+
+
 
 </mapper>

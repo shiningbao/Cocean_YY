@@ -13,12 +13,12 @@ public class PersonnelDTO {
 	private int positionID;
 	private int rankID;
 	private String password;
+	
 	private String status;
 	private String joinDate;
 	private String phoneNumber;
 	private String address;
 	private String responsibility;
-	
 	
 	
 	public String getResponsibility() {
