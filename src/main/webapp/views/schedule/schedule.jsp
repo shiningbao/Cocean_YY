@@ -483,6 +483,11 @@ $('#facilitySubmit').on('click',function(){
 	
 	$('#facilityForm').submit();
 })
+function getEmployeeID(employeeID){
+	console.log(employeeID);
+}
+
+
 var msg = "${msg}";
 if(msg!=""){
 	alert(msg);
