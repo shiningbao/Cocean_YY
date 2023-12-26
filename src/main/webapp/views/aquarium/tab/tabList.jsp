@@ -82,12 +82,13 @@
 				<td>
 					<button onclick="inchargeAdd()">담당자 지정</button><br/>
 					<c:if test="${incharge eq null}">담당자 없음</c:if>
-					<c:forEach items="${incharge}" var="ic" >${ic}</c:forEach>
+					<c:forEach items="${incharge}" var="ic" >${ic.departmentName} ${ic.name}</c:forEach>
 				</td>
 			</tr>
 		</table>
 	</div>
-
+	
+	<!-- 담당자 지정 모달창 -->
 	<div id="inchargeModal">
 		<div id="inchargeDiv">
 			<div id="oraganizationDiv">
@@ -130,21 +131,24 @@
 		$('#inchargeDiv').css({
 			'position':'fixed',
 			'border':'1px solid black',
-			'width':'500px',
+			'width':'600px',
 			'height':'500px',
 			'top':'20%',
 			'left':'30%',
+			'padding':'5px 5px',
 			'background-color':'white',
 		});
 		$('#oraganizationDiv').css({
-			'width':'100%'
+			'display':'inline',
+		});
+		$('#inchrgeList').css({
+			'display':'inline',
 		});
 		
 		function getEmployeeID(emp){
 			console.log('get');
 			console.log(emp);
 		}
-		
 		
 		
 		// 담당자 지정 관련 모달
