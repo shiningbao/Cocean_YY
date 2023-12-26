@@ -44,7 +44,6 @@
 	#classifiCon{
 		position: fixed;
 		border: 1px solid black;
-
 		height: 500px;
 		top: 20%;
 		left: 30%;

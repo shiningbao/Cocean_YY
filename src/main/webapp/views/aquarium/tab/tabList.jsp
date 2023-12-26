@@ -80,22 +80,88 @@
 			<tr>
 				<th>담당자</th>
 				<td>
-					<button id="inchargeAdd()">담당자 지정</button><br/>
+					<button onclick="inchargeAdd()">담당자 지정</button><br/>
 					<c:if test="${incharge eq null}">담당자 없음</c:if>
 					<c:forEach items="${incharge}" var="ic" >${ic}</c:forEach>
 				</td>
 			</tr>
 		</table>
 	</div>
-	<div>${incharge}</div>
+<%--  --%>
+	<div id="inchargeModal">
+		<div id="inchargeDiv">
+			<div id="oraganizationDiv">
+				<jsp:include page="../../personnel/organization.jsp"></jsp:include>
+			</div>
+			<div id="inchrgeList">
+				<table>
+					<tr>
+						<th>본부</th>
+						<th>부서</th>
+						<th>이름</th>
+						<th>삭제</th>
+					</tr>
+					<c:forEach items="${incharge}" var="item">
+					<tr>
+						<th>${item.hqName}</th>
+						<th>${item.departmentName}</th>
+						<th>${item.name}</th>
+						<th><button onclick="inchargeDel(this)">삭제클릭</button></th>
+						<th class="inchargeEmployeeID" style="display:none">${item.employeeID}</th>			
+					</tr>
+					</c:forEach>
+				</table>
+				<button onclick="inchargeChange()"></button>
+			</div>
+		</div>
+	</div>
 	<script>
 		$('.subImg').css({'margin':'1px auto', 'display':'inline'});
+		$('#inchargeModal').css({
+			'display':'none',
+			'position':'fixed',
+			'top':'0',
+			'left':'0',
+			'width':'100%',
+			'height':'100%',
+			'background-color':'rgba(0, 0, 0, 0.5)',
+			'z-index':'3',
+		});
+		$('#inchargeDiv').css({
+			'position':'fixed',
+			'border':'1px solid black',
+			'height':'500px',
+			'top':'20%',
+			'left':'30%',
+			'background-color':'white',
+		});
 		
-// 		function(){
-// 			$.ajax({
-				
-// 			});
-// 		}
+		// 담당자 지정 관련 모달
+		function inchargeAdd(){
+			console.log('a');
+
+			
+			
+			
+			$('#inchargeModal').css({'display':'block'});
+		}
+		function inchargeDel(s){
+			$('s').parent().parent().remove();
+		}
+		function inchargeNone(){
+			$('#inchargeModal').css({'display':'none'});
+		}
+		
+		window.addEventListener('click',function(event) {
+			if (event.target === $('#inchargeModal')[0]) {
+				inchargeNone();
+		    }
+		});
+		
+		
+		
+		
+		
 	</script>
 </div>
 
