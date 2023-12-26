@@ -116,9 +116,10 @@ public class PersonnelController {
 	
 	@RequestMapping(value="/personnel/getEmployeeID.do")
 	@ResponseBody
-	public String getEmployeeID(String employeeID) {
+	public ModelAndView getEmployeeID(String employeeID) {
 		logger.info("employeeID==========="+employeeID);
-		return "";
+		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
+		return mav;
 	}
 
 	

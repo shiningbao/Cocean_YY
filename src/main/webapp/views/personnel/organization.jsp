@@ -79,15 +79,15 @@ $(function () {
 	});
     
     var employeeID;
-    
-    
+    var icon;
+    var nodeText;
     // jstree 클릭 이벤트 처리
-    $("#jstree").on('click', '.jstree-anchor', function (e) {
+     $("#jstree").on('click', '.jstree-anchor', function (e) {
         var clickedNode = $(e.target).closest('li');
         employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
-        
+        nodeText = $("#jstree").jstree(true).get_node(clickedNode).text;
         //console.log(employeeID);
-    });
+    }); 
     // 더블클릭시 이벤트
     $("#jstree").on('dblclick', '.jstree-anchor',function(e){
     	// 더블클릭시 값 전송
@@ -97,7 +97,7 @@ $(function () {
     	console.log(icon);
     	if(icon!=true){
     		
-   			sendEmployeedID(employeeID);
+   			sendEmployeedID(employeeID,nodeText);
     	}
     });
 });
@@ -105,9 +105,9 @@ $(function () {
         console.log("껌색할께영");
         $('#jstree').jstree(true).search($("#schName").val());
     }
-    function sendEmployeedID(employeeID){
+    function sendEmployeedID(employeeID,nodeText){
     	//console.log('값 보내기');
-    	getEmployeeID(employeeID);
+    	getEmployeeID(employeeID,nodeText);
     }
 
 </script>
