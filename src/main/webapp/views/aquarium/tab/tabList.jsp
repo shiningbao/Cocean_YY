@@ -87,7 +87,7 @@
 			</tr>
 		</table>
 	</div>
-<%--  --%>
+
 	<div id="inchargeModal">
 		<div id="inchargeDiv">
 			<div id="oraganizationDiv">
@@ -130,19 +130,25 @@
 		$('#inchargeDiv').css({
 			'position':'fixed',
 			'border':'1px solid black',
+			'width':'500px',
 			'height':'500px',
 			'top':'20%',
 			'left':'30%',
 			'background-color':'white',
 		});
+		$('#oraganizationDiv').css({
+			'width':'100%'
+		});
+		
+		function getEmployeeID(emp){
+			console.log('get');
+			console.log(emp);
+		}
+		
+		
 		
 		// 담당자 지정 관련 모달
 		function inchargeAdd(){
-			console.log('a');
-
-			
-			
-			
 			$('#inchargeModal').css({'display':'block'});
 		}
 		function inchargeDel(s){

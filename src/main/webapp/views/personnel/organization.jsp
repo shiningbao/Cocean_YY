@@ -2,13 +2,13 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<html lang="ko">
+<html>
 
 <head>
 <meta charset="UTF-8">
 <!-- jsTree theme -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <style>
 	
 .jstree-default .jstree-themeicon-custom{
@@ -76,29 +76,29 @@ $(function () {
     // jstree 생성 후, --
     $("#jstree").on("ready.jstree", function () {
 
-});
-
+	});
+    
+    var employeeID;
+    
     // jstree 클릭 이벤트 처리
     $("#jstree").on('click', '.jstree-anchor', function (e) {
         var clickedNode = $(e.target).closest('li');
-        var employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
-        console.log(employeeID);
-        $.ajax({
-        	url:"/Cocean/personnel/getEmployeeID.do",
-        	data:{employeeID:employeeID},
-        	success:function(data){
-        		console.log(data);
-        	},
-        	error:function(e){
-        		console.log(e);
-        	}
-        })
-        // 이벤트 처리 추가
+        employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
+        //console.log(employeeID);
+    });
+    // 더블클릭시 이벤트
+    $("#jstree").on('dblclick', '.jstree-anchor',function(){
+    	// 더블클릭시 값 전송
+   		sendEmployeedID(employeeID);
     });
 });
     function fSch() {
         console.log("껌색할께영");
         $('#jstree').jstree(true).search($("#schName").val());
+    }
+    function sendEmployeedID(employeeID){
+    	//console.log('값 보내기');
+    	getEmployeeID(employeeID);
     }
 
 </script>

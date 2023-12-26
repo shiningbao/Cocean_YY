@@ -57,7 +57,7 @@ function getContents(con){
 		data:{'animalID':animalID, 'con':con},
 		dataType:'text',
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			drawContent(data, con);
 		},
 		error:function(e){
@@ -130,7 +130,7 @@ function monthchange(){
 		data:{'animalID':animalID, 'con':con, 'month':month},
 		dataType:'text',
 		success:function(data){
-			console.log(data);
+			//console.log(data);
 			drawContent(data, con);
 		},
 		error:function(e){
@@ -139,7 +139,7 @@ function monthchange(){
 	});
 
 	
-
+	console.log(aa);
 
 	
 	
