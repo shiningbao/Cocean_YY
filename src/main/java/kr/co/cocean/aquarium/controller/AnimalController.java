@@ -9,6 +9,7 @@ import javax.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,9 +82,10 @@ public class AnimalController {
 	
 	
 	@GetMapping(value = "/animal/detail.go")
-	public ModelAndView animalDetailGo(@RequestParam int animalID) {
+	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail");
 		mav.addObject("animalID", animalID);
+		mav.addObject("nickname", nickname);
 		return mav;
 	}
 	
@@ -119,6 +121,21 @@ public class AnimalController {
 		return result;
 	}
 
+	@GetMapping(value ="/animal/classifi")
+	public String getClassifi() {
+		return "animal/classification";
+	}
+	
+	@GetMapping(value = "/animal/organization")
+	public String getOrganization() {
+		return "personnel/organization";
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

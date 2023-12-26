@@ -27,7 +27,7 @@
 	</tr>
 	<c:forEach items="${list}" var="item">
 		<tr>
-		<td><a href="detail.go?animalID=${item.getAnimalID()}">${item.getAnimalID()}</a></td>
+		<td><a href="detail.go?animalID=${item.getAnimalID()}&nickname=${item.getNickname()}">${item.getAnimalID()}</a></td>
 		<td>${item.getNickname()}</td>
 		<td>${item.getCommonName()}</td>
 		<td>${item.getClassificationCode()}</td>

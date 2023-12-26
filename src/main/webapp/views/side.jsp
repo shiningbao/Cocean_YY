@@ -83,8 +83,8 @@
 						<span class="d-none d-md-inline ml-1">인사 관리</span>
 					</a>
 					<div class="collapse" id="group_bar">
-						<a href="#" class="list-group-item" data-parent="#sidebar">조직 관리</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">사원 관리</a>
+						<a href='<c:url value="/personnel/getChart.go"/>' class="list-group-item" data-parent="#sidebar">조직 관리</a>
+						<a href='<c:url value="/personnel/join.go"/>' class="list-group-item" data-parent="#sidebar">사원 관리</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">연차 관리</a>
 					</div>
 					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">

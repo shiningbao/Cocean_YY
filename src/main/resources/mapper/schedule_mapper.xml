@@ -4,20 +4,28 @@
 >
 <mapper namespace="kr.co.cocean.schedule.dao.ScheduleDAO">	
 	
-	<select id="getTeams">
-		select DISTINCT  departmentName  from department
-	</select>
 	
-	<select id="getCallender" resultType="schedule">
-		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID};
-	</select>
+
 	
 	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
 		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
+		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{subCategory},#{description},#{remarks},#{publicCategory},#{backgroundColor});
 	</insert>
 	
 	<select id="getCallenderEvents">
-		SELECT title,start,end FROM schedule s WHERE employeeID = #{employeeID}
+		SELECT title,start,end,backgroundColor FROM schedule s WHERE employeeID = #{employeeID}
 	</select>
+	
+	<select id="getFacility">
+		SELECT  facilityName FROM facility f  WHERE category=#{text} AND isUse=0;
+	</select>
+	
+	<insert id="facilityWrite" useGeneratedKeys="true" keyColumn="scheduleID"
+		keyProperty="scheduleID" parameterType="schedule">
+		INSERT INTO schedule values(NULL,#{employeeID},#{title},#{start},#{end},'예약',#{description},'-','1');
+	</insert>
+	
+	<update id="updateFacility">
+		update facility SET isUSE='1' WHERE facilityName = #{facilityName}
+	</update>
 </mapper>

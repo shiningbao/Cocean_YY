@@ -10,12 +10,17 @@ import kr.co.cocean.schedule.dto.ScheduleDTO;
 @Mapper
 public interface ScheduleDAO {
 
-	List<String> getTeams();
 
 	List<ScheduleDTO> getCallender(String loginEmployeeID);
 
 	void scheduleWrite(ScheduleDTO dto);
 
 	List<HashMap<String, Object>> getCallenderEvents(int employeeID);
+
+	List<String> getFacility(String text);
+
+	int facilityWrite(ScheduleDTO dto);
+
+	void updateFacility(String facilityName);
 
 }
