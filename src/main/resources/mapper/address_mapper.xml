@@ -23,34 +23,74 @@ e.rankID = r.rankID ;
 </select>
  -->
 
+<!-- 
 
-<insert id="insert" parameterType="hashmap">
-		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
-values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber});
-	</insert>
 
  <delete id="del">
       DELETE FROM personalAddressBook WHERE addressNumber=#{param1};
    </delete>
 
 
-	
-<select id="interioraddressBooklist" resultType="address">
-SELECT d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID ;
-</select>
-
 <select id="list" resultType="address">
 
 		SELECT addressNumber, name, positionLevel,rankLevel,departmentName,phoneNumber 
 		FROM personalAddressBook
 	</select>
-
+	
+<select id="inlist" resultType="inaddress">
+		SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.status = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID 
+	</select>	
+ 
 
 	<select id="detail" resultType="address">
 		SELECT * FROM 
 			personalAddressBook WHERE addressNumber = #{param1}
 	</select>
+	
+
+<update id="update" parameterType="hashmap">
+		UPDATE personalAddressBook SET
+			name = #{name}
+			,positionLevel = #{positionLevel}
+			,rankLevel = #{rankLevel}
+			,departmentName = #{departmentName}
+			,phoneNumber = #{phoneNumber}
+		WHERE addressNumber =#{param1} 
+	</update>
+	-->
+
+	<select id="list" resultType="address">
+		SELECT 
+			p.addressNumber, 
+			p.name, 
+			p.positionLevel , 
+			p.rankLevel ,
+			p.departmentName ,
+			p.phoneNumber 
+		FROM personalAddressBook p ORDER BY addressNumber asc
+	</select>
+	
+	
+	<delete id="delete">
+		DELETE FROM personalAddressBook WHERE addressNumber = #{param1}
+	</delete>
+	
+	
+	<select id="namesearch" parameterType="list" resultType="address">	
+
+		SELECT * FROM personalAddressBook WHERE name IN
+			<foreach collection="list" item="item" open="(" separator="," close=")">
+				 #{item}
+			</foreach>
+					
+	</select>	
+	
+	<insert id="insert" parameterType="hashmap">
+		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
+values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber})
+	</insert>
+	
 
 </mapper>
