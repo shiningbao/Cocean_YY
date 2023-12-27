@@ -72,13 +72,6 @@ button{
 	resize: none;
 }
 
-#reference, #reference th, #reference td {
-  border: none;
-}
-
-#reference{
-	font-size : 10px;
-}
 .dropdown-content {
     display: none;
     width: 290px;
@@ -180,14 +173,6 @@ button{
 			</tr>
 		</table>
 	</div>
-	<div style="padding: 50px 30px; "><span style="margin:0px; font-size:13px; width:56px;">참조자</span>
-	 <a href="#" class="addRef" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: 282px; right:35px;">+</a>
-	<div id="myDropdown2" class="dropdown-content">
-  	</div>
-	<hr/>
-	<table id="reference">
-	</table>	
-	</div>
 	</div>
 
 
@@ -206,8 +191,12 @@ button{
 			<td><input type="text" name="title" placeholder="*제목을 입력해주세요."></td>
 		</tr>
 		<tr>
-		    <th>합의</th>
+		    <th>합의자</th>
 		    <td id="agreement"></td>
+		</tr>
+		<tr>
+		    <th>참조자</th>
+		    <td id="referenceTd"></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -431,19 +420,17 @@ button{
 		       	agreementTd.append(content);
 		       	console.log(lineData.employeeID);
 		    } else {
-		        var referenceTable = $("#reference");
-		        var row = $("<tr>");
+		        var referenceTd= $("#referenceTd");
+		        var content='';
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
-		            row.append('<label class="cancel">'+'x'+'</label>');
+		        	content += '<label class="cancel">'+lineData.rank + lineData.name+'x'+'</label>';
 		        } else {
-		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
-		            row.append("<td>" + lineData.rank + "</td>");
-		            row.append("<td>" + lineData.name + "</td>");
-		            row.append('<label class="cancel">'+'x'+'</label>');
+		        	content += '<label class="cancel">' + lineData.hqName + "/" + lineData.departmentName +'x'+'</label>';
+		        	content += '<label class="cancel">' + lineData.rank+'x'+'</label>';
+		        	content += '<label class="cancel">' + lineData.name+'x'+'</label>';
 		        }
-		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
-		        referenceTable.append(row);
+		        content += "<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>";
+		        referenceTd.append(content);
 		        console.log(lineData.employeeID);
 		    }
 		}
@@ -456,11 +443,9 @@ button{
 		    if (table.attr('id') === 'approvalLine') {
 		        row.remove();
 		        updateRowNumbers('#approvalLine');
-		    } else if (table.attr('id') === 'reference') {
-		        row.remove();
 		    } else {
 		    	element.text('');
-		        }
+		    }
 		});
 		// 테이블 순번 업데이트 함수
 		function updateRowNumbers(tableId) {
