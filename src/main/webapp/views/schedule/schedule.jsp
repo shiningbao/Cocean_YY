@@ -131,6 +131,15 @@ img{
     height: 21px;
     line-height: 20px!important;
 }
+.colorDIV{
+float: right;
+	display: inline-block;
+    padding: 0px 8px;
+    border-radius: 13px;
+    border: 1px solid #c2dde6;
+    height: 21px;
+    line-height: 20px!important;
+}
 </style>
 </head>
 
@@ -298,7 +307,7 @@ img{
 	<div>	
 		<div>
 			<button class="interestCalendar Hide">
-				<img src="<c:url value='/resource/img/carrot-down.PNG'/>" alt="버튼 이미지">
+				<img src="<c:url value='/resource/img/carrot-side2.png'/>" alt="버튼 이미지">
 			</button>
 		</div>
 			<p class="cal-font">
@@ -333,54 +342,16 @@ img{
 	var carrotSideImgUrl = '<c:url value="/resource/img/carrot-side2.png"/>';
     var carrotDownImgUrl = '<c:url value="/resource/img/carrot-down.PNG"/>';
 	console.log(loginEmployeeID);
+	var employeeID;
 	
-	
 
-	$('.interestCalendar').on('click', function() {
-	    console.log('click');
-	    var img = $(this).find('img'); // 버튼 내의 이미지 요소를 찾습니다.
-	    isDown = !isDown; // true 이면 false로 false면 true로
-	    if (isDown) {
-	        img.attr('src', carrotSideImgUrl); // 이미지 경로를 직접 지정합니다.
-	        console.log('true');
-	        $.ajax({
-	        	url:'showInterestCalendar.do',
-	        	data:{loginEmployeeID:loginEmployeeID},
-	        	type:'POST',
-	        	success:function(data){
-	        		console.log(data);
-	        		data.forEach(function(item) {
-	        		    var label = $('<div>'); // 라벨 생성
-
-	        		    var checkbox = $('<input>').attr({
-	        		        type: 'checkbox',
-	        		        value: '',
-	        		        class: '',
-	        		        checked: 'checked'
-	        		    });
-
-	        		    label.append(checkbox).append(item); // 라벨에 체크박스와 데이터 추가
-
-	        		    $('.itCallenderList').append(label); // itCallenderList에 라벨 추가
-	        		});
-	        	},
-	        	error:function(e){
-	        		console.log(e);
-	        	}
-	        	
-	        });
-	    } else {
-	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
-	        $('.itCallenderList').empty();
-	        console.log('false');
-	    }
-	});
 $('.addMyCallender').click(function(){
 	console.log('click');
 });
 
 //캘린더 js
 document.addEventListener('DOMContentLoaded', function() {
+	getAddCalenderCall();
    var calendarEl = document.getElementById('calendar');
 
    var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -458,7 +429,7 @@ var facilityList;
    function removePersonalEvents() {
 	    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
 	    events.forEach(function(event) {
-	        if (event.extendedProps.subCategory == '개인') {
+	        if (event.extendedProps.subCategory == '개인'&& event.extendedProps.employeeID == loginEmployeeID ) {
 	            event.remove(); // subCategory가 '개인'인 이벤트 제거
 	        }
 	    });
@@ -471,8 +442,100 @@ var facilityList;
 	        }
 	    });
 	}
-
 	
+
+	$('.interestCalendar').on('click', function() {
+	    console.log('click');
+	    var img = $(this).find('img'); // 버튼 내의 이미지 요소를 찾습니다.
+	    isDown = !isDown; // true 이면 false로 false면 true로
+	    if (isDown) {
+	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
+	        console.log('true');
+	        $('.itCallenderList').empty();	
+	    } else {
+	        img.attr('src', carrotSideImgUrl); 
+	        // 이미지 경로를 직접 지정합니다.
+	        getAddCalenderCall();
+	        console.log('false');
+	       
+	    }
+	});
+	var color = ['#8B0000','#FA8072','#556B2F','#000001','#9932CC','#E6E6FA','#FF1493','#FFFACD','#2F4F4F','#FFF0F5','#FFFFE0','#DB7093','#4B0082','#E6E6FA','#7B68EE'];
+	function getAddCalenderCall(){
+		 $.ajax({
+	        	url:'getAddCalender.do',
+	        	data:{loginEmployeeID:loginEmployeeID},
+	        	type:'POST',
+	        	success:function(data){
+	        		console.log(data);
+
+	        		data.forEach(function (item, index) {
+	        		    var label = $('<label>'); // 라벨 생성
+	        		    var div = $('<div class="colorDIV"></div>').css('background-color', color[index]);
+	        		    var input = $('<input>').attr({
+	        		        type: 'hidden',
+	        		        value: color[index]
+	        		    });
+	        		    var checkbox = $('<input>').attr({
+	        		        type: 'checkbox',
+	        		        value: item.addemployeeID,
+	        		        class: 'calendar-checkbox-' + index,
+	        		    });
+
+	        		    label.append(checkbox).append(item.calendarName); // 라벨에 체크박스와 데이터 추가
+	        		    label.append(div).append(input);
+	        		    $('.itCallenderList').append(label).append('<br>'); // itCallenderList에 라벨 추가
+	        		});
+	        	
+	        	},
+	        	error:function(e){
+	        		console.log(e);
+	        	}
+	        	
+	        }); 
+	}
+	var eventAddList;	
+	var val;
+	$('.itCallenderList').on('change','input[type="checkbox"]',function(){
+		var backgroundColor = $(this).parent().find('input[type="hidden"]').val();
+	    console.log('Background Color:', backgroundColor);
+		console.log($(this).val());
+		console.log($(this).prop('checked'));
+		 val = $(this).val();
+		var CalChecked = $(this).prop('checked');
+		if(CalChecked){
+			$.ajax({
+				url:'getAddCalList.do',
+				data: {val:val,
+					CalChecked:CalChecked,
+					backgroundColor:backgroundColor},
+				type:'POST',
+				success:function(data){
+					console.log(data);
+					console.log(data.eventAddList);
+					eventAddList = data.eventAddList;
+					calendar.addEventSource(eventAddList);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			 removeAddCalEvents()
+		};
+		
+		console.log(val);
+	});
+	
+	
+	 function removeAddCalEvents() {
+		    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
+		    events.forEach(function(event) {
+		        if (event.extendedProps.subCategory == '개인' && event.extendedProps.employeeID == val) {
+		            event.remove(); // subCategory가 '개인'인 이벤트 제거
+		        }
+		    });
+		}
    
  }); 
 
@@ -578,27 +641,35 @@ $('#facilitySubmit').on('click',function(){
 
 
 
-function getEmployeeID(employeeID, nodeText) {
-    console.log(employeeID);
-    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
-        $.ajax({
-            url: 'addCalender.do',
-            type: 'POST',
-            data: { loginEmployeeID: loginEmployeeID,
-            	employeeID:employeeID,
-            	nodeText:nodeText},
-            success: function (data) {
-            	console.log(data);
-				location.href="/Cocean/schedule/schedule.go";
-            },
-            error: function (e) {
-                console.log(e);
-            }
-        });
-    } else {
-
-    }
+	function getEmployeeID(employeeID, nodeText) {
+	employeeID = employeeID;
+	    console.log(employeeID);
+	    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
+	        addCal(employeeID, nodeText); // 확인을 눌렀을 때 addCal() 함수 호출
+	    } else {
+	
+	    }
 }
+
+	function addCal(employeeID, nodeText) {
+	    $.ajax({
+	        url: 'addCalender.do',
+	        type: 'POST',
+	        data: {
+	            loginEmployeeID: loginEmployeeID,
+	            employeeID: employeeID,
+	            nodeText: nodeText
+	        },
+	        success: function (data) {
+	            console.log(data);
+	             location.href="/Cocean/schedule/schedule.go"; 
+
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
 
 $('#start').val(new Date().toISOString().substring(0, 10).toString());
 $('#end').val(new Date().toISOString().substring(0, 10).toString());

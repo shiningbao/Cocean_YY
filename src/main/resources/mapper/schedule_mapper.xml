@@ -13,15 +13,11 @@
 	</insert>
 	
 	<select id="getCallenderEvents">
-		SELECT title,start,end,backgroundColor,subCategory FROM schedule s WHERE employeeID = #{employeeID} AND subCategory='개인';
+		SELECT title,start,end,backgroundColor,subCategory,employeeID FROM schedule s WHERE employeeID = #{employeeID} AND subCategory='개인';
 	</select>
 	
 	<select id="addInterestCallender">
-		SELECT title, start, end, backgroundColor, subCategory,CONCAT(e.name, ' ', p.positionName) AS name
-		FROM schedule s
-		JOIN employee e ON e.employeeID = s.employeeID
-		JOIN `position` p ON e.positionID = p.positionID 
-		WHERE s.employeeID = #{employeeID} AND s.subCategory = '개인';
+		SELECT calendarName ,addemployeeID from calendar where employeeID = #{loginEmployeeID} ;
 	</select>
 	
 	<select id="getFacilityEvents">
@@ -42,10 +38,15 @@
 	</update>
 	
 	<insert id="addCalender" parameterType="String">
-	INSERT INTO calendar(employeeID,calendarName) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'));
+	INSERT INTO calendar(employeeID,calendarName,addemployeeID) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'),#{employeeID});
 	</insert>
 	
-	<select id="showInterestCalendar">
-		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
+	<select id="getAddCalList">
+		SELECT title,start,end,subCategory,employeeID FROM schedule s WHERE employeeID = #{val} AND subCategory='개인' AND publicCategory =1;;
 	</select>
+	
+
+	<!-- <select id="showInterestCalendar">
+		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
+	</select> -->
 </mapper>

@@ -25,10 +25,13 @@ public interface ScheduleDAO {
 
 	List<HashMap<String, Object>> getFacilityEvents();
 
-	List<HashMap<String, Object>> addInterestCallender(String employeeID);
+	List<HashMap<String, Object>> addInterestCallender(String loginEmployeeID);
 
-	int addCalender(String loginEmployeeID, String nodeText);
+	int addCalender(String loginEmployeeID, String nodeText, String employeeID);
 
-	List<String> showInterestCalendar(String loginEmployeeID);
+	List<HashMap<String, Object>> getAddCalList(String val);
+
+
+	/* List<String> showInterestCalendar(String loginEmployeeID); */
 
 }
