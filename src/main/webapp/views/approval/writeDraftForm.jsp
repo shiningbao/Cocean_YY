@@ -104,7 +104,7 @@ button{
 <script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
 <!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
-
+<div class="container">
 <div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -125,7 +125,8 @@ button{
 	</div>
 
 	<c:forEach items="${draftInfo}" var="draft">
-<div id="container">
+
+<div id="TopContainer">
 <div id="draftInfoTop" style="display: flex;">
 		<table id="draftInfo">
 			<tr>
@@ -159,9 +160,6 @@ button{
 	<div style="display: flex; flex-direction: column; width: 22%; float: right;">
 	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
     <a href="#" class="addApprovalLine" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: 157px; right:35px;">+</a>
-	<div id="myDropdown" class="dropdown-content">
-
-  	</div>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -174,10 +172,6 @@ button{
 		</table>
 	</div>
 	</div>
-
-
-
-	
 </c:forEach>
 
 
@@ -268,7 +262,7 @@ button{
 <input type="button" value="등록" onclick="save(false)"/>
 <input type="button" value="취소"/>
 </form>
-
+</div>
 
 
 
