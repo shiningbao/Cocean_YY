@@ -24,6 +24,8 @@ public interface StoreDAO {
 
 	int ticketRegister(String productName, int price, String category);
 
+	int storeProductRegister(String productName, int price, String category);
+
 
 
 }

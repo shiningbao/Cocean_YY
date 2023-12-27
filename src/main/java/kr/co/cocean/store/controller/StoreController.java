@@ -57,10 +57,19 @@ public class StoreController {
 		return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.go")
+	@GetMapping(value="/store/productInfoRegister.go")
 	public String storeProductRegisterGo() {
 		logger.info("상품 등록 페이지 이동");
-		return "store/storeProductRegister";
+		return "store/productInfoRegister";
+	}
+	
+	@GetMapping(value="/store/productInfoRegister.do")
+	public int storeProductRegister(@RequestParam String productName, @RequestParam int price, @RequestParam String category) {
+		logger.info("본사상품 등록");
+		logger.info("productName : "+productName);
+		logger.info("price : "+price);
+		logger.info("category : "+category);
+		return service.storeProductRegister(productName, price, category);
 	}
 	
 //	@GetMapping(value="/store/ticketRegister.do")

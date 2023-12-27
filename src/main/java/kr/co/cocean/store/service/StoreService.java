@@ -111,6 +111,11 @@ public class StoreService {
 		return "성공";
 	}
 
+	public int storeProductRegister(String productName, int price, String category) {
+		return dao.storeProductRegister(productName, price, category);
+		
+	}
+
 //	public int ticketRegister(String branchName, String productName, int price, String category) {
 //		int branchID = dao.branchSelect(branchName);
 //		 dao.branchRegisterProduct(branchID, i);

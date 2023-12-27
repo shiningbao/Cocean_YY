@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="branchProductList" resultType="branchProduct">
-		SELECT bp.productIndex, bp.branchID, bp.productID, pi.productName, pi.category, 
+		SELECT bp.productIndex, bp.branchID, bp.productID, bp.status, pi.productName, pi.category, 
     		pi.price, b.branchName, b.branchLocation, b.branchLatitude, b.branchLongitude
 		FROM 
 		    branchProduct bp
@@ -20,7 +20,7 @@
 	</select>
 	
 	<select id="searchProduct" resultType="branchProduct">
-	SELECT pi.productID, pi.productName, pi.price, bp.branchID 
+	SELECT pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
 	FROM productInformation pi
 	JOIN branchProduct bp ON pi.productID = bp.productID
 	JOIN branch b ON bp.branchID = b.branchID
@@ -40,7 +40,11 @@
 	INSERT INTO branchProduct(branchID, productID) VALUES(#{param1}, #{param2})
 	</insert>
 	
-	<insert id="ticketRegister">
+	<insert id="ticketRegister">	
 	INSERT INTO brachProduct(branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
+	
+	<insert id="storeProductRegister">
+	INSERT INTO productInformation(productName, price, category) VALUES(#{param1}, #{param2}, #{param3})
 	</insert>
 </mapper>

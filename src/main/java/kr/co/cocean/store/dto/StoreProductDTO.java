@@ -10,10 +10,17 @@ public class StoreProductDTO {
 	private double branchLatitude;
 	private double branchLongitude;
 	private int productID;
+	private String status;
 	private String productName;
 	private String category;
 	private int price;
 	private int productIndex;
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getBranchID() {
 		return branchID;
 	}

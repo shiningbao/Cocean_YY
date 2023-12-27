@@ -89,7 +89,7 @@ border: 1px solid gray;
 <div class="productList">상품 리스트
 	<input type="text" id="searchProduct" placeholder="검색어 입력">
 	<button id="search" class="button">검색</button>
-	<button id="productInfoRegister" class="button" onclick="location.href='storeProductRegister.go'">본사상품 등록</button>
+	<button id="productInfoRegister" class="button" onclick="location.href='productInfoRegister.go'">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
@@ -139,7 +139,7 @@ new Promise((resolve, reject) => {
             console.log("y : " + data.documents[0].y);
             console.log("------------------");
             
-            roadAddrializeMap(data);
+            initializeMap(data);
             resolve(data); // 첫 번째 Ajax 호출 성공 시 resolve 호출
         },
         error: function (e) {
@@ -189,7 +189,7 @@ new Promise((resolve, reject) => {
     				console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
-								data.branchProductList[i].category === "상품"){
+								data.branchProductList[i].category === "상품" && data.branchProductList[i].status === "판매중"){
 							var product = data.branchProductList[i];
 							var productInfo = '<tr>' +
 	                         '<td>' + product.productID + '</td>' +
@@ -203,7 +203,7 @@ new Promise((resolve, reject) => {
     				console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
-								data.branchProductList[i].category === "티켓"){
+								data.branchProductList[i].category === "티켓" && data.branchProductList[i].status === "판매중"){
 							var ticket = data.branchProductList[i];
 							var ticketInfo = '<tr>' +
 	                         '<td>' + ticket.productID + '</td>' +
@@ -227,10 +227,12 @@ new Promise((resolve, reject) => {
 					    });
 					
 					    var matchedProducts = data.branchProductList.filter(function (product) {
-					        return product.branchName === matchedBranch.branchName && product.category === "상품";
+					        return product.branchName === matchedBranch.branchName && product.category === "상품" 
+					        	&& product.status === "판매중";
 					    });
 					    var matchedTickets = data.branchProductList.filter(function (product) {
-					        return product.branchName === matchedBranch.branchName && product.category === "티켓";
+					        return product.branchName === matchedBranch.branchName && product.category === "티켓" 
+					        && product.status === "판매중";
 					    });
 					    
 					    if (matchedBranch) {
@@ -241,7 +243,7 @@ new Promise((resolve, reject) => {
 					        console.log(matchedBranch.branchLongitude);
 					        console.log(matchedBranch.branchLatitude);
 							
-					        roadAddrializeMap({
+					        initializeMap({
 					            documents: [{
 					                x: matchedBranch.branchLongitude,
 					                y: matchedBranch.branchLatitude
@@ -338,7 +340,7 @@ new Promise((resolve, reject) => {
 });
 
 	// 지도 그리기
-    function roadAddrializeMap(data) {
+    function initializeMap(data) {
 		
         var mapContainer = document.getElementById('map');
         var options = {
