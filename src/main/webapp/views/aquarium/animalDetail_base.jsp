@@ -68,7 +68,7 @@
 			<tr>
 				<th>담당자</th>
 				<td>
-					<button onclick="inchargeAdd()">담당자 지정</button><br/>
+					<button onclick="inchargeAdd()" data-toggle="modal" data-target="#modalcharge">담당자 지정</button><br/>
 					<c:if test="${empty incharge}">담당자 없음</c:if>
 					<c:forEach items="${incharge}" var="ic" >${ic.departmentName} ${ic.name}<br/></c:forEach>
 				</td>
@@ -77,6 +77,42 @@
 	</div>
 	
 	<!-- 담당자 지정 모달창 -->
+	    <!-- 버튼 클릭 시 열리는 모달창 -->
+    <div class="modal fade" id="modalcharge" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- 모달창 제목 -->
+            <h5 class="modal-title">관리일지</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action=""> <!-- 입력폼 -->
+              <div class="form-group">
+                <label>담당자</label>
+                <input type="text" id="manager" readonly class="form-control">
+              </div>
+              <div class="form-group">
+                <label>내용</label>
+                <textarea type="text" class="form-control" required oninvalid="this.setCustomValidity('관리 내용을 작성해 주세요.')" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
+              </div>
+              <div class="form-row">
+                <label>작성 날짜</label>
+                <input class="form-control" id="currentDate" readonly type="text" value="date">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">저장</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
 	<div id="inchargeModal">
 		<div id="inchargeDiv">
 			<div id="oraganizationDiv">
