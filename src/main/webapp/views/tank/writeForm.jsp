@@ -14,6 +14,9 @@
         border-collapse: collapse;
         padding: 5px 10px;
     }
+    button {
+    	    width: 100px;
+    }
 </style>
 </head>
 <body>
@@ -143,8 +146,8 @@
 
 
 		</table>
-	<button type="button" onclick="location.href='list.go'">취소</button>
-	<button type="submit" id="confirmStart">등록</button>
+	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">취소</button>
+	<button type="submit" class="btn btn-primary" id="confirmStart">등록</button>
 	</form>
 </body>
 <script>

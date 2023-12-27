@@ -16,13 +16,16 @@
 	height: 100%;
 	margin: 0px 0px 0px 380px;
 	text-align: center;
+	position: absolute;
+	top: 255px;
 }
 
 #hTitle {
 	width: 120px;
 	height: 50px;
-	margin: 20px 0px 0px 380px;
+	margin: 5px 0px 0px 380px;
 	padding-top: 10px;
+	position: absolute;
 }
 
 #hTitle a {
@@ -35,10 +38,11 @@
 	width: 1150px;
 	height: 150px;
 	font-size: 13px;
-	top: 0px;
-	left: 300px;
+	top: 100px;
+	left: 255px;
 	align-items: flex-start;
 	padding-top: 50px;
+	position: absolute;
 }
 
 #box1 {
@@ -77,6 +81,7 @@ label {
     position: absolute;
     left: 1280px;
     width: 100px;
+    top: 485px;
 
 }
 
