@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
+import kr.co.cocean.aquarium.dto.InChargeChangeDTO;
 import kr.co.cocean.aquarium.dto.LogPlanDTO;
 import kr.co.cocean.aquarium.service.AnimalService;
 import kr.co.cocean.mypage.dto.LoginDTO;
@@ -35,6 +36,8 @@ public class AnimalController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired AnimalService service;
+	
+	/* 코션친구들 리스트 관련 */
 	
 	@GetMapping(value = "/animal/list.go")
 	public ModelAndView animalList() {
@@ -48,14 +51,17 @@ public class AnimalController {
 		return mav;
 	}
 	
+	/* 코션친구들 작성 관련 */
+	
 	@GetMapping(value = "/animal/write.go")
-	public ModelAndView animalWriteGo() {
+	public ModelAndView animalWriteGo(HttpSession session) {
 		
-		String branch = "1";
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		int branchID = userInfo.getBranchID();
 		
 		ModelAndView mav = new ModelAndView("/aquarium/animalWrite");
 		
-		ArrayList<String> tankList = service.tankList(branch);
+		ArrayList<HashMap<String, String>> tankList = service.tankList(branchID);
 		mav.addObject("tankList", tankList);
 		return mav;
 	}
@@ -65,11 +71,6 @@ public class AnimalController {
 		logger.info("files : {}",files);
 		logger.info("param : {}",param);
 		return service.animalWrite(files,param, rAttr);
-	}
-	
-	@GetMapping(value = "/animal/classficationPopup")
-	public String classficationPopup() {
-		return "aquarium/classfication";
 	}
 	
 	@GetMapping(value = "/animal/classficationSearch")
@@ -85,7 +86,7 @@ public class AnimalController {
 	
 	@GetMapping(value = "/animal/detail.go")
 	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail");
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
 		mav.addObject("animalID", animalID);
 		mav.addObject("nickname", nickname);
 		return mav;
@@ -125,7 +126,7 @@ public class AnimalController {
 
 	@GetMapping(value ="/animal/classifi")
 	public String getClassifi() {
-		return "animal/classification";
+		return "aquarium/classification";
 	}
 	
 	@PostMapping(value = "/animal/employeeInfo")
@@ -137,17 +138,16 @@ public class AnimalController {
 
 	@PostMapping(value = "/animal/inchargeChange")
 	@ResponseBody
-	public HashMap<String, Object> inchargeChange(@RequestBody Map<String, Object> param) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		logger.info("animalID : {}",param.get("animalID"));
-		logger.info("inchargeArray : {}",param.get("inchargeArray"));
-		
-		return result;
+	public HashMap<String, Object> inchargeChange(
+			@RequestBody InChargeChangeDTO dto) {
+		return service.inchargeChange(dto);
 	}
 	
 	
-	
-	
+	@PostMapping(value = "/animal/organization")
+	public String organization() {
+		return "personnel/organization";
+	}
 	
 	
 	

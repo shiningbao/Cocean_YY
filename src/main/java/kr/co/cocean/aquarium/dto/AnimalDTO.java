@@ -10,7 +10,9 @@ public class AnimalDTO {
 	private int animalID;
 	private int speciesID;
 	private int tankID;
+	private String tankName;
 	private int branchID;
+	private String branchName;
 	private String classificationCode;	
 	private int CodeNumber;
 	private String nickname;
@@ -23,7 +25,6 @@ public class AnimalDTO {
 	private String scientificName;
 	private String taxonomy;
 	private String animalCode;
-	
 	
 	public int getAnimalID() {
 		return animalID;
@@ -43,11 +44,23 @@ public class AnimalDTO {
 	public void setTankID(int tankID) {
 		this.tankID = tankID;
 	}
+	public String getTankName() {
+		return tankName;
+	}
+	public void setTankName(String tankName) {
+		this.tankName = tankName;
+	}
 	public int getBranchID() {
 		return branchID;
 	}
 	public void setBranchID(int branchID) {
 		this.branchID = branchID;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
 	}
 	public String getClassificationCode() {
 		return classificationCode;
@@ -122,6 +135,4 @@ public class AnimalDTO {
 		this.animalCode = animalCode;
 	}
 	
-
-
 }
