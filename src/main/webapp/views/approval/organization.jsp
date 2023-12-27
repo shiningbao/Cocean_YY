@@ -109,7 +109,6 @@ $(function () {
     	        	data:{employeeID:employeeID},
     	        	success:function(data){
     	        		console.log(data);
-    	        		console.log(data.employeeInfo);
     	        		drawLine(data.employeeInfo);
 
     	        	},
@@ -189,7 +188,8 @@ $('.cancel').off('click').on('click', function() {
 var lineData;
 // 결재라인 저장
 function saveApprovalLine(lineData) {
-   	lineData = [];
+	lineData=[];
+   	
     $('.lineItem').each(function () {
         var category = $(this).find('.category').val();
         var hqName = $(this).find('.hqName').text();
@@ -208,20 +208,7 @@ function saveApprovalLine(lineData) {
     });
     console.log(lineData);
     getApprovalLine(lineData);
-    /*  $.ajax({
-        url: "/Cocean/approval/saveApprovalLine.do",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(lineData),
-        success: function (data) {
-            console.log(data);
-            location.reload();
-            
-        },
-        error: function (e) {
-            console.log(e);
-        }
-    });  */
+    $('#line').empty();
     
 }
 
