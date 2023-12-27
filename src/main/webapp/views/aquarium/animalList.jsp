@@ -11,7 +11,7 @@
 <c:import url="/side"/>
 <h1>ANIMAL LIST</h1>
 담당자 <input type="text" name="personnel"/>
-국명/애칭 <input type="text" name="search"/><br/>
+<p>국명/애칭</p> <input type="text" name="search"/><br/>
 <input type="checkbox" name="all"/>전체
 <button id="search">검색</button>
 <br/><br/><br/>
