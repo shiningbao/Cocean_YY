@@ -12,8 +12,9 @@ public class WorkDTO {
 	private int workID;
 	private int employeeID;
 	private Date workDate;
-	private DateTimeFormat gowork;
-	private DateTimeFormat leavework;
+	private LocalDateTime gowork;
+	private LocalDateTime leavework;
+	
 	
 	public int getWorkID() {
 		return workID;
@@ -33,18 +34,20 @@ public class WorkDTO {
 	public void setWorkDate(Date workDate) {
 		this.workDate = workDate;
 	}
-	public DateTimeFormat getGowork() {
+	public LocalDateTime getGowork() {
 		return gowork;
 	}
-	public void setGowork(DateTimeFormat gowork) {
+	public void setGowork(LocalDateTime gowork) {
 		this.gowork = gowork;
 	}
-	public DateTimeFormat getLeavework() {
+	public LocalDateTime getLeavework() {
 		return leavework;
 	}
-	public void setLeavework(DateTimeFormat leavework) {
+	public void setLeavework(LocalDateTime leavework) {
 		this.leavework = leavework;
 	}
+	
+
 	
 	
 	

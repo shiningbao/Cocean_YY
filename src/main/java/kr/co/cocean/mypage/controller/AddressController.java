@@ -91,6 +91,7 @@ public class AddressController {
 		return "mypage/outsideaddressBook";
 	}*/
 	
+			
 	/*
 	@GetMapping(value = "/list.do")
 	public String list(Model model) {
@@ -106,12 +107,8 @@ public class AddressController {
 		logger.info("inname : {}",inname);
 		return service.insearch(inname);
 	}
-	
-	
-	
-	
-	
-	//선택삭제
+
+	//선택삭제,전체삭제
 	@GetMapping(value="mypage/delete")
 	@ResponseBody
 	public HashMap<String, Object> delete(
@@ -159,29 +156,7 @@ public class AddressController {
 			mav.addObject("mypage/outsideaddressBook"); // 요청명 변경
 			return mav ;
 		}
-	/*
-		@GetMapping(value="/mypage/detail")
-		public ModelAndView detail(@RequestParam String addressNumber) {
-			logger.info("시작");
-			OutAddressDTO dto = service.detail(addressNumber);
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("member", dto);
-			mav.setViewName("/mypage/outdetail");
-			return mav;
-		}*/
 		
-		/* 상세보기
-		@GetMapping(value="/mypage/detail")
-		public ModelAndView detail(@RequestParam String addressNumber) {
-			logger.info("디테일");
-			OutAddressDTO dto = service.detail(addressNumber);
-			logger.info("dto");
-			ModelAndView mav = new ModelAndView();
-			mav.addObject("member", dto);
-			mav.setViewName("/mypage/outdetail");
-			logger.info("서비스 가는중");
-			return mav;
-		}*/
 		
 		//외부 상세보기 페이지
 		@GetMapping(value = "mypage/detail")
@@ -207,6 +182,13 @@ public class AddressController {
 
 					return mav;
 				}
+				
+		//수정중	
+				/*
+		@GetMapping(value="mypage/outaddressupdate")	
+		public ModelAndView outaddressupdate(@RequestParam String )
+		*/		
+				
 				
 				
 				

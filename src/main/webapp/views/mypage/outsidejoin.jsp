@@ -13,6 +13,7 @@
 </style>
 </head>
 <body>
+
 <form action="outsidejoins" method="post">
      <table>
          <tr>

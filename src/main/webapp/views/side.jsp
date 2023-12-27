@@ -45,7 +45,7 @@
 					</a>
 					<div class="collapse" id="myPage_bar">
 						<a href="<c:url value="mypage/mypage"/>" class="list-group-item" data-parent="#sidebar">내정보</a>
-						<a href="<c:url value="/outsidejoins"/>" class="list-group-item" data-parent="#sidebar">근태기록</a>
+						<a href="<c:url value="mypage/work"/>" class="list-group-item" data-parent="#sidebar">근태기록</a>
 						<a href="<c:url value="mypage/address"/>" class="list-group-item" data-parent="#sidebar">주소록</a>
 					</div>
 					<a href="<c:url value='/animal/list.go'/>" class="list-group-item d-inline-block collapsed"

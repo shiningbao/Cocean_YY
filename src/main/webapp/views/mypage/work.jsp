@@ -25,7 +25,8 @@ table, th, td{
     	</label>
 </div>
 
-
+<!-- 
+<table>
 		<tr>	   
 			<th>날짜</th>
 			<th>번호</th>
@@ -45,6 +46,26 @@ table, th, td{
 		</tr>
 		</c:forEach>
 	</table>
+ -->
+ 
+ <table>
+		<thead>
+		<tr>
+			<th>날짜</th>
+			<th>이름</th>
+			<th>부서</th>
+			<th>직급</th>
+			<th>직책</th>
+			<th>출근시간</th>
+			<th>퇴근시간</th>
+			
+		</tr>
+		</thead>
+		<!-- 내용 -->
+		<tbody id="list">		
+		</tbody>		
+	</table>	
+	
 	
 	
 	
@@ -71,24 +92,23 @@ function formatDateFromTimestamp(timestamp) {
 
 
 //달력으로 조회
+/*
 $('#searchButton').on('click', function () {
-	showPage = 1;
-	$('#pagination').twbsPagination({
-	    startPage: '1'
-	});
     if($('#firstsearchdate').val() && $('#lastsearchdate').val()){
     firstSearchDateValue = $('#firstsearchdate').val();
     lastSearchDateValue = $('#lastsearchdate').val();
     console.log(firstpage);
     if(firstpage){
-    	adminGroupBuyIntList(showPage,searchblock,firstSearchDateValue,lastSearchDateValue);		
+    	adminGroupBuyIntList(searchblock,firstSearchDateValue,lastSearchDateValue);		
 	}else{
-		adminGroupBuySerUserIntList(showPage, searchblock, seruser,firstSearchDateValue,lastSearchDateValue);       		
+		adminGroupBuySerUserIntList(searchblock, seruser,firstSearchDateValue,lastSearchDateValue);       		
 	}
     }else{
     	alert('날짜를 모두 선택해 주세요.');
     }
-});
+});*/
+
+
 
 </script>
 </html>

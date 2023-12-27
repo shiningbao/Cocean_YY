@@ -16,6 +16,8 @@
 
 
 <table>
+
+<form action="outaddressupdate" method="get">
          <tr>
              <!--공백문자-->
              <th>이&nbsp;&nbsp;&nbsp;&nbsp;름</th>
@@ -47,13 +49,19 @@
                  <input type="text" name="phoneNumber" placeholder="전화번호를 입력해주세요." value="${outaddress.phoneNumber}"/>
              </th>
          </tr>
-    
+    <!--  
          <tr>
        <th colspan="2">
 
                 <input type="button" onclick="location.href='./outsideupdate?addressNumber=${outaddress.addressNumber}'" value="수정"/>
              </th>
 	</tr>
+	-->
+	<tr>
+             <th colspan="2">
+                 <input type="submit" value="수정" />
+             </th>
+         </tr>
      </table>
 </form>		
         

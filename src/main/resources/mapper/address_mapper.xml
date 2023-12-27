@@ -126,14 +126,15 @@ e.rankID = r.rankID
 	</select>
 
 <!--  내부서치 -->
-	<select id="insearch" parameterType="list" resultType="inaddress">	
-		SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName
-		 FROM employee e ,department d , `position` p, `rank` r   WHERE inname  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID IN
-			<foreach collection="list" item="item" open="(" separator="," close=")">
-				 #{item}
-			</foreach>				
-	</select>
+<select id="insearch" parameterType="list" resultType="inaddress">	
+    SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName
+    FROM employee e, department d, `position` p, `rank` r
+    WHERE e.departmentID = d.departmentID AND e.positionID = p.positionID AND e.rankID = r.rankID
+        AND e.rankID IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+</select>
 	
 	
 	
