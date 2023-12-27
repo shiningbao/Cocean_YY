@@ -52,7 +52,7 @@
                  <input type="submit" value="수정" />
              </th> 
      </table>
-		
+      
         
 </body>
 <script>
