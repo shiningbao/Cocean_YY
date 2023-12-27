@@ -116,25 +116,25 @@ public class ApprovalController {
 //		logger.info("list:"+list);
 //		return mav;
 //	}
-
-	@PostMapping(value = "/approval/writeDraft.do")
-	public ModelAndView writeDraft(MultipartFile[] files, HttpSession session, RedirectAttributes rAttr,
-			@RequestParam HashMap<String, String> param) {
-		ModelAndView mav = new ModelAndView();
+	
+	@PostMapping(value = "/approval/writeDraft.do", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public Map<String, Object> writeDraft(@RequestParam("files") MultipartFile[] files, HttpSession session,
+	        RedirectAttributes rAttr, @RequestParam HashMap<String, String> param, @RequestParam Map<String, Object> jsonData) {
+		Map<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
 			param.put("employeeID", String.valueOf(employeeID));
 			logger.info("params : {}", param);
+			logger.info("jsonData:"+jsonData);
 			logger.info("파일:" + files[0].getSize());
-			service.write(files, param);
-			mav.setViewName("redirect:/approval/formList.go");
+			// service.write(files, param);
 		} else {
-			mav.setViewName("redirect:/");
 			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 		}
 
-		return mav;
+		return result;
 	}
 
 	/*
