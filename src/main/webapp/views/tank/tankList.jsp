@@ -35,13 +35,13 @@
 #checkBox {
 	display: flex;
 	justify-content: space-around;
-	width: 1150px;
-	height: 150px;
+	width: 90%;
+	height: 20%;
 	font-size: 13px;
 	top: 100px;
-	left: 255px;
+	left: 5%;
 	align-items: flex-start;
-	padding-top: 50px;
+	padding-top: 45px;
 	position: absolute;
 }
 
@@ -71,17 +71,20 @@ label {
 #search{
     padding-left: 755px;
     margin-top: 15px;
+    position: absolute;
 }
 
 #search input{
 	z-index: 99999;
+	
 }
+
 #tankSubmit{
 	margin-top: 380px;
     position: absolute;
     left: 1280px;
     width: 100px;
-    top: 485px;
+    top: 420px;
 
 }
 
@@ -139,8 +142,8 @@ label {
         
         <nav class="navbar navbar" id="search">
             <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+              <input class="form-control mr-sm-2" type="search" placeholder="담당자명을 입력하세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
             </form>
           </nav>
     </div>
