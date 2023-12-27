@@ -9,7 +9,21 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=530dd95ca9b426f51d6a8307877fcb3f&libraries=services"></script>
 <!-- 다음 도로명주소 api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- popper CDN -->
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+	crossorigin="anonymous"></script>
+	
+<!-- 부트스트랩 자바스크립트 -->
+<script src="/resource/js/bootstrap.min.js"></script>
+<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
+<!-- 부트스트랩 CSS/favicon -->
+<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resource/css/modal.css">
+<link rel="stylesheet" href="/resource/css/common.css">
 </head>
 <style>
 .listTable {
@@ -24,7 +38,7 @@ border: 1px solid gray;
 
 
 /* 모달 스타일 */
-.modal {
+/* .modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -43,9 +57,9 @@ border: 1px solid gray;
   border: 1px solid #888;
   width: 80%;
 }
-
+ */
 /* 닫기 버튼 스타일 */
-.close {
+/* .close {
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -63,7 +77,7 @@ border: 1px solid gray;
 	border-color: #2F80ED;
 	color: #2F80ED;
 	border-radius: 6px;
-}
+} */
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
@@ -71,7 +85,45 @@ border: 1px solid gray;
 <div>스토어 관리 
 <div class="branchLocation">지점 위치 </div>
 <div id="map" style="width:500px;height:400px;"></div>
-<button type="button" class="button" id="branchRegisterConfirm">등록</button>
+<!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
+<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#modal">등록</button>
+
+<!-- 버튼 클릭 시 열리는 모달창 -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- 모달창 제목 -->
+            <h5 class="modal-title">관리일지</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action=""> <!-- 입력폼 -->
+              <div class="form-group">
+                <label>담당자</label>
+                <input type="text" id="manager" readonly class="form-control">
+              </div>
+              <div class="form-group">
+                <label>내용</label>
+                <textarea type="text" class="form-control" required oninvalid="this.setCustomValidity('관리 내용을 작성해 주세요.')" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
+              </div>
+              <div class="form-row">
+                <label>작성 날짜</label>
+                <input class="form-control" id="currentDate" readonly type="text" value="date">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                <button type="submit" class="btn btn-primary">저장</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
 </div>
 
 <div id="myBranchModal" class="modal">
