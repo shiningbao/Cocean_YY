@@ -26,18 +26,16 @@
 <body>
 	<header>
 		<div id="header">
-			<img	style="width: 75px; height: 75px; margin-left: 20px; margin-top: -3px;"
+		<a href="<c:url value='/home'/>">
+			<img	style="width: 75px; height: 75px; margin-left: 20px; margin-top: -3px;" 
 				src="<c:url value='/resource/img/logo.svg'/>"/>
+				</a>
 		</div>
 	</header>
 	<div class="container-fluid">
 		<div class="row d-flex d-md-block flex-nowrap wrapper">
 			<nav class="col-md-3 float-left col-1 pl-0 pr-0 collapse width show" id="sidebar">
 				<div class="list-group border-0 card text-center text-md-left">
-					<a href="<c:url value='/home'/>" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
-						<img style="width: 25px; margin-right: 5px;" src="<c:url value='/resource/img/Home_light.svg'/>">
-						<span class="d-none d-md-inline ml-1">메인</span>
-					</a>
 					<a href="#myPage_bar" class="list-group-item d-inline-block collapsed" data-toggle="collapse"
 						data-parent="#sidebar" aria-expanded="false">
 						<img style="width: 25px; margin-right: 5px;" src="<c:url value='/resource/img/my.svg'/>">
