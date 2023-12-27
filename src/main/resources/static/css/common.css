@@ -13,9 +13,12 @@ body {
   font-family: 'SOYOMapleBoldTTF';
 }
 
+.commonContainer{
+	min-width: 1000px;
+}
 .commonContent{
-	width:90%;
-	margin:0 auto;
+	width: 90%;
+	margin: 0 auto;
 }
 
 /* 버튼 부트스트랩 클래스
