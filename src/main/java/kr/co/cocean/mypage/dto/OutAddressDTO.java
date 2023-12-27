@@ -2,8 +2,8 @@ package kr.co.cocean.mypage.dto;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("address")
-public class AddressDTO {
+@Alias("outaddress")
+public class OutAddressDTO {
 	
 	//기본키 넣기
 	private int addressNumber;

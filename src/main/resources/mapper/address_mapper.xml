@@ -35,20 +35,20 @@ values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phon
 
 
 	
-<select id="interioraddressBooklist" resultType="address">
+<select id="interioraddressBooklist" resultType="outaddress">
 SELECT d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
 WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
 e.rankID = r.rankID ;
 </select>
 
-<select id="list" resultType="address">
+<select id="list" resultType="outaddress">
 
 		SELECT addressNumber, name, positionLevel,rankLevel,departmentName,phoneNumber 
 		FROM personalAddressBook
 	</select>
 
 
-	<select id="detail" resultType="address">
+	<select id="detail" resultType="outaddress">
 		SELECT * FROM 
 			personalAddressBook WHERE addressNumber = #{param1}
 	</select>
