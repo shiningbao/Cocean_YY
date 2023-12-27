@@ -92,13 +92,10 @@
 						<td>
 							<input type="text" name="branchID" value="1" style="display: none;" readonly/>
 							<select name="tankID">
-							
 								<c:forEach items="${tankList}" var="item">
-									<option value="${item}">${item}</option>
+									<option value="${item.tankID}">${item.tankName}</option>
 								</c:forEach>
-							 
 							</select>
-							
 						</td>
 					</tr>
 					<tr>
@@ -157,12 +154,12 @@ function noneClassifi(){
 	$('#classifiModal').css({'display':'none'});
 	//console.log(speciesID);
 }
-function drawClassifi(){
-	$('input[name="speciesID"]').val(speciesID);
-	$('#taxo').val(taxo);
-	$('input[name="classificationCode"]').val(classifi);
-	$('#scien').val(scien);
-	$('#common').val(common);	
+function drawClassifi(sp,ta,cl,sc,co){
+	$('input[name="speciesID"]').val(sp);
+	$('#taxo').val(ta);
+	$('input[name="classificationCode"]').val(cl);
+	$('#scien').val(sc);
+	$('#common').val(co);	
 	noneClassifi();
 }
 // 모달창 바깥부분 클릭 시 모달 닫기

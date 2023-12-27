@@ -17,8 +17,8 @@
 				OR commonName LIKE CONCAT('%',#{keyword},'%')				
 	</select>
 	
-	<select id="tankList" resultType="String">
-		SELECT tankID FROM tankManagement WHERE branchID = #{param1}
+	<select id="tankList" parameterType="int" resultType="map">
+		SELECT tankName, tankID FROM tankManagement WHERE branchID = #{param1}
 	</select>
 	
 	<insert id="animalWrte" parameterType="animal" useGeneratedKeys="true" keyColumn="animalID" keyProperty="animalID">
@@ -37,8 +37,10 @@
 	<select id="animalDetail" resultType="animal">
 		SELECT am.*, bct.commonName, bct.taxonomy, bct.scientificName
 			,CONCAT(am.classificationCode, LPAD(am.CodeNumber,6,'0')) AS animalCode
+			,(SELECT b.branchName FROM branch b WHERE am.branchID = b.branchID) AS branchName
+			,(SELECT tm.tankName FROM tankManagement tm WHERE am.tankID = tm.tankID) AS tankName
 			FROM animalManagement am NATURAL JOIN biologicalClassificationTable bct
-			WHERE animalID = #{param1}
+			WHERE animalID = #{parma1}
 
 	</select>
 	
@@ -77,6 +79,21 @@
 			) AS de
 			WHERE e.employeeID = #{param1}
 	</select>
+	
+	<delete id="inchargeDel">
+		DELETE FROM inCharge WHERE category = 'animal' AND idx = #{animalID} AND employeeID IN
+		<foreach collection="delList" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>	
+
+	<insert id="inchargeInsert">
+		INSERT INTO inCharge VALUES
+		<foreach collection="insertList" item="item" separator=",">
+			(#{item},'animal',#{animalID})
+		</foreach>
+	</insert>
+	
 	
 </mapper>
 
