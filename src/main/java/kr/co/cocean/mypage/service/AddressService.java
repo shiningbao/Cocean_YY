@@ -3,6 +3,7 @@ package kr.co.cocean.mypage.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -38,6 +39,7 @@ public class AddressService {
 		return cnt;
 	}
 	//이름 검색
+
 	public ModelAndView namesearch(List<String> name) {
 		logger.info("서비스 시작");
 		ModelAndView mav = new ModelAndView();
@@ -56,6 +58,45 @@ public class AddressService {
 		int row = dao.insert(params);		
 		return row > 0 ? "외부주소록이 저장 되었습니다":"저장에 실패 했습니다.";
 	}
+	
+	public OutAddressDTO detail(String addressNumber) {
+		return dao.detail(addressNumber);
+	}
+
+	public ModelAndView update(Map<String, String> param) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/detail?employeeID="+param.get("employeeID"));
+		dao.update(param);
+		return mav;
+	}
+
+	public ArrayList<InaddressDTO> inaddress() {
+		logger.info("내부 서비스 도착");
+		return dao.inaddress();
+	}
+
+	//내부 검색
+	public ModelAndView insearch(List<String> inname) {
+		ModelAndView mav = new ModelAndView();
+		ArrayList<InaddressDTO> list = dao.insearch(inname);
+		mav.addObject("list", list);
+		mav.setViewName("list");
+		return mav;
+	}
+
+	
+
+	//수정 페이지
+	public OutAddressDTO outupdate(String addressNumber) {
+		return dao.outupdate(addressNumber);
+	}
+
+	public void outsideupdate(OutAddressDTO dto) {
+		dao.outsideupdate(dto);
+		
+	}
+
+	
 	
 	/*
 	public HashMap<String, Object> interioraddressBook(String page, int userId) {
@@ -97,16 +138,14 @@ public class AddressService {
 
 	
 
-	public OutAddressDTO detail(String addressNumber) {
-		return dao.detail(addressNumber);
-	}
-
+	*/
 	//수정
+	/*
 	public int update(HashMap<String, Object> params) {
 		
 		return dao.update(params);
-	}
-*/
+	}*/
+
 	
 
 

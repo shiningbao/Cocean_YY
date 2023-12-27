@@ -8,13 +8,13 @@
 		select DISTINCT  departmentName  from department
 	</select>
 	
-	<select id="getCallender" resultType="schedule">
-		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID};
-	</select>
+<!-- 	<select id="getCallender" resultType="schedule"> -->
+<!-- 		SELECT callendarTitle from myCallender WHERE employeeID =#{loginEmployeeID}; -->
+<!-- 	</select> -->
 	
 	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
 		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{mainCategory},#{subCategory},#{description},#{remarks},#{category});
+		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{mainCategory},#{subCategory},#{description},#{remarks},#{publicCategory});
 	</insert>
 	
 	<select id="getCallenderEvents">

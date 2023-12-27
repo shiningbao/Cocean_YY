@@ -16,15 +16,7 @@ public interface LoginDAO {
 	
 
 
-	/*
-	LoginDTO login(String userNum, String password);
-*/
 
-	
-	
-    /*
-	LoginDTO login(String userNum, String password);
-     */
 	
 
 	

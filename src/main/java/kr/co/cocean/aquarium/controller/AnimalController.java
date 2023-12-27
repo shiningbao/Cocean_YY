@@ -73,6 +73,7 @@ public class AnimalController {
 	}
 	
 	@GetMapping(value = "/animal/detail")
+	@ResponseBody
 	public ModelAndView animalDetail(@RequestParam int animalID) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail");	
 		

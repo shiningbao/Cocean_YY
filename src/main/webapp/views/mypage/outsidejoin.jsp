@@ -50,7 +50,6 @@
          <tr>
              <th colspan="2">
                  <input type="submit" value="저장" />
-                 <input type="button" name ="del" id="del" value="삭제" onclick="return check()"/>
              </th>
          </tr>
      </table>
