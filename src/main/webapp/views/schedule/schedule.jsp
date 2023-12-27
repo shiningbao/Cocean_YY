@@ -76,8 +76,8 @@ section{
 
 
 img{
-	weight:25px;
-	height:25px;
+	weight:20px;
+	height:20px;
 }
 .modal-content{
 	width:700px;
@@ -104,11 +104,33 @@ img{
 	margin-top: 100px;
 } 
 .cal-font{
-	font-size: 20px;
+	font-size: 15x;
 }
 /* .cal-btn{
 	margin-right: 500px;
 } */
+
+.fcCalColor {
+ 	float: right; 
+	display: inline-block;
+    padding: 0px 8px;
+    background: #FF82FF;
+    border-radius: 13px;
+    border: 1px solid #c2dde6;
+    height: 21px;
+    line-height: 20px!important;
+	
+}
+.myCalColor{
+	float: right;
+	display: inline-block;
+    padding: 0px 8px;
+    background: #18CCA8;
+    border-radius: 13px;
+    border: 1px solid #c2dde6;
+    height: 21px;
+    line-height: 20px!important;
+}
 </style>
 </head>
 
@@ -262,6 +284,7 @@ img{
 				<label>
 					<input type="checkbox" value="예약 일정(기본)" id="myCallender" class="myCallender" checked/>
 					내 일정(기본)
+					<div class="myCalColor"></div>
 				</label>
 			</div>
 			<div class="cal-css">
@@ -269,24 +292,31 @@ img{
 				<label>
 					<input type="checkbox" value="예약 일정(기본)"  id="rsvCallender" class="rsvCallender" checked/>
 					예약 일정(기본)
+					<div class="fcCalColor"></div>
 				</label>
 			</div>
-			
-			<div>
+	<div>	
+		<div>
+			<button class="interestCalendar Hide">
+				<img src="<c:url value='/resource/img/carrot-down.PNG'/>" alt="버튼 이미지">
+			</button>
+		</div>
 			<p class="cal-font">
-			    <button class="interestCalendar Hide">
-			        <img src="<c:url value='/resource/img/carrot-down.PNG'/>" alt="버튼 이미지">
-			    </button>
-			    관심 캘린더 
+				 관심 캘린더 
 			</p>
-			<div class="itCallenderList">
-				
-			</div>
 			
-				<div class="addCal">
-					<a href="#" class="addInterestCallender" data-toggle="modal" data-target="#chartModal">관심 캘린더 추가</a>
-				</div>
-			</div>
+	
+			    
+			   
+	<div class="itCallenderList">
+				
+	</div>
+			
+		<div class="addCal">
+			<a href="#" class="addInterestCallender" data-toggle="modal" data-target="#chartModal">관심 캘린더 추가</a>
+		</div>
+		
+	</div>
 	</div>
 	<div id="calendar"></div>
 
@@ -320,7 +350,7 @@ img{
 	        	success:function(data){
 	        		console.log(data);
 	        		data.forEach(function(item) {
-	        		    var label = $('<label>'); // 라벨 생성
+	        		    var label = $('<div>'); // 라벨 생성
 
 	        		    var checkbox = $('<input>').attr({
 	        		        type: 'checkbox',
@@ -331,7 +361,7 @@ img{
 
 	        		    label.append(checkbox).append(item); // 라벨에 체크박스와 데이터 추가
 
-	        		    $('.itCallenderList').append(label).append('<br>'); // itCallenderList에 라벨 추가
+	        		    $('.itCallenderList').append(label); // itCallenderList에 라벨 추가
 	        		});
 	        	},
 	        	error:function(e){
@@ -341,6 +371,7 @@ img{
 	        });
 	    } else {
 	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
+	        $('.itCallenderList').empty();
 	        console.log('false');
 	    }
 	});
@@ -558,20 +589,7 @@ function getEmployeeID(employeeID, nodeText) {
             	nodeText:nodeText},
             success: function (data) {
             	console.log(data);
-/*                 console.log(data.addInterestCallender);
- */				
-               /*  // 동적으로 HTML을 생성하여 itCallenderList에 추가
-                var label = $('<label>');
-                var checkbox = $('<input>').attr({
-                    type: 'checkbox',
-                    value: '',
-                    class: '',
-                    checked: 'checked'
-                });
-                // label.append(checkbox).append(nodeText + '의 캘린더');
-                
-                // 이전 요소의 끝에 추가
-                $('.itCallenderList').append('<br>').append(label); */
+				location.href="/Cocean/schedule/schedule.go";
             },
             error: function (e) {
                 console.log(e);
@@ -581,6 +599,9 @@ function getEmployeeID(employeeID, nodeText) {
 
     }
 }
+
+$('#start').val(new Date().toISOString().substring(0, 10).toString());
+$('#end').val(new Date().toISOString().substring(0, 10).toString());
 
 var msg = "${msg}";
 if(msg!=""){
