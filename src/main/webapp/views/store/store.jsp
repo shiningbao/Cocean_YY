@@ -81,8 +81,10 @@ border: 1px solid gray;
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
-
-<div>스토어 관리 
+<div class="commonContainer">
+	<div class="commonTitle"><h2>HOME</h2></div>
+	<div class="commonContent">
+	<div>스토어 관리 
 <div class="branchLocation">지점 위치 </div>
 <div id="map" style="width:500px;height:400px;"></div>
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
@@ -166,6 +168,9 @@ border: 1px solid gray;
 			 <button type="button" class="button" onclick="ticketRegisterConfirm()">등록</button>
   </div>
   </div>
+</div>
+	</div>
+
 </div>
 </body>
 <script>
