@@ -2,19 +2,24 @@ package kr.co.cocean.store.dto;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("product")
+@Alias("branchProduct")
 public class StoreProductDTO {
-	private int productID;
 	private int branchID;
+	private String branchName;
+	private String branchLocation;
+	private double branchLatitude;
+	private double branchLongitude;
+	private int productID;
+	private String status;
 	private String productName;
+	private String category;
 	private int price;
-	private String branch;
-	private int stock;
-	public int getProductID() {
-		return productID;
+	private int productIndex;
+	public String getStatus() {
+		return status;
 	}
-	public void setProductID(int productID) {
-		this.productID = productID;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public int getBranchID() {
 		return branchID;
@@ -22,11 +27,47 @@ public class StoreProductDTO {
 	public void setBranchID(int branchID) {
 		this.branchID = branchID;
 	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+	public String getBranchLocation() {
+		return branchLocation;
+	}
+	public void setBranchLocation(String branchLocation) {
+		this.branchLocation = branchLocation;
+	}
+	public double getBranchLatitude() {
+		return branchLatitude;
+	}
+	public void setBranchLatitude(double branchLatitude) {
+		this.branchLatitude = branchLatitude;
+	}
+	public double getBranchLongitude() {
+		return branchLongitude;
+	}
+	public void setBranchLongitude(double branchLongitude) {
+		this.branchLongitude = branchLongitude;
+	}
+	public int getProductID() {
+		return productID;
+	}
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
 	public String getProductName() {
 		return productName;
 	}
 	public void setProductName(String productName) {
 		this.productName = productName;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	public int getPrice() {
 		return price;
@@ -34,17 +75,12 @@ public class StoreProductDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getBranch() {
-		return branch;
+	public int getProductIndex() {
+		return productIndex;
 	}
-	public void setBranch(String branch) {
-		this.branch = branch;
+	public void setProductIndex(int productIndex) {
+		this.productIndex = productIndex;
 	}
-	public int getStock() {
-		return stock;
-	}
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
+	
 	
 }

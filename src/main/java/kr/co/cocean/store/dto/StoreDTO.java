@@ -2,7 +2,7 @@ package kr.co.cocean.store.dto;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("store")
+@Alias("branch")
 public class StoreDTO {
 	private int branchID;
 	private String branchName;

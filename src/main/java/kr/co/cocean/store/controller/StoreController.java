@@ -23,14 +23,14 @@ public class StoreController {
 		return "store/store";
 	}
 	
-	@GetMapping(value="/store/storeList.do")
+	@GetMapping(value="/store/storeMap.do")
 	@ResponseBody
 	public Map<String, Object> storeList(Model model) {
 		logger.info("스토어 리스트");
-		return service.loadLocation(model);
+		return service.kakaoAPi(model);
 	}
 	
-	@GetMapping(value="/store/storeList.ajax")
+	@GetMapping(value="/store/storeList.do")
 	@ResponseBody
 	public Map<String, Object> storeListAjax(Model model) {
 		logger.info("스토어 아작스");
@@ -46,10 +46,43 @@ public class StoreController {
 		return service.searchProduct(searchKeyword,branchName);
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.go")
+	@GetMapping(value="/store/branchRegister.do")
+	@ResponseBody
+	public String brachRegister(@RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
+		logger.info("지점 등록");
+		logger.info("branchName : "+branchName);
+		logger.info("branchLocation : "+branchLocation);
+		logger.info("branchLatitude : "+branchLatitude);
+		logger.info("branchLongitude : "+branchLongitude);
+		return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
+	}
+	
+	@GetMapping(value="/store/productInfoRegister.go")
 	public String storeProductRegisterGo() {
 		logger.info("상품 등록 페이지 이동");
-		return "store/storeProductRegister";
+		return "store/productInfoRegister";
 	}
+	
+	@GetMapping(value="/store/productInfoRegister.do")
+	public int storeProductRegister(@RequestParam String productName, @RequestParam int price, @RequestParam String category) {
+		logger.info("본사상품 등록");
+		logger.info("productName : "+productName);
+		logger.info("price : "+price);
+		logger.info("category : "+category);
+		return service.storeProductRegister(productName, price, category);
+	}
+	
+//	@GetMapping(value="/store/ticketRegister.do")
+//	@ResponseBody
+//	public int ticketRegister(@RequestParam String branchName, @RequestParam String productName,@RequestParam int price, @RequestParam String category) {
+//		logger.info("티켓 등록");
+//		logger.info("branchName : "+branchName);
+//		logger.info("productName : "+productName);
+//		logger.info("price : "+price);
+//		logger.info("category : "+category);
+//		return service.ticketRegister(branchName,productName,price,category);
+//	}
+	
+	
 	
 }

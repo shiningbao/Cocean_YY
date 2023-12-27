@@ -4,16 +4,47 @@
 >
 <mapper namespace="kr.co.cocean.store.dao.StoreDAO">	
 	
-	<select id="branchList" resultType="store">
+	<select id="branchList" resultType="branch">
 		SELECT * FROM branch
 	</select>
 	
-	<select id="productList" resultType="product">
-		SELECT * FROM product
+	<select id="branchProductList" resultType="branchProduct">
+		SELECT bp.productIndex, bp.branchID, bp.productID, bp.status, pi.productName, pi.category, 
+    		pi.price, b.branchName, b.branchLocation, b.branchLatitude, b.branchLongitude
+		FROM 
+		    branchProduct bp
+		INNER JOIN 
+		    productInformation pi ON bp.productID = pi.productID
+		INNER JOIN 
+		    branch b ON bp.branchID = b.branchID
 	</select>
 	
-	<select id="searchProduct" resultType="product">
-		SELECT * FROM product WHERE productName = #{param1} AND branch = #{param2} 
+	<select id="searchProduct" resultType="branchProduct">
+	SELECT pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
+	FROM productInformation pi
+	JOIN branchProduct bp ON pi.productID = bp.productID
+	JOIN branch b ON bp.branchID = b.branchID
+	WHERE pi.productName = #{param1} AND b.branchName = #{param2}
 	</select>
 	
+	<insert id="brachRegister">
+	INSERT INTO branch(branchName, branchLocation, branchLatitude, branchLongitude) 
+	VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<select id="branchSelect">
+	SELECT branchID FROM branch WHERE branchName=#{param1}
+	</select>
+	
+	<insert id="branchRegisterProduct">
+	INSERT INTO branchProduct(branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
+	
+	<insert id="ticketRegister">	
+	INSERT INTO brachProduct(branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
+	
+	<insert id="storeProductRegister">
+	INSERT INTO productInformation(productName, price, category) VALUES(#{param1}, #{param2}, #{param3})
+	</insert>
 </mapper>

@@ -9,10 +9,23 @@ import kr.co.cocean.store.dto.StoreProductDTO;
 
 @Mapper
 public interface StoreDAO {
+
 	ArrayList<StoreDTO> branchList();
+	
+	ArrayList<StoreProductDTO> branchProductList();
 
-	ArrayList<StoreProductDTO> productList();
+	ArrayList<StoreDTO> searchProduct( String searchKeyword,String branchName);
 
-	ArrayList<StoreDTO> searchProduct( String branchName,String searchKeyword);
+	int brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude);
+
+	int branchSelect(String branchName);
+
+	int branchRegisterProduct(int branchID, int i);
+
+	int ticketRegister(String productName, int price, String category);
+
+	int storeProductRegister(String productName, int price, String category);
+
+
 
 }

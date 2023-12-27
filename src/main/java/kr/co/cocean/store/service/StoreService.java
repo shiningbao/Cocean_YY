@@ -31,20 +31,10 @@ public class StoreService {
 	// 상품 사진 경로
 	private String root = "/Users/chajaeho/Desktop/upload/cocean/product";
 	
-	public Map<String, Object> storeList(Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		ArrayList<StoreDTO> branchList = dao.branchList();
-		ArrayList<StoreProductDTO> productList = dao.productList();
-		map.put("branchList", branchList);
-		map.put("productList", productList);
-		return map;
-	}
-	
-	public JSONObject loadLocation(Model model) {
+	// 카카오 지도 api 사용
+	public JSONObject kakaoAPi(Model model) {
 	    Map<String, Object> map = new HashMap<String, Object>();
 	    ArrayList<StoreDTO> branchList = dao.branchList();
-	    map.put("branchList", branchList);
-	    model.addAttribute("branchList", branchList);
 	    
 	    // 카카오 REST api key
 	    String REST_KEY = "01be87ade0ecf17b7ce8981fd0711323";
@@ -94,6 +84,15 @@ public class StoreService {
 	    
 	    return obj;
 	}
+	
+	public Map<String, Object> storeList(Model model) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		ArrayList<StoreProductDTO> list = dao.branchProductList();
+		ArrayList<StoreDTO> branchList = dao.branchList();
+		map.put("branchProductList", list);
+		map.put("branchList", branchList);
+		return map;
+	}
 
 	public Map<String, Object> searchProduct(String searchKeyword, String branchName) {
 		Map<String, Object> map =  new HashMap<String, Object>();
@@ -102,5 +101,24 @@ public class StoreService {
 		logger.info("list : "+list);
 		return map;
 	}
+
+	public String brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude) {
+		dao.brachRegister(branchName, branchLocation, branchLatitude, branchLongitude);
+		int branchID = dao.branchSelect(branchName);
+		for (int i = 1;  i< 5; i++) {
+			 dao.branchRegisterProduct(branchID, i);
+		}
+		return "성공";
+	}
+
+	public int storeProductRegister(String productName, int price, String category) {
+		return dao.storeProductRegister(productName, price, category);
+		
+	}
+
+//	public int ticketRegister(String branchName, String productName, int price, String category) {
+//		int branchID = dao.branchSelect(branchName);
+//		 dao.branchRegisterProduct(branchID, i);
+//	}
 
 }

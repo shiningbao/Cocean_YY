@@ -4,7 +4,7 @@
 >
 <mapper namespace="kr.co.cocean.tank.dao.TankDAO">
 
-	<select id="tankList" resultType="Tank">
+	<select id="tankList" parameterType="Tank" resultType="Tank">
 		SELECT tm.tankID , tm.tankName ,
 		tc.tankType, b.branchName, tm.tankStatus, e.name FROM tankManagement tm
 		,inCharge ic ,branch b, tankCategory tc, employee e
@@ -13,8 +13,14 @@
 		GROUP BY tankID ORDER BY tankID ASC 
 	</select>
 	
+	<select id="getBranch" resultType="map">
+		SELECT branchID, branchName FROM branch
+	</select>
 	
-	
+	<insert id="tankReg" parameterType="map" useGeneratedKeys="true" keyProperty="tankID">
+	INSERT INTO tankManagement (tankID,categoryID,branchID,registrationDate,capacity,tankName,tankStatus)
+	VALUES (null, #{categoryID}, #{branchID}, now(), #{capacity}, #{tankName}, '정상') 
+	</insert>
 	
 	
 	

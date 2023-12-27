@@ -16,13 +16,16 @@
 	height: 100%;
 	margin: 0px 0px 0px 380px;
 	text-align: center;
+	position: absolute;
+	top: 255px;
 }
 
 #hTitle {
 	width: 120px;
 	height: 50px;
-	margin: 20px 0px 0px 380px;
+	margin: 5px 0px 0px 380px;
 	padding-top: 10px;
+	position: absolute;
 }
 
 #hTitle a {
@@ -35,10 +38,11 @@
 	width: 1150px;
 	height: 150px;
 	font-size: 13px;
-	top: 0px;
-	left: 300px;
+	top: 100px;
+	left: 255px;
 	align-items: flex-start;
 	padding-top: 50px;
+	position: absolute;
 }
 
 #box1 {
@@ -63,6 +67,24 @@ label {
 	padding-right: 25px;
 	padding-left: 10px;
 }
+
+#search{
+    padding-left: 755px;
+    margin-top: 15px;
+}
+
+#search input{
+	z-index: 99999;
+}
+#tankSubmit{
+	margin-top: 380px;
+    position: absolute;
+    left: 1280px;
+    width: 100px;
+    top: 485px;
+
+}
+
 </style>
 </head>
 <body>
@@ -96,21 +118,21 @@ label {
     </div>
     <div id="box2">
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option1">
-            <label class="form-check-label" for="option1">해수&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option5">
+            <label class="form-check-label" for="option5">해수&nbsp;&nbsp;</label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option2">
-            <label class="form-check-label" for="option2">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option6">
+            <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option3">
-            <label class="form-check-label" for="option3">반수생&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option7">
+            <label class="form-check-label" for="option7">반수생&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option4">
-            <label class="form-check-label" for="option4">육상&nbsp;&nbsp;</label>
+            <input class="form-check-input" type="checkbox" value="" id="option8">
+            <label class="form-check-label" for="option8">육상&nbsp;&nbsp;</label>
         </div>
     </div>
 
@@ -140,7 +162,7 @@ label {
 			<tbody id=tankList>
 				<c:forEach items="${list}" var="item">
 					<tr>
-						<td>${item.getTankID()}</td>
+						<td scope="row">${item.getTankID()}</td>
 						<td><a href="detail?tankID=${item.getTankID()}">${item.getTankName()}</a></td>
 						<td>${item.getTankType()}</td>
 						<td>${item.getBranchName()}</td>
@@ -151,9 +173,15 @@ label {
 			</tbody>
 		</table>
 	</div>
+	<button type="button" id="tankSubmit" class="btn btn-primary">등록</button>
+	
 </body>
 <script>
 
+
+$('#tankSubmit').on('click',function(){
+	location.href='write.go';
+});
 
 </script>
 </html>
