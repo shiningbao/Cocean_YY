@@ -4,9 +4,30 @@
 >
 <mapper namespace="kr.co.cocean.aquarium.dao.AnimalDAO">	
 	
-	<select id="animalList" resultType="animal">
-		SELECT am.animalID, am.nickname, bct.commonName, am.classificationCode, am.status
-			FROM animalManagement am NATURAL JOIN biologicalClassificationTable bct
+	<select id="animalList"  parameterType="animalfilter" resultType="animal">
+		SELECT am.animalID, am.nickname, bct.commonName,am.status, fi.serverFileName
+			,CONCAT(am.classificationCode, LPAD(am.CodeNumber,6,'0')) AS animalCode
+			FROM animalManagement am
+			NATURAL JOIN biologicalClassificationTable bct
+			LEFT JOIN (SELECT idx, MIN(serverFileName) AS serverFileName FROM file WHERE `path` = 'animal' GROUP BY idx) AS fi ON fi.idx = am.animalID
+			WHERE 
+				am.status IN (
+					<foreach collection="statusValues" item="status" separator=",">
+						#{status}
+					</foreach>
+				) AND am.classificationCode IN(
+					<foreach collection="classifiValues" item="classifi" separator=",">
+						#{classifi}
+					</foreach>					
+				)
+				<if test="inchargeEmployeeID != 0">
+					AND am.animalID IN (SELECT idx FROM inCharge WHERE employeeID = #{inchargeEmployeeID} AND category = 'animal')
+				</if>
+				<if test="!searchName.equals('')">
+					AND am.animalID IN (SELECT DISTINCT idx FROM inCharge ic NATURAL JOIN (SELECT employeeID, name FROM employee e) AS em
+						WHERE ic.category = 'animal' AND em.name LIKE CONCAT('%',#{searchName},'%'))
+				</if>
+
 	</select>
 	
 	<select id="classficationSearch" resultType="classfication">

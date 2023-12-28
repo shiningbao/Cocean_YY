@@ -90,28 +90,32 @@
     </div>
     <div id="box2">
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option7" id="option7">
+	        <input class="form-check-input" type="checkbox" value="In" id="option7">
 	        <label class="form-check-label" for="option7">무척추</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option8" id="option8">
+	        <input class="form-check-input" type="checkbox" value="Ch" id="option8">
 	        <label class="form-check-label" for="option8">미삭</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option9" id="option9">
-	        <label class="form-check-label" for="option9">어류</label>
+	        <input class="form-check-input" type="checkbox" value="Am" id="option9">
+	        <label class="form-check-label" for="option9">양서류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option10" id="option10">
-	        <label class="form-check-label" for="option10">조류</label>
+	        <input class="form-check-input" type="checkbox" value="Fi" id="option10">
+	        <label class="form-check-label" for="option10">어류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option11" id="option11">
-	        <label class="form-check-label" for="option11">파충류</label>
+	        <input class="form-check-input" type="checkbox" value="Av" id="option11">
+	        <label class="form-check-label" for="option11">조류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="option12" id="option12">
-	        <label class="form-check-label" for="option12">포유류</label>
+	        <input class="form-check-input" type="checkbox" value="Re" id="option12">
+	        <label class="form-check-label" for="option12">파충류</label>
+	    </div>
+	    <div class="form-check form-check-inline">
+	        <input class="form-check-input" type="checkbox" value="Ma" id="option13">
+	        <label class="form-check-label" for="option13">포유류</label>
 	    </div>
     </div>
 
@@ -121,7 +125,10 @@
     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="showList()">검색</button>
     </nav>
 </div>
+<input type="text" id="searchName" style="top:500px; position:absolute"/>
 
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<div class="drawList"></div>
 
 
 <!-- 
@@ -160,15 +167,17 @@
 	$('#option1').on('change',function(){
 		if(this.checked){
 			$('input[type="checkbox"]').prop('checked', true);
+			$('#option2').prop('checked', false);
 		}else{
 			$('input[type="checkbox"]').prop('checked', false);
 		}
 	});
 	
 	function showList(){
-		var inchargeEmployeeID = ($('#option2').prop('checked')) ? '${userInfo.employeeID}' : '';
+		var inchargeEmployeeID = ($('#option2').prop('checked')) ? '${userInfo.employeeID}' : 0;
 		var statusValues = [];
 		var classifiValues = [];
+		var searchName = $('#searchName').val();
 		$('#status').find('input[type="checkbox"]:checked').each(function() {
 			statusValues.push($(this).val());
 		});
@@ -178,27 +187,38 @@
 		if(statusValues == '' || classifiValues == ''){
 			alert('선택 필요');
 		}else{
-			var data = {};
-			data.inchargeEmployeeID = inchargeEmployeeID;
-			data.statusValues = statusValues;
-			data.classifiValues = classifiValues;
-			console.log(data);
+// 			var data = {};
+// 			data.inchargeEmployeeID = inchargeEmployeeID;
+// 			data.statusValues = statusValues;
+// 			data.classifiValues = classifiValues;
+// 			data.searchName = searchName;
+			var formData = new FormData();
+			formData.append("inchargeEmployeeID", inchargeEmployeeID);
+			formData.append("statusValues", statusValues);
+			formData.append("classifiValues", classifiValues);
+			formData.append("searchName", searchName);
 			$.ajax({
 				type:'post',
-				url:'',
-				contentType:'application/json; charset=utf-8',
-				data:JSON.stringify(data),
-				dataType:'JSON',
+				url:'list.do',
+				data: formData,
+				dataType:'text',
+				contentType: false,
+			    processData: false,
 				success:function(data){
 					console.log(data);
+					drawList(data);
 				},
 				error:function(e){console.log(e);}
 			});
 		}
 	}
 	
-
-
+	function drawList(data){
+		var content = jQuery('<div>').html(data);
+		$('.drawList').html('');
+		$('.drawList').html(content);		
+	}
+	
 </script>
 
 

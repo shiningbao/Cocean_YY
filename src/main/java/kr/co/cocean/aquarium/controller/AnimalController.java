@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,20 +43,13 @@ public class AnimalController {
 	
 	@GetMapping(value = "/animal/list.go")
 	public ModelAndView animalListGo() {
-		
-		ModelAndView mav = new ModelAndView("aquarium/animalList");
-		
-		
+		ModelAndView mav = new ModelAndView("aquarium/animalList");	
 		return mav;
 	}
 	
 	@PostMapping(value = "/animal/list.do")
-	@ResponseBody
-	public String animalListDO(@RequestBody AnimalListFilterDTO param) {
-		
-		ArrayList<AnimalDTO> list = service.animalList(param);
-		
-		return null;
+	public String animalListDO(@ModelAttribute("animalfilter") AnimalListFilterDTO param, Model model) {
+		return service.animalList(param, model);
 	}
 	
 	

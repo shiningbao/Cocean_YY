@@ -36,13 +36,15 @@ public class AnimalService {
 	
 	@Autowired AnimalDAO dao;
 
-	public ArrayList<AnimalDTO> animalList(AnimalListFilterDTO param) {
+	public String animalList(AnimalListFilterDTO param, Model model) {
 		
+		logger.info("emp : {}",param.getInchargeEmployeeID());
 		
+		ArrayList<AnimalDTO> list = dao.animalList(param);
 		
+		model.addAttribute("list", list);
 		
-		
-		return dao.animalList();
+		return "aquarium/animalView";
 	}
 
 	public ArrayList<ClassficationDTO> classficationSearch(String keyword) {
