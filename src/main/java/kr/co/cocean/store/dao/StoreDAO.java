@@ -14,8 +14,8 @@ public interface StoreDAO {
 	
 	ArrayList<StoreProductDTO> branchProductList();
 
-	ArrayList<StoreDTO> searchProduct( String searchKeyword,String branchName);
-
+	ArrayList<StoreProductDTO> searchProduct( String searchKeyword,String branchName);
+	
 	int brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude);
 
 	int branchSelect(String branchName);
@@ -25,6 +25,9 @@ public interface StoreDAO {
 	int ticketRegister(String productName, int price, String category);
 
 	int storeProductRegister(String productName, int price, String category);
+
+	ArrayList<StoreProductDTO> modalProductList();
+
 
 
 

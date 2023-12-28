@@ -43,7 +43,8 @@ public class StoreController {
 		logger.info("상품 검색");
 		logger.info("serachKeyword : "+searchKeyword);
 		logger.info("branchName : "+branchName);
-		return service.searchProduct(searchKeyword,branchName);
+			return service.searchProduct(searchKeyword,branchName);
+		
 	}
 	
 	@GetMapping(value="/store/branchRegister.do")
@@ -72,6 +73,13 @@ public class StoreController {
 		return service.storeProductRegister(productName, price, category);
 	}
 	
+	@GetMapping(value="/store/modalProductList.do")
+	@ResponseBody
+	public Map<String, Object> modalProductList(){
+		logger.info("모달 상품 리스트");
+			return service.modalProductList();
+		
+	}
 //	@GetMapping(value="/store/ticketRegister.do")
 //	@ResponseBody
 //	public int ticketRegister(@RequestParam String branchName, @RequestParam String productName,@RequestParam int price, @RequestParam String category) {
