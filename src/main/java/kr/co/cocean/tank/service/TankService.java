@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.cocean.tank.dao.TankDAO;
 import kr.co.cocean.tank.dto.TankDTO;
+import kr.co.cocean.tank.dto.TankRecordDTO;
 
 @Service
 public class TankService {
@@ -57,6 +58,11 @@ public class TankService {
 
 	public HashMap<String, Object> tankDetail(int tankID) {
 		return dao.tankDetail(tankID);
+	}
+
+
+	public List<TankRecordDTO> getChart(String tankID, String tdy) {
+		return dao.getChart(tankID,tdy);
 	}
 
 }

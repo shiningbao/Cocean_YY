@@ -11,7 +11,8 @@ h1, h2, h3, h4 {
 }
 body {
   font-family: 'SOYOMapleBoldTTF';
-  height: 100vh;
+  height: 1120px;
+  overflow: auto;
 }
 #sidebar{
   border-right: 1px solid #dedede;
@@ -41,7 +42,7 @@ body {
 /* 내비게이션을 아래 끝까지 나열 */
 #sidebar .list-group {
     background-color: #ffffff;
-    min-height: 100vh;
+    min-height: 1040px;
     border-right: 1px solid #DEDEDE;
 }
 /* 메뉴를 선택했을 때  부모의 색상을 변경해 줌 */

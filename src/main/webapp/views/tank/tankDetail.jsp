@@ -11,10 +11,10 @@
 <style>
 #chart {
 	width: 100%;
-	height: 410px;
-	left: 530px;
+	height: 43%;
+	left: 33%;
 	position: absolute;
-	top: 160px;
+	top: 22%;
 }
 
 #hTitle {
@@ -34,8 +34,8 @@
 	height: 20%;
 	text-align: center;
 	position: absolute;
-	top: 600px;
-	left: 400px;
+	top: 70%;
+	left: 22%;
 }
 
 #tank_table th{
@@ -44,6 +44,14 @@
 #tank_table td{
 	background-color: #E9ECEF;
 }
+button {
+	width: 100px;
+}
+.btnGroup{
+	left: 83%;
+	top: 95%;
+	position: absolute;
+}
 
 </style>
 </head>
@@ -51,7 +59,7 @@
 	<c:import url="/side" />
 	<div id="hTitle">
 		<p>${map.tankName}</p>
-		<a>배치구역: ${map.area}</a>
+		 <a> 배치구역: ${map.area}</a>
 	</div>
 
 	<div id="chart">
@@ -96,14 +104,37 @@
 				</tr>
 		</table>
 	</div>
-	
+	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
-	<button type="button" class="btn btn-primary" onclick="location.href='#'">수정</button>
-	<button type="button" class="btn btn-primary" onclick="location.href='#'">관리</button>
-
+	<button type="button" class="btn btn-primary" onclick="location.href='#'">수정</button>	
+	<button type="button" class="btn btn-primary" onclick="getChart('${map.tankID}')">테스트</button>	
+	</div>
 
 </body>
 <script>
+
+var tdy = new Date().toISOString().substring(0, 10).toString();
+
+function getChart(tankID,tdy){
+	console.log(tdy);
+	console.log(tankID);
+	$.ajax({
+		url: 'getChart',
+		method: 'get',
+		data: {'tankID':tankID, 'recordDate':tdy},
+		dataType: 'JSON',
+		success: function(data){
+			console.log(data);
+		},
+		error: function(e){
+			console.log(e);
+		}
+	})
+	
+}
+
+
+
 	const ctx = $('#myChart');
 
 	var wc = [ 1, 2, 3, 4, 5, 6 ];

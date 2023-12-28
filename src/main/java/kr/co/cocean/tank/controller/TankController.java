@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.tank.dto.TankDTO;
+import kr.co.cocean.tank.dto.TankRecordDTO;
 import kr.co.cocean.tank.service.TankService;
 
 @Controller
@@ -63,6 +64,13 @@ public class TankController {
 		mav.addObject("map",map);
 		mav.addObject("emName",emName);
 		return mav;
+	}
+	
+	@GetMapping("tank/getChart")
+	@ResponseBody
+	public List<TankRecordDTO> getChart(@RequestParam String tankID, String tdy){
+		List<TankRecordDTO> list = service.getChart(tankID,tdy);
+		return list;
 	}
 	
 	

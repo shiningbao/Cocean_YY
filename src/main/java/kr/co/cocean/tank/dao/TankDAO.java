@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.cocean.tank.dto.TankDTO;
+import kr.co.cocean.tank.dto.TankRecordDTO;
 
 @Mapper
 public interface TankDAO {
@@ -23,5 +24,7 @@ public interface TankDAO {
 	int inChargeTank(Map<String, Object> params);
 
 	HashMap<String, Object> tankDetail(int tankID);
+
+	List<TankRecordDTO> getChart(String tankID, String tdy);
 
 }
