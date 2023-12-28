@@ -39,14 +39,15 @@
 						<th id="${item.employeeID}">${item.departmentName} ${item.name}</th>
 						<th>
 							<div>${item.creationDate}</div>
-							<button onclick="logplanUpdateGo(this)">수정</button>
-							<button onclick="logplanDel(this)">삭제</button>
+							<button onclick="logplanUpdateGo(this,${item.logID})">수정</button>
+							<button onclick="logplanDel('${item.logID}'')">삭제</button>
 						</th>
 					</tr>
 					<tbody>
 						<tr>
-							<th id="log_${st.index}">
+							<th>
 								${item.content}
+								<div id="log_${item.logID}"></div>
 							</th>
 							<th>
 								상태: ${item.status}

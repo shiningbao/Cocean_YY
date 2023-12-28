@@ -138,31 +138,49 @@ function logplanWriteDo(content,status){
 }
 
 // 일지,계획 수정
-var aassdd;
-function logplanUpdateGo(e){
-	$tr = $(e).closest('th');
-	var employeeID = $tr.prev().attr('id');
-	var employeeInfo = $tr.prev().text();
-	$updateTarget = $(e).closest('table');
-	var $code = $updateTarget.find('th').eq(2);
-	var id = $code.attr('id');
-	var code = $code.html();
-	aassdd = code;
-	var con = '<tr><th>'+employeeInfo+'<button onclick="logplanUpdateDo(this)">수정 완료</button>';
-	con += '<button onclick="logplanCancle(this)">취소</button></th></tr>';
+
+
+// function logplanUpdateGo(e){
+// 	$tr = $(e).closest('th');
+// 	var employeeID = $tr.prev().attr('id');
+// 	var employeeInfo = $tr.prev().text();
+// 	$updateTarget = $(e).closest('table');
+// 	var $code = $updateTarget.find('th').eq(2);
+// 	var id = $code.attr('id');
+// 	console.log(id);
+// 	var code = $code.html();
+// 	aassdd = code;
+// 	var con = '<tr><th>'+employeeInfo+'<button onclick="logplanUpdateDo(this)">수정 완료</button>';
+// 	con += '<button onclick="logplanCancle(\''+id+'\')">취소</button></th></tr>';
+// 	con += '<tr><th><div id=\"'+id+'\"></div></th></tr>';
+// 	$updateTarget.html(con);
+// 	var $summer = $('#'+id);
+// 	console.log($summer);
+// 	$summer.summernote({
+// 		height: 180, width: 700,
+// 		minHeight: 150,
+// 		maxHeight:500,
+// 		focus: true,
+// 		toolbar:['picture']
+// 	});
+// 	$summer.summernote('code', code);
+// }
+
+function logplanUpdateGo(e,id){
+	
+	var con = '<tr><th><button onclick="logplanUpdateDo(this)">수정 완료</button>';
+	con += '<button onclick="logplanCancle()">취소</button><p>이미 작성된 내용은 수정 불가능하지만 추가 가능</p></th></tr>';
 	con += '<tr><th><div id=\"'+id+'\"></div></th></tr>';
-	$updateTarget.html(con);
-	$summ = $('#'+id);
-	$('#'+id).summernote({
+	$('#log_'+id).html(con);
+	var $summer = $('#'+id);
+	$summer.summernote({
 		height: 180, width: 700,
 		minHeight: 150,
 		maxHeight:500,
 		focus: true,
 		toolbar:['picture']
 	});
-	$('#'+id).summernote('code', code);
 }
-
 
 function logoplanUpdateDo(){
 	
@@ -171,7 +189,13 @@ function logoplanUpdateDo(){
 	
 }
 
+function logplanCancle(id){
+	console.log(id);
+	$summer =	$('#'+id);
 
+	$('#'+id).summernote('destroy');
+	getContents(con);
+}
 
 
 

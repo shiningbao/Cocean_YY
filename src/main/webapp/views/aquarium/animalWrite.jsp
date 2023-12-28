@@ -131,6 +131,7 @@
 					</tr>
 					<tr>
 						<th colspan="2">
+							<button type="button">취소</button>
 							<button type="submit">등록</button>
 						</th>
 					</tr>
