@@ -31,6 +31,10 @@ public interface ScheduleDAO {
 
 	List<HashMap<String, Object>> getAddCalList(String val);
 
+	String getDetailWriteName(String id);
+
+	int delMyCal(String id);
+
 
 	/* List<String> showInterestCalendar(String loginEmployeeID); */
 

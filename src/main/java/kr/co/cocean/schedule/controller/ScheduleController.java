@@ -148,28 +148,22 @@ public class ScheduleController {
 		return result;
 	}
 	
-	/*
-	 * @PostMapping(value="/schedule/showInterestCalendar.do")
-	 * 
-	 * @ResponseBody public List<String> showInterestCalendar(@RequestParam String
-	 * loginEmployeeID){
-	 * 
-	 * List<String> showInterestCalendar =
-	 * service.showInterestCalendar(loginEmployeeID); return showInterestCalendar; }
-	 */
 	
-
+	@RequestMapping(value="/schedule/getDetailWriteName.do")
+	@ResponseBody
+	public String getDetailWriteName(@RequestParam String id) {
+		String name = service.getDetailWriteName(id);
+		return name;
+	}
 	
-//	@RequestMapping(value="/schedule/facility.do")
-//	public ModelAndView facilityWrite(ScheduleDTO dto, @Request) {
-//		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//		LocalDateTime startDateTime = LocalDateTime.parse(start+ " "+ startTime, formatter);
-//		LocalDateTime endDateTime = LocalDateTime.parse(end+ " "+ endTime, formatter);
-//		dto.setStart(startDateTime.toString());
-//		dto.setEnd(endDateTime.toString());
-//		return mav;
-//	}
+	@PostMapping(value="/schedule/delMyCal.do")
+	@ResponseBody
+	public ModelAndView delMyCal(@RequestParam String id ) {
+		int  row = service.delMyCal(id);
+		
+		
+		return new ModelAndView("redirect:/schedule/schedule.go");
+	}
 	
 	
 		

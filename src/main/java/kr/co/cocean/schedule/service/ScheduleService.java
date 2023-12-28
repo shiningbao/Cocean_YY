@@ -60,6 +60,13 @@ public class ScheduleService {
 		}
 		return result;
 	}
+	public String getDetailWriteName(String id) {
+		// TODO Auto-generated method stub
+		return dao.getDetailWriteName(id);
+	}
+	public int delMyCal(String id) {
+		return dao.delMyCal(id);
+	}
 	
 
 }
