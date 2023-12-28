@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
+import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
 import kr.co.cocean.aquarium.dto.InChargeChangeDTO;
 import kr.co.cocean.aquarium.dto.LogPlanDTO;
@@ -40,17 +41,25 @@ public class AnimalController {
 	/* 코션친구들 리스트 관련 */
 	
 	@GetMapping(value = "/animal/list.go")
-	public ModelAndView animalList() {
+	public ModelAndView animalListGo() {
 		
 		ModelAndView mav = new ModelAndView("aquarium/animalList");
 		
-		// 코션친구들 리스트
-		ArrayList<AnimalDTO> list = service.animalList();
-		mav.addObject("list", list);
 		
 		return mav;
 	}
 	
+	@PostMapping(value = "/animal/list.do")
+	@ResponseBody
+	public String animalListDO(@RequestBody AnimalListFilterDTO param) {
+		
+		ArrayList<AnimalDTO> list = service.animalList(param);
+		
+		return null;
+	}
+	
+	
+		
 	/* 코션친구들 작성 관련 */
 	
 	@GetMapping(value = "/animal/write.go")
