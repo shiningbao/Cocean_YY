@@ -16,6 +16,7 @@ public class LoginDTO {
 	private String address;//주소
 	private int remainingAnnualLeave;// 잔여연차	
 	private int branchID;
+	private String departmentName; // 부서명
 	//부서 변경로그(d)
 	private int departmentID; //부서 
 	private int rankID;//직급
@@ -96,7 +97,12 @@ public class LoginDTO {
 	public void setRemainingAnnualLeave(int remainingAnnualLeave) {
 		this.remainingAnnualLeave = remainingAnnualLeave;
 	}
-	
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
 
 	
 	

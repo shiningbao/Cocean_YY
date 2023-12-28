@@ -7,7 +7,7 @@
 
 <select id="login" resultType="kr.co.cocean.mypage.dto.LoginDTO"> 
 
-SELECT e.employeeID ,e.positionID ,e.name,e.status ,e.joinDate ,e.phoneNumber ,e.address ,e.remainingAnnualLeave ,e.departmentID ,e.rankID,d.responsibility,h.branchID  
+SELECT e.employeeID ,e.positionID ,e.name,e.status ,e.joinDate ,e.phoneNumber ,e.address ,e.remainingAnnualLeave ,e.departmentID ,e.rankID,d.responsibility,h.branchID,d.departmentName
 FROM department d JOIN headquarters h 
 ON d.hqID = h.hqID JOIN employee e 
 ON e.departmentID = d.departmentID

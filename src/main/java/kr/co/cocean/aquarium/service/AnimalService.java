@@ -122,6 +122,10 @@ public class AnimalService {
 	public void logplanWrite(LogPlanDTO param) {
 		dao.logplanWrite(param);
 		
+		int animalID = param.getIdx();
+		String status = param.getStatus();
+		dao.statusChange(animalID, status);
+		
 	}
 
 	public HashMap<String, Object> employeeInfo(int employeeID) {

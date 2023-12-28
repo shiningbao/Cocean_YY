@@ -6,14 +6,16 @@
 <div id="animalDetailBase">
 	<div class="animalImg">
 		<div class="mainImgDiv">
-			<div class="imgButton"></div>
-			<div class="mainImg"></div>
-			<div class="imgButton"></div>
+			<div class="imgButton"><button>뒤</button></div>
+			<div class="mainImg">
+				<img alt="" src="" width="350px" height="350px">
+			</div>
+			<div class="imgButton"><button>뒤</button></div>
 		</div>
 		<div class="subImgDiv">
 			<c:forEach items="${image}" var="item">
 				<div class="subImg">
-					<img alt="${item.serverFileName}" src="/photo/cocean/animal/${item.serverFileName}" width="30%" height="50%">
+					<img alt="" src="" width="120px" height="120px">
 				</div>
 			</c:forEach>
 		</div>
@@ -68,7 +70,7 @@
 			<tr>
 				<th>담당자</th>
 				<td>
-					<button onclick="inchargeAdd()" data-toggle="modal" data-target="#modalcharge">담당자 지정</button><br/>
+					<button data-toggle="modal" data-target="#inchargeModal">담당자 지정</button><br/>
 					<c:if test="${empty incharge}">담당자 없음</c:if>
 					<c:forEach items="${incharge}" var="ic" >${ic.departmentName} ${ic.name}<br/></c:forEach>
 				</td>
@@ -76,97 +78,76 @@
 		</table>
 	</div>
 	
-	<!-- 담당자 지정 모달창 -->
-	    <!-- 버튼 클릭 시 열리는 모달창 -->
-    <div class="modal fade" id="modalcharge" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <!-- 모달창 제목 -->
-            <h5 class="modal-title">관리일지</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action=""> <!-- 입력폼 -->
-              <div class="form-group">
-                <label>담당자</label>
-                <input type="text" id="manager" readonly class="form-control">
-              </div>
-              <div class="form-group">
-                <label>내용</label>
-                <textarea type="text" class="form-control" required oninvalid="this.setCustomValidity('관리 내용을 작성해 주세요.')" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
-              </div>
-              <div class="form-row">
-                <label>작성 날짜</label>
-                <input class="form-control" id="currentDate" readonly type="text" value="date">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary">저장</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    
-	<div id="inchargeModal">
-		<div id="inchargeDiv">
-			<div id="oraganizationDiv">
-				<c:import url="/animal/organization"/>
+<!-- 담당자 지정 모달창 -->
+<!-- 버튼 클릭 시 열리는 모달창 -->
+<div class="modal fade" id="inchargeModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<!-- 모달창 제목 -->
+				<h5 class="modal-title">코션친구들 담당자 지정</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
-			<div id="inchargeList">
-				<table id="inchargeTable" style="width:100%">
-					<colgroup>
-						<col style="width:27%">
-						<col style="width:27%">
-						<col style="width:27%">
-						<col style="width:19%">
-					</colgroup>
-					<tr style="text-align:center">
-						<th>본부</th>
-						<th>부서</th>
-						<th>이름</th>
-						<th>삭제</th>
-					</tr>
-					<c:forEach items="${incharge}" var="item">
-					<tr>
-						<th>${item.hqName}</th>
-						<th>${item.departmentName}</th>
-						<th>${item.name}</th>
-						<th><button onclick="inchargeDel(this,${item.employeeID})">삭제</button></th>
-						<th class="inchargeEmployeeID" style="display:none">${item.employeeID}</th>			
-					</tr>
-					</c:forEach>
-				</table>
-				<button onclick="inchargeChange()">확인</button>
-				<button onclick="inchargeNone()">취소</button>
+			
+			<div class="modal-body">
+			
+			<div class="form-group">
+				<div id="oraganizationDiv">
+					<c:import url="/animal/organization"/>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div id="inchargeList">
+					<table id="inchargeTable" style="width:100%">
+						<colgroup>
+							<col style="width:27%">
+							<col style="width:27%">
+							<col style="width:27%">
+							<col style="width:19%">
+						</colgroup>
+						<tr style="text-align:center">
+							<th>본부</th>
+							<th>부서</th>
+							<th>이름</th>
+							<th>삭제</th>
+						</tr>
+						<c:forEach items="${incharge}" var="item">
+						<tr>
+							<th>${item.hqName}</th>
+							<th>${item.departmentName}</th>
+							<th>${item.name}</th>
+							<th><button onclick="inchargeDel(this,${item.employeeID})">삭제</button></th>
+							<th class="inchargeEmployeeID" style="display:none">${item.employeeID}</th>			
+						</tr>
+						</c:forEach>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				<button class="btn btn-primary" onclick="inchargeChange()">저장</button>
+			</div>
+			
 			</div>
 		</div>
 	</div>
 </div>
+    
+</div>
 <script>
 	$('#animalDetailBase').css({'display':'flex'});
 	$('.animalImg').css({'width':'50%'});
-	$('.mainImg').css({'width':'90%', 'height':'350px'});
+	$('.mainImg').css({'width':'350px', 'height':'350px'});
 	$('.subImgDiv').css({'width':'100%', 'height':'200px'});
 	$('.subImg').css({'margin':'1px auto', 'display':'inline'});
 	
 	$('.animalBase').css({'width':'50%'});
 	$('.animalTable').css({'width':'400px'});
-	$('#inchargeModal').css({
-		'display':'none',
-		'position':'fixed',
-		'top':'0',
-		'left':'0',
-		'width':'100%',
-		'height':'100%',
-		'background-color':'rgba(0, 0, 0, 0.5)',
-		'z-index':'3',
-	});
+
 	$('#inchargeDiv').css({
 		'position':'fixed',
 		'display':'flex',
@@ -195,7 +176,12 @@
 		'margin':'10px',
 		'padding':'5px'
 	});
-
+	
+	// 이미지 리스트
+	var imgList
+	
+	
+	
 	
 	// 담당자 리스트
 	var inchargeList_before = [];
@@ -205,21 +191,16 @@
 		inchargeList_after.push('${item.employeeID}');
 	</c:forEach>
 	
-	
 	// 조직도 값 가져오기
-	function getEmployeeID(emp){
+	function getEmployeeID(emp,node){
 		console.log('get');
-		console.log(emp);
+		console.log('emp : '+emp);
+		console.log('node : '+mode);
 		inchargeDraw(emp);
 	}
 	
 	
 	/* 담당자 관련 */
-	
-	// 담당자 모달 표시
-	function inchargeAdd(){
-		$('#inchargeModal').css({'display':'block'});
-	}
 	
 	// 담당자 그리기
 	function inchargeDraw(emp){
@@ -286,18 +267,11 @@
 				},
 				error:function(e){console.log(e);}
 			});
-			//inchargeNone();
 		}
 	}
 	
-	// 담당자 모달 숨기기
-	function inchargeNone(){
-		$('#inchargeModal').css({'display':'none'});
-	}
-	window.addEventListener('click',function(event) {
-		if (event.target === $('#inchargeModal')[0]) {
-			inchargeNone();
-	    }
-	});
+	drawStatus('${base.status}');
+
+
 </script>
 

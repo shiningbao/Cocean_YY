@@ -43,4 +43,6 @@ public interface AnimalDAO {
 	void inchargeDel(@Param("animalID") int animalID, @Param("delList") ArrayList<Integer> delList);
 	
 	void inchargeInsert(@Param("animalID") int animalID, @Param("insertList") ArrayList<Integer> insertList);
+
+	void statusChange(@Param("animalID") int animalID, @Param("status") String status);
 }

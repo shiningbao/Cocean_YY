@@ -72,6 +72,11 @@
 			VALUES(#{employeeID},#{idx},#{content},#{manageCategory},#{status},#{coceanCategory})
 	</insert>
 	
+	<update id="statusChange">
+		UPDATE animalManagement SET status = #{status} WHERE animalID = #{animalID}
+	</update>
+	
+	
 	<select id="employeeInfo" parameterType="int" resultType="map">
 		SELECT de.departmentName, de.hqName, e.name FROM employee e
 			NATURAL JOIN (SELECT d.departmentID, d.departmentName, h.hqName FROM department d
