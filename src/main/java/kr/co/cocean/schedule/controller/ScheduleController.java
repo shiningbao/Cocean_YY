@@ -32,6 +32,7 @@ public class ScheduleController {
 	
 	@RequestMapping(value="/schedule/schedule.go")
 	public String schedule() {
+		logger.info("devtools1232132132131237777777777777777");
 		
 		return "schedule/schedule";
 	}

@@ -2,50 +2,82 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <meta charset="UTF-8">
+<script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
+<script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
 
 <div id="animalDetailLog">
 	<h2>LOG</h2>
 	<input type="month" name="month" value="${month}" onchange="monthchange()"/>
-	<input type="file"/>
-	<input type="button" name="logWrite" value="등록" onclick="logplanWrite()"/>
-	<select name="status">
-		<option value="정상">정상</option>
-		<option value="질병">질병</option>
-		<option value="격리">격리</option>
-		<option value="폐사">폐사</option>
-	</select>
+	<br/>
+	
 	<div>
 		<table>
 			<tr>
-				<th>${userInfo.name}</th>
+				<th>
+					${userInfo.departmentName} ${userInfo.name}
+					상태:
+					<select id="status">
+						<option value="정상">정상</option>
+						<option value="질병">질병</option>
+						<option value="격리">격리</option>
+						<option value="폐사">폐사</option>
+					</select>
+					<input type="button" name="logWrite" value="등록" onclick="logplanWrite()"/>
+				</th>
 			</tr>
 			<tr>
-				<th><textarea name="content"></textarea></th>
+				<th><div id="summernote"></div></th>
 			</tr>
 		</table>
 	</div>
 	<div>
-		<c:forEach items="${log}" var="item">
-			<div>
-				<button>수정</button>
-				<button>삭제</button>
+		<c:forEach items="${log}" var="item" varStatus="st">
+			<div style="border:1px solid black">
 				<table>
 					<tr>
-						<th>${item.departmentName} ${item.name}</th>
-						<th>${item.creationDate}</th>
+						<th id="${item.employeeID}">${item.departmentName} ${item.name}</th>
+						<th>
+							<div>${item.creationDate}</div>
+							<button onclick="logplanUpdateGo(this)">수정</button>
+							<button onclick="logplanDel(this)">삭제</button>
+						</th>
 					</tr>
-					<tr>
-						<th colspan="2">${item.content} / 상태: ${item.status}</th>
-					</tr>
+					<tbody>
+						<tr>
+							<th id="log_${st.index}">
+								${item.content}
+							</th>
+							<th>
+								상태: ${item.status}
+							</th>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</c:forEach>
 	</div>
 </div>
-<script>
+<script>	
 
+// 	ClassicEditor.create(document.querySelector('#editor'));
+	$('#summernote').summernote({
+		height: 200, width: 700,
+		maxHeight: 200,
+		minHeight: 200,
+		focus: true,
+		toolbar:['picture']
+	});
+	
+function logplanWrite(){
+	var status = $('#status').val();
+	var content = $('#summernote').summernote('code');
+	if(con.length > (2*1024*1024)){
+		alert('컨텐츠의 크기가 큽니다. 이미지 갯수나 크기를 줄여주세요');
+	}else{
+		logplanWriteDo(content,status);
+	}
 
-
-
+}
 
 </script>
