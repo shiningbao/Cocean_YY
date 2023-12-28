@@ -43,14 +43,30 @@ public class ScheduleService {
 	public List<HashMap<String, Object>> getFacilityEvents() {
 		return dao.getFacilityEvents();
 	}
-	public List<HashMap<String, Object>> addInterestCallender(String employeeID) {
-		return dao.addInterestCallender(employeeID);
+	public List<HashMap<String, Object>> addInterestCallender(String loginEmployeeID) {
+		return dao.addInterestCallender(loginEmployeeID);
 	}
-	public int addCalender(String loginEmployeeID, String nodeText) {
-		return dao.addCalender(loginEmployeeID,nodeText);
+	public int addCalender(String loginEmployeeID, String nodeText, String employeeID) {
+		return dao.addCalender(loginEmployeeID,nodeText,employeeID);
 	}
-	public List<String> showInterestCalendar(String loginEmployeeID) {
-		return dao.showInterestCalendar(loginEmployeeID);
+	/*
+	 * public List<String> showInterestCalendar(String loginEmployeeID) { return
+	 * dao.showInterestCalendar(loginEmployeeID); }
+	 */
+	public List<HashMap<String, Object>> getAddCalList(String val, String backgroundColor) {
+		List<HashMap<String, Object>> result = dao.getAddCalList(val);
+		for (HashMap<String, Object> hashMap : result) {
+			hashMap.put("backgroundColor", backgroundColor);
+		}
+		return result;
 	}
+	public String getDetailWriteName(String id) {
+		// TODO Auto-generated method stub
+		return dao.getDetailWriteName(id);
+	}
+	public int delMyCal(String id) {
+		return dao.delMyCal(id);
+	}
+	
 
 }

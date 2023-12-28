@@ -17,14 +17,28 @@
 		    productInformation pi ON bp.productID = pi.productID
 		INNER JOIN 
 		    branch b ON bp.branchID = b.branchID
+		ORDER BY 
+    		bp.productId ASC
 	</select>
 	
 	<select id="searchProduct" resultType="branchProduct">
-	SELECT pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
+	<!-- SELECT pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
 	FROM productInformation pi
 	JOIN branchProduct bp ON pi.productID = bp.productID
 	JOIN branch b ON bp.branchID = b.branchID
-	WHERE pi.productName = #{param1} AND b.branchName = #{param2}
+	WHERE pi.productName = #{param1} AND b.branchName = #{param2} -->
+	<choose>
+        <when test="branchName == '본사상품'">
+        	select * from productInformation  where productName =#{searchKeyword}  AND category="상품"
+        </when>
+    	<otherwise>
+			select  pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
+			FROM productInformation pi
+            JOIN branchProduct bp ON pi.productID = bp.productID
+            JOIN branch b ON bp.branchID = b.branchID
+            WHERE pi.productName = #{searchKeyword} AND b.branchName = #{branchName}
+    	</otherwise>
+	</choose>
 	</select>
 	
 	<insert id="brachRegister">
@@ -46,5 +60,33 @@
 	
 	<insert id="storeProductRegister">
 	INSERT INTO productInformation(productName, price, category) VALUES(#{param1}, #{param2}, #{param3})
+	</insert>
+	
+	<select id="modalProductList" resultType="branchProduct">
+	SELECT *
+	FROM productInformation pi
+	WHERE pi.category = "상품"
+	  AND pi.productID NOT IN (
+	    SELECT bp.productID
+	    FROM branchProduct bp
+	    JOIN branch b ON bp.branchID = b.branchID
+	    WHERE b.branchName = #{currentBranchName}
+	  )
+	</select>
+	
+	<select id="branchIDSearch">
+	SELECT branchID
+	FROM branch
+	WHERE branchName = #{param1}
+	</select>
+	
+	<select id="productIDSearch">
+	SELECT productID
+	FROM productInformation
+	WHERE productName = #{param1}
+	</select>
+	
+	<insert id="branchProductRegister">
+	INSERT INTO branchProduct (branchID, productID) VALUES(#{param1}, #{param2})
 	</insert>
 </mapper>

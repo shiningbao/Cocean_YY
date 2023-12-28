@@ -26,6 +26,7 @@ public class ScheduleDTO {
 	private String backgroundColor;
 	private boolean publicCategory;
 	
+
 	public String getBackgroundColor() {
 		return backgroundColor;
 	}

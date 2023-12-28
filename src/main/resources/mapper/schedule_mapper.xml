@@ -7,45 +7,57 @@
 	
 
 	
-	<insert id="scheduleWrite" useGeneratedKeys="true" keyColumn="scheduleID"
-		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule VALUES(NULL,#{employeeID},#{title},#{start},#{end},#{subCategory},#{description},#{remarks},#{publicCategory},#{backgroundColor});
+	<insert id="scheduleWrite" parameterType="schedule">
+		INSERT INTO schedule(employeeID,title,start,end,subCategory,description,remarks,publicCategory,backgroundColor) 
+		VALUES(#{employeeID},#{title},#{start},#{end},#{subCategory},#{description},#{remarks},#{publicCategory},#{backgroundColor});
 	</insert>
 	
 	<select id="getCallenderEvents">
-		SELECT title,start,end,backgroundColor,subCategory FROM schedule s WHERE employeeID = #{employeeID} AND subCategory='개인';
+		SELECT scheduleID AS id,title,start,end,backgroundColor,subCategory,employeeID,description,remarks
+		FROM schedule s
+		WHERE employeeID = #{employeeID} AND s.subCategory='개인';
 	</select>
 	
 	<select id="addInterestCallender">
-		SELECT title, start, end, backgroundColor, subCategory,CONCAT(e.name, ' ', p.positionName) AS name
-		FROM schedule s
-		JOIN employee e ON e.employeeID = s.employeeID
-		JOIN `position` p ON e.positionID = p.positionID 
-		WHERE s.employeeID = #{employeeID} AND s.subCategory = '개인';
+		SELECT calendarName ,addemployeeID from calendar where employeeID = #{loginEmployeeID} ;
 	</select>
 	
 	<select id="getFacilityEvents">
-		SELECT title,start,end,backgroundColor,subCategory FROM schedule s WHERE subCategory ='예약';
+		SELECT scheduleID AS id,title,start,end,backgroundColor,subCategory,description,remarks,employeeID
+		FROM schedule s 
+		WHERE subCategory ='예약';
 	</select>
 	
 	<select id="getFacility">
 		SELECT  facilityName FROM facility f  WHERE category=#{text} AND isUse=0;
 	</select>
 	
-	<insert id="facilityWrite" useGeneratedKeys="true" keyColumn="scheduleID"
-		keyProperty="scheduleID" parameterType="schedule">
-		INSERT INTO schedule values(NULL,#{employeeID},#{title},#{start},#{end},'예약',#{description},'-','1',#{backgroundColor});
-	</insert>
+	<insert id="facilityWrite" parameterType="schedule">
+    INSERT INTO schedule (employeeID, title, start, end, subCategory, description, remarks, publicCategory, backgroundColor) 
+    VALUES (#{employeeID}, #{title}, #{start}, #{end}, '예약', #{description}, '-', '1', #{backgroundColor});
+</insert>
 	
 	<update id="updateFacility">
 		update facility SET isUSE='1' WHERE facilityName = #{facilityName}
 	</update>
 	
 	<insert id="addCalender" parameterType="String">
-	INSERT INTO calendar(employeeID,calendarName) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'));
+	INSERT INTO calendar(employeeID,calendarName,addemployeeID) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'),#{employeeID});
 	</insert>
 	
-	<select id="showInterestCalendar">
-		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
+	<select id="getAddCalList">
+		SELECT title,start,end,subCategory,employeeID,scheduleID AS id FROM schedule s WHERE employeeID = #{val} AND subCategory='개인' AND publicCategory =1
 	</select>
+	
+	<select id="getDetailWriteName">
+		SELECT e.name FROM schedule s JOIN employee e ON s.employeeID  =e.employeeID  where scheduleID = #{id}
+	</select>
+	
+	<delete id="delMyCal">
+		DELETE  from schedule where scheduleID = #{id}
+	</delete>
+
+	<!-- <select id="showInterestCalendar">
+		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
+	</select> -->
 </mapper>
