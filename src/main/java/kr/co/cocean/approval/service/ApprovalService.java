@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
+import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.mypage.dto.LoginDTO;
 
 @Service
@@ -55,10 +56,11 @@ public class ApprovalService {
 	public ArrayList<ApprovalDTO> draftInfo(int employeeID) {
 		return dao.draftInfo(employeeID);
 	}
-
-	public void write(MultipartFile[] files, HashMap<String, String> param) {
-		ApprovalDTO dto = new ApprovalDTO();
-		int employeeID = Integer.parseInt(param.get("employeeID"));
+	
+	
+	ApprovalDTO dto = new ApprovalDTO();
+	public void write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+		int employeeID = Integer.parseInt(param.get("writerID"));
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String title = param.get("title");
@@ -69,15 +71,18 @@ public class ApprovalService {
 		dto.setDocumentNo(title);
 		logger.info("params:{}",param);
 		
-		dao.write(dto);
+		// dao.write(dto);
 		int idx=dto.getIdx();
+		
 		if(files[0].getSize()!=0) {
 		for (MultipartFile file : files) {
 			upload(file,idx);
 		}}
 		String content = param.get("content");
+
+		// dao.writeWorkDraft(title,content,idx);
+		// dao.approvalWrite(lastLineInfoList,idx);
 		
-		dao.writeWorkDraft(title,content,idx);
 		// dao.writeAttendanceDraftContent(param);
 		
 	}
@@ -92,7 +97,7 @@ public class ApprovalService {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
 			Files.write(path, bytes);
-			dao.writeFile(idx,oriFileName,newFileName);
+			// dao.writeFile(idx,oriFileName,newFileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -116,6 +121,7 @@ public class ApprovalService {
 		dao.saveApprovalLine(employeeID,category);
 		
 	}
+
 
 	/*
 	 * public ArrayList<HashMap<String, Object>> employeeList() { return

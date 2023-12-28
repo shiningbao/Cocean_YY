@@ -66,6 +66,14 @@ button{
   border: none;
 }
 
+#agreeTable, #agreeTable tr, #agreeTable td{
+	border:none;
+}
+
+#refTable, #refTable tr, #refTable td{
+	border:none;
+}
+
 #textarea{
 	width : 100%;
 	height: 200px;
@@ -111,20 +119,22 @@ button{
 			<div class="modal-content">
 				<div class="modal-header">
 					<!-- 모달창 제목 -->
-					<h5 class="modal-title">라인설정</h5>
+					<h5 class="modal-title">결재라인 설정</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
+					<div id="employeeList">
 					<jsp:include page="../approval/organization.jsp"></jsp:include>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<c:forEach items="${draftInfo}" var="draft">
+<c:forEach items="${draftInfo}" var="draft">
 
 <div id="TopContainer">
 <div id="draftInfoTop" style="display: flex;">
@@ -144,7 +154,7 @@ button{
 		</table>
 		
 		<table id="approvalSignature">
-			 <tr>
+			<tr>
 		        <td rowspan="3" style="width: 20px; ">상신</td>
 		        <td style="width: 80px; font-size:13px; padding : 0;">${draft.rankName}</td>
 		    </tr>
@@ -157,9 +167,9 @@ button{
 		</table>
 	</div>
 </div>	
-	<div style="display: flex; flex-direction: column; width: 22%; float: right;">
+	<div id="rightContainer" style="display: flex; flex-direction: column; width: 22%; float: right; position:absolute; right:20px;">
 	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: 157px; right:35px;">+</a>
+    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -177,20 +187,21 @@ button{
 
 
 <br/>
-<form action="writeDraft.do" method="post" enctype="multipart/form-data">
+<!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
 <c:if test="${title eq '업무기안서'}">
 <table id="workDraftContent">
-	<tr>
-		<th>제목</th>
-			<td><input type="text" name="title" placeholder="*제목을 입력해주세요."></td>
-		</tr>
+	
 		<tr>
 		    <th>합의자</th>
-		    <td id="agreement"></td>
+		    <td><table id="agreeTable"><tr><td></td></tr></table></td>
 		</tr>
 		<tr>
 		    <th>참조자</th>
-		    <td id="referenceTd"></td>
+		    <td><table id="refTable" style="border:none;"><tr><td></td></tr></table></td>
+		</tr>
+		<tr>
+		<th>제목</th>
+			<td><input type="text" name="title" placeholder="*제목을 입력해주세요."></td>
 		</tr>
 		<tr>
 			<td colspan="2">
@@ -249,19 +260,21 @@ button{
 <br/>
 <input type="file" name="files" multiple="multiple"/>
 <br/>
-<input type="radio" name="publicStatus" value=0 />공개
-<input type="radio" name="publicStatus" value=1 checked/>비공개
-<div style="font-size:12px; color:gray;">
+<div id="isPublic">
+<input type="radio" name="publicStatus" value=0 checked/>비공개
+<input type="radio" name="publicStatus" value=1 />공개
+</div>
+<div style="font-size:12px; color:gray;" id="publicDesc">
 *공개 설정시 모든 임직원이 열람 가능합니다.
 <br/>
 *비공개 설정시 결재라인에 있는 사람만 열람 가능합니다.
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
-<input type="button" value="임시저장" onclick="save(true)"/>
-<input type="button" value="등록" onclick="save(false)"/>
+<input type="button" id="tempSave" value="임시저장" onclick="save(true)"/>
+<input type="button" id="write" value="등록" onclick="save(false)"/>
 <input type="button" value="취소"/>
-</form>
+<!-- </form> -->
 </div>
 
 
@@ -283,8 +296,6 @@ button{
 		console.log(employeeID);
 	}
 	
-	
-
 	const handleResizeHeight = () => {
 	    textarea.current.style.height = 'auto'; //height 초기화
 	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
@@ -293,14 +304,24 @@ button{
 	var config = {}
 	config.editorResizeMode = "none";
 	var editor = new RichTextEditor("#rich_editor", config);
+	
+	var lastLine = [];
 
 	function save(isTemp) {
-	    // RichTextEditor에서 HTML 내용을 가져와서 content에 저장
+		$('input[type="file"]').css('display', 'none');
+		$('input[type="radio"]').css('display', 'none');
+		$('#publicDesc').css('display','none');
+		$('#isPublic').css('display','none');
+		$('#write').css('display','none');
+		$('#tempSave').css('display','none');
+		$('.addApprovalLine').css('display','none');
 	    var content = editor.getHTMLCode();
-	    // 제목과 내용을 FormData에 추가
+
 	    var formData = new FormData();
 	    formData.append('title', $('input[name="title"]').val());
 	    formData.append('content', content);
+	    
+	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
 
 	    if (isTemp) {
 	        formData.append('tempSave', 1);
@@ -308,23 +329,45 @@ button{
 	        formData.append('tempSave', 0);
 	    }
 
-	    // 결재 라인 데이터를 배열에 추가
-	    $('#approvalLine tbody tr').each(function(index) {
-	        formData.append('approvalLine[' + index + '][order]', index + 1);
-	        formData.append('approvalLine[' + index + '][employeeID]', $(this).find('.employeeID').val());
+	    $("#approvalLine tbody tr").each(function (index) {
+	        var order = $(this).find('.order').text();
+	        var employeeID = $(this).find('.employeeID').val();
+
+	        if (employeeID !== undefined) {
+	            lastLine.push({
+	                employeeID: employeeID,
+	                order: order,
+	                category: '결재'
+	            });
+	        }
 	    });
 
-	    // 참조자 데이터를 배열에 추가
-	    $('#reference tbody tr .employeeID').each(function(index) {
-	        formData.append('reference[' + index + ']', $(this).val());
+	    $("#agreeTable .employeeID").each(function (index) {
+	        var employeeID = $(this).val();
+
+	        if (employeeID !== undefined) {
+	            lastLine.push({
+	                employeeID: employeeID,
+	                order: null,
+	                category: '합의'
+	            });
+	        }
 	    });
 
-	    // 합의 데이터를 배열에 추가
-	    $('#agreement .employeeID').each(function(index) {
-	        formData.append('agreement[' + index + ']', $(this).val());
+	    $("#refTable .employeeID").each(function (index) {
+	        var employeeID = $(this).val();
+
+	        if (employeeID !== undefined) {
+	            lastLine.push({
+	                employeeID: employeeID,
+	                order: null,
+	                category:'참조'
+	            });
+	        }
 	    });
 
-	    // 파일 업로드를 위한 input[type="file"] 엘리먼트 추가
+	    formData.append('lastLine', JSON.stringify(lastLine));
+
 	    var filesInput = $('input[name="files"]')[0];
 	    var files = filesInput.files;
 	    for (var i = 0; i < files.length; i++) {
@@ -334,14 +377,14 @@ button{
 	    $.ajax({
 	        url: "/Cocean/approval/writeDraft.do",
 	        method: "POST",
-	        processData: false,  // 필수: FormData를 전송할 때 jQuery에서 기본적으로 설정되는 옵션을 비활성화
-	        contentType: false,  // 필수: content type을 false로 설정하여 jQuery가 Content-Type 헤더를 설정하지 않게 함
-	        data: formData,     // FormData를 전송
+	        processData: false,
+	        contentType: false,
+	        data: formData,
 	        cache: false,
-	        success: function(data) {
+	        success: function (data) {
 	            console.log(data);
 	        },
-	        error: function(e) {
+	        error: function (e) {
 	            console.error(e);
 	        }
 	    });
@@ -369,6 +412,7 @@ button{
              }
          });
      }); */
+     
      function getApprovalLine(lineData){
  		console.log(lineData);
  		 for (var i = 0; i < lineData.length; i++) {
@@ -383,70 +427,121 @@ button{
           }
  	}
      
-	 function addLineToTable(lineData) {    	 
-		    var table = $("#approvalLine");
+     function addLineToTable(lineData) {    	 
+		    var appTable = $("#approvalLine");
+		    var agrTable = $("#agreeTable");
+		    var refTable = $("#refTable");
+		    var signTable = $("#approvalSignature");
 		    if (lineData.category == "결재") {
 		        var row = $("<tr>");
-		        row.append("<th scope='row'>" + (table.find("tr").length + 1) + "</th>");
+		        row.append("<th scope='row' class='order'>" + (appTable.find("tr").length + 1) + "</th>");
 		        row.append("<td>" + lineData.category + "</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
-		            row.append('<label class="cancel">'+'x'+'</label>');
-		        } else {
+		            row.append('<label class="delete">'+'x'+'</label>');
+		        } 
+		        else {
 		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
 		            row.append("<td>" + lineData.rank + "</td>");
 		            row.append("<td>" + lineData.name + "</td>");
-		            row.append('<label class="cancel">'+'x'+'</label>');
+		            row.append('<label class="delete">'+'x'+'</label>');
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
-		        table.append(row);
+		        appTable.append(row);
 		        updateRowNumbers();
 		        console.log(lineData.employeeID);
+	
+		        // signatureTable   
+		        var frLastTd=$('#approvalSignature tr:first td:last');
+		        var scLastTd=$('#approvalSignature tr:even td:last');
+		        var lastTd=$('#approvalSignature td:last');
+		        
+		        $("<td rowspan='3' style='width: 20px;'>결재</td><td style='width: 80px; font-size:13px; padding: 0;'>" + lineData.rank + "</td>").insertAfter(frLastTd);
+		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'>" + lineData.name + "</td>").insertAfter(scLastTd);
+		        $("<td style='width: 80px;'></td>").insertAfter(lastTd);
 		    } else if (lineData.category == "합의") {
-		    	var agreementTd = $("#agreement");
-		        var content='';
-		        if (lineData.hqName == '' && lineData.departmentName == '') {		
-		        	content += '<label class="cancel">'+lineData.rank + lineData.name+'x'+'</label>';	   
-		        } else {
-		        	content +=  '<label class="cancel">'+lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name+'x'+'</label>';  
-		        }
-		        content += "<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>";
-		       	agreementTd.append(content);
-		       	console.log(lineData.employeeID);
-		    } else {
-		        var referenceTd= $("#referenceTd");
-		        var content='';
+		        row = $("<tr>");
+
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		        	content += '<label class="cancel">'+lineData.rank + lineData.name+'x'+'</label>';
+		            row = $("<td>" + lineData.rank + lineData.name + "</td>");
+		            row.append(row);
+		            row.append('<label class="delete">' + 'x' + '</label>');
 		        } else {
-		        	content += '<label class="cancel">' + lineData.hqName + "/" + lineData.departmentName +'x'+'</label>';
-		        	content += '<label class="cancel">' + lineData.rank+'x'+'</label>';
-		        	content += '<label class="cancel">' + lineData.name+'x'+'</label>';
+		        	row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
+		            row.append(row);
+		            row.append('<label class="delete">' + 'x' + '</label>');
 		        }
-		        content += "<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>";
-		        referenceTd.append(content);
+
+		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
+		        // row.append(cell);
+		        agrTable.append(row);
+		        console.log(lineData.employeeID);
+		    } else {
+		        row = $("<tr>");
+
+		        if (lineData.hqName == '' && lineData.departmentName == '') {
+		            row = $("<td>" + lineData.rank + lineData.name + "</td>");
+		            row.append(row);
+		            row.append('<label class="delete">' + 'x' + '</label>');
+		        } else {
+		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
+		            row.append(row);
+		            row.append('<label class="delete">' + 'x' + '</label>');
+		        }
+		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
+		        refTable.append(row);
 		        console.log(lineData.employeeID);
 		    }
+				
+		    SendAddedLineData(lineData);
+		    
 		}
+	  
 	 
-	 $(document).on('click', '.cancel', function() {
+	 function SendAddedLineData(lineData){
+	    	getAddedLineData(lineData);
+	    }
+	 
+	 $(document).on('click', '.delete', function() {
 		    var element = $(this);
 		    var row = element.closest('tr');
+		    var cell = element.closest('td');
 		    var table = row.closest('table');
 
+		    
 		    if (table.attr('id') === 'approvalLine') {
 		        row.remove();
 		        updateRowNumbers('#approvalLine');
 		    } else {
-		    	element.text('');
+		        cell.remove();
 		    }
 		});
-		// 테이블 순번 업데이트 함수
+	 
+		// 결재 순서 업데이트
 		function updateRowNumbers(tableId) {
 		    $(tableId + ' tbody tr').each(function(index) {
 		        $(this).find('th:first').text(index + 1);
 		    });
 		}
+		
+var remLine = [];
+		
+	    function remainedEmpID() {
+	        $("#approvalLine tbody tr .employeeID").each(function () {
+	            remLine.push($(this).val());
+	        });
+	        $("#agreeTable .employeeID").each(function () {
+	            remLine.push($(this).val());
+	        });
+	        $("#refTable .employeeID").each(function () {
+	            remLine.push($(this).val());
+	        });
+	        // console.log(remLine);
+	        getRemainedEmpID(remLine);
+	    }
+		  
+		
+		    
 	 
 	 
 </script>
