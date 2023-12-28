@@ -73,6 +73,7 @@ public class AnimalController {
 		return service.animalWrite(files,param, rAttr);
 	}
 	
+	// 작성 중 분류군 값 가져오기
 	@GetMapping(value = "/animal/classficationSearch")
 	@ResponseBody
 	public HashMap<String, Object> search(@RequestParam String keyword) {
@@ -83,7 +84,7 @@ public class AnimalController {
 		return result;
 	}
 	
-	
+	/* 코션친구들 상세보기 */
 	@GetMapping(value = "/animal/detail.go")
 	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
@@ -120,7 +121,7 @@ public class AnimalController {
 		
 		service.logplanWrite(param);
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		result.put("result", "gg");
+		result.put("con", param.getManageCategory());
 		return result;
 	}
 
