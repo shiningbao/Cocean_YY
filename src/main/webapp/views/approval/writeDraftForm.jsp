@@ -456,9 +456,9 @@ button{
 		        var scLastTd=$('#approvalSignature tr:even td:last');
 		        var lastTd=$('#approvalSignature td:last');
 		        
-		        $("<td rowspan='3' style='width: 20px;'>결재</td><td style='width: 80px; font-size:13px; padding: 0;'>" + lineData.rank + "</td>").insertAfter(frLastTd);
+		        /* $("<td rowspan='3' style='width: 20px;'>결재</td><td style='width: 80px; font-size:13px; padding: 0;'>" + lineData.rank + "</td>").insertAfter(frLastTd);
 		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'>" + lineData.name + "</td>").insertAfter(scLastTd);
-		        $("<td style='width: 80px;'></td>").insertAfter(lastTd);
+		        $("<td style='width: 80px;'></td>").insertAfter(lastTd); */
 		    } else if (lineData.category == "합의") {
 		        row = $("<tr>");
 
