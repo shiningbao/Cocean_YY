@@ -5,8 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Cocean</title>
+
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- 담당자 지정 jstree -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
 <style>
 	.animalContent{
 		position: absolute;
@@ -17,7 +21,7 @@
 		min-width: 900px;
 		margin: 0 auto;
 		border: 1px solid black;
-	}
+	}	
 </style>
 </head>
 <body>
@@ -56,6 +60,7 @@ var con;
 
 getContents('base');
 
+
 function getContents(con){
 	$.ajax({
 		type:'post',
@@ -76,43 +81,18 @@ $('li').on('click',function(){
 	getContents(con);
 });
 
-
 function drawContent(data){
 	var content = jQuery('<div>').html(data);
 	$('.drawContent').html('');
 	$('.drawContent').html(content);
 }
 
-function logplanWrite(){
-	var month = $('input[name="month"]').val();
-	console.log(month);
-	var content = $('textarea[name="content"]').val();
-	var manageCategory = con;
-	var status = '-';
-	if(con == 'log'){
-		status = $('select[name="status"]').val();
-	}
-	var data = {};
-	data.idx = animalID;
-	data.content = content;
-	data.manageCategory = manageCategory;
-	data.status = status;
-	data.coceanCategory = 'animal';
-	console.log(data);
-	$.ajax({
-		type:'post',
-		url:'logplanWrite.go',
-		data:data,
-		dataType:'JSON',
-		success:function(data){
-			getContents(con);
-		},
-		error:function(e){
-			console.log(e);
-		}		
-	});	
+function drawStatus(status){
+	var statusNickname = '('+status + ')   ' + nickname;
+	$('#nick').html(statusNickname);
 }
 
+// 일지,계획 달 변경 시 다시 그리기
 function monthchange(){
 	var month = $('input[name="month"]').val();
 	console.log(month);
@@ -132,5 +112,55 @@ function monthchange(){
 	});
 }
 
+// 일지,계획 작성
+function logplanWriteDo(content,status){
+	//var employeeID = '${userInfo.employeeID}';
+	var data = {};
+	//data.employeeID = employeeID;
+	data.manageCategory = con;
+	data.coceanCategory = 'animal';
+	data.idx = animalID;
+	data.content = content;
+	data.status = status;
+	$.ajax({
+		type:'post',
+		url:'logplanWrite.go',
+		data:data,
+		dataType:'JSON',
+		success:function(data){
+			drawStatus(status);
+			getContents(data.con);
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
