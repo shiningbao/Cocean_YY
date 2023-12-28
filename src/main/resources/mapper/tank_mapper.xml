@@ -39,8 +39,10 @@
 			WHERE mit.tankID = #{param1} AND tm.tankID = #{param1}
 	</select>
 	
-	<select id="getChart" resultType="Record">
-	
+	<select id="getChart" resultType="Record" parameterType="String">
+		SELECT DATE_FORMAT(recordTime, '%H') AS timeSet ,recordMercury ,recordWaterLevel ,recordSalinity ,recordPh ,recordDo ,recordNitrates 
+		,recordNitrites ,recordAmmonia , recordPhosphates  FROM tankRecord 
+		WHERE tankID = #{param1} AND recordDate = #{param2} GROUP BY recordTime
 	</select>
 	
 	

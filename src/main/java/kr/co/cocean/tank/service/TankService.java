@@ -54,15 +54,15 @@ public class TankService {
 	private void mngItem(Map<String, Object> params) {
 		dao.mngItem(params);
 	}
-
-
+ 
+	// 수조 상세보기
 	public HashMap<String, Object> tankDetail(int tankID) {
 		return dao.tankDetail(tankID);
 	}
 
-
-	public List<TankRecordDTO> getChart(String tankID, String tdy) {
-		return dao.getChart(tankID,tdy);
+	// 차트 데이터 가져오기
+	public List<TankRecordDTO> getChart(String tankID, String recordDate) {
+		return dao.getChart(tankID,recordDate);
 	}
 
 }

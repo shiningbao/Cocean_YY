@@ -25,6 +25,6 @@ public interface TankDAO {
 
 	HashMap<String, Object> tankDetail(int tankID);
 
-	List<TankRecordDTO> getChart(String tankID, String tdy);
+	List<TankRecordDTO> getChart(String tankID, String recordDate);
 
 }

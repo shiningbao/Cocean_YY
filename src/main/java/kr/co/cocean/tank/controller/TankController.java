@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,8 +69,9 @@ public class TankController {
 	
 	@GetMapping("tank/getChart")
 	@ResponseBody
-	public List<TankRecordDTO> getChart(@RequestParam String tankID, String tdy){
-		List<TankRecordDTO> list = service.getChart(tankID,tdy);
+	public List<TankRecordDTO> getChart(@RequestParam String tankID, String recordDate, Model model){
+		List<TankRecordDTO> list = service.getChart(tankID,recordDate);
+		model.addAttribute("list",list);
 		return list;
 	}
 	

@@ -107,17 +107,38 @@ button {
 	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
 	<button type="button" class="btn btn-primary" onclick="location.href='#'">수정</button>	
-	<button type="button" class="btn btn-primary" onclick="getChart('${map.tankID}')">테스트</button>	
 	</div>
 
 </body>
 <script>
 
+var tankID = ${map.tankID}
 var tdy = new Date().toISOString().substring(0, 10).toString();
+
+const ctx = $('#myChart');
+
+	$(document).ready(function(){
+		getChart(tankID,tdy);
+	});
+
+
 
 function getChart(tankID,tdy){
 	console.log(tdy);
 	console.log(tankID);
+	
+	let recordTime = [];
+	let recordMercury = [];
+	let recordWaterLevel = [];
+	let recordSalinity = [];
+	let recordPh = [];
+	let recordDo = [];
+	let recordNitrates = [];
+	let recordNitrites = [];
+	let recordAmmonia = [];
+	let recordPhosphates = [];
+	
+	
 	$.ajax({
 		url: 'getChart',
 		method: 'get',
@@ -125,93 +146,95 @@ function getChart(tankID,tdy){
 		dataType: 'JSON',
 		success: function(data){
 			console.log(data);
+			for (var i = 0; i < data.length; i++) {
+				recordTime.push(data[i].timeSet);
+				recordMercury.push(data[i].recordMercury);
+				recordWaterLevel.push(data[i].recordWaterLevel);
+				recordSalinity.push(data[i].recordSalinity);
+				recordPh.push(data[i].recordPh);
+				recordDo.push(data[i].recordDo);
+				recordNitrates.push(data[i].recordNitrates);
+				recordNitrites.push(data[i].recordNitrites);
+				recordAmmonia.push(data[i].recordAmmonia);
+				recordPhosphates.push(data[i].recordPhosphates);
+			}
+			console.log(recordTime);
+			console.log(recordSalinity);
+			console.log(recordDo);
+			console.log(recordNitrites);
+			console.log(recordPhosphates);
+			
+			new Chart(ctx,
+					{
+						type : 'line',
+						data : {
+							labels : recordTime,
+							datasets : [
+									{
+										label : '수온',
+										data : recordMercury,
+										borderWidth : 2
+									},
+									{
+										label : '수위',
+										data : recordWaterLevel,
+										borderWidth : 2
+									},
+									{
+										label : '염분',
+										data : recordSalinity,
+										borderWidth : 2
+									},
+									{
+										label : 'ph',
+										data : recordPh,
+										borderWidth : 2
+									},
+									{
+										label : 'DO',
+										data : recordDo,
+										borderWidth : 2
+									},
+									{
+										label : '질산염',
+										data : recordNitrates,
+										borderWidth : 2
+									},
+									{
+										label : '아질산염',
+										data : recordNitrites,
+										borderWidth : 2
+									},
+									{
+										label : '암모니아',
+										data : recordAmmonia,
+										borderWidth : 2
+									},
+									{
+										label : '인산염',
+										data : recordPhosphates,
+										borderWidth : 2
+									} ]
+						},
+						options : {
+							scales : {
+								y : {
+									beginAtZero : true
+								}
+							}
+						}
+					});
 		},
 		error: function(e){
 			console.log(e);
 		}
 	})
-	
 }
 
 
 
-	const ctx = $('#myChart');
 
-	var wc = [ 1, 2, 3, 4, 5, 6 ];
 
-	new Chart(ctx,
-			{
-				type : 'line',
-				data : {
-					labels : [ '09', '11', '13', '15', '17', '19', '21', '23',
-							'01', '03', '05', '07' ],
-					datasets : [
-							{
-								label : '수온',
-								data : wc,
-								borderWidth : 2
-							},
-							{
-								label : '수위',
-								data : [ {
-									x : '09',
-									y : 20
-								}, {
-									x : '11',
-									y : 25
-								} ],
-								borderWidth : 2
-							},
-							{
-								label : '염분',
-								data : [ 5, 6, 6.5, 6, 6.5, 6.4, 5, 6, 6.5, 6,
-										6.5, 6.4 ],
-								borderWidth : 2
-							},
-							{
-								label : 'ph',
-								data : [ 17, 20, 18, 19, 20, 19, 17, 20, 18,
-										19, 20, 19 ],
-								borderWidth : 2
-							},
-							{
-								label : 'DO',
-								data : [ 17, 20, 18, 19, 20, 19, 17, 20, 18,
-										19, 20, 19 ],
-								borderWidth : 2
-							},
-							{
-								label : '질산염',
-								data : [ 13, 14, 14, 14.5, 13, 14, 13, 14, 14,
-										14.5, 13, 14 ],
-								borderWidth : 2
-							},
-							{
-								label : '아질산염',
-								data : [ 13, 10, 12, 13, 12, 11, 13, 10, 12,
-										13, 12, 11 ],
-								borderWidth : 2
-							},
-							{
-								label : '암모니아',
-								data : [ 13, 14, 14, 16, 13, 14, 13, 14, 14,
-										16, 13, 14 ],
-								borderWidth : 2
-							},
-							{
-								label : '인산염',
-								data : [ 15, 16, 14, 16, 13.5, 14.5, 15, 16,
-										14, 16, 13.5, 14.5 ],
-								borderWidth : 2
-							} ]
-				},
-				options : {
-					scales : {
-						y : {
-							beginAtZero : true
-						}
-					}
-				}
-			});
+
 </script>
 </html>
