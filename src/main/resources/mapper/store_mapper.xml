@@ -32,11 +32,11 @@
         	select * from productInformation  where productName =#{searchKeyword}  AND category="상품"
         </when>
     	<otherwise>
-			select * from productInformation where productName =#{searchKeyword}
-            FROM productInformation pi
+			select  pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
+			FROM productInformation pi
             JOIN branchProduct bp ON pi.productID = bp.productID
             JOIN branch b ON bp.branchID = b.branchID
-            WHERE pi.productName = #{searchKeyword} AND b.branchName = #{branchName}	
+            WHERE pi.productName = #{searchKeyword} AND b.branchName = #{branchName}
     	</otherwise>
 	</choose>
 	</select>
@@ -62,7 +62,7 @@
 	INSERT INTO productInformation(productName, price, category) VALUES(#{param1}, #{param2}, #{param3})
 	</insert>
 	
-	<select id="modalSearchedList" resultType="branchProduct">
+	<select id="modalProductList" resultType="branchProduct">
 	SELECT * FROM productInformation WHERE category ="상품";
 	</select>
 </mapper>

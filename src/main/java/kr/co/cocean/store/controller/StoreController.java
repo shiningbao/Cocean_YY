@@ -77,7 +77,7 @@ public class StoreController {
 	@ResponseBody
 	public Map<String, Object> modalProductList(){
 		logger.info("모달 상품 리스트");
-			return service.modalProductList();
+		return service.modalProductList();
 		
 	}
 //	@GetMapping(value="/store/ticketRegister.do")
