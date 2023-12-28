@@ -25,7 +25,14 @@ public class AnimalDTO {
 	private String scientificName;
 	private String taxonomy;
 	private String animalCode;
+	private String serverFileName;
 	
+	public String getServerFileName() {
+		return serverFileName;
+	}
+	public void setServerFileName(String serverFileName) {
+		this.serverFileName = serverFileName;
+	}
 	public int getAnimalID() {
 		return animalID;
 	}

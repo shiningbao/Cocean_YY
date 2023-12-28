@@ -12,20 +12,20 @@
 }
 
 #tank_table {
-	width: 1000px;
-	height: 100%;
-	margin: 0px 0px 0px 380px;
+	width: 72%;
+	height: 80%;
 	text-align: center;
 	position: absolute;
 	top: 255px;
+	left: 400px;
 }
 
 #hTitle {
 	width: 120px;
 	height: 50px;
-	margin: 5px 0px 0px 380px;
-	padding-top: 10px;
+	left: 400px; 
 	position: absolute;
+	top: 120px;
 }
 
 #hTitle a {
@@ -33,34 +33,27 @@
 }
 
 #checkBox {
-	display: flex;
-	justify-content: space-around;
-	width: 90%;
+	width: 70%;
 	height: 20%;
 	font-size: 13px;
 	top: 100px;
-	left: 5%;
-	align-items: flex-start;
+	left: 400px;
 	padding-top: 45px;
 	position: absolute;
 }
 
 #box1 {
 	position: absolute;
-	height: 50px;
-	padding-right: 450px;
+	top: 110px;
+	left: 25px;
 	z-index: 9999;
 }
 
 #box2 {
 	position: absolute;
-	margin-top: 60px;
+	left: 450px;
+	top: 110px;
 	z-index: 9999;
-	padding-right: 450px;
-}
-
-#search {
-	padding-left: 700px;
 }
 
 label {
@@ -68,26 +61,36 @@ label {
 	padding-left: 10px;
 }
 
-#search{
-    padding-left: 755px;
-    margin-top: 15px;
-    position: absolute;
+#search {
+	position: absolute;
+	left: 77%;
+	top: 45%;
+	width: 450px;
 }
 
-#search input{
+#search input {
 	z-index: 99999;
+}
+
+#tankSubmit {
 	
+	position: absolute;
+	left: 87%;
+	width: 100px;
+	top: 850px;
 }
 
-#tankSubmit{
-	margin-top: 380px;
-    position: absolute;
-    left: 1280px;
-    width: 100px;
-    top: 420px;
-
+@media screen and (max-width: 1457px) {
+	#search {
+		top: 23%;
+	}
+	#search button {
+		width: 233px;
+	}
+	#search input {
+		margin-bottom: 5px;
+	}
 }
-
 </style>
 </head>
 <body>
@@ -127,7 +130,7 @@ label {
 
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" value="" id="option6">
-            <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" value="" id="option7">
@@ -166,7 +169,7 @@ label {
 				<c:forEach items="${list}" var="item">
 					<tr>
 						<td scope="row">${item.getTankID()}</td>
-						<td><a href="detail?tankID=${item.getTankID()}">${item.getTankName()}</a></td>
+						<td><a href="detail.go?tankID=${item.getTankID()}&emName=${item.getName()}">${item.getTankName()}</a></td>
 						<td>${item.getTankType()}</td>
 						<td>${item.getBranchName()}</td>
 						<td>${item.getTankStatus()}</td>

@@ -6,18 +6,22 @@
 <div id="animalDetailBase">
 	<div class="animalImg">
 		<div class="mainImgDiv">
-			<div class="imgButton"><button>뒤</button></div>
+			<div class="imgButton"><button onclick="imgChange(-1)">뒤</button></div>
 			<div class="mainImg">
-				<img alt="" src="" width="350px" height="350px">
+				<img id="mainPic" alt="#" src="#" width="350px" height="350px">
 			</div>
-			<div class="imgButton"><button>뒤</button></div>
+			<div class="imgButton"><button onclick="imgChange(1)">앞</button></div>
 		</div>
 		<div class="subImgDiv">
-			<c:forEach items="${image}" var="item">
 				<div class="subImg">
-					<img alt="" src="" width="120px" height="120px">
+					<img alt="#" src="#" width="120px" height="120px">
 				</div>
-			</c:forEach>
+				<div class="subImg">
+					<img alt="#" src="#" width="120px" height="120px">
+				</div>
+				<div class="subImg">
+					<img alt="#" src="#" width="120px" height="120px">
+				</div>
 		</div>
 	</div>
 
@@ -178,8 +182,49 @@
 	});
 	
 	// 이미지 리스트
-	var imgList
+	var imgList = ['00.png','01.png','02.png','03.png','04.png','05.png','06.png'];
+	var length = imgList.length;
+	var num = 0;
+
+	drawImg(num);
 	
+	// 이미지 그려주기
+	function imgChange(val){
+		num = numCalc(num, val);
+		drawImg(num);
+	}
+	
+	function numCalc(index, val){
+		index += val;
+		if(index == -1){
+			index = length - 1;
+		}
+		if(index == length){
+			index = 0;
+		}
+		return index;
+	}
+	
+	function drawImg(num){
+		if(length != 0){
+			$('#mainPic').attr('alt',imgList[num]);
+			$('#mainPic').attr('src','/photo/cocean/animal/'+imgList[num]);	
+		}
+		if(length > 1){
+			var index = num;
+			for(var i = 0; i < 3; i++){
+				index = numCalc(index, 1);
+				var $selector = $('.subImgDiv').find('img').eq(i);
+				$selector.attr('alt',imgList[index]);
+				$selector.attr('src','/photo/cocean/animal/'+imgList[index]);
+			}
+		}
+	}
+	
+	
+	
+	// 상태 그리기
+	drawStatus('${base.status}');
 	
 	
 	
@@ -270,7 +315,7 @@
 		}
 	}
 	
-	drawStatus('${base.status}');
+	
 
 
 </script>

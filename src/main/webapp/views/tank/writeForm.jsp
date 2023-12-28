@@ -86,6 +86,7 @@
 						<option value="측면 여과기">측면 여과기</option>
 						<option value="저면 여과기">저면 여과기</option>
 						<option value="상면 여과기">상면 여과기</option>
+						<option value="해당 없음">해당 없음</option>
 				</select>
 				</td>
 			</tr>

@@ -94,9 +94,13 @@ public class StoreService {
 		return map;
 	}
 
+	// 상품 검색 리스트 보여주기용
 	public Map<String, Object> searchProduct(String searchKeyword, String branchName) {
 		Map<String, Object> map =  new HashMap<String, Object>();
-		ArrayList<StoreDTO> list = dao.searchProduct(searchKeyword, branchName);
+		ArrayList<StoreProductDTO> list = dao.searchProduct(searchKeyword, branchName);
+		if(list.get(0).getStatus()==null) {
+			list.get(0).setStatus(branchName);
+		}
 		map.put("searchedList", list);
 		logger.info("list : "+list);
 		return map;
@@ -115,6 +119,21 @@ public class StoreService {
 		return dao.storeProductRegister(productName, price, category);
 		
 	}
+
+	public Map<String, Object> modalProductList(String currentBranchName) {
+		Map<String, Object> map =  new HashMap<String, Object>();
+		ArrayList<StoreProductDTO> list = dao.modalProductList(currentBranchName);
+		map.put("modalSearchedList", list);
+		return map;
+	}
+
+	public int branchProductRegister(String currentBranchName, String currentProductName) {
+		int branchID = dao.branchIDSearch(currentBranchName);
+		int productID = dao.productIDSearch(currentProductName);
+		return dao.branchProductRegister(branchID, productID);
+	}
+
+	
 
 //	public int ticketRegister(String branchName, String productName, int price, String category) {
 //		int branchID = dao.branchSelect(branchName);
