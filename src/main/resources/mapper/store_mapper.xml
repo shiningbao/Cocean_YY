@@ -63,6 +63,30 @@
 	</insert>
 	
 	<select id="modalProductList" resultType="branchProduct">
-	SELECT * FROM productInformation WHERE category ="상품";
+	SELECT *
+	FROM productInformation pi
+	WHERE pi.category = "상품"
+	  AND pi.productID NOT IN (
+	    SELECT bp.productID
+	    FROM branchProduct bp
+	    JOIN branch b ON bp.branchID = b.branchID
+	    WHERE b.branchName = #{currentBranchName}
+	  )
 	</select>
+	
+	<select id="branchIDSearch">
+	SELECT branchID
+	FROM branch
+	WHERE branchName = #{param1}
+	</select>
+	
+	<select id="productIDSearch">
+	SELECT productID
+	FROM productInformation
+	WHERE productName = #{param1}
+	</select>
+	
+	<insert id="branchProductRegister">
+	INSERT INTO branchProduct (branchID, productID) VALUES(#{param1}, #{param2})
+	</insert>
 </mapper>

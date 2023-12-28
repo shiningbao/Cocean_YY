@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,9 +76,19 @@ public class StoreController {
 	
 	@GetMapping(value="/store/modalProductList.do")
 	@ResponseBody
-	public Map<String, Object> modalProductList(){
+	public Map<String, Object> modalProductList(@RequestParam String currentBranchName){
 		logger.info("모달 상품 리스트");
-		return service.modalProductList();
+		return service.modalProductList(currentBranchName);
+	}
+	
+	@PostMapping(value="/store/branchProductRegister.do")
+	@ResponseBody
+	public int branchProductRegister(@RequestParam String currentBranchName, @RequestParam String currentProductName) {
+		logger.info("지점 상품 등록");
+		logger.info(currentBranchName);
+		logger.info(currentProductName);
+		return service.branchProductRegister(currentBranchName, currentProductName);
+
 		
 	}
 //	@GetMapping(value="/store/ticketRegister.do")

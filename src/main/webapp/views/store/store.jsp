@@ -40,6 +40,7 @@ text
 position: absolute;
     left: 800px;
     top: 170px;
+    width: 500px;
 }
 .ticketList{
 position: absolute;
@@ -59,7 +60,7 @@ position: absolute;
 	<div class="commonTitle"><h2>스토어관리</h2></div>
 	<div class="commonContent">
 <div class="branchLocation">지점 위치
-<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal">등록</button>
+<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" >등록</button>
 </div>
 <div id="map" style="width:500px;height:400px;"></div>
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
@@ -67,7 +68,7 @@ position: absolute;
 
 <!-- 지점등록 모달 -->	
 <!-- 버튼 클릭 시 열리는 모달창 -->
-    <div class="modal fade" id="#firstBranchModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal fade" id="firstBranchModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -98,20 +99,21 @@ position: absolute;
       </div>
     </div>
     
-<div class="productList">상품 리스트
+<div class="productList">
+	<p>상품 리스트</p>
 	<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="search" class="btn btn-primary">검색</button>
-	<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal">등록</button>
+	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='productInfoRegister.go'" style="display: inline;">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
 	</div>
-	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='productInfoRegister.go'">본사상품 등록</button>
 	<!-- <button type="button" class="button" onclick="location.href='storeProductRegister.do'">등록</button> -->
 </div>
 
 
-
+<!-- 첫번째 모달창 -->
 <div class="modal fade" id="firstProductModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -122,12 +124,11 @@ position: absolute;
         </button>
       </div>
       <div class="modal-body">
-        <p>모달 내용</p>
         <div class="modal-body">
-            <form action=""> <!-- 입력폼 -->
+            <form action="" method="get">
               <div class="form-group">
                 <label>지점명</label> 
-                <input type="text" readonly class="form-control" id="currentBranchName">
+                <input type="text" name="currentBranchName" readonly class="form-control" id="currentBranchName">
               </div>
               <div class="form-group">
                 <label>카테고리</label>
@@ -138,7 +139,8 @@ position: absolute;
                 <!-- <button id="firstProductModalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#secondProductModal">검색</button> -->
                  <!-- 두번째 모달 창 열기 버튼 -->
         		 <button type="button" id="firstProductSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondProductModal">검색</button>
-                	 <input type="text" readonly class="form-control" id="currentProductName">
+                	 <input type="text" name="currentProductName" readonly required class="form-control" id="currentProductName">
+                	 
               </div>
               <div class="form-group">
                 <label>가격</label>
@@ -146,19 +148,17 @@ position: absolute;
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" onclick="branchRegisterConfirm()">등록</button>
+                <button type="submit" class="btn btn-primary" id="branchProductRegister">등록</button>
               </div>
             </form>
           </div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
-
-
 
 <!-- 두번째 모달 창 -->
 <div class="modal fade" id="secondProductModal" tabindex="-1" role="dialog" style="margin-left: 400px;">
@@ -172,27 +172,27 @@ position: absolute;
       </div>
       <div class="modal-body">
         <div>
-				                <input type="text" id="modalSearch" class="form-control">
-				                <button  class="modalSearch" class="btn btn-primary">검색</button>
-				                </div>
-				                <div class="searchedModalProduct" >
-			                        <table class="table">
-			                            <thead>
-			                                <tr>
-			                                    <th>상품번호</th>
-			                                    <th>상품명</th>
-			                                    <th>가격</th>
-			                                </tr>
-			                            </thead>
-			                            <tbody></tbody>
-			                        </table>
-			                    </div>
-				              </div>
+	        <input type="text" id="secondProductModalSearch" class="form-control">
+	        <button class="secondProductModalSearch" class="btn btn-primary">검색</button>
+	        </div>
+	        <div class="searchedModalProduct" >
+	               <table class="table">
+	                   <thead>
+	                       <tr>
+	                           <th>상품번호</th>
+	                           <th>상품명</th>
+	                           <th>가격</th>
+	                       </tr>
+	                   </thead>
+	                   <tbody></tbody>
+	               </table>
+	           </div>
+	      </div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                 <button type="submit" class="btn btn-primary" onclick="branchRegisterConfirm()">등록</button>
-              </div>
+              </div> -->
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div> -->
@@ -374,6 +374,7 @@ var currentTicketCategory;
 var currentProductName;
 var currentProductPrice;
 
+
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
     // 첫 번째 Ajax 호출
@@ -482,6 +483,14 @@ new Promise((resolve, reject) => {
 		                $('#currentBranchName').val(currentBranchName);
 		                $('#currentProductCategory').val(currentProductCategory);
 		                $('#currentTickettCategory').val(currentTickettCategory);
+		                  // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
+		                   if (currentBranchName === "가산점") {
+		                      document.getElementById("modalProductRegister").style.display = "none";
+		                      document.getElementById("productInfoRegister").style.display = "inline";
+		                  } else {
+		                  	document.getElementById("modalProductRegister").style.display = "inline";
+	                      document.getElementById("productInfoRegister").style.display = "none";
+		                  } 
 					    // 선택된 branchName에 해당하는 지점 찾기
 					    var matchedBranch = data.branchProductList.find(function (branch) {
 					        return branch.branchName === branchName;
@@ -582,9 +591,9 @@ searchProduct(searchKeyword, currentBranchName);
 });
 
 // 모달검색 버튼 클릭
- $('.modalSearch').click(function () {
+ $('.secondProductModalSearch').click(function () {
 	 console.log("모달검색버튼 클릭");
-   searchKeyword = $('#modalSearch').val();
+   searchKeyword = $('#secondProductModalSearch').val();
    currentBranchName = "본사상품"
    searchProduct(searchKeyword,currentBranchName);
 });
@@ -645,6 +654,9 @@ searchProduct(searchKeyword, currentBranchName);
         $.ajax({
             type: 'get',
             url: 'modalProductList.do',
+            data: {
+              'currentBranchName': currentBranchName,
+          	},
             dataType: 'json',
             success: function (data) {
                 // 검색 결과를 받아와서 동적으로 테이블에 추가
@@ -655,27 +667,13 @@ searchProduct(searchKeyword, currentBranchName);
                 for (var i = 0; i < data.modalSearchedList.length; i++) {
                     var product = data.modalSearchedList[i];
                     var row = '<tr>' +
-                        '<td class="productNameCell">' + product.productID + '</td>' +
-                        '<td>' + product.productName + '</td>' +
+                        '<td>' + product.productID + '</td>' +
+                        '<td class="productNameCell">' + product.productName + '</td>' +
                         '<td>' + product.price + '</td>' +
                         '</tr>';
                     tableBody.append(row);
                 }
 
-                // productName을 클릭하는 이벤트 처리
-                $(document).on('click', '.productNameCell', function() {
-                  // 클릭한 행의 productName과 price 값을 가져와 변수에 저장
-                  var clickedRow = $(this).closest('tr');
-                  var currentProductName = clickedRow.find('td:eq(1)').text();
-                  var currentProductPrice = clickedRow.find('td:eq(2)').text();
-
-                  // 여기에서 필요한 작업 수행
-                  console.log("선택한 상품명: " + currentProductName);
-                  console.log("선택한 가격: " + currentProductPrice);
-
-                  // 모달을 닫기 (가정: 모달의 id가 'productSearch'인 경우)
-                  $('#productSearch').modal('hide');
-              });
             },
             error: function (e) {
                 console.log("상품모달 리스트 실패");
@@ -685,6 +683,21 @@ searchProduct(searchKeyword, currentBranchName);
     });
 });
 
+ // productName을 클릭하는 이벤트 처리
+    $(document).on('click', '.productNameCell', function() {
+      // 클릭한 행의 productName과 price 값을 가져와 변수에 저장
+      var clickedRow = $(this).closest('tr');
+      currentProductName = clickedRow.find('td:eq(1)').text();
+      currentProductPrice = clickedRow.find('td:eq(2)').text();
+    $('#currentProductName').val(currentProductName);
+    $('#currentProductPrice').val(currentProductPrice);
+      // 여기에서 필요한 작업 수행
+      console.log("선택한 상품명: " + currentProductName);
+      console.log("선택한 가격: " + currentProductPrice);
+
+      // 모달을 닫기 (가정: 모달의 id가 'productSearch'인 경우)
+      $('#secondProductModal').modal('hide');
+  });
 	
 	// 검색된 상품 그리기
     function drawProduct(data) {
@@ -693,28 +706,53 @@ searchProduct(searchKeyword, currentBranchName);
 		console.log(data.searchedList[0].productName);
 		if(data.searchedList[0].status == "본사상품"){
 			console.log("모달 검색 성공");
+			
+		    var searchedModalProduct = $('.searchedModalProduct table tbody');
+		    searchedModalProduct.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+		    searchedModalProduct.empty(); // 기존 내용 비우기
+		    for (var i = 0; i < data.searchedList.length; i++) {
+	        var product = data.searchedList[i];
+	        console.log(product.productID);
+	        console.log(product.productName);
+	        console.log(product.price);
+	        console.log(data.searchedList[i].productName);
+	        
+	        var productInfo = '<tr>' +
+	            '<td>' + product.productID + '</td>' +
+	            '<td class="productNameCell">' + product.productName + '</td>' +
+	            '<td>' + product.price + '</td>' +
+	            '</tr>';
+	            searchedModalProduct.append(productInfo);
+	    	}
+		   /*  var productListTable = $('.productList table');
+        	productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+		    var productInfo = '<tr>' +
+		        '<td>' + product.productID + '</td>' +
+		        '<td class="productNameCell">' + product.productName + '</td>' +
+		        '<td>' + product.price + '</td>' +
+		        '</tr>';
+		        productListTable.append(productInfo); */
+		    
 		}else{
-    // 기존 내용을 지우고 테이블 헤더를 추가
-    var searchedProduct = $('.productList table');
-    searchedProduct.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-
+			
     // 데이터를 테이블에 추가
-    for (var i = 0; i < data.searchedList.length; i++) {
-        var product = data.searchedList[i];
+        var product = data.searchedList[0];
+    	console.log("데이터터");
         console.log(product.productID);
         console.log(product.productName);
         console.log(product.price);
-        console.log(data.searchedList[i].productName);
         
+        var productListTable = $('.productList table');
+    	productListTable.empty(); // 기존 내용 비우기
+        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
         var productInfo = '<tr>' +
             '<td>' + product.productID + '</td>' +
             '<td>' + product.productName + '</td>' +
             '<td>' + product.price + '</td>' +
             '</tr>';
-            searchedProduct.append(productInfo);
-    	}
+            productListTable.append(productInfo);
+		}
     }
-}
     
  	// 카카오 우편번호 api
     function roadAddr() {
@@ -792,7 +830,31 @@ searchProduct(searchKeyword, currentBranchName);
             }
         });
     }
-
+    document.getElementById('branchProductRegister').addEventListener('click', function() {
+      currentBranchName = $()
+      var currentBranchName = document.getElementById('currentBranchName').value;
+  	  var currentProductName = document.getElementById('currentProductName').value;
+      branchProductRegister(currentBranchName, currentProductName);
+  });
+   	// 모달 상품등록 데이터를 서버로 보내는 함수
+    function branchProductRegister(currentBranchName, currentProductName){
+   		console.log("모달 상품드록 버튼");
+    	$.ajax({
+        type: 'post',
+        url: 'branchProductRegister.do',
+        data: {
+        	currentBranchName: currentBranchName,
+        	currentProductName: currentProductName
+        },
+        success: function(data) {
+            console.log(data);
+            console.log("성공");
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    	});
+    }
     function ticketRegisterConfirm(){
     	if (confirm("등록하시겠습니까?")) {
     		var branchName = document.getElementById('branchName').value;

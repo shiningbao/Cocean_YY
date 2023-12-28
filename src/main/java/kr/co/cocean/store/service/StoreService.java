@@ -120,11 +120,17 @@ public class StoreService {
 		
 	}
 
-	public Map<String, Object> modalProductList() {
+	public Map<String, Object> modalProductList(String currentBranchName) {
 		Map<String, Object> map =  new HashMap<String, Object>();
-		ArrayList<StoreProductDTO> list = dao.modalProductList();
+		ArrayList<StoreProductDTO> list = dao.modalProductList(currentBranchName);
 		map.put("modalSearchedList", list);
 		return map;
+	}
+
+	public int branchProductRegister(String currentBranchName, String currentProductName) {
+		int branchID = dao.branchIDSearch(currentBranchName);
+		int productID = dao.productIDSearch(currentProductName);
+		return dao.branchProductRegister(branchID, productID);
 	}
 
 	

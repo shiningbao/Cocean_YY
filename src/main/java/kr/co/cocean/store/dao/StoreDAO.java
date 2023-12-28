@@ -26,8 +26,13 @@ public interface StoreDAO {
 
 	int storeProductRegister(String productName, int price, String category);
 
-	ArrayList<StoreProductDTO> modalProductList();
+	ArrayList<StoreProductDTO> modalProductList(String currentBranchName);
 
+	int branchIDSearch(String currentBranchName);
+
+	int productIDSearch(String currentProductName);
+
+	int branchProductRegister(int branchID, int productID);
 
 
 
