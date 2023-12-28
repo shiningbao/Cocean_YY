@@ -22,8 +22,22 @@
 	VALUES (null, #{categoryID}, #{branchID}, now(), #{capacity}, #{tankName}, '정상') 
 	</insert>
 	
+	<insert id="mngItem" parameterType="map">
+		INSERT INTO managementItemsTable (tankID, area, flooring, filter, mercury, waterLevel, 
+				salinity, pH, dO, nitrates, nitrites, ammonia, phosphates) 
+			VALUES (#{tankID}, #{area}, #{flooringNo}, #{filterType}, #{mercury}, #{waterLevel}, 
+				#{salinity}, #{pH}, #{dO}, #{nitrates}, #{nitrites}, #{ammonia}, #{phosphates})
+	</insert>
 	
+		<insert id="inChargeTank" parameterType="map">
+		INSERT INTO inCharge (employeeID, category, idx) 
+				VALUES (#{employeeID}, 'tank', #{tankID})
+	</insert>
 	
+	<select id="tankDetail" resultType="map">
+		SELECT mit.*, tm.* FROM managementItemsTable mit, tankManagement tm 
+			WHERE mit.tankID = #{param1} AND tm.tankID = #{param1}
+	</select>
 	
 	
 	

@@ -1,6 +1,7 @@
 package kr.co.cocean.tank.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +17,11 @@ public interface TankDAO {
 	List<Map<String, Object>> getBranch();
 
 	int tankReg(Map<String, Object> params);
+
+	int mngItem(Map<String, Object> params);
+
+	int inChargeTank(Map<String, Object> params);
+
+	HashMap<String, Object> tankDetail(int tankID);
 
 }
