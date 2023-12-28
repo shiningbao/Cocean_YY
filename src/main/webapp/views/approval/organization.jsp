@@ -86,7 +86,7 @@ $(function () {
 
 	});
     
-    var employeeID;
+   
     
     
     // jstree 클릭 이벤트 처리
@@ -96,7 +96,7 @@ $(function () {
         
         //console.log(employeeID);
     });
-    // 더블클릭시 이벤트
+    // 더블클릭시 이벤트(사원추가)
     $("#jstree").on('dblclick', '.jstree-anchor',function(e){
     	// 더블클릭시 값 전송
     	var clickedNode = $(e.target).closest('li');
@@ -109,7 +109,7 @@ $(function () {
     	        	data:{employeeID:employeeID},
     	        	success:function(data){
     	        		console.log(data);
-    	        		drawLine(data.employeeInfo);
+    	        		drawLine(data.employeeInfo,employeeID);
 
     	        	},
     	        	error:function(e){
@@ -121,6 +121,9 @@ $(function () {
     	}
     });
 });
+
+var employeeID;
+
 function fSch() {
     console.log("껌색할께영");
     $('#jstree').jstree(true).search($("#schName").val());
@@ -131,51 +134,41 @@ function sendEmployeedID(employeeID){
 	getEmployeeID(employeeID);
 }
 
-function drawLine(employeeInfo) {
-    var content = '';
- 	console.log(employeeInfo);
-    employeeInfo.forEach(function(item, idx) {
-    	  var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
-    	  content += '<div class="lineItem">';
-    	  content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>'+'\u00A0'+'\u00A0';
-          if (!hqDepartmentRank) {
-              content += '<label class="hqName">' + item.hqName + '</label>'+ '/' +'<label class="departmentName">'+ item.departmentName + '</label>'+'\u00A0'+'\u00A0';
-              content += '<label class="rank">' + item.rankName + '</label>'+'\u00A0'+'\u00A0';
-          }
-          content += '<label class="name">' + item.name + '</label>' +'<label class="cancel">'+'\u00A0'+'\u00A0'+'\u00A0'+'x'+'</label>'+ '<br/>';
-          content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
-          content += '</div>'
-    });
-
-    $('#line').append(content);
-    appendCancel();
-   
+function getAddedLineData(lineData){
+	console.log(lineData);
 }
 
-function drawRef(employeeInfo) {
-    var content = '';
- 	console.log(employeeInfo);
-    employeeInfo.forEach(function(item, idx) {
-    	  var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
-    	  content += '<div class="lineItem">';
-          if (!hqDepartmentRank) {
-              content += '<label class="hqName">' + item.hqName + '</label>'+ '/' +'<label class="departmentName">'+ item.departmentName + '</label>'+'\u00A0'+'\u00A0';
-              content += '<label class="rank">' + item.rankName + '</label>'+'\u00A0'+'\u00A0';
-          }
-          content += '<label class="name">' + item.name + '</label>' +'<label class="cancel">'+'\u00A0'+'\u00A0'+'\u00A0'+'x'+'</label>'+ '<br/>';
-          content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
-          content += '</div>'
-          console.log(item.employeeID);
-    });
+var remLine;
 
-    $('#line').append(content);
-    appendCancel();
-
-   
+function getRemainedEmpID(remLine){
+	console.log(remLine);
 }
 
+// 조직도에서 사원 선택해서 옆에 그리는 부분
+function drawLine(employeeInfo, currentEmployeeID) {
+    employeeInfo.forEach(function (item, idx) {
+        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
+        var isRemLineEmpID = remLine.includes(currentEmployeeID);
 
+        if (!isRemLineEmpID && !existingEmployee) {
+            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
+            var content = '<div class="lineItem">';
+            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
+            if (!hqDepartmentRank) {
+                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
+                content += '<label class="rank">' + item.rankName + '</label>' + '\u00A0' + '\u00A0';
+            }
+            content += '<label class="name">' + item.name + '</label>' + '<label class="cancel">' + '\u00A0' + '\u00A0' + '\u00A0' + 'x' + '</label>' + '<br/>';
+            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
+            content += '</div>';
 
+            $('#line').append(content);
+            appendCancel();
+        } else {
+            alert('이미 라인에 지정된 사원입니다.');
+        }
+    });
+}
 function appendCancel() {
 $('.cancel').off('click').on('click', function() {
 	var lineItem = $(this).closest('.lineItem');
