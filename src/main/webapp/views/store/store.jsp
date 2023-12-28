@@ -104,7 +104,7 @@ position: absolute;
 	<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="search" class="btn btn-primary">검색</button>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='productInfoRegister.go'" style="display: inline;">본사상품 등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='storeProductRegister.go'" style="display: inline;">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
@@ -450,7 +450,7 @@ new Promise((resolve, reject) => {
 							var product = data.branchProductList[i];
 							var productInfo = '<tr>' +
 	                         '<td>' + product.productID + '</td>' +
-	                         '<td>' + product.productName + '</td>' +
+	                         '<td >' +'<a href="detail?idx=${bbs.idx}">' + product.productName + '</td>' +
 	                         '<td>' + product.price + '</td>' +
 	                         '</tr>';
 	                     productListTable.append(productInfo);
