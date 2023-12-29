@@ -48,7 +48,7 @@ button {
 	width: 100px;
 }
 .btnGroup{
-	left: 83%;
+	left: 80%;
 	top: 95%;
 	position: absolute;
 }
@@ -106,7 +106,7 @@ button {
 	</div>
 	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
-	<button type="button" class="btn btn-primary" onclick="location.href='#'">수정</button>	
+	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>
 
 </body>
@@ -230,11 +230,5 @@ function getChart(tankID,tdy){
 		}
 	})
 }
-
-
-
-
-
-
 </script>
 </html>

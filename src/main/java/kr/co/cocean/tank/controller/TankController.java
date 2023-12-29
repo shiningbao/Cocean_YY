@@ -76,4 +76,15 @@ public class TankController {
 	}
 	
 	
+	@GetMapping("tank/tankSet.go")
+	public ModelAndView tankSetForm(@RequestParam int tankID) {
+		ModelAndView mav = new ModelAndView("tank/tankSetForm");
+		HashMap<String, Object> map = service.tankDetail(tankID);
+		List<Map<String, Object>> branchList = service.getBranch();
+		mav.addObject("map",map);
+		mav.addObject("branchList",branchList);
+		logger.info("map"+map);
+		return mav;
+	}
+	
 }
