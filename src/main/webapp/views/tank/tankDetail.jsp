@@ -106,7 +106,7 @@ button {
 	<div id="hTitle">
 		<p>${map.tankName}</p>
 		 <a>${map.branchName} / 배치구역: ${map.area}</a></br>
-		 <a>${map.tankType}</a></br>
+		 <a>${map.tankType} / 용량: ${map.capacity}</a></br>
 		 <a>${fn:substring(map.registrationDate,0,10)}</a>
 	</div>
 	<div class="topBar">
