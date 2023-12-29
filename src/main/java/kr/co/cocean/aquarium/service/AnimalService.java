@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
+import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
 import kr.co.cocean.aquarium.dto.InChargeChangeDTO;
 import kr.co.cocean.aquarium.dto.LogPlanDTO;
@@ -35,8 +36,15 @@ public class AnimalService {
 	
 	@Autowired AnimalDAO dao;
 
-	public ArrayList<AnimalDTO> animalList() {
-		return dao.animalList();
+	public String animalList(AnimalListFilterDTO param, Model model) {
+		
+		logger.info("emp : {}",param.getInchargeEmployeeID());
+		
+		ArrayList<AnimalDTO> list = dao.animalList(param);
+		
+		model.addAttribute("list", list);
+		
+		return "aquarium/animalView";
 	}
 
 	public ArrayList<ClassficationDTO> classficationSearch(String keyword) {

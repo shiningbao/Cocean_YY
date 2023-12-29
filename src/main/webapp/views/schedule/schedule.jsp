@@ -5,20 +5,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+<!-- Bootstrap JS -->
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<!-- Moment JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <!--cs 파일관리  -->
 <link href='<c:url value="/resource/css/schedule/main.css"/>' rel='stylesheet' />
 <!--js 파일관리  -->
 <script src='<c:url value="/resource/js/schedule/main.js"/>'></script>
 <script src='<c:url value="/resource/js/schedule/startEndDate.js"/>'></script>
-<script src='<c:url value="/resource/js/schedule/schedule.js"/>'></script>
 
 <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
 
 
@@ -68,6 +77,7 @@ body {
     padding: 0; /* 내부 여백 제거 */
     cursor: pointer;
     float:right;
+    margin-right: 160px;
 }
 
 section{
@@ -131,6 +141,22 @@ img{
     height: 21px;
     line-height: 20px!important;
 }
+.colorDIV{
+	display: inline-block;
+    padding: 0px 8px;
+    border-radius: 13px;
+    border: 1px solid #c2dde6;
+    height: 21px;
+    line-height: 20px!important;
+}
+
+.addLabel{
+	width: 180px;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 </style>
 </head>
 
@@ -150,6 +176,34 @@ img{
 				</div>
 				<div class="modal-body">
 					<jsp:include page="../personnel/organization.jsp"></jsp:include>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 일정 상세 모달창 -->
+	<div class="modal fade" id="calDetailModal" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 모달창 제목 -->
+					<h5 class="modal-title">일정 상세</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="calDetail-body">
+					작성자 :<div class="calDetail-write"></div>
+					일시 :<div class="calDetail-start"></div>~
+					<div class="calDetail-end"></div>
+					내용 :<div class="calDetail-content"></div>
+					비고 :<div class="calDetail-remark"></div>
+					<div class="calDetail-buttons"></div>
+				</div>
+				
+				<div class="modal-footer">
+							
 				</div>
 			</div>
 		</div>
@@ -174,14 +228,14 @@ img{
 						
 
 							<div class="section">
-							    <input type="date" name="start" id="start" value="2023-12-24">
+							    <input type="date" name="start" id="startFac" value="2023-12-24">
 							    <select class="timeSelect" name="startTime">
 									  <!-- 00:00부터 24:00까지 시간을 30분 간격으로 표시합니다. -->
 									  <option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option><option value="24:00">24:00</option>
 									</select>
 							    
 							    ~
-							    <input type="date" name="end" id="end" value="2023-12-24">
+							    <input type="date" name="end" id="endFac" value="2023-12-24">
 							    <select class="timeSelect" name="endTime">
 									<option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option><option value="24:00">24:00</option>
 								</select>
@@ -200,11 +254,12 @@ img{
 							
 						<div class="form-group">
 							<label>목적</label>
-							<textarea type="text"  name ="description"class="form-control" requiredoninvalid="this.setCustomValidity('목적을 입력해주세요.')"oninput="this.setCustomValidity('')" maxlength="500"placeholder="목적을 입력해주세요." style="height: 180px;"></textarea>
+							<textarea type="text"  name ="description"class="form-control mb-2" requiredoninvalid="this.setCustomValidity('목적을 입력해주세요.')"oninput="this.setCustomValidity('')" maxlength="500"placeholder="목적을 입력해주세요." style="height: 180px;"></textarea>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-primary" id="facilitySubmit">저장</button>
+							
 							<button type="button" class="btn btn-secondary"data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary" id="facilitySubmit">저장</button>
 							
 						</div>
 					</form>
@@ -230,19 +285,19 @@ img{
 					<form action="scheduleWrite.do" method="POST" id="calForm">
 						<!-- 입력폼 -->
 							<div class="section">
-								제목 <input type="text" name="title" placeholder="제목을 입력해주세요.">
+								제목 <input type="text" name="title" placeholder="제목을 입력해주세요."  class="form-control mb-2">
 								공개여부 <input type="checkbox" name="publicCategory">
 							</div>
 						
 							<div class="section">
-							    <input type="date" name="start" id="start" value="2023-12-24">
+							    <input type="date" name="start" id="startCal" value="2023-12-24" class="form-control mb-2">
 							    <select class="timeSelect" name="startTime">
 									  <!-- 00:00부터 24:00까지 시간을 30분 간격으로 표시합니다. -->
 									  <option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option><option value="24:00">24:00</option>
 									</select>
 							    
 							    ~
-							    <input type="date" name="end" id="end" value="2023-12-24">
+							    <input type="date" name="end" id="endCal" value="2023-12-24" class="form-control mb-2">
 							    <select class="timeSelect" name="endTime">
 									<option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option><option value="24:00">24:00</option>
 								</select>
@@ -251,17 +306,17 @@ img{
 
 
 							
-							<div class="section">비고
-								<input type="text" name="remarks">
+							<div class="section" >비고
+								<input type="text" name="remarks" class="form-control mb-2">
 							</div>
 							<div class="section">내용
-								<textarea name="description"></textarea>
+								<textarea name="description" class="form-control mb-2"></textarea>
 							</div>
 							
 						<div class="modal-footer">
-							<button type="button" id="calSubmit" class="btn btn-primary">저장</button>
-							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
 							
+							<button type="button" class="btn btn-secondary"data-dismiss="modal" class="cancleBtn">취소</button>
+							<button type="button" id="calSubmit" class="btn btn-primary">저장</button>
 						</div>
 					</form>
 				</div>
@@ -298,7 +353,7 @@ img{
 	<div>	
 		<div>
 			<button class="interestCalendar Hide">
-				<img src="<c:url value='/resource/img/carrot-down.PNG'/>" alt="버튼 이미지">
+				<img src="<c:url value='/resource/img/carrot-side2.png'/>" alt="버튼 이미지">
 			</button>
 		</div>
 			<p class="cal-font">
@@ -333,58 +388,24 @@ img{
 	var carrotSideImgUrl = '<c:url value="/resource/img/carrot-side2.png"/>';
     var carrotDownImgUrl = '<c:url value="/resource/img/carrot-down.PNG"/>';
 	console.log(loginEmployeeID);
+	var employeeID;
 	
-	
 
-	$('.interestCalendar').on('click', function() {
-	    console.log('click');
-	    var img = $(this).find('img'); // 버튼 내의 이미지 요소를 찾습니다.
-	    isDown = !isDown; // true 이면 false로 false면 true로
-	    if (isDown) {
-	        img.attr('src', carrotSideImgUrl); // 이미지 경로를 직접 지정합니다.
-	        console.log('true');
-	        $.ajax({
-	        	url:'showInterestCalendar.do',
-	        	data:{loginEmployeeID:loginEmployeeID},
-	        	type:'POST',
-	        	success:function(data){
-	        		console.log(data);
-	        		data.forEach(function(item) {
-	        		    var label = $('<div>'); // 라벨 생성
-
-	        		    var checkbox = $('<input>').attr({
-	        		        type: 'checkbox',
-	        		        value: '',
-	        		        class: '',
-	        		        checked: 'checked'
-	        		    });
-
-	        		    label.append(checkbox).append(item); // 라벨에 체크박스와 데이터 추가
-
-	        		    $('.itCallenderList').append(label); // itCallenderList에 라벨 추가
-	        		});
-	        	},
-	        	error:function(e){
-	        		console.log(e);
-	        	}
-	        	
-	        });
-	    } else {
-	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
-	        $('.itCallenderList').empty();
-	        console.log('false');
-	    }
-	});
 $('.addMyCallender').click(function(){
 	console.log('click');
 });
 
 //캘린더 js
 document.addEventListener('DOMContentLoaded', function() {
+	getAddCalenderCall();
    var calendarEl = document.getElementById('calendar');
 
    var calendar = new FullCalendar.Calendar(calendarEl, {
-     
+	   eventTimeFormat: { // 이 부분을 추가해 보세요.
+		    hour: 'numeric',
+		    minute: '2-digit',
+		    hour12: false
+		  },
      headerToolbar: {
        left: 'prev,next today',
        center: 'title',
@@ -393,8 +414,8 @@ document.addEventListener('DOMContentLoaded', function() {
      navLinks: true, // 날짜 선택하면 day 캘린더나 week 캘린더로 이동
      businessHours: true, //
      editable: false, // 수정 가능
-     selectable: true, // 드래그 일정변경
-     default: false,
+     selectable: false, // 드래그 일정변경
+
      nowIndicator: true,
      dayMaxEventRows: true,
      views: {
@@ -403,14 +424,150 @@ document.addEventListener('DOMContentLoaded', function() {
     	    }
     	  },
      eventClick: function(info) {
-
+		
     	// 일정 클릭 시 발생할 이벤트
     	//클릭한 일정 Id
-    	var id = info.event._def.defId;
+    	var id = info.event.id;
     	console.log(id);
-    	console.log('click');
+    	console.log(info);
+    	// 상세보기
+        info.jsEvent.preventDefault();
+        var eventObj = info.event;
+        var title = eventObj.title;
+        var description = eventObj.extendedProps.description;
+        var remarks = eventObj.extendedProps.remarks;
+        console.log(remarks);
+        var employeeID = eventObj.extendedProps.employeeID;
+        console.log(name);
+       	console.log(info.event._instance.range.start);
+       	console.log(info.event._instance.range.start);
+       	var startDate = new Date(info.event._instance.range.start);
+       	var endDate = new Date(info.event._instance.range.end);
+
+       	// 현재는 UTC 시간입니다. 한국 시간으로 변환합니다.
+       	/* var koreanStartDate = new Date(startDate.getTime() - (9 * 60 * 60 * 1000)).toLocaleString('en-US', { timeZone: 'Asia/Seoul' });
+		var koreanEndDate = new Date(endDate.getTime() - (9 * 60 * 60 * 1000)).toLocaleString('en-US', { timeZone: 'Asia/Seoul' }); */
+		
+		/* var koreanStartDate = moment();
+		var formattedDate = koreanStartDate.format('YYYY-MM-DD HH:MM'); */
+		const koreanStartDate = moment(startDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm A');
+		const koreanEndDate = moment(endDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm A');
+		console.log(koreanStartDate);
+		console.log(koreanEndDate); // 2023-12-01 12:00 AM 형식의 종료 날짜
+		
+		const koreanStartDateDate = moment(startDate).subtract(9, 'hours').format('YYYY-MM-DD');
+		const koreanStartTime = moment(startDate).subtract(9, 'hours').format('HH:mm');
+
+		console.log(koreanStartDateDate);
+		console.log(koreanStartTime);
+		
+		const koreanEndDateDate = moment(endDate).subtract(9, 'hours').format('YYYY-MM-DD');
+		const koreanEndTime = moment(endDate).subtract(9, 'hours').format('HH:mm');
+		
+       	
+
+        $.ajax({
+        	url:'getDetailWriteName.do',
+        	data:{id:id},
+        	success:function(name){
+        		console.log(name);
+        		$('#calDetailModal .calDetail-write').text(name);
+        	},
+        	error:function(e){
+        		console.log(e);
+        	}
+        });
+        $('#calDetailModal .modal-title').text(title);
+        $('#calDetailModal .calDetail-remark').text(remarks);
+        $('#calDetailModal .calDetail-start').text(koreanStartDate);
+        $('#calDetailModal .calDetail-end').text(koreanEndDate);
+        $('#calDetailModal .calDetail-content').text(description);
+        console.log(loginEmployeeID +'같은가'+employeeID);
+        if (loginEmployeeID == employeeID) {
+        	console.log("같다!!");
+            // 수정 버튼 생성
+            var editButton = '<button id="editButton" class="btn btn-primary">수정</button>';
+            // 삭제 버튼 생성
+            var deleteButton = '<button id="deleteButton" class="btn btn-primary">삭제</button>';
+            
+            // 버튼 추가
+             $('#calDetailModal .modal-footer').empty(); // 기존 내용을 지우고
+            $('#calDetailModal .modal-footer').append(editButton + deleteButton); // 새 버튼 추가
+            
+            // Edit 버튼 클릭 시 이벤트 처리
+            $('#editButton').click(function () {
+            	$('#editButton').hide();
+            	$('#deleteButton').hide();
+            	$('#calDetailModal .modal-title').text('일정 수정');
+                $('#calDetailModal .modal-footer').html('<button type="button" class="btn btn-secondary" id="cancelButton">취소</button><button type="button" class="btn btn-primary" id="saveButton">저장</button>');
+
+                // Title 수정
+                var titleInput = $('<input type="text" class="form-control mb-2" id="titleInput">').val(title);
+                $('#calDetailModal .calDetail-remark').empty().append(titleInput);
+
+                // Remarks 수정
+                var remarksInput = $('<input type="text" class="form-control mb-2" id="remarksInput">').val(remarks);
+                $('#calDetailModal .calDetail-remark').empty().append(remarksInput);
+             // 기존 코드에서 koreanStartDate 생성 후 추가로 변환하는 부분입니다.
+                // koreanStartDate, koreanEndDate를 YYYY-MM-DD 형식으로 변환
+                // Start Date 수정
+                var startDateInput = $('<input type="date" class="form-control mb-2" id="startDateInput">').val(koreanStartDateDate);
+				var startTimeSelect = $('<select class="timeSelect" name="startTime"></select>');
+				$('#calDetailModal .calDetail-start').empty().append(startDateInput).append(startTimeSelect);
+                // End Date 수정
+                var endDateInput = $('<input type="date" class="form-control mb-2" id="endDateInput">').val(koreanEndDateDate);
+				var endTimeSelect = $('<select class="timeSelect" name="endTime"></select>');
+				$('#calDetailModal .calDetail-end').empty().append(endDateInput).append(endTimeSelect);
+
+                // Content 수정
+                var contentInput = $('<textarea class="form-control mb-2" id="contentInput" rows="3"></textarea>').val(description);
+                $('#calDetailModal .calDetail-content').empty().append(contentInput);
+
+                // 저장 버튼 클릭 시 이벤트
+                $('#saveButton').click(function() {
+                    var updatedTitle = $('#titleInput').val();
+                    var updatedRemarks = $('#remarksInput').val();
+                    var updatedStartDate = $('#startDateInput').val();
+                    var updatedEndDate = $('#endDateInput').val();
+                    var updatedContent = $('#contentInput').val();
+
+                    // 여기서 각 값들을 사용하여 업데이트 로직을 처리할 수 있습니다.
+                    // $.ajax({}) 등을 사용하여 업데이트 로직을 구현합니다.
+
+                    // 업데이트 완료 후 모달 닫기
+                    
+                });
+                $('#cancelButton').click(function() {
+			        // 모달 닫기
+			        $('#calDetailModal').modal('hide');
+			    });
+            });
+            
+            // Delete 버튼 클릭 시 이벤트 처리
+            $('#deleteButton').click(function () {
+            	if(confirm("일정을 삭제하시겠습니까?")){
+            		$.ajax({
+                    	url:'delMyCal.do',
+                    	data:{id:id},
+                    	type:'post',
+                    	success:function(data){
+                    		location.href = location.href;
+                    	},
+                    	error:function(e){
+                    		console.log(e);
+                    	}
+                    });
+            	}else{
+            		
+            	}
+                
+            });
+        }
+        $('#calDetailModal').modal('show');
     	},
-     events: [ ]
+    	
+    	
+     events: [ ],
    });
 
    calendar.render();
@@ -458,7 +615,7 @@ var facilityList;
    function removePersonalEvents() {
 	    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
 	    events.forEach(function(event) {
-	        if (event.extendedProps.subCategory == '개인') {
+	        if (event.extendedProps.subCategory == '개인'&& event.extendedProps.employeeID == loginEmployeeID ) {
 	            event.remove(); // subCategory가 '개인'인 이벤트 제거
 	        }
 	    });
@@ -471,8 +628,102 @@ var facilityList;
 	        }
 	    });
 	}
-
 	
+
+	$('.interestCalendar').on('click', function() {
+	    console.log('click');
+	    var img = $(this).find('img'); // 버튼 내의 이미지 요소를 찾습니다.
+	    isDown = !isDown; // true 이면 false로 false면 true로
+	    if (isDown) {
+	        img.attr('src', carrotDownImgUrl); // 이미지 경로를 직접 지정합니다.
+	        console.log('true');
+	        $('.itCallenderList').empty();	
+	    } else {
+	        img.attr('src', carrotSideImgUrl); 
+	        // 이미지 경로를 직접 지정합니다.
+	        getAddCalenderCall();
+	        console.log('false');
+	       
+	    }
+	});
+	var color = ['#8B0000','#FA8072','#556B2F','#000001','#9932CC','#E6E6FA','#FF1493','#FFFACD','#2F4F4F','#FFF0F5','#FFFFE0','#DB7093','#4B0082','#E6E6FA','#7B68EE'];
+	function getAddCalenderCall(){
+		 $.ajax({
+	        	url:'getAddCalender.do',
+	        	data:{loginEmployeeID:loginEmployeeID},
+	        	type:'POST',
+	        	success:function(data){
+	        		console.log(data);
+
+	        		data.forEach(function (item, index) {
+	        			
+	        		    var label = $('<label>'); // 라벨 생성
+	        		    var div = $('<div class="colorDIV"></div>').css('background-color', color[index]);
+	        		    var input = $('<input>').attr({
+	        		        type: 'hidden',
+	        		        value: color[index]
+	        		    });
+	        		    var checkbox = $('<input>').attr({
+	        		        type: 'checkbox',
+	        		        value: item.addemployeeID,
+	        		        class: 'calendar-checkbox-' + index,
+	        		    });
+						
+	        		    
+	        		    label.append(checkbox).append(item.calendarName); // 라벨에 체크박스와 데이터 추가
+	        		    label.append(div).append(input);
+	        		    $('.itCallenderList').append(label).append('<br>'); // itCallenderList에 라벨 추가
+	        		});
+	        	
+	        	},
+	        	error:function(e){
+	        		console.log(e);
+	        	}
+	        	
+	        }); 
+	}
+	var eventAddList;	
+	var val;
+	$('.itCallenderList').on('change','input[type="checkbox"]',function(){
+		var backgroundColor = $(this).parent().find('input[type="hidden"]').val();
+	    console.log('Background Color:', backgroundColor);
+		console.log($(this).val());
+		console.log($(this).prop('checked'));
+		 val = $(this).val();
+		var CalChecked = $(this).prop('checked');
+		if(CalChecked){
+			$.ajax({
+				url:'getAddCalList.do',
+				data: {val:val,
+					CalChecked:CalChecked,
+					backgroundColor:backgroundColor},
+				type:'POST',
+				success:function(data){
+					console.log(data);
+					console.log(data.eventAddList);
+					eventAddList = data.eventAddList;
+					calendar.addEventSource(eventAddList);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			 removeAddCalEvents()
+		};
+		
+		console.log(val);
+	});
+	
+	
+	 function removeAddCalEvents() {
+		    var events = calendar.getEvents(); // 캘린더의 모든 이벤트 가져오기
+		    events.forEach(function(event) {
+		        if (event.extendedProps.subCategory == '개인' && event.extendedProps.employeeID == val) {
+		            event.remove(); // subCategory가 '개인'인 이벤트 제거
+		        }
+		    });
+		}
    
  }); 
 
@@ -578,31 +829,42 @@ $('#facilitySubmit').on('click',function(){
 
 
 
-function getEmployeeID(employeeID, nodeText) {
-    console.log(employeeID);
-    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
-        $.ajax({
-            url: 'addCalender.do',
-            type: 'POST',
-            data: { loginEmployeeID: loginEmployeeID,
-            	employeeID:employeeID,
-            	nodeText:nodeText},
-            success: function (data) {
-            	console.log(data);
-				location.href="/Cocean/schedule/schedule.go";
-            },
-            error: function (e) {
-                console.log(e);
-            }
-        });
-    } else {
-
-    }
+	function getEmployeeID(employeeID, nodeText) {
+	employeeID = employeeID;
+	    console.log(employeeID);
+	    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
+	        addCal(employeeID, nodeText); // 확인을 눌렀을 때 addCal() 함수 호출
+	    } else {
+	
+	    }
 }
 
-$('#start').val(new Date().toISOString().substring(0, 10).toString());
-$('#end').val(new Date().toISOString().substring(0, 10).toString());
+	function addCal(employeeID, nodeText) {
+	    $.ajax({
+	        url: 'addCalender.do',
+	        type: 'POST',
+	        data: {
+	            loginEmployeeID: loginEmployeeID,
+	            employeeID: employeeID,
+	            nodeText: nodeText
+	        },
+	        success: function (data) {
+	            console.log(data);
+	             location.href="/Cocean/schedule/schedule.go"; 
 
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	}
+
+$('#startCal').val(new Date().toISOString().substring(0, 10).toString());
+$('#endCal').val(new Date().toISOString().substring(0, 10).toString());
+$('#startFac').val(new Date().toISOString().substring(0, 10).toString());
+$('#endFac').val(new Date().toISOString().substring(0, 10).toString());
+$('#startDateInput').val(new Date().toISOString().substring(0, 10).toString());
+$('#endDateInput').val(new Date().toISOString().substring(0, 10).toString());
 var msg = "${msg}";
 if(msg!=""){
 	alert(msg);

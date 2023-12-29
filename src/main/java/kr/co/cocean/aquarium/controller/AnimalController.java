@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
+import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
 import kr.co.cocean.aquarium.dto.ClassficationDTO;
 import kr.co.cocean.aquarium.dto.InChargeChangeDTO;
 import kr.co.cocean.aquarium.dto.LogPlanDTO;
@@ -40,17 +42,18 @@ public class AnimalController {
 	/* 코션친구들 리스트 관련 */
 	
 	@GetMapping(value = "/animal/list.go")
-	public ModelAndView animalList() {
-		
-		ModelAndView mav = new ModelAndView("aquarium/animalList");
-		
-		// 코션친구들 리스트
-		ArrayList<AnimalDTO> list = service.animalList();
-		mav.addObject("list", list);
-		
+	public ModelAndView animalListGo() {
+		ModelAndView mav = new ModelAndView("aquarium/animalList");	
 		return mav;
 	}
 	
+	@PostMapping(value = "/animal/list.do")
+	public String animalListDO(@ModelAttribute("animalfilter") AnimalListFilterDTO param, Model model) {
+		return service.animalList(param, model);
+	}
+	
+	
+		
 	/* 코션친구들 작성 관련 */
 	
 	@GetMapping(value = "/animal/write.go")

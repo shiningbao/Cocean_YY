@@ -32,21 +32,27 @@
 		</table>
 	</div>
 	<div>
-		<c:forEach items="${log}" var="item">
+		<c:forEach items="${log}" var="item" varStatus="st">
 			<div style="border:1px solid black">
 				<table>
 					<tr>
-						<th>${item.departmentName} ${item.name}</th>
-						<th>${item.creationDate}</th>
-					</tr>
-					<tr>
-						<th colspan="2">
-							<p>상태: ${item.status}</p>
-							${item.content}
-							<button>수정</button>
-							<button>삭제</button>
+						<th id="${item.employeeID}">${item.departmentName} ${item.name}</th>
+						<th>
+							<div>${item.creationDate}</div>
+							<button onclick="logplanUpdateGo(this)">수정</button>
+							<button onclick="logplanDel(this)">삭제</button>
 						</th>
 					</tr>
+					<tbody>
+						<tr>
+							<th id="log_${st.index}">
+								${item.content}
+							</th>
+							<th>
+								상태: ${item.status}
+							</th>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 		</c:forEach>
