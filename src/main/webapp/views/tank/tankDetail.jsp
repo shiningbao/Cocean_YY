@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
 	height: 50px;
 	left: 350px;
 	position: absolute;
-	top: 110px;
+	top: 200px;
 }
 
 #hTitle p {
@@ -38,19 +39,64 @@
 	left: 22%;
 }
 
-#tank_table th{
+#tank_table th {
 	background-color: #86B0F3;
 }
-#tank_table td{
+
+#tank_table td {
 	background-color: #E9ECEF;
 }
+
 button {
 	width: 100px;
 }
-.btnGroup{
-	left: 83%;
+
+.btnGroup {
+	left: 80%;
 	top: 95%;
 	position: absolute;
+}
+
+.topBar {
+	width: 72%;
+	height: 60px;
+	left: 22%;
+	position: absolute;
+	background-color: #86B0F3;
+	display: flex;
+	
+	justify-content: space-evenly;
+}
+.topBar div{
+	
+	width: 25%;
+	height: 100%;
+	position: relative;
+	text-align: center;
+	font-size: 21px;
+	padding-top: 14px;
+	cursor: default;
+}
+
+.barItem:hover{
+	cursor: pointer;
+	background-color: #2F80ED;
+	padding-top: 13px;
+}
+.aniTable{
+	border: 1px solid #dedede;
+	border-collapse: collapse;
+	width: 100%;
+    text-align: center;
+    height: 100%;
+}
+
+.aniTable th,td{
+	border: 1px solid #dedede;
+	border-collapse: collapse;
+}
+#aniHead{
+	background-color: #E9ECEF;
 }
 
 </style>
@@ -59,9 +105,16 @@ button {
 	<c:import url="/side" />
 	<div id="hTitle">
 		<p>${map.tankName}</p>
-		 <a> 배치구역: ${map.area}</a>
+		 <a>${map.branchName} / 배치구역: ${map.area}</a></br>
+		 <a>${map.tankType} / 용량: ${map.capacity}</a></br>
+		 <a>${fn:substring(map.registrationDate,0,10)}</a>
 	</div>
-
+	<div class="topBar">
+		<div>하우스 정보</div>
+		<div class="barItem">하우스 기록</div>
+		<div class="barItem">관리 계획</div>
+		<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
+	</div>
 	<div id="chart">
 		<canvas id="myChart"></canvas>
 	</div>
@@ -106,18 +159,78 @@ button {
 	</div>
 	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
-	<button type="button" class="btn btn-primary" onclick="location.href='#'">수정</button>	
-	<button type="button" class="btn btn-primary" onclick="getChart('${map.tankID}')">테스트</button>	
+	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}&emName=${emName}'">수정</button>	
 	</div>
 
+    <div class="modal fade" id="animo" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- 모달창 제목 -->
+            <h5 class="modal-title">코션친구들</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <table class="aniTable">
+				<thead id="aniHead">
+				<tr>
+					<th scope="col">국명</th>
+					<th scope="col">애칭</th>
+					<th scope="col">개체수</th>
+					<th scope="col">상태</th>
+				</tr>
+			</thead>
+			<tbody id=aniList>
+				<c:forEach items="${tankAnimal}" var="item">
+					<tr>
+						<td scope="row">${item.commonName}</td>
+						<td>${item.nickname}</td>
+						<td>${item.individual}</td>
+						<td>${item.status}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 </body>
 <script>
 
+var tankID = ${map.tankID}
 var tdy = new Date().toISOString().substring(0, 10).toString();
+
+const ctx = $('#myChart');
+
+	$(document).ready(function(){
+		getChart(tankID,tdy);
+	});
+
+
 
 function getChart(tankID,tdy){
 	console.log(tdy);
 	console.log(tankID);
+	
+	let recordTime = [];
+	let recordMercury = [];
+	let recordWaterLevel = [];
+	let recordSalinity = [];
+	let recordPh = [];
+	let recordDo = [];
+	let recordNitrates = [];
+	let recordNitrites = [];
+	let recordAmmonia = [];
+	let recordPhosphates = [];
+	
+	
 	$.ajax({
 		url: 'getChart',
 		method: 'get',
@@ -125,93 +238,96 @@ function getChart(tankID,tdy){
 		dataType: 'JSON',
 		success: function(data){
 			console.log(data);
+			for (var i = 0; i < data.length; i++) {
+				recordTime.push(data[i].timeSet);
+				recordMercury.push(data[i].recordMercury);
+				recordWaterLevel.push(data[i].recordWaterLevel);
+				recordSalinity.push(data[i].recordSalinity);
+				recordPh.push(data[i].recordPh);
+				recordDo.push(data[i].recordDo);
+				recordNitrates.push(data[i].recordNitrates);
+				recordNitrites.push(data[i].recordNitrites);
+				recordAmmonia.push(data[i].recordAmmonia);
+				recordPhosphates.push(data[i].recordPhosphates);
+			}
+			new Chart(ctx,
+					{
+						type : 'line',
+						data : {
+							labels : recordTime,
+							datasets : [
+									{
+										label : '수온',
+										data : recordMercury,
+										borderWidth : 2
+									},
+									{
+										label : '수위',
+										data : recordWaterLevel,
+										borderWidth : 2
+									},
+									{
+										label : '염분',
+										data : recordSalinity,
+										borderWidth : 2
+									},
+									{
+										label : 'ph',
+										data : recordPh,
+										borderWidth : 2
+									},
+									{
+										label : 'DO',
+										data : recordDo,
+										borderWidth : 2
+									},
+									{
+										label : '질산염',
+										data : recordNitrates,
+										borderWidth : 2
+									},
+									{
+										label : '아질산염',
+										data : recordNitrites,
+										borderWidth : 2
+									},
+									{
+										label : '암모니아',
+										data : recordAmmonia,
+										borderWidth : 2
+									},
+									{
+										label : '인산염',
+										data : recordPhosphates,
+										borderWidth : 2
+									} ]
+						},
+						options : {
+							scales : {
+								y : {
+									beginAtZero : true
+								}
+							}
+						}
+					});
 		},
 		error: function(e){
 			console.log(e);
 		}
 	})
-	
 }
+//========================================================================================================//
 
 
 
-	const ctx = $('#myChart');
 
-	var wc = [ 1, 2, 3, 4, 5, 6 ];
 
-	new Chart(ctx,
-			{
-				type : 'line',
-				data : {
-					labels : [ '09', '11', '13', '15', '17', '19', '21', '23',
-							'01', '03', '05', '07' ],
-					datasets : [
-							{
-								label : '수온',
-								data : wc,
-								borderWidth : 2
-							},
-							{
-								label : '수위',
-								data : [ {
-									x : '09',
-									y : 20
-								}, {
-									x : '11',
-									y : 25
-								} ],
-								borderWidth : 2
-							},
-							{
-								label : '염분',
-								data : [ 5, 6, 6.5, 6, 6.5, 6.4, 5, 6, 6.5, 6,
-										6.5, 6.4 ],
-								borderWidth : 2
-							},
-							{
-								label : 'ph',
-								data : [ 17, 20, 18, 19, 20, 19, 17, 20, 18,
-										19, 20, 19 ],
-								borderWidth : 2
-							},
-							{
-								label : 'DO',
-								data : [ 17, 20, 18, 19, 20, 19, 17, 20, 18,
-										19, 20, 19 ],
-								borderWidth : 2
-							},
-							{
-								label : '질산염',
-								data : [ 13, 14, 14, 14.5, 13, 14, 13, 14, 14,
-										14.5, 13, 14 ],
-								borderWidth : 2
-							},
-							{
-								label : '아질산염',
-								data : [ 13, 10, 12, 13, 12, 11, 13, 10, 12,
-										13, 12, 11 ],
-								borderWidth : 2
-							},
-							{
-								label : '암모니아',
-								data : [ 13, 14, 14, 16, 13, 14, 13, 14, 14,
-										16, 13, 14 ],
-								borderWidth : 2
-							},
-							{
-								label : '인산염',
-								data : [ 15, 16, 14, 16, 13.5, 14.5, 15, 16,
-										14, 16, 13.5, 14.5 ],
-								borderWidth : 2
-							} ]
-				},
-				options : {
-					scales : {
-						y : {
-							beginAtZero : true
-						}
-					}
-				}
-			});
+
+
+
+
+
+
+
 </script>
 </html>
