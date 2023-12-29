@@ -1,5 +1,7 @@
 package kr.co.cocean.tank.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +64,8 @@ public class TankController {
 	public ModelAndView detail(@RequestParam int tankID, String emName) {
 		ModelAndView mav = new ModelAndView("tank/tankDetail");
 		HashMap<String, Object> map = service.tankDetail(tankID);
+		List<Map<String, Object>> tankAnimal = service.tankAnimal(tankID);
+		mav.addObject("tankAnimal",tankAnimal);			
 		mav.addObject("map",map);
 		mav.addObject("emName",emName);
 		return mav;
@@ -77,14 +81,35 @@ public class TankController {
 	
 	
 	@GetMapping("tank/tankSet.go")
-	public ModelAndView tankSetForm(@RequestParam int tankID) {
+	public ModelAndView tankSetForm(@RequestParam int tankID, String emName) {
 		ModelAndView mav = new ModelAndView("tank/tankSetForm");
 		HashMap<String, Object> map = service.tankDetail(tankID);
 		List<Map<String, Object>> branchList = service.getBranch();
 		mav.addObject("map",map);
 		mav.addObject("branchList",branchList);
+		mav.addObject("emName",emName);
 		logger.info("map"+map);
 		return mav;
 	}
 	
+	@PostMapping("tank/tankSet.do")
+	public String tankSetting(@RequestParam Map<String, Object> params) throws UnsupportedEncodingException {
+		String emName = URLEncoder.encode(params.get("emName").toString(),"UTF-8"); 
+		String tankID = params.get("tankID").toString();
+		logger.info("params "+params);
+		service.tankSet(params);
+		return "redirect:/tank/detail.go?tankID="+tankID+"&emName="+emName;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+

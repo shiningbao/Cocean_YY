@@ -35,8 +35,9 @@
 	</insert>
 	
 	<select id="tankDetail" resultType="map">
-		SELECT mit.*, tm.* FROM managementItemsTable mit, tankManagement tm 
-			WHERE mit.tankID = #{param1} AND tm.tankID = #{param1}
+		SELECT mit.*, tm.tankName, tm.registrationDate ,tm.capacity, tm.tankStatus, b.branchName ,tc.tankType  FROM 
+		managementItemsTable mit, tankManagement tm, branch b ,tankCategory tc  WHERE mit.tankID = #{param1} AND tm.tankID = #{param1}
+		AND tc.categoryID = tm.categoryID  AND b.branchID = tm.branchID 
 	</select>
 	
 	<select id="getChart" resultType="Record" parameterType="String">
@@ -45,6 +46,32 @@
 		WHERE tankID = #{param1} AND recordDate = #{param2} GROUP BY recordTime
 	</select>
 	
+	<update id="tankSet" parameterType="map">
+		UPDATE tankManagement tm, managementItemsTable mti SET 
+			tm.tankName = #{tankName}
+			,tm.categoryID = #{categoryID}
+			,tm.tankStatus = #{status}
+			,tm.capacity = #{capacity}
+			,mti.area = #{area}
+			,mti.flooring = #{flooringNo}
+			,mti.`filter` = #{filterType}
+			,mti.mercury = #{mercury}
+			,mti.waterLevel = #{waterLevel}
+			,mti.salinity = #{salinity}
+			,mti.pH = #{pH}
+			,mti.dO = #{dO}
+			,mti.nitrates = #{nitrates}
+			,mti.nitrites = #{nitrites}
+			,mti.ammonia = #{ammonia}
+			,mti.phosphates = #{phosphates}
+			WHERE tm.tankID = #{tankID} AND mti.tankID = #{tankID}
+	</update>
+	
+	<select id="tankAnimal" resultType="map">
+		SELECT am.nickname , am.individual , am.status, bct.commonName  
+			FROM animalManagement am, biologicalClassificationTable bct  
+				WHERE am.tankID = #{param1} AND am.speciesID = bct.speciesID 
+	</select>
 	
 	
 </mapper>

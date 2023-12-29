@@ -14,11 +14,11 @@
     	    width: 100px;
     }
     #hTitle {
-	width: 150px;
+	width: 350px;
 	height: 50px;
-	left: 400px; 
+	left: 340px; 
 	position: absolute;
-	top: 120px;
+	top: 110px;
 }
 
 #hTitle a {
@@ -32,7 +32,7 @@
     }
     .formTable{
     	position: absolute;
-    	top: 170px;
+    	top: 190px;
     	left: 300px;
     	width: 80%;
     	height: 60%;
@@ -63,18 +63,22 @@
     	border-radius: 5px;
     	border: 3px solid #86B0F3;
     }
+    
 
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
 		<div id="hTitle">
-		<a>${map.tankName}</a>
+		<h3>${map.tankName}</h3>
+		<p>	${map.branchName} / 배치구역: ${map.area} / 담당자: ${emName}</p>
 	</div>
 	<form action="tankSet.do" method="post" id="tankForm" onsubmit="return submitForm(this);">
 	<table class="formTable">
 	
 	<tr>
+		<input type="text" name="tankID" value="${map.tankID}" style="display:none;"/>
+		<input type="text" name="emName" value="${emName}" style="display:none;"/>
 		<th class="th_one">하우스 이름</th>
 		<td>
 			<input type="text" name="tankName" value="${map.tankName}" required/>
@@ -88,14 +92,12 @@
 				<option value="4" <c:if test="${map.categoryID == 4}">selected</c:if>>육상</option>
 			</select>
 		</td>
-		<th>지점</th>
+		<th>상태</th>
 		<td>
-			<select id="branch" name="branchID" required>
-			<option id="myBranch" value="${map.branchID}" selected disabled>지점명</option>
-			<c:forEach items="${branchList}" var="item">
-				<option value="${item.branchID}">${item.branchName}</option>
-			</c:forEach>
-
+			<select id="status" name="status" required>
+			<option id="myBranch" value="정상" <c:if test="${map.tankStatus eq '정상'}">selected</c:if>>정상</option>
+			<option id="myBranch" value="이상" <c:if test="${map.tankStatus eq '이상'}">selected</c:if>>이상</option>
+			<option id="myBranch" value="폐쇄" <c:if test="${map.tankStatus eq '폐쇄'}">selected</c:if>>폐쇄</option>
 			</select>
 		</td>
 		<th>하우스 용량</th>
@@ -178,31 +180,27 @@
 
 		</table>
 	<div class="btnGroup">
-	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">취소</button>
-	<button type="submit" class="btn btn-primary" id="confirmStart">등록</button>
+	<button type="button" class="btn btn-secondary" onclick="location.href='detail.go?tankID=${map.tankID}&emName=${emName}'">취소</button>
+	<button type="submit" class="btn btn-primary" id="confirmStart">저장</button>
 	</div>
 	</form>
 </body>
 <script>
 
-var branchNo = ${map.branchID};
-if(branchNo == 1){
-	$('#myBranch').html('가산점');
-}else{
-	$('#myBranch').html('제주점');
-}
 
+
+var name = ${map.tankName};
 
 function submitForm(form){
 	swal({
-		title: "새로운 하우스를 등록하시겠습니까?",
-		text: "",
-		icon: "info",
-		buttons: ["취소","등록"],
+		title: name+"하우스를 수정하시겠습니까?",
+		text: "수정된 내용은 하우스에 즉시 반영됩니다.",
+		icon: "warning",
+		buttons: ["취소","수정"],
 	})
 	.then((isOkey) => {
 		if (isOkey) {
-			swal('등록이 완료되었습니다.','','success')
+			swal('수정이 완료되었습니다.','','success')
 			.then((isOkey) => {
 				if(isOkey){
 			form.submit();					

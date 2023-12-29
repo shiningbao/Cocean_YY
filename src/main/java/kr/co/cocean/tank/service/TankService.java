@@ -65,4 +65,15 @@ public class TankService {
 		return dao.getChart(tankID,recordDate);
 	}
 
+
+	public void tankSet(Map<String, Object> params) {
+		dao.tankSet(params);
+		
+	}
+
+
+	public List<Map<String, Object>> tankAnimal(int tankID) {
+		return dao.tankAnimal(tankID);
+	}
+
 }

@@ -27,4 +27,8 @@ public interface TankDAO {
 
 	List<TankRecordDTO> getChart(String tankID, String recordDate);
 
+	int tankSet(Map<String, Object> params);
+
+	List<Map<String, Object>> tankAnimal(int tankID);
+
 }

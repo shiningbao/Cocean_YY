@@ -21,6 +21,7 @@
 <!-- 부트스트랩 CSS/favicon -->
 <link rel="stylesheet"	href="<c:url value='/resource/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
