@@ -25,7 +25,7 @@
 		useGeneratedKeys="true"
 		keyColumn="idx"
 		keyProperty="idx">
-    	INSERT INTO draft (employeeID,publicStatus,tempSave,draftStatus,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},'대기',#{documentNo})
+    	INSERT INTO draft (employeeID,publicStatus,tempSave,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},#{documentNo})
 	</insert>
 	
 	<insert id="writeWorkDraft">
@@ -53,5 +53,17 @@
 	
 	<insert id="saveApprovalLine">
     	INSERT INTO draft (employeeID,documentNo) VALUES (#{employeeID},#{employeeID})
+	</insert>
+	
+	<insert id="approvalWrite" parameterType="map">
+	    INSERT INTO approval (idx, employeeID, category, approvalOrder)
+	    VALUES
+	    <foreach collection="lastLineInfoList" item="line" separator=",">
+	        (#{idx}, #{line.approvalEmp}, #{line.category},
+	        <choose>
+	            <when test="line.order != null">#{line.order}</when>
+	            <otherwise>'0'</otherwise>
+	        </choose>)
+	    </foreach>
 	</insert>
 </mapper>

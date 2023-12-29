@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.cocean.approval.dto.ApprovalDTO;
+import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.service.ApprovalService;
 import kr.co.cocean.mypage.dto.LoginDTO;
 
@@ -117,24 +120,51 @@ public class ApprovalController {
 //		return mav;
 //	}
 	
-	@PostMapping(value = "/approval/writeDraft.do", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/approval/writeDraft.do", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> writeDraft(@RequestParam("files") MultipartFile[] files, HttpSession session,
-	        RedirectAttributes rAttr, @RequestParam HashMap<String, String> param, @RequestParam Map<String, Object> jsonData) {
-		Map<String, Object> result = new HashMap<>();
-		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		if (dto != null) {
-			int employeeID = dto.getEmployeeID();
-			param.put("employeeID", String.valueOf(employeeID));
-			logger.info("params : {}", param);
-			logger.info("jsonData:"+jsonData);
-			logger.info("파일:" + files[0].getSize());
-			// service.write(files, param);
-		} else {
-			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
-		}
+	        RedirectAttributes rAttr, @RequestParam Map<String, String> param) {
+	    Map<String, Object> result = new HashMap<>();
+	    LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+	    if (dto != null) {
+	        int employeeID = dto.getEmployeeID();
+	        param.put("writerID", String.valueOf(employeeID));
 
-		return result;
+	        logger.info("params: {}", param);
+
+	        
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            String lastLineJson = param.get("lastLine");
+	            List<Map<String, String>> lastLineList = objectMapper.readValue(lastLineJson, new TypeReference<List<Map<String, String>>>() {});
+	            
+	            List<LineDTO> lastLineInfoList = new ArrayList<>();
+
+	            for (int i = 0; i < lastLineList.size(); i++) {
+	                Map<String, String> item = lastLineList.get(i);
+	                String approvalEmp = item.get("employeeID");
+	                String order = item.get("order");
+	                String category = item.get("category");
+
+	                LineDTO lastLineInfo = new LineDTO();
+	                lastLineInfo.setApprovalEmp(approvalEmp);
+	                lastLineInfo.setOrder(order);
+	                lastLineInfo.setCategory(category);
+
+	                lastLineInfoList.add(lastLineInfo);  
+	            }
+
+	            service.write(files, param, lastLineInfoList);
+
+	        logger.info("파일:" + files[0].getSize());
+	        	} catch (Exception e) {
+	        		e.printStackTrace();
+				} 
+	    		}else {
+			        rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+			    }
+
+	    return result;
 	}
 
 	/*

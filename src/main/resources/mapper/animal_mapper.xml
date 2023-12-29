@@ -38,8 +38,8 @@
 				OR commonName LIKE CONCAT('%',#{keyword},'%')				
 	</select>
 	
-	<select id="tankList" parameterType="int" resultType="map">
-		SELECT tankName, tankID FROM tankManagement WHERE branchID = #{param1}
+	<select id="tankList" parameterType="int" resultType="animal">
+		SELECT tankID, tankName FROM tankManagement WHERE branchID = #{param1}
 	</select>
 	
 	<insert id="animalWrte" parameterType="animal" useGeneratedKeys="true" keyColumn="animalID" keyProperty="animalID">
@@ -119,6 +119,10 @@
 			(#{item},'animal',#{animalID})
 		</foreach>
 	</insert>
+	
+	<delete id="logplanDel">
+		DELETE FROM logPlanTable WHERE coceanCategory = 'animal' AND logID = #{param1}
+	</delete>
 	
 	
 </mapper>

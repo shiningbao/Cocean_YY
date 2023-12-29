@@ -9,27 +9,76 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
-		 table, th, td{
-        border: 1px solid black;
-        border-collapse: collapse;
-        padding: 5px 10px;
-    }
+
     button {
     	    width: 100px;
     }
+    #hTitle {
+	width: 120px;
+	height: 50px;
+	left: 400px; 
+	position: absolute;
+	top: 120px;
+}
+
+#hTitle a {
+	font-size: 22px;
+}
+
+    .btnGroup{
+    position: absolute;
+    top: 90%;
+    left: 85%;
+    }
+    .formTable{
+    	position: absolute;
+    	top: 170px;
+    	left: 300px;
+    	width: 80%;
+    	height: 60%;
+    	table-layout:fixed;
+    	text-align: center;
+    	border: 2px solid #dedede;
+    	display : table;
+		margin-left : auto;
+		margin-right : auto;
+		border-radius: 5%;
+    }
+    th{
+    	width: 130px;
+    	height: 30px;
+    	padding-right: 20px;
+    	font-size: 17px;
+    }
+    td{
+    	width: 170px;
+    	height: 30px;	
+    	padding-right: 10px;
+    }
+    input, select{
+    	position: relative;
+    	width: 100%;
+    	padding: 1%;
+    	height: 35%;
+    	border-radius: 5px;
+    	border: 3px solid #86B0F3;
+    }
+
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
+		<div id="hTitle">
+		<a>코션하우스</a>
+	</div>
 	<form action="tankWrite.do" method="post" id="tankForm" onsubmit="return submitForm(this);">
-	<table>
+	<table class="formTable">
+	
 	<tr>
-		<th>하우스 이름</th>
+		<th class="th_one">하우스 이름</th>
 		<td>
 			<input type="text" name="tankName" required/>
 		</td>
-	</tr>
-	<tr>
 		<th>하우스 분류</th>
 		<td>
 			<select id="category" name="categoryID" required>
@@ -40,8 +89,6 @@
 				<option value="4">육상</option>
 			</select>
 		</td>
-	</tr>
-	<tr>
 		<th>지점</th>
 		<td>
 			<select id="branch" name="branchID" required>
@@ -52,20 +99,16 @@
 
 			</select>
 		</td>
-	</tr>
-		<tr>
 		<th>하우스 용량</th>
 		<td>
 			<input type="text" name="capacity" required maxlength="10" placeholder="리터 단위 입력"/>
 		</td>
-	</tr>
+		
 		<tr>
 		<th>배치구역</th>
 		<td>
 			<input type="text" name="area" required maxlength="30" placeholder=""/>
 		</td>
-	</tr>
-			<tr>
 				<th>바닥재</th>
 				<td>
 					<select id="flooring" name="flooringNo" required>
@@ -77,8 +120,6 @@
 						<option value="자갈">자갈</option>
 				</select>
 				</td>
-			</tr>
-			<tr>
 				<th>여과기</th>
 				<td>
 					<select id="filter" name="filterType" required>
@@ -89,32 +130,27 @@
 						<option value="해당 없음">해당 없음</option>
 				</select>
 				</td>
-			</tr>
-			<tr>
 				<th>수온</th>
 				<td>
 					<input type="text" required name="mercury" maxlength="7" placeholder="기준치 입력"/>
 				</td>
 			</tr>
+			
 			<tr>
 				<th>수위</th>
 				<td>
 					<input type="text" required name="waterLevel" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
+
 				<th>염분</th>
 				<td>
 					<input type="text" required name="salinity" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
+
 				<th>ph</th>
 				<td>
 					<input type="text" required name="pH" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
 				<th>DO</th>
 				<td>
 					<input type="text" required name="dO" maxlength="7" placeholder="기준치 입력"/>
@@ -125,44 +161,42 @@
 				<td>
 					<input type="text" required name="nitrates" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
+
 				<th>아질산염</th>
 				<td>
 					<input type="text" required name="nitrites" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
+
 				<th>암모니아</th>
 				<td>
 					<input type="text" required name="ammonia" maxlength="7" placeholder="기준치 입력"/>
 				</td>
-			</tr>
-			<tr>
+
 				<th>인산염</th>
 				<td>
 					<input type="text" required name="phosphates" maxlength="7" placeholder="기준치 입력"/>
 				</td>
 			</tr>
 
-
 		</table>
+	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">취소</button>
-	<button type="submit" class="btn btn-primary" id="confirmStart">등록</button>
+	<button type="submit" class="btn btn-primary" id="confirmStart">저장</button>
+	</div>
 	</form>
 </body>
 <script>
 
 function submitForm(form){
 	swal({
-		title: "새로운 하우스를 등록하시겠습니까?",
+		title: "하우스 정보를 수정하시겠습니까?",
 		text: "",
 		icon: "info",
-		buttons: ["취소","등록"],
+		buttons: ["취소","수정"],
 	})
 	.then((isOkey) => {
 		if (isOkey) {
-			swal('등록이 완료되었습니다.','','success')
+			swal('수정이 완료되었습니다.','','success')
 			.then((isOkey) => {
 				if(isOkey){
 			form.submit();					

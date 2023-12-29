@@ -11,6 +11,10 @@
 <!-- 담당자 지정 jstree -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
+<script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
+<script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
+
 <style>
 	.animalContent{
 		position: absolute;
@@ -112,7 +116,30 @@ function monthchange(){
 	});
 }
 
+function logplanStart(){
+	$('#summernote').summernote({
+		height: 200, width: 700,
+		maxHeight: 200,
+		minHeight: 200,
+		focus: true,
+		toolbar:['picture']
+	});
+}
+
+
 // 일지,계획 작성
+
+function logplanWrite(){
+	var status = $('#status').val();
+	var content = $('#summernote').summernote('code');
+	if(con.length > (2*1024*1024)){
+		alert('컨텐츠의 크기가 큽니다. 이미지 갯수나 크기를 줄여주세요');
+	}else{
+		logplanWriteDo(content,status);
+	}
+
+}
+
 function logplanWriteDo(content,status){
 	//var employeeID = '${userInfo.employeeID}';
 	var data = {};
@@ -137,45 +164,92 @@ function logplanWriteDo(content,status){
 	});
 }
 
-// 일지,계획 수정
-var aassdd;
-function logplanUpdateGo(e){
-	$tr = $(e).closest('th');
-	var employeeID = $tr.prev().attr('id');
-	var employeeInfo = $tr.prev().text();
-	$updateTarget = $(e).closest('table');
-	var $code = $updateTarget.find('th').eq(2);
-	var id = $code.attr('id');
-	var code = $code.html();
-	aassdd = code;
-	var con = '<tr><th>'+employeeInfo+'<button onclick="logplanUpdateDo(this)">수정 완료</button>';
-	con += '<button onclick="logplanCancle(this)">취소</button></th></tr>';
+
+//일지,계획 수정
+
+function logplanUpdateGo(e,id){
+	
+	// 수정, 삭제 버튼 디스플레이 논 해야 함
+	
+	var con = '<tr><th><button onclick="logplanUpdateDo(this)">수정 완료</button>';
+	con += '<button onclick="logplanCancle(\''+id+'\')">취소</button>';
+	con += '<p>※ 이미 작성된 내용과 상태를 수정 불가능하지만 추가 가능</p></th></tr>';
 	con += '<tr><th><div id=\"'+id+'\"></div></th></tr>';
-	$updateTarget.html(con);
-	$summ = $('#'+id);
-	$('#'+id).summernote({
+	$('#log_'+id).html(con);
+	var $summer = $('#'+id);
+	$summer.summernote({
 		height: 180, width: 700,
 		minHeight: 150,
 		maxHeight:500,
 		focus: true,
 		toolbar:['picture']
 	});
-	$('#'+id).summernote('code', code);
 }
 
+/* 일지 수정 시 기존 내용 수정 가능한 경우
+
+	function logplanUpdateGo(e){
+		$tr = $(e).closest('th');
+		var employeeID = $tr.prev().attr('id');
+		var employeeInfo = $tr.prev().text();
+		$updateTarget = $(e).closest('table');
+		var $code = $updateTarget.find('th').eq(2);
+		var id = $code.attr('id');
+		console.log(id);
+		var code = $code.html();
+		aassdd = code;
+		var con = '<tr><th>'+employeeInfo+'<button onclick="logplanUpdateDo(this)">수정 완료</button>';
+		con += '<button onclick="logplanCancle(\''+id+'\')">취소</button></th></tr>';
+		con += '<tr><th><div id=\"'+id+'\"></div></th></tr>';
+		$updateTarget.html(con);
+		var $summer = $('#'+id);
+		console.log($summer);
+		$summer.summernote({
+			height: 180, width: 700,
+			minHeight: 150,
+			maxHeight:500,
+			focus: true,
+			toolbar:['picture']
+		});
+		$summer.summernote('code', code);
+	}
+*/
 
 function logoplanUpdateDo(){
-	
-	
-	
+	// 수정 완료 눌렀을 때
+	// 아작스 요청 해야 함
 	
 }
 
+function logplanCancle(id){
+	console.log(id);
+	
+	// 수정, 삭제 버튼 디스플레이 블럭 해야 함
+
+	$('#'+id).summernote('destroy');
+	$('#log_'+id).html('');
+}
 
 
-
-
-
+// 삭제
+function logplanDel(id){
+	console.log(id);
+	$.ajax({
+		type:'post',
+		url:'logplanDel',
+		data:{'logID':id},
+		dataType:'JSON',
+		success:function(data){
+			
+			alert(data.msg);
+			getContents(con);
+		},
+	    error: function(xhr, status, error) {
+	        console.log(xhr.responseText); // 에러 응답을 콘솔에 출력
+	        // 추가적인 에러 처리 로직
+	    }
+	});
+}
 
 
 
