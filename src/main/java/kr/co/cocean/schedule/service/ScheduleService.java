@@ -46,8 +46,8 @@ public class ScheduleService {
 	public List<HashMap<String, Object>> addInterestCallender(String loginEmployeeID) {
 		return dao.addInterestCallender(loginEmployeeID);
 	}
-	public int addCalender(String loginEmployeeID, String nodeText, String employeeID) {
-		return dao.addCalender(loginEmployeeID,nodeText,employeeID);
+	public int addCalender(String loginEmployeeID, String nodeName, String employeeID) {
+		return dao.addCalender(loginEmployeeID,nodeName,employeeID);
 	}
 	/*
 	 * public List<String> showInterestCalendar(String loginEmployeeID) { return
@@ -66,6 +66,14 @@ public class ScheduleService {
 	}
 	public int delMyCal(String id) {
 		return dao.delMyCal(id);
+	}
+	public void interestDelCalendar(String calendarID) {
+		
+		dao.interestDelCalendar(calendarID);
+	}
+
+	public void updateCal(HashMap<String, Object> dataToSend) {
+		dao.updateCal(dataToSend);
 	}
 	
 

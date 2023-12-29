@@ -7,18 +7,42 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+	crossorigin="anonymous"></script>
+	
+<!-- 부트스트랩 자바스크립트 -->
+<script src="/resource/js/bootstrap.min.js"></script>
+<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
+
+<!-- 부트스트랩 CSS/favicon -->
+<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resource/css/modal.css">
 
 <style>
-	 table, th, td{
-        border: 1px solid black;
-        border-collapse: collapse;
-        padding: 5px 10px;
-    }
+
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
 <form action="join.do" method="post">
+
+				<div class="wrap_info_content">
+                    <div class="wrap_header">
+                        <div class="wrap_photo">
+                            <a class="photo">
+                                <img src="/go/resources/images/photo_profile_large.jpg" id="thumbnail_image">
+                            </a>
+                            <span class="btn_circle">
+                    <span class="wrap_btn wrap_file_upload"><span class="fileinput-button"><span class="ic_adm ic_edit"></span><input type="file" name="file" title="수정" style="height:inherit;" multiple=""></span></span>
+                </span>
+                        </div>
+                        <div class="wrap_info">
+                            <span class="desc">※ 사진은 자동으로 150x150 사이즈로 적용됩니다.</span>
+                        </div>
+                    </div>
+                </div>
+
 	<table>
 		<tr>
 			<th>사번</th>
@@ -131,6 +155,8 @@
 				
 	</table>
 </form>
+
+
 </body>
 <script>
 var departmentSelect = $('#departmentSelect');

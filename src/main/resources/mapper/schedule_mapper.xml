@@ -19,7 +19,7 @@
 	</select>
 	
 	<select id="addInterestCallender">
-		SELECT calendarName ,addemployeeID from calendar where employeeID = #{loginEmployeeID} ;
+		SELECT calendarID,calendarName ,addemployeeID from calendar where employeeID = #{loginEmployeeID} ;
 	</select>
 	
 	<select id="getFacilityEvents">
@@ -42,7 +42,8 @@
 	</update>
 	
 	<insert id="addCalender" parameterType="String">
-	INSERT INTO calendar(employeeID,calendarName,addemployeeID) VALUES (#{loginEmployeeID}, CONCAT(#{nodeText}, '님의 캘린더'),#{employeeID});
+		INSERT INTO calendar(employeeID, calendarName, addemployeeID)
+		VALUES (#{loginEmployeeID}, CONCAT('일정(', #{nodeName}, ')'), #{employeeID});
 	</insert>
 	
 	<select id="getAddCalList">
@@ -56,6 +57,20 @@
 	<delete id="delMyCal">
 		DELETE  from schedule where scheduleID = #{id}
 	</delete>
+	
+	<delete id="interestDelCalendar">
+		DELETE from calendar WHERE calendarID =#{calendarID};
+	</delete>
+	
+	<update id="updateCal">
+		UPDATE schedule 
+		SET title = #{title}, 
+		    start = #{start}, 
+		    end = #{end},
+		    description =#{content},
+		    remarks =#{remarks}
+		WHERE scheduleID =#{id};
+	</update>
 
 	<!-- <select id="showInterestCalendar">
 		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
