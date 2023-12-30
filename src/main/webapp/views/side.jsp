@@ -12,7 +12,7 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
 <!-- 부트스트랩 자바스크립트 -->
 <script src="<c:url value='/resource/js/bootstrap.min.js'/>"></script>
@@ -21,6 +21,7 @@
 <!-- 부트스트랩 CSS/favicon -->
 <link rel="stylesheet"	href="<c:url value='/resource/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -82,7 +83,7 @@
 					</a>
 					<div class="collapse" id="group_bar">
 						<a href='<c:url value="/personnel/getChart.go"/>' class="list-group-item" data-parent="#sidebar">조직 관리</a>
-						<a href='<c:url value="/personnel/join.go"/>' class="list-group-item" data-parent="#sidebar">사원 관리</a>
+						<a href='<c:url value="/personnel/personnelList.go"/>' class="list-group-item" data-parent="#sidebar">사원 관리</a>
 						<a href="#" class="list-group-item" data-parent="#sidebar">연차 관리</a>
 					</div>
 					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">

@@ -1,5 +1,7 @@
 package kr.co.cocean.tank.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,6 +64,8 @@ public class TankController {
 	public ModelAndView detail(@RequestParam int tankID, String emName) {
 		ModelAndView mav = new ModelAndView("tank/tankDetail");
 		HashMap<String, Object> map = service.tankDetail(tankID);
+		List<Map<String, Object>> tankAnimal = service.tankAnimal(tankID);
+		mav.addObject("tankAnimal",tankAnimal);			
 		mav.addObject("map",map);
 		mav.addObject("emName",emName);
 		return mav;
@@ -68,10 +73,43 @@ public class TankController {
 	
 	@GetMapping("tank/getChart")
 	@ResponseBody
-	public List<TankRecordDTO> getChart(@RequestParam String tankID, String tdy){
-		List<TankRecordDTO> list = service.getChart(tankID,tdy);
+	public List<TankRecordDTO> getChart(@RequestParam String tankID, String recordDate, Model model){
+		List<TankRecordDTO> list = service.getChart(tankID,recordDate);
+		model.addAttribute("list",list);
 		return list;
 	}
 	
 	
+	@GetMapping("tank/tankSet.go")
+	public ModelAndView tankSetForm(@RequestParam int tankID, String emName) {
+		ModelAndView mav = new ModelAndView("tank/tankSetForm");
+		HashMap<String, Object> map = service.tankDetail(tankID);
+		List<Map<String, Object>> branchList = service.getBranch();
+		mav.addObject("map",map);
+		mav.addObject("branchList",branchList);
+		mav.addObject("emName",emName);
+		logger.info("map"+map);
+		return mav;
+	}
+	
+	@PostMapping("tank/tankSet.do")
+	public String tankSetting(@RequestParam Map<String, Object> params) throws UnsupportedEncodingException {
+		String emName = URLEncoder.encode(params.get("emName").toString(),"UTF-8"); 
+		String tankID = params.get("tankID").toString();
+		logger.info("params "+params);
+		service.tankSet(params);
+		return "redirect:/tank/detail.go?tankID="+tankID+"&emName="+emName;
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+

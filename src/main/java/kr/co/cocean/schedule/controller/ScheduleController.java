@@ -1,5 +1,6 @@
 package kr.co.cocean.schedule.controller;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -120,10 +122,12 @@ public class ScheduleController {
 	@ResponseBody
 	public int addCallender(@RequestParam String loginEmployeeID , @RequestParam String nodeText, @RequestParam String employeeID) {
 		
+		int firstIndex =nodeText.indexOf(' ');
 		
+		String nodeName = nodeText.substring(0,firstIndex);
 
 		
-		return service.addCalender(loginEmployeeID,nodeText,employeeID); 
+		return service.addCalender(loginEmployeeID,nodeName,employeeID); 
 
 	}
 	
@@ -163,6 +167,33 @@ public class ScheduleController {
 		
 		
 		return new ModelAndView("redirect:/schedule/schedule.go");
+	}
+	@PostMapping(value="/schedule/interestDelCalendar.do")
+	@ResponseBody
+	public String interestDelCalendar(@RequestParam String calendarID) {
+		
+		service.interestDelCalendar(calendarID);
+		return "success";
+	}
+	
+	@PostMapping(value="/schedule/updateCal.do")
+	@ResponseBody
+	public String updateCal(@RequestParam HashMap<String, Object> dataToSend) {
+		
+		String startDateStr = (String) dataToSend.get("startDate");
+		String startTimeStr = (String) dataToSend.get("startTime");
+		String endDateStr = (String) dataToSend.get("endDate");
+		String endTimeStr = (String) dataToSend.get("endTime");
+
+		
+		dataToSend.put("start", startDateStr +" "+startTimeStr);
+		dataToSend.put("end", endDateStr+" "+endTimeStr);
+		
+		logger.info("data =="+dataToSend);
+		service.updateCal(dataToSend);
+		
+		
+		return "success";
 	}
 	
 	

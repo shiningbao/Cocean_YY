@@ -52,7 +52,7 @@ public class AnimalService {
 		return dao.classficationSearch(keyword);
 	}
 
-	public ArrayList<HashMap<String, String>> tankList(int branchID) {
+	public ArrayList<AnimalDTO> tankList(int branchID) {
 		return dao.tankList(branchID);
 	}
 	
@@ -155,47 +155,7 @@ public class AnimalService {
 		
 		return result;
 	}
-/*
-	public HashMap<String, Object> inchargeChange(Map<String, Object> param) {
-		
-		int animalID = (int) param.get("animalID");
 
-		int[] inchargeList_before = (int[]) param.get("inchargeList_before");
-		int[] inchargeList_after = (int[]) param.get("inchargeList_after");
-			
-		ArrayList<Integer> before = new ArrayList<Integer>();
-		ArrayList<Integer> after = new ArrayList<Integer>();
-		
-		ArrayList<Integer> delList = new ArrayList<Integer>();
-		ArrayList<Integer> insertList = new ArrayList<Integer>();
-		
-		for (int i : inchargeList_before) {
-			before.add(i);
-		}
-		
-		for (int i : inchargeList_after) {
-			after.add(i);
-		}
-		
-		for (Integer integer : before) {
-			if(!after.contains(integer)) {
-				delList.add(integer);
-			}
-		}
-		
-		for (Integer integer : after) {
-			if(!before.contains(integer)) {
-				insertList.add(integer);
-			}
-		}
-		
-		dao.inchargeDel(animalID,delList);
-		dao.inchargeInsert(animalID,insertList);
-		
-		
-		return null;
-	}
-*/
 	public HashMap<String, Object> inchargeChange(InChargeChangeDTO dto) {
 		
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -234,6 +194,28 @@ public class AnimalService {
 		result.put("msg", "담당자를 변경하였습니다.");
 		
 		return result;
+	}
+
+	public HashMap<String, Object> logplanDel(int logID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		int cnt = dao.logplanDel(logID);
+		logger.info("cnt : {}",cnt);
+		String msg = "asf";
+		if(cnt == 1) {
+			msg = "을 삭제했습니다.";
+		}
+		result.put("msg", msg);
+		return result;
+	}
+
+	public ModelAndView animalUpdateDo(int animalID) {
+		ModelAndView mav = new ModelAndView("/aquarium/animalUpdate");
+		
+		AnimalDTO content = dao.animalDetail(animalID);
+		
+		mav.addObject("content", content);
+		mav.addObject("tankList", dao.tankList(content.getBranchID()));
+		return mav;
 	}
 
 

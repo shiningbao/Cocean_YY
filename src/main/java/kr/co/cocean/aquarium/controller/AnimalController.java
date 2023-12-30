@@ -64,8 +64,7 @@ public class AnimalController {
 		
 		ModelAndView mav = new ModelAndView("/aquarium/animalWrite");
 		
-		ArrayList<HashMap<String, String>> tankList = service.tankList(branchID);
-		mav.addObject("tankList", tankList);
+		mav.addObject("tankList", service.tankList(branchID));
 		return mav;
 	}
 	
@@ -74,6 +73,11 @@ public class AnimalController {
 		logger.info("files : {}",files);
 		logger.info("param : {}",param);
 		return service.animalWrite(files,param, rAttr);
+	}
+	
+	@GetMapping(value ="/animal/classifi")
+	public String getClassifi() {
+		return "aquarium/classificationModal";
 	}
 	
 	// 작성 중 분류군 값 가져오기
@@ -86,6 +90,15 @@ public class AnimalController {
 		result.put("list", list);
 		return result;
 	}
+	
+	/* 코션친구들 수정 */
+	@GetMapping(value = "/animal/update.go")
+	public ModelAndView animalUpdateDo(@RequestParam int animalID) {
+		return service.animalUpdateDo(animalID);
+	}
+	
+	
+	
 	
 	/* 코션친구들 상세보기 */
 	@GetMapping(value = "/animal/detail.go")
@@ -127,11 +140,6 @@ public class AnimalController {
 		result.put("con", param.getManageCategory());
 		return result;
 	}
-
-	@GetMapping(value ="/animal/classifi")
-	public String getClassifi() {
-		return "aquarium/classification";
-	}
 	
 	@PostMapping(value = "/animal/employeeInfo")
 	@ResponseBody
@@ -153,7 +161,11 @@ public class AnimalController {
 		return "personnel/organization";
 	}
 	
-	
+	@PostMapping(value = "/animal/logplanDel")
+	@ResponseBody
+	public HashMap<String, Object> logplanDel(@RequestParam int logID) {
+		return service.logplanDel(logID);
+	}
 	
 	
 }

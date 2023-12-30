@@ -27,13 +27,17 @@ public interface ScheduleDAO {
 
 	List<HashMap<String, Object>> addInterestCallender(String loginEmployeeID);
 
-	int addCalender(String loginEmployeeID, String nodeText, String employeeID);
+	int addCalender(String loginEmployeeID, String nodeName, String employeeID);
 
 	List<HashMap<String, Object>> getAddCalList(String val);
 
 	String getDetailWriteName(String id);
 
 	int delMyCal(String id);
+
+	void interestDelCalendar(String calendarID);
+
+	void updateCal(HashMap<String, Object> dataToSend);
 
 
 	/* List<String> showInterestCalendar(String loginEmployeeID); */

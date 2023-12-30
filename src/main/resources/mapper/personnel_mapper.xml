@@ -34,6 +34,31 @@
     INSERT INTO jsTree VALUES
     (#{employeeID}, #{departmentID}, CONCAT(#{name}, ' ', #{positionID}), 'jstree-icon-worker')
 	</insert>
+	
+	<select id="personnelList">
+		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID =h.hqID 
+		JOIN branch b  ON h.branchID = b.branchID 
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r  ON e.rankID = r.rankID
+		ORDER BY e.employeeID ASC
+	</select>
+	
+	<select id="getSelectOptionBranch">
+		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID =h.hqID 
+		JOIN branch b  ON h.branchID = b.branchID 
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r  ON e.rankID = r.rankID
+		<if test="selectedBranchValue !='지점'">
+		where b.branchName =#{selectedBranchValue}
+		</if>
+		ORDER BY e.employeeID ASC ;
+	</select>
 
 
 
