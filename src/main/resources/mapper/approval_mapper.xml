@@ -76,18 +76,34 @@
 	</insert>
 	
 	<insert id="approvalWrite" parameterType="map">
-	    INSERT INTO approval (idx, employeeID, category, approvalOrder,approvalStatus)
+	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
 	    VALUES
 	    <foreach collection="lastLineInfoList" item="line" separator=",">
 	        (#{idx}, #{line.approvalEmp}, #{line.category},
 	        <choose>
 	            <when test="line.order != null">#{line.order}</when>
 	            <otherwise>'0'</otherwise>
-	        </choose>,
+	        </choose>, #{lastOrder}, 
 	        <choose>
             <when test="line.order == 2"> '대기' </when>
             <otherwise>'미대기'</otherwise>
         </choose>)
 	    </foreach>
 	</insert>
+	
+	<update id="rejectDraft">
+		UPDATE draft SET draftStatus="완료" WHERE idx=#{idx}
+	</update>
+	
+	<update id="rejectApp">
+		UPDATE approval SET approvalStatus="반려", opinion=#{opinion} WHERE idx=#{idx} and employeeID=#{loginId}
+	</update>
+	
+	<update id="approveDraft">
+		UPDATE draft SET approvalStatus="진행중" WHERE idx=#{idx}
+	</update>
+	
+	<update id="approveApp">
+		UPDATE approval SET approvalStatus="반려", opinion=#{opinion} WHERE idx=#{idx} and employeeID=#{loginId}
+	</update>
 </mapper>

@@ -122,6 +122,12 @@ button{
   border: none;
 }
 
+.modal-content{
+	width: 94%;
+    height: 53%;
+	/* overflow-y: auto; */
+}
+
 
 </style>
 </head>
@@ -135,6 +141,35 @@ button{
 
 
 <div id="container">
+<div class="modal fade" id="opinion" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 모달창 제목 -->
+					<h5 class="modal-title"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				<form action="approval.do" method="post"><!-- 입력폼 -->
+	              <div class="form-group">
+					<textarea name="opinion" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
+	              </div>
+	              <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                <button type="submit" class="btn btn-primary"></button>
+	              </div>
+	                <input type="hidden" value="${loginId}" name="loginId">
+					<input type="hidden" value="${list.idx}" name="idx">
+					<input type="hidden" id="approvalAction" name="action" value="">
+                </form>
+				</div>
+			</div>
+		</div>
+	</div>
 <div class="topTitle">
 <h2>결재</h2>
 </div>
@@ -258,13 +293,24 @@ button{
 </table>
 </c:if> --%>
 <br/>
-<label>첨부파일 : <c:forEach items="${fileList}" var="file"><a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a></c:forEach></label>
+<label>첨부파일 : 
+<c:choose>
+        <c:when test="${not empty fileList}">
+            <c:forEach items="${fileList}" var="file">
+                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            없음
+        </c:otherwise>
+    </c:choose>
+</label>
 </div>
 </div>
 <div id="bottom">
-<input type="button" value="결재" onclick="save(true)"/>
-<input type="button" value="반려" onclick="save(false)"/>
-<input type="button" value="취소"/>
+<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
+<input type="button" value="반려" data-toggle="modal" data-target="#opinion"/>
+<input type="button" value="결재" data-toggle="modal" data-target="#opinion"/>
 </div>
 <div id="rightContainer">
 	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
@@ -288,8 +334,7 @@ button{
 	</div>
 	</div>
 </div>	
-<input type="hidden" value="${loginId}" name="loginId">
-<input type="hidden" value="${list.idx}" name="idx">
+
 
 
 
@@ -297,13 +342,54 @@ button{
 
 
 <script>
+
+$('input[value="결재"]').click(function () {
+    updateModalContent('approve');
+    $('#approvalAction').val('결재');
+});
+
+$('input[value="반려"]').click(function () {
+    updateModalContent('reject');
+    $('#approvalAction').val('반려');   
+});
+
+
+function updateModalContent(action) {
+    var modalTitle, modalButtonText;
+
+    if (action === 'approve') {
+        modalTitle = '결재하기';
+        modalButtonText = '결재';
+    } else if (action === 'reject') {
+        modalTitle = '반려하기';
+        modalButtonText = '반려';
+    }
+    $('.modal-title').text(modalTitle);
+    $('.modal-footer button[type="submit"]').text(modalButtonText);
+    
+}
+
+$('.modal-footer button[type="submit"]').click(function(){
+	if($('.modal-footer button[type="submit"]').text()=='결재'){
+		var msg = "결재하시겠습니까?";
+		    if (window.confirm(msg)) {
+		        $('form').submit();
+		    } else {
+	    }
+	}else{
+		var msg = "반려하시겠습니까?";
+		    if (window.confirm(msg)) {
+		        $('form').submit();
+		    } else {
+	    }
+	}
+});
+
 var loginId = $('input[name="loginId"]').val()
 var idx = $('input[name="idx"]').val()
-console.log(loginId);
-console.log(idx); 
+// console.log(loginId);
+// console.log(idx); 
 
- 
- 
  $(document).ready(function () {
      $.ajax({
          url: "drawSign",

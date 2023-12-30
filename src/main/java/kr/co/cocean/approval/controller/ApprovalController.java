@@ -188,10 +188,7 @@ public class ApprovalController {
 	            }
 
 	            
-	                service.write(files, param, lastLineInfoList);
-	            
-	            
-	            formListGo();
+	                // service.write(files, param, lastLineInfoList);
 	     
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
@@ -213,11 +210,6 @@ public class ApprovalController {
 	 * result.put("list", list); result.put("size", list.size()); return result; }
 	 */
 
-	private String formListGo() {
-		logger.info("formListGo 호출");
-		return "redirect:/approval/formList.go";
-	}
-
 	@RequestMapping(value = "/approval/getEmployeeID.do")
 	@ResponseBody
 	public HashMap<String, Object> getEmployeeID(@RequestParam String employeeID) {
@@ -228,7 +220,7 @@ public class ApprovalController {
 		return result;
 	}
 	
-	// 파일 다운로드
+	// 첨부파일 다운로드
 	@GetMapping(value="/approval/download.do")
 	public ResponseEntity<Resource> download(String file) throws IOException {
 		String path = root+"draft/"+file;
@@ -252,6 +244,18 @@ public class ApprovalController {
 		
 	}
 
-	
+	// 결재,반려
+	@PostMapping(value = "/approval/approval.do")
+	public String formSearch(HttpSession session, @RequestParam Map<String, String> param) {
+		logger.info("param:{}",param);
+		if(param.get("action")=="결재") {
+			service.approveDraft(param);
+			service.approveApp(param);
+		}else {
+			service.rejectDraft(param);
+			service.rejectApp(param);
+		}
+		return "redirect:/approval/waitingList.go";
+	}
 
 }

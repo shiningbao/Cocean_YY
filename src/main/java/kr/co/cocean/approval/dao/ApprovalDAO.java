@@ -45,6 +45,16 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> fileList(int idx);
 
+	void approval(Map<String, String> param);
+
+	void rejectDraft(Map<String, String> param);
+
+	void rejectApp(Map<String, String> param);
+
+	void approveDraft(Map<String, String> param);
+
+	void approveApp(Map<String, String> param);
+
 
 
 }

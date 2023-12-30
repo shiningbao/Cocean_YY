@@ -99,18 +99,18 @@ $(function () {
     });
     // 더블클릭시 이벤트(사원추가)
     $("#jstree").on('dblclick', '.jstree-anchor',function(e){
-    	console.log(loginId);
+    	// console.log(loginId);
     	// 더블클릭시 값 전송
     	var clickedNode = $(e.target).closest('li');
     	var node = $("#jstree").jstree(true).get_node(clickedNode);
     	var icon = node.icon;
-    	console.log(icon);
+    	// console.log(icon);
     	if(icon!=true){	
     		 $.ajax({
     	        	url:"/Cocean/approval/getEmployeeID.do",
     	        	data:{employeeID:employeeID},
     	        	success:function(data){
-    	        		console.log(data);
+    	        		// console.log(data);
     	        		drawLine(data.employeeInfo,employeeID);
 
     	        	},
@@ -137,14 +137,15 @@ function sendEmployeedID(employeeID){
 }
 
 function getAddedLineData(lineData){
-	console.log(lineData);
+	// console.log(lineData);
 }
 
 
-var remLine;
+// var remLine;
 
 function getRemainedEmpID(remLine){
-	console.log(remLine);
+        console.log(remLine);
+   
 }
 
 // 조직도에서 사원 선택해서 옆에 그리는 부분
@@ -178,18 +179,18 @@ function drawLine(employeeInfo, currentEmployeeID) {
     	alert('지정할 수 없습니다.');
     }
 }
-function appendCancel() {
+function appendCancel() { // 모달창에서 x
 $('.cancel').off('click').on('click', function() {
 	var lineItem = $(this).closest('.lineItem');
     var employeeID = lineItem.find('.employeeID').val();
 
     lineItem.remove();
-	console.log(employeeID);
+	// console.log(employeeID);
 });
 }
 var lineData;
 // 결재라인 저장
-function saveApprovalLine(lineData) {
+function saveApprovalLine(lineData) { // 모달창 결재라인저장
 	lineData=[];
    	
     $('.lineItem').each(function () {
@@ -208,7 +209,7 @@ function saveApprovalLine(lineData) {
             employeeID: employeeID
         });
     });
-    console.log(lineData);
+    // console.log(lineData);
     getApprovalLine(lineData);
     $('#line').empty();
     

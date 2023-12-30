@@ -86,9 +86,9 @@ public class ApprovalService {
 		String content = param.get("content");
 	
 
-		// dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
-		// dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
-		 
+		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+		
 		// dao.writeAttendanceDraftContent(param);
 		
 	}
@@ -104,6 +104,7 @@ public class ApprovalService {
 			Path path = Paths.get(root+"draft/"+newFileName);
 			Files.write(path, bytes);
 			// dao.writeFile(idx,oriFileName,newFileName); // file테이블에 insert
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -146,6 +147,30 @@ public class ApprovalService {
 	
 	public ArrayList<ApprovalDTO> fileList(int idx) {
 		return dao.fileList(idx);
+	}
+
+	public void approval(Map<String, String> param) {
+		dao.approval(param);
+	}
+
+	public void rejectDraft(Map<String, String> param) {
+		dao.rejectDraft(param);
+		
+	}
+
+	public void rejectApp(Map<String, String> param) {
+		dao.rejectApp(param);
+		
+	}
+
+	public void approveDraft(Map<String, String> param) {
+		dao.approveDraft(param);
+		
+	}
+
+	public void approveApp(Map<String, String> param) {
+		dao.approveApp(param);
+		
 	}
 
 

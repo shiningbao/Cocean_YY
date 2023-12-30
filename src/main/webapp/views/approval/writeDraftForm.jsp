@@ -302,7 +302,7 @@ button{
 <input type="hidden" name="tempSave" value="0"/>
 <input type="button" id="tempSave" value="임시저장" onclick="saveCf(true)"/>
 <input type="button" id="write" value="등록" onclick="saveCf(false)"/>
-<input type="button" value="취소"/>
+<input type="button" value="취소" onclick="location.href='formList.go'"/>
 </div>
 <div id="rightContainer">
 	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
@@ -340,7 +340,7 @@ button{
 	*/
 	
 	function getEmployeeID(employeeID){
-		console.log(employeeID);
+		// console.log(employeeID);
 	}
 	
 	const handleResizeHeight = () => {
@@ -356,8 +356,9 @@ button{
 	    if (confirm("등록하시겠습니까?")) {
 	       save(isTemp);
 	    } 
-	    console.log($("#approvalLine tbody tr:last th").text());
-	   
+	    // console.log($("#approvalLine tbody tr:last th").text());
+
+
 	}
 	
 	var lastLine = [];
@@ -375,8 +376,18 @@ button{
 	        
 		
 	    var content = editor.getHTMLCode();
-		var titleID = $('input[name="titleID"]').val()
-		var lastOrder = $("#approvalLine tbody tr:last th").text();
+		var title = $('input[name="title"]').val();
+		var titleID = $('input[name="titleID"]').val();
+		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
+		
+		 if (!content.trim() && !title.trim()) {
+		        alert("제목과 내용을 입력해주세요!");
+		    } else if (!title.trim()) {
+		        alert("제목을 입력해주세요!");
+		    } else if (!content.trim()) {
+		        alert("내용을 입력해주세요!");
+		    } else {
+		    	
 		
 	    var formData = new FormData();
 	    formData.append('title', $('input[name="title"]').val());
@@ -384,7 +395,8 @@ button{
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
-
+	    
+	    
 	    if (isTemp) {// 임시저장부분
 	        formData.append('tempSave', 1); // 1이면 임시저장
 	    } else {
@@ -392,8 +404,8 @@ button{
 	    }
 
 	    $("#approvalLine tbody tr").each(function (index) {
-	        var order = $(this).find('.order').text();
-	        var employeeID = $(this).find('.employeeID').val();
+	        var order = $(this).find('.order').text(); // 각자의 순서
+	        var employeeID = $(this).find('.employeeID').val(); // 결재자,합의자,참조자
 
 	        if (employeeID !== undefined) {
 	            lastLine.push({
@@ -439,7 +451,10 @@ button{
 	    for (var i = 0; i < files.length; i++) {
 	        formData.append('files', files[i]);
 	    }
-	    
+	    if (lastLine.length === 0) {
+	        alert("결재라인을 지정해주세요.");
+	        return;
+	    }
 	    
 
 	    $.ajax({
@@ -457,6 +472,7 @@ button{
 	            console.error(e);
 	        }
 	    	});
+		    }
 		
 	}
 
@@ -484,14 +500,14 @@ button{
      }); */
      
      function getApprovalLine(lineData){
- 		console.log(lineData);
+ 		// console.log(lineData);
  		 for (var i = 0; i < lineData.length; i++) {
-              console.log("category:", lineData[i].category);
+            /*   console.log("category:", lineData[i].category);
               console.log("hqName:", lineData[i].hqName);
               console.log("dpName:"+lineData[i].departmentName);
               console.log("rank:", lineData[i].rank);
               console.log("name:", lineData[i].name);
-              console.log("employeeID:", lineData[i].employeeID);
+              console.log("employeeID:", lineData[i].employeeID); */
               
               addLineToTable(lineData[i]);
           }
@@ -519,7 +535,7 @@ button{
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        appTable.append(row);
 		        updateRowNumbers();
-		        console.log(lineData.employeeID);
+		        // console.log(lineData.employeeID);
 				
 		        // signatureTable   
 		        var frLastTd=$('#approvalSignature tr:first td:last');
@@ -546,7 +562,7 @@ button{
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        // row.append(cell);
 		        agrTable.append(row);
-		        console.log(lineData.employeeID);
+		        // console.log(lineData.employeeID);
 		    } else {
 		        row = $("<tr>");
 
@@ -561,7 +577,7 @@ button{
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);
-		        console.log(lineData.employeeID);
+		        // console.log(lineData.employeeID);
 		    }
 				
 		    SendAddedLineData(lineData);
@@ -584,7 +600,7 @@ button{
         row.remove();
         updateRowNumbers('#approvalLine');
         var delEmpID = row.find('.employeeID').val();
-        console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
+        // console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
         // 찾은 INPUT에 가까운 TD 지우기
       	$('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
     } else {
@@ -599,8 +615,9 @@ button{
 		    });
 		}
 		
-		var remLine = [];
 		
+		
+	    	var remLine = [];
 	    function remainedEmpID() {
 	        $("#approvalLine tbody tr .employeeID").each(function () {
 	            remLine.push($(this).val());
@@ -615,10 +632,7 @@ button{
 	        getRemainedEmpID(remLine);
 	    }
 		  
-		
-		    
-	 
-	 
+
 </script>
 </body>
 </html>
