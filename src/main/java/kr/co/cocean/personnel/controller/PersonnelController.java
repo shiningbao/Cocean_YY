@@ -163,6 +163,17 @@ public class PersonnelController {
 		return list;
 	}
 	
+	@GetMapping(value="/personnel/searchPerson.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption){
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
+		logger.info("aaa==="+selectedOption);
+			 list= service.searchPerson(searchValue,selectedOption);
+		
+		
+		return list;
+	}
+	
 
 	
 }

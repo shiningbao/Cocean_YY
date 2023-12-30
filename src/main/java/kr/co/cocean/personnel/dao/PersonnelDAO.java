@@ -34,4 +34,10 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue);
 
+	List<HashMap<String, Object>> searchName(String searchValue);
+
+	List<HashMap<String, Object>> searchEmployeeID(String searchValue);
+
+	List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption);
+
 }

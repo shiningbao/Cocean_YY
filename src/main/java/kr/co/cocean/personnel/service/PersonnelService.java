@@ -148,7 +148,14 @@ public class PersonnelService {
 		return dao.personnelList();
 	}
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
+		if(selectedBranchValue.equals("지점")) {
+		}
 		return dao.getSelectOptionBranch(selectedBranchValue);
+	}
+
+	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption) {
+		// TODO Auto-generated method stub
+		return dao.searchPerson(searchValue,selectedOption);
 	}
 
 	
