@@ -8,16 +8,20 @@
 		SELECT * FROM draftForm
 	</select>
 	
-	<select id="formSearch" parameterType="list" resultType="form">
+	<select id="formSearch" parameterType="list" resultType="approval">
 		SELECT * FROM draftForm WHERE title IN
 			<foreach collection="list" item="item" open ="(" separator = "," close=")">
 			 #{item}
 			</foreach>
 	</select>
 	
-	<select id="draftInfo" resultType="form">
-		SELECT DISTINCT name,r.rankName, departmentName,workDate,h.hqName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID
- 		LEFT OUTER JOIN work w ON e.employeeID=w.employeeID LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID} ORDER BY workDate DESC LIMIT 1
+	<select id="draftInfo" resultType="approval">
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID}
+	</select>
+	
+	<select id="formTitle" resultType="form">
+		SELECT formTitle,titleID FROM draftForm WHERE titleID=#{titleID}
 	</select>
 	
 	<insert 
@@ -25,7 +29,7 @@
 		useGeneratedKeys="true"
 		keyColumn="idx"
 		keyProperty="idx">
-    	INSERT INTO draft (employeeID,publicStatus,tempSave,documentNo) VALUES (#{employeeID},#{publicStatus},#{tempSave},#{documentNo})
+    	INSERT INTO draft (employeeID,publicStatus,tempSave,documentNo,titleID) VALUES (#{employeeID},#{publicStatus},#{tempSave},#{documentNo},#{titleID})
 	</insert>
 	
 	<insert id="writeWorkDraft">
@@ -36,19 +40,35 @@
     	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},'draft',#{newFileName},#{oriFileName})
 	</insert>
 	
-	<select id="employeeInfo" resultType="form">
+	<select id="employeeInfo" resultType="approval">
 		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID};
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID}
 	</select>
 	
-	<select id="waitingList" resultType="form">
-		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx RIGHT OUTER JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기';
+	<select id="waitingList" resultType="approval">
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.category,d.titleID FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기'
 	</select>
 	
-	<select id="draftDetail" resultType="form">
-		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID LEFT OUTER JOIN workDraft w ON df.idx=w.idx WHERE e.employeeID=#{employeeID} AND df.idx=#{idx};
+	<select id="draftDetail" resultType="approval">
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx WHERE df.idx=#{idx}
+	</select>
+	
+	<select id="lineList" resultType="approval">
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category="결재" order by approvalOrder asc
+	</select>
+	
+	<select id="signList" resultType="approval">
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category="결재"
+	</select>
+	
+	<select id="agrRef" resultType="approval">
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("합의","참조")
+	</select>
+	
+	<select id="fileList" resultType="approval">
+		SELECT * FROM file WHERE idx=#{idx}
 	</select>
 	
 	<insert id="saveApprovalLine">
@@ -56,14 +76,18 @@
 	</insert>
 	
 	<insert id="approvalWrite" parameterType="map">
-	    INSERT INTO approval (idx, employeeID, category, approvalOrder)
+	    INSERT INTO approval (idx, employeeID, category, approvalOrder,approvalStatus)
 	    VALUES
 	    <foreach collection="lastLineInfoList" item="line" separator=",">
 	        (#{idx}, #{line.approvalEmp}, #{line.category},
 	        <choose>
 	            <when test="line.order != null">#{line.order}</when>
 	            <otherwise>'0'</otherwise>
-	        </choose>)
+	        </choose>,
+	        <choose>
+            <when test="line.order == 2"> '대기' </when>
+            <otherwise>'미대기'</otherwise>
+        </choose>)
 	    </foreach>
 	</insert>
 </mapper>

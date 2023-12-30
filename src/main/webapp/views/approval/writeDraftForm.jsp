@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -60,6 +62,7 @@ button{
 
 #approvalLine{
 	font-size : 10px;
+	
 }
 
 #approvalLine, #approvalLine th, #approvalLine td {
@@ -80,18 +83,6 @@ button{
 	resize: none;
 }
 
-.dropdown-content {
-    display: none;
-    width: 290px;
-    height: 300px;
-    font-size: 15px;
-    background-color: white;
-    position: absolute;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    overflow-y: auto;
-}
-
 .modal-content{
 	width:135%;
 	height:100%;
@@ -101,6 +92,49 @@ button{
 .show {
 	display:block;
 
+}
+
+#contentLine{
+	margin: 14px;
+    padding: 6% 2% 2% 2%;
+    border: 5px solid #e8e8e8;
+    width: 60%;
+    height: 93%;
+    position: absolute;
+    left: 17%;
+    top: 17%;
+}
+
+#bottom{
+	position: absolute;
+    left: 19%;
+    bottom: -29%;
+}
+
+#rightContainer{
+	display: flex;
+    flex-direction: column;
+    width: 22%;
+    position: absolute;
+    right: 0%;
+    top: 19%;
+}
+
+#formTitle{
+	position: absolute;
+    width: 40%;
+    text-align: center;
+    top: 2%;
+    font-size: 41px;
+    right: 29%;
+}
+
+.topTitle{
+	position: absolute;
+    width: 50%;
+    top: 12%;
+    font-size: 30px;
+    left: 18%;
 }
 
 </style>
@@ -134,61 +168,51 @@ button{
 		</div>
 	</div>
 
-<c:forEach items="${draftInfo}" var="draft">
-
-<div id="TopContainer">
+<div class="topTitle">
+<h2>기안 작성</h2>
+</div>
+<div id="contentLine">
+<div id="formTitle">${form.formTitle}</div>
 <div id="draftInfoTop" style="display: flex;">
+<input type="hidden" value="${form.titleID}" name=titleID>
 		<table id="draftInfo">
 			<tr>
 			    <th>상신자</th>
-			    <td>${draft.name}</td>
+			    <td>${draftInfo.name}</td>
 			</tr>
 			<tr>
 			    <th>소속부서</th>
-			    <td>${draft.hqName}/${draft.departmentName}</td>
+			    <td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
 			</tr>
 			<tr>
 			    <th>상신일</th>
-			    <td></td>
+			    <td>${date}</td>
 			</tr>
 		</table>
 		
 		<table id="approvalSignature">
 			<tr>
 		        <td rowspan="3" style="width: 20px; ">상신</td>
-		        <td style="width: 80px; font-size:13px; padding : 0;">${draft.rankName}</td>
+		        <td style="width: 80px; font-size:13px; padding : 0;">${draftInfo.rankName}</td>
 		    </tr>
 		    <tr>
-		        <td style="width: 80px; font-size:10px; vertical-align: bottom;">${draft.name}</td>
+		        <td style="width: 80px; font-size:10px; vertical-align: bottom;">${draftInfo.name}</td>
 		    </tr>
 		    <tr>
 		        <td style="width: 80px;"></td>
 		    </tr>
 		</table>
+	
 	</div>
-</div>	
-	<div id="rightContainer" style="display: flex; flex-direction: column; width: 22%; float: right; position:absolute; right:20px;">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
-	<hr/>
-		<table id="approvalLine">
-			<tr>
-				<th>1</th>
-				<td>상신</td>
-				<td>${draft.hqName}/${draft.departmentName}</td>
-				<td>${draft.rankName}</td>
-				<td>${draft.name}</td>
-			</tr>
-		</table>
-	</div>
-	</div>
-</c:forEach>
+
+
+	
 
 
 
 <br/>
 <!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
-<c:if test="${title eq '업무기안서'}">
+<c:if test="${form.formTitle eq '업무기안서'}">
 <table id="workDraftContent">
 	
 		<tr>
@@ -213,7 +237,7 @@ button{
 </table>
 </c:if>
 
-<c:if test="${title eq '휴가신청서'}">
+<c:if test="${form.formTitle eq '휴가신청서'}">
 <table id="attendanceDraftContent">
 	<tr>
 		<th>휴가 종류</th>
@@ -243,7 +267,7 @@ button{
 </table>
 </c:if>
 
-<c:if test="${title eq '휴직원' or title eq '복직원'}">
+<c:if test="${form.formTitle eq '휴직원' or form.formTitle eq '복직원'}">
 <table id="leaveDraftContent">
 	<tr>
 		<th>휴직 기간</th>
@@ -260,6 +284,10 @@ button{
 <br/>
 <input type="file" name="files" multiple="multiple"/>
 <br/>
+
+
+</div>
+<div id="bottom">
 <div id="isPublic">
 <input type="radio" name="publicStatus" value=0 checked/>비공개
 <input type="radio" name="publicStatus" value=1 />공개
@@ -268,14 +296,33 @@ button{
 *공개 설정시 모든 임직원이 열람 가능합니다.
 <br/>
 *비공개 설정시 결재라인에 있는 사람만 열람 가능합니다.
+
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
-<input type="button" id="tempSave" value="임시저장" onclick="save(true)"/>
-<input type="button" id="write" value="등록" onclick="save(false)"/>
+<input type="button" id="tempSave" value="임시저장" onclick="saveCf(true)"/>
+<input type="button" id="write" value="등록" onclick="saveCf(false)"/>
 <input type="button" value="취소"/>
-<!-- </form> -->
 </div>
+<div id="rightContainer">
+	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
+	<hr/>
+		<table id="approvalLine">
+			<tr>
+				<th>1</th>
+				<td>상신</td>
+				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
+				<td>${draftInfo.rankName}</td>
+				<td>${draftInfo.name}</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+
+</div>
+
+<!-- </form> -->
 
 
 
@@ -305,28 +352,43 @@ button{
 	config.editorResizeMode = "none";
 	var editor = new RichTextEditor("#rich_editor", config);
 	
+	function saveCf(isTemp) {
+	    if (confirm("등록하시겠습니까?")) {
+	       save(isTemp);
+	    } 
+	    console.log($("#approvalLine tbody tr:last th").text());
+	   
+	}
+	
 	var lastLine = [];
-
+	//기안 등록
 	function save(isTemp) {
-		$('input[type="file"]').css('display', 'none');
+		/* $('input[type="file"]').css('display', 'none');
 		$('input[type="radio"]').css('display', 'none');
 		$('#publicDesc').css('display','none');
 		$('#isPublic').css('display','none');
 		$('#write').css('display','none');
 		$('#tempSave').css('display','none');
 		$('.addApprovalLine').css('display','none');
+		$('.delete').css('display','none'); */
+	
+	        
+		
 	    var content = editor.getHTMLCode();
-
+		var titleID = $('input[name="titleID"]').val()
+		var lastOrder = $("#approvalLine tbody tr:last th").text();
+		
 	    var formData = new FormData();
 	    formData.append('title', $('input[name="title"]').val());
 	    formData.append('content', content);
-	    
+	    formData.append('titleID',titleID);
+	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
 
-	    if (isTemp) {
-	        formData.append('tempSave', 1);
+	    if (isTemp) {// 임시저장부분
+	        formData.append('tempSave', 1); // 1이면 임시저장
 	    } else {
-	        formData.append('tempSave', 0);
+	        formData.append('tempSave', 0); // 0이면 임시저장안한거
 	    }
 
 	    $("#approvalLine tbody tr").each(function (index) {
@@ -370,9 +432,15 @@ button{
 
 	    var filesInput = $('input[name="files"]')[0];
 	    var files = filesInput.files;
+	    console.log(files.length);
+	    if (files.length === 0) {
+	        formData.append('files', null);
+	    }
 	    for (var i = 0; i < files.length; i++) {
 	        formData.append('files', files[i]);
 	    }
+	    
+	    
 
 	    $.ajax({
 	        url: "/Cocean/approval/writeDraft.do",
@@ -383,11 +451,13 @@ button{
 	        cache: false,
 	        success: function (data) {
 	            console.log(data);
+	            location.href='./formList.go';
 	        },
 	        error: function (e) {
 	            console.error(e);
 	        }
-	    });
+	    	});
+		
 	}
 
 	/*  $(document).ready(function () {
@@ -450,15 +520,16 @@ button{
 		        appTable.append(row);
 		        updateRowNumbers();
 		        console.log(lineData.employeeID);
-	
+				
 		        // signatureTable   
 		        var frLastTd=$('#approvalSignature tr:first td:last');
-		        var scLastTd=$('#approvalSignature tr:even td:last');
+		        var scLastTd=$('#approvalSignature tr:odd td:last');
 		        var lastTd=$('#approvalSignature td:last');
 		        
-		        /* $("<td rowspan='3' style='width: 20px;'>결재</td><td style='width: 80px; font-size:13px; padding: 0;'>" + lineData.rank + "</td>").insertAfter(frLastTd);
-		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'>" + lineData.name + "</td>").insertAfter(scLastTd);
-		        $("<td style='width: 80px;'></td>").insertAfter(lastTd); */
+		        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.rank + "</td>").insertAfter(frLastTd);
+		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.name + "</td>").insertAfter(scLastTd);
+		        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+		       	
 		    } else if (lineData.category == "합의") {
 		        row = $("<tr>");
 
@@ -502,20 +573,24 @@ button{
 	    	getAddedLineData(lineData);
 	    }
 	 
-	 $(document).on('click', '.delete', function() {
-		    var element = $(this);
-		    var row = element.closest('tr');
-		    var cell = element.closest('td');
-		    var table = row.closest('table');
+	 // 결재라인 추가한거 취소
+	$(document).on('click', '.delete', function() {
+    var element = $(this);
+    var row = element.closest('tr');
+    var cell = element.closest('td');
+    var table = row.closest('table');
 
-		    
-		    if (table.attr('id') === 'approvalLine') {
-		        row.remove();
-		        updateRowNumbers('#approvalLine');
-		    } else {
-		        cell.remove();
-		    }
-		});
+    if (table.attr('id') === 'approvalLine') {
+        row.remove();
+        updateRowNumbers('#approvalLine');
+        var delEmpID = row.find('.employeeID').val();
+        console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
+        // 찾은 INPUT에 가까운 TD 지우기
+      	$('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
+    } else {
+        cell.remove();
+    }
+});
 	 
 		// 결재 순서 업데이트
 		function updateRowNumbers(tableId) {
@@ -524,7 +599,7 @@ button{
 		    });
 		}
 		
-var remLine = [];
+		var remLine = [];
 		
 	    function remainedEmpID() {
 	        $("#approvalLine tbody tr .employeeID").each(function () {

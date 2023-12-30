@@ -69,6 +69,7 @@
         <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
     </div>
 <script>
+var loginId="${sessionScope.userInfo.employeeID}";
 $(function () {
     // jstree 생성
     $("#jstree").jstree({
@@ -98,6 +99,7 @@ $(function () {
     });
     // 더블클릭시 이벤트(사원추가)
     $("#jstree").on('dblclick', '.jstree-anchor',function(e){
+    	console.log(loginId);
     	// 더블클릭시 값 전송
     	var clickedNode = $(e.target).closest('li');
     	var node = $("#jstree").jstree(true).get_node(clickedNode);
@@ -138,6 +140,7 @@ function getAddedLineData(lineData){
 	console.log(lineData);
 }
 
+
 var remLine;
 
 function getRemainedEmpID(remLine){
@@ -149,8 +152,8 @@ function drawLine(employeeInfo, currentEmployeeID) {
     employeeInfo.forEach(function (item, idx) {
         var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
         var isRemLineEmpID = remLine.includes(currentEmployeeID);
-
-        if (!isRemLineEmpID && !existingEmployee) {
+		
+        if (!isRemLineEmpID && !existingEmployee) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
             var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
             var content = '<div class="lineItem">';
             content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
@@ -165,9 +168,15 @@ function drawLine(employeeInfo, currentEmployeeID) {
             $('#line').append(content);
             appendCancel();
         } else {
-            alert('이미 라인에 지정된 사원입니다.');
+            alert('이미 지정된 사원입니다.');
         }
+       
+        
+        
     });
+    if(currentEmployeeID==loginId){
+    	alert('지정할 수 없습니다.');
+    }
 }
 function appendCancel() {
 $('.cancel').off('click').on('click', function() {
