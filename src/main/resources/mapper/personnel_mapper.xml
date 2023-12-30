@@ -76,6 +76,15 @@
 		 </if>
 		ORDER BY e.employeeID ASC ;
 	</select>
+	
+	<select id="checkDuplicateEmployeeID">
+		select (COUNT(employeeID))  from employee e WHERE employeeID =#{employeeID}
+	</select>
+	
+	<insert id="upload">
+		INSERT INTO file(category, idx, path, serverFileName, oriFileName)
+			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
+	</insert>
 
 
 
