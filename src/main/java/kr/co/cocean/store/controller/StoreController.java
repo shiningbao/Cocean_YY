@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.store.service.StoreService;
 	
@@ -59,19 +61,27 @@ public class StoreController {
 		return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.go")
-	public String storeProductRegisterGo() {
+	@GetMapping(value="/store/productInfoRegister.go")
+	public String productInfoRegister() {
 		logger.info("상품 등록 페이지 이동");
-		return "store/storeProductRegister";
+		return "store/productInfoRegister";
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.do")
-	public int storeProductRegister(@RequestParam String productName, @RequestParam int price, @RequestParam String category) {
+	@PostMapping(value="/store/productInfoRegister.do")
+	public int productInfoRegister(@RequestParam Map<String, String>params) {
 		logger.info("본사상품 등록");
-		logger.info("productName : "+productName);
-		logger.info("price : "+price);
-		logger.info("category : "+category);
-		return service.storeProductRegister(productName, price, category);
+		logger.info("상품 정보 : "+params);
+//		logger.info("productName : "+productName);
+//		logger.info("price : "+price);
+//		logger.info("category : "+category);
+		return service.productInfoRegister(params);
+	}
+	
+	@GetMapping("/store/storeProductDetail.do/{id}")
+	public ModelAndView storeProductDetail(@PathVariable("id") int id) {
+		logger.info("본사 상품 상세보기");
+		logger.info("productID : "+id);
+		return service.storeProductDetail(id);
 	}
 	
 	@GetMapping(value="/store/modalProductList.do")
@@ -85,12 +95,13 @@ public class StoreController {
 	@ResponseBody
 	public int branchProductRegister(@RequestParam String currentBranchName, @RequestParam String currentProductName) {
 		logger.info("지점 상품 등록");
-		logger.info(currentBranchName);
-		logger.info(currentProductName);
+		logger.info("currentBranchName : "+currentBranchName);
+		logger.info("currentProductName : "+currentProductName);
 		return service.branchProductRegister(currentBranchName, currentProductName);
-
-		
 	}
+	
+	
+
 //	@GetMapping(value="/store/ticketRegister.do")
 //	@ResponseBody
 //	public int ticketRegister(@RequestParam String branchName, @RequestParam String productName,@RequestParam int price, @RequestParam String category) {

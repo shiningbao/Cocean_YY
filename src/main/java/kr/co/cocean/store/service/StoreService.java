@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -115,11 +116,6 @@ public class StoreService {
 		return "성공";
 	}
 
-	public int storeProductRegister(String productName, int price, String category) {
-		return dao.storeProductRegister(productName, price, category);
-		
-	}
-
 	public Map<String, Object> modalProductList(String currentBranchName) {
 		Map<String, Object> map =  new HashMap<String, Object>();
 		ArrayList<StoreProductDTO> list = dao.modalProductList(currentBranchName);
@@ -131,6 +127,19 @@ public class StoreService {
 		int branchID = dao.branchIDSearch(currentBranchName);
 		int productID = dao.productIDSearch(currentProductName);
 		return dao.branchProductRegister(branchID, productID);
+	}
+
+	public ModelAndView storeProductDetail(int id) {
+		ModelAndView mav = new ModelAndView();
+		ArrayList<StoreProductDTO> list = dao.storeProductDetail(id);
+		mav.addObject("list",list);
+		mav.setViewName("storeProductDetail");
+		return mav;
+	}
+
+	public int productInfoRegister(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	

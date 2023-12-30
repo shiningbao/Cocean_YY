@@ -15,12 +15,9 @@ public class StoreProductDTO {
 	private String category;
 	private int price;
 	private int productIndex;
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
+	private int idx;
+	private String serverFileName;
+	
 	public int getBranchID() {
 		return branchID;
 	}
@@ -57,6 +54,12 @@ public class StoreProductDTO {
 	public void setProductID(int productID) {
 		this.productID = productID;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getProductName() {
 		return productName;
 	}
@@ -81,6 +84,19 @@ public class StoreProductDTO {
 	public void setProductIndex(int productIndex) {
 		this.productIndex = productIndex;
 	}
+	public int getIdx() {
+		return idx;
+	}
+	public void setIdx(int idx) {
+		this.idx = idx;
+	}
+	public String getServerFileName() {
+		return serverFileName;
+	}
+	public void setServerFileName(String serverFileName) {
+		this.serverFileName = serverFileName;
+	}
+	
 	
 	
 }

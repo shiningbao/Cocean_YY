@@ -104,7 +104,7 @@ position: absolute;
 	<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="search" class="btn btn-primary">검색</button>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='storeProductRegister.go'" style="display: inline;">본사상품 등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='productInfoRegister.go'" style="display: inline;">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
@@ -448,11 +448,20 @@ new Promise((resolve, reject) => {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
 								data.branchProductList[i].category === "상품" && data.branchProductList[i].status === "판매중"){
 							var product = data.branchProductList[i];
-							var productInfo = '<tr>' +
-	                         '<td>' + product.productID + '</td>' +
-	                         '<td >' +'<a href="detail?idx=${bbs.idx}">' + product.productName + '</td>' +
-	                         '<td>' + product.price + '</td>' +
-	                         '</tr>';
+							console.log("로그로그");
+							console.log(product);
+							/* var productInfo = '<tr>' +
+						    '<td>' + product.productID + '</td>' +
+						    '<td><a href="' + product.productID + '">' + product.productName + '</a></td>' +
+						    '<td>' + product.price + '</td>' +
+						    '</tr>'; */
+						    var productInfo = '<tr>' +
+						    '<td>' + product.productID + '</td>' +
+						    '<td><a href="storeProductDetail.do/' + product.productID + '">' + product.productName + '</a></td>' +
+						    '<td>' + product.price + '</td>' +
+						    '</tr>';
+
+
 	                     productListTable.append(productInfo);
 						}
 					}
@@ -533,10 +542,10 @@ new Promise((resolve, reject) => {
 							    for (var j = 0; j < matchedProducts.length; j++) {
 							        var product = matchedProducts[j];
 							        var productInfo = '<tr>' +
-							            '<td>' + product.productID + '</td>' +
-							            '<td>' + product.productName + '</td>' +
-							            '<td>' + product.price + '</td>' +
-							            '</tr>';
+									    '<td>' + product.productID + '</td>' +
+									    '<td><a href="storeProductDetail.do/' + product.productID + '">' + product.productName + '</a></td>' +
+									    '<td>' + product.price + '</td>' +
+									    '</tr>';
 							        productListTable.append(productInfo);
 							    }
 							} else {
@@ -660,18 +669,18 @@ searchProduct(searchKeyword, currentBranchName);
             dataType: 'json',
             success: function (data) {
                 // 검색 결과를 받아와서 동적으로 테이블에 추가
-                var tableBody = $('.searchedModalProduct table tbody');
-                tableBody.empty(); // 기존 내용 비우기
+                var searchedModalProduct = $('.searchedModalProduct table tbody');
+                searchedModalProduct.empty(); // 기존 내용 비우기
                 console.log("상품모달 리스트 성공");
                 console.log(data);
                 for (var i = 0; i < data.modalSearchedList.length; i++) {
                     var product = data.modalSearchedList[i];
-                    var row = '<tr>' +
+                    var productInfo = '<tr>' +
                         '<td>' + product.productID + '</td>' +
                         '<td class="productNameCell">' + product.productName + '</td>' +
                         '<td>' + product.price + '</td>' +
                         '</tr>';
-                    tableBody.append(row);
+                        searchedModalProduct.append(productInfo);
                 }
 
             },

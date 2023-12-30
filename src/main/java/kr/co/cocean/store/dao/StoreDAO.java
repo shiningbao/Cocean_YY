@@ -34,6 +34,8 @@ public interface StoreDAO {
 
 	int branchProductRegister(int branchID, int productID);
 
+	ArrayList<StoreProductDTO> storeProductDetail(int id);
+
 
 
 }
