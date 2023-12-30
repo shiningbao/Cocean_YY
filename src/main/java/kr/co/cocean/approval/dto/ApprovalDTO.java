@@ -4,15 +4,14 @@ import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("form")
+@Alias("approval")
 public class ApprovalDTO {
 
 	private String titleID;
 	private String category;
-	private String title;
+	private String formTitle;
 	private String name;
 	private String departmentName;
-	private Date workDate;
 	private String rankName;
 	private String hqName;
 	private int idx;
@@ -24,6 +23,36 @@ public class ApprovalDTO {
 	private Date draftDate;
 	private int approvalID;
 	private String approvalStatus;
+	private String title;
+	private String oriFileName;
+	private int imageID;
+	private String serverFileName;
+	
+	
+	public String getServerFileName() {
+		return serverFileName;
+	}
+	public void setServerFileName(String serverFileName) {
+		this.serverFileName = serverFileName;
+	}
+	public int getImageID() {
+		return imageID;
+	}
+	public void setImageID(int imageID) {
+		this.imageID = imageID;
+	}
+	public String getOriFileName() {
+		return oriFileName;
+	}
+	public void setOriFileName(String oriFileName) {
+		this.oriFileName = oriFileName;
+	}
+	public String getFormTitle() {
+		return formTitle;
+	}
+	public void setFormTitle(String formTitle) {
+		this.formTitle = formTitle;
+	}
 	
 	public Date getDraftDate() {
 		return draftDate;
@@ -102,12 +131,6 @@ public class ApprovalDTO {
 	}
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
-	}
-	public Date getWorkDate() {
-		return workDate;
-	}
-	public void setWorkDate(Date workDate) {
-		this.workDate = workDate;
 	}
 	public String getTitle() {
 		return title;
