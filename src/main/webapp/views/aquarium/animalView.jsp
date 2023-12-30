@@ -16,10 +16,10 @@
 </style>
 
 <div class="table">
-	<div class="row" style="margin:12px 30px">
+	<div class="row" style="margin:3px 0 0 0">
 		<c:forEach items="${list}" var="item" varStatus="idx">
 			<div class="col-md-2">
-				<div class="card rounded" style="margin:10px 0px" onclick="detailGo(${item.animalID},'${item.nickname}')">
+				<div class="card rounded" style="margin:10px 0px" onclick="detailGo(${item.animalID})">
 					<img class="card-img-top animalImg" alt="${item.serverFileName}" src="/photo/cocean/animal/${item.serverFileName}">
 					<div class="card-body">
 						<h5 class="card-title">${item.nickname}</h5>
@@ -59,6 +59,6 @@
 
 
 function detailGo(animalID,nickname){
-	location.href="detail.go?animalID="+animalID+"&nickname="+nickname;
+	location.href="detail.go?animalID="+animalID;
 }
 </script>

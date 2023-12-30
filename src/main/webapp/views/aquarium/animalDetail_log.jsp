@@ -2,13 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <meta charset="UTF-8">
-<%-- <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script> --%>
-<%-- <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>"> --%>
 
 <div id="animalDetailLog">
-	<h2>LOG</h2>
+	<div style="display: flex">
+	<h2>친구들 기록</h2>
 	<input type="month" name="month" value="${month}" onchange="monthchange()"/>
+	</div>
 	<br/>
 	
 	<div>
