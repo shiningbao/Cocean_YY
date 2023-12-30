@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.MultiValueMap;
 
+import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 
@@ -33,5 +34,15 @@ public interface PersonnelDAO {
 	List<HashMap<String, Object>> personnelList();
 
 	List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue);
+
+	List<HashMap<String, Object>> searchName(String searchValue);
+
+	List<HashMap<String, Object>> searchEmployeeID(String searchValue);
+
+	List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption);
+
+	Boolean checkDuplicateEmployeeID(String employeeID);
+
+	void upload(FileDTO dto);
 
 }

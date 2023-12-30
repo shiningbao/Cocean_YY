@@ -1,24 +1,33 @@
 package kr.co.cocean.personnel.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 
 @Service
 public class PersonnelService {
+	private String root = "C:/upload/cocean/";
 	@Autowired PersonnelDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	public int join(HashMap<String, Object> params) {
+	public int join(HashMap<String, Object> params, MultipartFile file, MultipartFile fileSignature) {
 		String dpID = (String) params.get("departmentID");
 		String rsID = (String) params.get("responsibility");
 		logger.info("join 서비스접근 "+ params.get("employeeID"));
@@ -70,11 +79,54 @@ public class PersonnelService {
 		if(params.get("positionID").equals("2")) {
 			params.put("responsibility", "-");
 		}
-		
+		String employeeIDString = (String) params.get("employeeID");
+		int employeeID = Integer.parseInt(employeeIDString);
+		UploadContext(file,employeeID);
+		UploadSgniture(fileSignature,employeeID);
 		
 		return dao.join(params);
 	}
-    public List<String> getBranch() {
+    private void UploadSgniture(MultipartFile fileSignature, int employeeID) {
+    	FileDTO dto = new FileDTO();
+    	String oriFileName = fileSignature.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("signature");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.upload(dto);
+		
+		try {
+			byte[] bytes = fileSignature.getBytes();
+			Path path = Paths.get(root+"personnel/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void UploadContext(MultipartFile file, int employeeID) {
+    	FileDTO dto = new FileDTO();
+    	String oriFileName = file.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("profile");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.upload(dto);
+		
+		try {
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(root+"personnel/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public List<String> getBranch() {
         return dao.getBranch();
     }
 
@@ -107,7 +159,7 @@ public class PersonnelService {
 	    }else if(departmentID == 8) {
 	    	params.put("departmentID", "1-h1-team4");
 	    }else if(departmentID >= 9 && departmentID <= 11) {
-	    	params.put("departmentID", "1-h1-team5");
+	    	params.put("departmentID", "1-h2-team5");
 	    }else if(departmentID == 12) {
 	    	params.put("departmentID", "1-h2-team6");
 	    }else if(departmentID == 13) {
@@ -148,7 +200,17 @@ public class PersonnelService {
 		return dao.personnelList();
 	}
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
+		if(selectedBranchValue.equals("지점")) {
+		}
 		return dao.getSelectOptionBranch(selectedBranchValue);
+	}
+
+	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption) {
+		// TODO Auto-generated method stub
+		return dao.searchPerson(searchValue,selectedOption);
+	}
+	public Boolean checkDuplicateEmployeeID(String employeeID) {
+		return dao.checkDuplicateEmployeeID(employeeID);
 	}
 
 	

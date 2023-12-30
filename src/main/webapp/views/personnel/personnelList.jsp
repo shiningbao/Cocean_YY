@@ -5,6 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+	crossorigin="anonymous"></script>
+	
+<!-- 부트스트랩 자바스크립트 -->
+<script src="/resource/js/bootstrap.min.js"></script>
+<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
+
+<!-- 부트스트랩 CSS/favicon -->
+<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resource/css/modal.css">
 <title>Insert title here</title>
 <style>
 #personnel_head {
@@ -109,8 +122,12 @@ img{
         
         <nav class="navbar navbar" id="search">
             <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="사원명이나 사번을 입력하세요." aria-label="Search">
-              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+           		<select id="emName">
+           			<option value="employeeID">사번</option>
+           			<option value="name">이름</option>
+           		</select>
+              <input class="form-control mr-sm-2" id="inputSearch" type="search" placeholder="사원명이나 사번을 입력하세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" id="psSchBtn" type="button">검색</button>
               
             </form>
           </nav>
@@ -167,7 +184,7 @@ img{
             </button>
           </div>
           <div class="modal-body">
-			<jsp:include page="../personnel/personnel.jsp"></jsp:include>
+ 			<jsp:include page="../personnel/personnel.jsp"></jsp:include>
           </div>
         </div>
       </div>
@@ -175,10 +192,7 @@ img{
 	
 </body>
 <script>
-$('#regModal').on('click',function(){
-	console.log('click');
-})
-$(document).ready(function() {
+
     var tableHTML = '';
 
     // 페이지 로드 시 AJAX를 사용하여 서버에서 지점 목록을 가져옵니다.
@@ -207,29 +221,53 @@ $(document).ready(function() {
             data: { selectedBranchValue: selectedBranchValue },
             success: function(data) {
             	console.log(data);
-
-                 data.forEach(function(item) {
-                     tableHTML += '<tr>';
-                     tableHTML += '<td>' + item.employeeID + '</td>';
-                     tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
-                     tableHTML += '<td>' + item.departmentName + '</td>';
-                     tableHTML += '<td>' + item.rankName + '</td>';
-                     tableHTML += '<td>' + item.positionName + '</td>';
-                     tableHTML += '<td>' + item.status + '</td>';
-                     tableHTML += '<td>' + item.branchName + '</td>';
-                     tableHTML += '</tr>';
-                 });
-
-                 tableHTML += '</tbody>';
-                 $('#personnelList').html(tableHTML);
+            	 fillTable(data);
             },
             error: function(e) {
                 console.error(e);
             }
         });
     });
-});
+	
+    $('#psSchBtn').on('click',function(){
+    	var select = $('select');
+    	var selectedOption = $("#emName option:selected").text();
+    	 
+    	 var searchInput = $('.form-control');
+    	 var searchValue = $('#inputSearch').val();
+    	 console.log(selectedOption);
+    	 console.log(searchValue);
+    		 $.ajax({
+    			 url:'searchPerson.do',
+    			 method:'GET',
+    			 data:{searchValue:searchValue,
+    				 selectedOption:selectedOption},
+    			 success:function(data){
+    				 console.log(data);
+    				 fillTable(data);
+    			 },
+    			 error:function(e){}
+    		 });
+    	 
+    })
+    
+    function fillTable(data) {
 
+    data.forEach(function(item) {
+        tableHTML += '<tr>';
+        tableHTML += '<td>' + item.employeeID + '</td>';
+        tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
+        tableHTML += '<td>' + item.departmentName + '</td>';
+        tableHTML += '<td>' + item.rankName + '</td>';
+        tableHTML += '<td>' + item.positionName + '</td>';
+        tableHTML += '<td>' + item.status + '</td>';
+        tableHTML += '<td>' + item.branchName + '</td>';
+        tableHTML += '</tr>';
+    });
+
+    tableHTML += '</tbody>';
+    $('#personnelList').html(tableHTML);
+}
 
 </script>
 </html>

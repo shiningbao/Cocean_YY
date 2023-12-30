@@ -59,6 +59,32 @@
 		</if>
 		ORDER BY e.employeeID ASC ;
 	</select>
+	
+	<select id="searchPerson">
+		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID =h.hqID 
+		JOIN branch b  ON h.branchID = b.branchID 
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r  ON e.rankID = r.rankID
+		<if test="selectedOption == '이름'">
+			WHERE e.name LIKE #{searchValue}
+		</if>
+		 <if test="selectedOption == '사번'">
+        	WHERE e.employeeID = #{searchValue}
+		 </if>
+		ORDER BY e.employeeID ASC ;
+	</select>
+	
+	<select id="checkDuplicateEmployeeID">
+		select (COUNT(employeeID))  from employee e WHERE employeeID =#{employeeID}
+	</select>
+	
+	<insert id="upload">
+		INSERT INTO file(category, idx, path, serverFileName, oriFileName)
+			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
+	</insert>
 
 
 
