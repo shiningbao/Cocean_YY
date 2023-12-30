@@ -4,8 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -99,6 +102,25 @@ public class TankController {
 		logger.info("params "+params);
 		service.tankSet(params);
 		return "redirect:/tank/detail.go?tankID="+tankID+"&emName="+emName;
+	}
+	
+	@RequestMapping("tank/random")
+	public void recordGenerator() {
+		List<Integer> tankCount = service.tankCount();
+		logger.info("tankList: "+tankCount.toString());
+		Random random = new Random();
+		for (int i = 0; i < tankCount.size(); i++) {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("tankID", tankCount.get(i));
+				for (int j = 0; j < 9; j++) {
+					int randomNumber = random.nextInt(101);
+					map.put("num"+j, randomNumber);
+				}
+				logger.info("map"+map);
+				service.recordData(map);
+			// 이때 insert 실행
+		}
+		
 	}
 	
 }

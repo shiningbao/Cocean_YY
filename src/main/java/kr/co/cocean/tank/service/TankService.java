@@ -76,4 +76,15 @@ public class TankService {
 		return dao.tankAnimal(tankID);
 	}
 
+
+	public List<Integer> tankCount() {
+		return dao.tankCount();
+	}
+
+
+	public void recordData(Map<String, Integer> map) {
+		dao.recordData(map);
+		
+	}
+
 }

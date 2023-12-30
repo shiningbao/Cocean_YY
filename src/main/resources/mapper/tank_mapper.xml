@@ -73,5 +73,15 @@
 				WHERE am.tankID = #{param1} AND am.speciesID = bct.speciesID 
 	</select>
 	
+	<select id="tankCount" resultType="Integer">
+		SELECT tankID FROM tankManagement WHERE tankStatus != '폐쇄'
+	</select>
+	
+	<insert id="recordData" parameterType="map">
+		INSERT INTO tankRecord (tankRecordID, tankID, recordDate,recordTime,recordMercury
+		,recordWaterLevel,recordSalinity,recordPh,recordDo, recordNitrates, recordNitrites, recordAmmonia, recordPhosphates)
+		VALUES (null,#{tankID},curdate(),now(),#{num0},#{num1},#{num2},#{num3},#{num4},#{num5},#{num6},#{num7},#{num8}) 
+	</insert>
+	
 	
 </mapper>

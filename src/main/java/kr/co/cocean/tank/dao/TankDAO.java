@@ -31,4 +31,8 @@ public interface TankDAO {
 
 	List<Map<String, Object>> tankAnimal(int tankID);
 
+	List<Integer> tankCount();
+
+	int recordData(Map<String, Integer> map);
+
 }

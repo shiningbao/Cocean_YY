@@ -179,15 +179,16 @@ label {
 			</tbody>
 		</table>
 	</div>
-	<button type="button" id="tankSubmit" class="btn btn-primary">등록</button>
+	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary">등록</button>
+	<button type="button" id="randomTest" onclick="location.href='random'" class="btn btn-primary">랜덤</button>
 	
 </body>
 <script>
 
 
-$('#tankSubmit').on('click',function(){
-	location.href='write.go';
-});
+// $('#tankSubmit').on('click',function(){
+// 	location.href='write.go';
+// });
 
 </script>
 </html>
