@@ -7,51 +7,51 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
-	#checkBox {
-		display: flex;
-		justify-content: space-around;
-		width: 90%;
-		height: 20%;
-		font-size: 13px;
-		top: 100px;
-		left: 5%;
-		align-items: flex-start;
-		padding-top: 45px;
-		position: absolute;
-	}
+/* 	#checkBox { */
+/* 		display: flex; */
+/* 		justify-content: space-around; */
+/* 		width: 90%; */
+/* 		height: 20%; */
+/* 		font-size: 13px; */
+/* 		top: 100px; */
+/* 		left: 5%; */
+/* 		align-items: flex-start; */
+/* 		padding-top: 45px; */
+/* 		position: absolute; */
+/* 	} */
 	
-	#box1 {
-		position: absolute;
-		height: 50px;
-		padding-right: 450px;
-		z-index: 9999;
-	}
+/* 	#box1 { */
+/* 		position: absolute; */
+/* 		height: 50px; */
+/* 		padding-right: 450px; */
+/* 		z-index: 9999; */
+/* 	} */
 	
-	#box2 {
-		position: absolute;
-		margin-top: 60px;
-		z-index: 9999;
-		padding-right: 450px;
-	}
-	#search {
-		padding-left: 700px;
-	}
+/* 	#box2 { */
+/* 		position: absolute; */
+/* 		margin-top: 60px; */
+/* 		z-index: 9999; */
+/* 		padding-right: 450px; */
+/* 	} */
+/* 	#search { */
+/* 		padding-left: 700px; */
+/* 	} */
 	
-	label {
-		padding-right: 25px;
-		padding-left: 10px;
-	}
+/* 	label { */
+/* 		padding-right: 25px; */
+/* 		padding-left: 10px; */
+/* 	} */
 	
-	#search{
-	    padding-left: 755px;
-	    margin-top: 15px;
-	    position: absolute;
-	}
+/* 	#search{ */
+/* 	    padding-left: 755px; */
+/* 	    margin-top: 15px; */
+/* 	    position: absolute; */
+/* 	} */
 	
-	#search input{
-		z-index: 99999;
+/* 	#search input{ */
+/* 		z-index: 99999; */
 		
-	}
+/* 	} */
 </style>
 </head>
 <body>
@@ -71,50 +71,50 @@
 	    </div>
 		<div id="status">
 		    <div class="form-check form-check-inline">
-		        <input class="form-check-input" type="checkbox" value="정상" id="option3">
+		        <input class="form-check-input" type="checkbox" checked="checked" value="정상" id="option3">
 		        <label class="form-check-label" for="option3">정상</label>
 		    </div>
 		    <div class="form-check form-check-inline">
-		        <input class="form-check-input" type="checkbox" value="질병" id="option4">
+		        <input class="form-check-input" type="checkbox" checked="checked" value="질병" id="option4">
 		        <label class="form-check-label" for="option4">질병</label>
 		    </div>
 		    <div class="form-check form-check-inline">
-		        <input class="form-check-input" type="checkbox" value="격리" id="option5">
+		        <input class="form-check-input" type="checkbox" checked="checked" value="격리" id="option5">
 		        <label class="form-check-label" for="option5">격리</label>
 		    </div>
 		    <div class="form-check form-check-inline">
-		        <input class="form-check-input" type="checkbox" value="폐기" id="option6">
+		        <input class="form-check-input" type="checkbox" checked="checked" value="폐기" id="option6">
 		        <label class="form-check-label" for="option6">폐기</label>
 		    </div>
 	    </div>
     </div>
     <div id="box2">
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="In" id="option7">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="In" id="option7">
 	        <label class="form-check-label" for="option7">무척추</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Ch" id="option8">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Ch" id="option8">
 	        <label class="form-check-label" for="option8">미삭</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Am" id="option9">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Am" id="option9">
 	        <label class="form-check-label" for="option9">양서류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Fi" id="option10">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Fi" id="option10">
 	        <label class="form-check-label" for="option10">어류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Av" id="option11">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Av" id="option11">
 	        <label class="form-check-label" for="option11">조류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Re" id="option12">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Re" id="option12">
 	        <label class="form-check-label" for="option12">파충류</label>
 	    </div>
 	    <div class="form-check form-check-inline">
-	        <input class="form-check-input" type="checkbox" value="Ma" id="option13">
+	        <input class="form-check-input" type="checkbox" checked="checked" value="Ma" id="option13">
 	        <label class="form-check-label" for="option13">포유류</label>
 	    </div>
     </div>
@@ -126,6 +126,7 @@
     </nav>
 </div>
 <input type="text" id="searchName" style="top:500px; position:absolute"/>
+<button id="write">작성</button>
 
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <div class="drawList"></div>
@@ -162,6 +163,8 @@
 	$('#write').on('click',function(){
 		location.href='write.go';
 	});
+	
+	showList()
 	
 	// 전체 체크 시 친구들 빼고 다 체크
 	$('#option1').on('change',function(){

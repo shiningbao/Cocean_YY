@@ -21,7 +21,7 @@ public interface AnimalDAO {
 
 	ArrayList<ClassficationDTO> classficationSearch(String keyword);
 
-	ArrayList<HashMap<String, String>> tankList(int branchID);
+	ArrayList<AnimalDTO> tankList(int branchID);
 
 	void animalWrte(AnimalDTO param);
 
@@ -46,4 +46,6 @@ public interface AnimalDAO {
 	void inchargeInsert(@Param("animalID") int animalID, @Param("insertList") ArrayList<Integer> insertList);
 
 	void statusChange(@Param("animalID") int animalID, @Param("status") String status);
+
+	int logplanDel(int logID);
 }

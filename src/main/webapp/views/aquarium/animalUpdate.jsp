@@ -29,7 +29,9 @@
 		height: 40px;
 		margin: 10px 0;
 	}
-		
+	
+	
+	
 </style>
 
 </head>
@@ -47,29 +49,29 @@
 					<tr>
 						<th>분류</th>
 						<td>
-							<input type="text" id="taxo" onclick="getClassifi()" style="background-color:#DEDEDE" readonly/>
+							<input type="text" id="taxo" onclick="getClassifi()" style="background-color:#DEDEDE" value="${content.taxonomy}" readonly/>
 						</td>
 					</tr>
 					<tr>
 						<th>학명</th>
 						<td>
-							<input type="text" name="speciesID" style="display: none;" readonly/>
-							<input type="text" name="classificationCode" style="display: none;" readonly/>
-							<input type="text" id="scien" onclick="getClassifi()" style="background-color:#DEDEDE" readonly/>
+							<input type="text" name="speciesID" style="display: none;" value="${speciesID.taxonomy}" readonly/>
+							<input type="text" name="classificationCode" style="display: none;" value="${content.classificationCode}" readonly/>
+							<input type="text" id="scien" onclick="getClassifi()" style="background-color:#DEDEDE" value="${content.scientificName}" readonly/>
 						</td>
 					</tr>
 					<tr>
 						<th>국명</th>
-						<td><input type="text" id="common" onclick="getClassifi()" style="background-color:#DEDEDE" readonly/></td>
+						<td><input type="text" id="common" onclick="getClassifi()" style="background-color:#DEDEDE" value="${content.commonName}" readonly/></td>
 					</tr>
 					<tr>
 						<th>애칭</th>
-						<td><input type="text" name="nickname"/></td>
+						<td><input type="text" name="nickname"value="${content.nickname}" /></td>
 					</tr>
 					<tr>
 						<th>코션하우스</th>
 						<td>
-							<input type="text" name="branchID" value="1" style="display: none;" readonly/>
+							<input type="text" name="branchID" style="display: none;" value="${content.branchID}" readonly/>
 							<select name="tankID">
 								<c:forEach items="${tankList}" var="item">
 									<option value="${item.tankID}">${item.tankName}</option>
@@ -79,15 +81,15 @@
 					</tr>
 					<tr>
 						<th>마리 수</th>
-						<td><input type="text" name="individual"/></td>
+						<td><input type="text" name="individual" value="${content.individual}"/></td>
 					</tr>
 					<tr>
 						<th>태어난 날</th>
-						<td><input type="date" pattern="\d{4}-\d{2}-\d{2}" name="birthDate"/></td>
+						<td><input type="date" pattern="\d{4}-\d{2}-\d{2}" name="birthDate" value="${content.birthDate}"/></td>
 					</tr>
 					<tr>
 						<th>들어온 날</th>
-						<td><input type="date" pattern="\d{4}-\d{2}-\d{2}" name="entryDate"/></td>
+						<td><input type="date" pattern="\d{4}-\d{2}-\d{2}" name="entryDate" value="${content.entryDate}"/></td>
 					</tr>
 					<tr>
 						<th>상태</th>
@@ -102,7 +104,7 @@
 					</tr>
 					<tr>
 						<th>세부 정보</th>
-						<td><textarea name="details"></textarea></td>
+						<td><textarea name="details">${content.details}</textarea></td>
 					</tr>
 					<tr>
 						<th>사진</th>
@@ -111,18 +113,23 @@
 					<tr>
 						<th colspan="2">
 							<button type="button">취소</button>
-							<button type="submit">등록</button>
+							<button type="submit">수정</button>
 						</th>
 					</tr>
 				</table>
 			</form>
 		</div>
+		
 
 		<c:import url="/animal/classifi"/>
 
 	</div>
 </body>
+
 <script>
+
+$('select[name="status"]').val('${content.status}').prop("selected",true);
+$('select[name="tankID"]').val('${content.tankID}').prop("selected",true);
 
 // 분류체계 모달 관련
 function drawClassifi(sp,ta,cl,sc,co){
@@ -132,9 +139,6 @@ function drawClassifi(sp,ta,cl,sc,co){
 	$('#scien').val(sc);
 	$('#common').val(co);	
 }
-
-// date 기본값 지정 : 오늘 날짜
-$('input[type="date"]').val(new Date().toISOString().substring(0, 10));
 
 resizeWidth();
 
@@ -155,8 +159,6 @@ function resizeWidth(){
 function getClassifi(){
 	$("#classifiModal").modal('show');
 }
-
-
 
 </script>
 

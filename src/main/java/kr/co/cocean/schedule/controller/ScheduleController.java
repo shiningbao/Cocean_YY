@@ -1,11 +1,13 @@
 package kr.co.cocean.schedule.controller;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,7 +67,6 @@ public class ScheduleController {
 		LocalDateTime endDateTime = LocalDateTime.parse(end+ " "+ endTime, formatter);
 		dto.setStart(startDateTime.toString());
 		dto.setEnd(endDateTime.toString());
-		
 		if("scheduleWrite".equals(requestType)) {
 			logger.info("일정등록요청@@@@@@@@@@@@@");
 			dto.setBackgroundColor("#18CCA8");
@@ -118,38 +120,81 @@ public class ScheduleController {
 	
 	@PostMapping(value="/schedule/addCalender.do")
 	@ResponseBody
-	public HashMap<String, Object> addCallender(@RequestParam String loginEmployeeID , @RequestParam String nodeText, @RequestParam String employeeID) {
+	public int addCallender(@RequestParam String loginEmployeeID , @RequestParam String nodeText, @RequestParam String employeeID) {
 		
-		int row = service.addCalender(loginEmployeeID,nodeText);
-		 
-		List<HashMap<String,Object>> addInterestCallender = service.addInterestCallender(employeeID);
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		result.put("addInterestCallender", addInterestCallender); 
+		int firstIndex =nodeText.indexOf(' ');
 		
-		return result; 
+		String nodeName = nodeText.substring(0,firstIndex);
+
+		
+		return service.addCalender(loginEmployeeID,nodeName,employeeID); 
 
 	}
 	
-	@PostMapping(value="/schedule/showInterestCalendar.do")
+	@PostMapping(value="/schedule/getAddCalender.do")
 	@ResponseBody
-	public List<String> showInterestCalendar(@RequestParam String loginEmployeeID){
+	public List<HashMap<String, Object>> getAddCaldender(@RequestParam String loginEmployeeID){
+		List<HashMap<String,Object>> addInterestCallender = service.addInterestCallender(loginEmployeeID);
 		
-		List<String> showInterestCalendar = service.showInterestCalendar(loginEmployeeID);
-		return showInterestCalendar;
+		
+		return addInterestCallender;
 	}
 	
-
 	
-//	@RequestMapping(value="/schedule/facility.do")
-//	public ModelAndView facilityWrite(ScheduleDTO dto, @Request) {
-//		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//		LocalDateTime startDateTime = LocalDateTime.parse(start+ " "+ startTime, formatter);
-//		LocalDateTime endDateTime = LocalDateTime.parse(end+ " "+ endTime, formatter);
-//		dto.setStart(startDateTime.toString());
-//		dto.setEnd(endDateTime.toString());
-//		return mav;
-//	}
+	 
+	@PostMapping(value="/schedule/getAddCalList.do")
+	@ResponseBody
+	public HashMap<String, Object> getAddCalList(@RequestParam String val,@RequestParam String backgroundColor){
+		
+		List<HashMap<String,Object>> eventAddList = service.getAddCalList(val,backgroundColor);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("eventAddList", eventAddList);
+		return result;
+	}
+	
+	
+	@RequestMapping(value="/schedule/getDetailWriteName.do")
+	@ResponseBody
+	public String getDetailWriteName(@RequestParam String id) {
+		String name = service.getDetailWriteName(id);
+		return name;
+	}
+	
+	@PostMapping(value="/schedule/delMyCal.do")
+	@ResponseBody
+	public ModelAndView delMyCal(@RequestParam String id ) {
+		int  row = service.delMyCal(id);
+		
+		
+		return new ModelAndView("redirect:/schedule/schedule.go");
+	}
+	@PostMapping(value="/schedule/interestDelCalendar.do")
+	@ResponseBody
+	public String interestDelCalendar(@RequestParam String calendarID) {
+		
+		service.interestDelCalendar(calendarID);
+		return "success";
+	}
+	
+	@PostMapping(value="/schedule/updateCal.do")
+	@ResponseBody
+	public String updateCal(@RequestParam HashMap<String, Object> dataToSend) {
+		
+		String startDateStr = (String) dataToSend.get("startDate");
+		String startTimeStr = (String) dataToSend.get("startTime");
+		String endDateStr = (String) dataToSend.get("endDate");
+		String endTimeStr = (String) dataToSend.get("endTime");
+
+		
+		dataToSend.put("start", startDateStr +" "+startTimeStr);
+		dataToSend.put("end", endDateStr+" "+endTimeStr);
+		
+		logger.info("data =="+dataToSend);
+		service.updateCal(dataToSend);
+		
+		
+		return "success";
+	}
 	
 	
 		

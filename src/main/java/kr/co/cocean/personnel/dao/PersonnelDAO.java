@@ -1,5 +1,6 @@
 package kr.co.cocean.personnel.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,5 +29,9 @@ public interface PersonnelDAO {
 	List<String> getHqID(String hqID);
 
 	List<String> getDepartmentText(String departmentText);
+
+	List<HashMap<String, Object>> personnelList();
+
+	List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue);
 
 }

@@ -1,5 +1,6 @@
 package kr.co.cocean.personnel.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -142,6 +143,12 @@ public class PersonnelService {
 	    }
 	    dao.joinTree(params);
 	    logger.info("Tree구조확인 params" + params);
+	}
+	public List<HashMap<String, Object>> personnelList() {
+		return dao.personnelList();
+	}
+	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
+		return dao.getSelectOptionBranch(selectedBranchValue);
 	}
 
 	

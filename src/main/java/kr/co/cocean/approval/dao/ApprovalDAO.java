@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.cocean.approval.dto.ApprovalDTO;
+import kr.co.cocean.approval.dto.LineDTO;
 @Mapper
 public interface ApprovalDAO {
 
@@ -30,6 +31,8 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID);
 
 	void saveApprovalLine(int employeeID, String category);
+
+	void approvalWrite(List<LineDTO> lastLineInfoList, int idx);
 
 
 

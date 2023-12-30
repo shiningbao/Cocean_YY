@@ -121,6 +121,48 @@ public class PersonnelController {
 		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
 		return mav;
 	}
+	
+	@RequestMapping(value="/personnel/personnelList.go")
+	public ModelAndView personnelList() {
+		
+		ModelAndView mav = new ModelAndView("personnel/personnelList");
+		 List<HashMap<String, Object>> list = service.personnelList();
+		 for (HashMap<String, Object> hashMap : list) {
+			 if(hashMap.get("departmentName").equals("-가산")) {
+				 hashMap.put("departmentName", "-");
+			 }
+			 if(hashMap.get("departmentName").equals("-제주")) {
+				 hashMap.put("departmentName", "-");
+			 }
+		}
+		 mav.addObject("list", list);
+		logger.info("list=="+list);
+		return mav;
+	}
+	
+	@RequestMapping(value="/personnel/detail.go")
+	public ModelAndView detail(@RequestParam String employeeID) {
+		logger.info("employeeID" +employeeID);
+		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
+		
+		return mav;
+	}
+	
+	@GetMapping(value="/personnel/getSelectOptionBranch.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getSelectOptionBranch(@RequestParam String selectedBranchValue){
+		List<HashMap<String, Object>> list = service.getSelectOptionBranch(selectedBranchValue);
+		for (HashMap<String, Object> hashMap : list) {
+			 if(hashMap.get("departmentName").equals("-가산")) {
+				 hashMap.put("departmentName", "-");
+			 }
+			 if(hashMap.get("departmentName").equals("-제주")) {
+				 hashMap.put("departmentName", "-");
+			 }
+		}
+		return list;
+	}
+	
 
 	
 }
