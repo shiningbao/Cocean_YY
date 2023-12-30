@@ -33,7 +33,7 @@
 	<div class="animalContent">
 		<h1>코션친구들</h1>
 		<div class="animalDetail">
-			<h2 id="nick">${nickname}</h2>
+			<h2 id="nick"></h2>
 			<ul style="display: flex;">
 				<li style="margin-right: 40px" id="base">기본 정보</li>
 				<li style="margin-right: 40px" id="log">일지</li>
@@ -92,7 +92,7 @@ function drawContent(data){
 }
 
 function drawStatus(status){
-	var statusNickname = '('+status + ')   ' + nickname;
+	var statusNickname = '('+status + ') ' + nickname;
 	$('#nick').html(statusNickname);
 }
 
