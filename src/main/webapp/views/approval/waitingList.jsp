@@ -53,7 +53,7 @@ table,th,td{
 		<c:forEach items="${list}" var="list">
 		<tr>
 			<td>${list.draftDate}</td>
-			<td>일반</td>
+			<td>${list.category }</td>
 			<td><a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a></td>
 			<td>${list.approvalStatus}</td>
 			<td>${list.name}</td>

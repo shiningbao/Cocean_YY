@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
+import kr.co.cocean.approval.dto.formDTO;
 import kr.co.cocean.mypage.dto.LoginDTO;
 
 @Service
@@ -33,7 +34,7 @@ public class ApprovalService {
 	
 	@Autowired ApprovalDAO dao;
 
-	public ArrayList<ApprovalDTO> list() {
+	public ArrayList<formDTO> list() {
 		
 		return dao.list();
 	}
@@ -53,7 +54,7 @@ public class ApprovalService {
 		return mav;
 	}
 
-	public ArrayList<ApprovalDTO> draftInfo(int employeeID) {
+	public ApprovalDTO draftInfo(int employeeID) {
 		return dao.draftInfo(employeeID);
 	}
 	
@@ -64,24 +65,29 @@ public class ApprovalService {
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String title = param.get("title");
+		String titleID = param.get("titleID");
+		String lastOrder = param.get("lastOrder");
 		logger.info(title);
 		dto.setEmployeeID(employeeID);
 		dto.setPublicStatus(publicStatus);
 		dto.setTempSave(tempSave);
 		dto.setDocumentNo(title);
+		dto.setTitleID(titleID);
+		
 		logger.info("params:{}",param);
 		
-		// dao.write(dto);
+		// dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
 		
-		if(files[0].getSize()!=0) {
+		if(files!=null) {
 		for (MultipartFile file : files) {
 			upload(file,idx);
 		}}
 		String content = param.get("content");
+	
 
-		// dao.writeWorkDraft(title,content,idx);
-		// dao.approvalWrite(lastLineInfoList,idx);
+		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 		
 		// dao.writeAttendanceDraftContent(param);
 		
@@ -97,7 +103,8 @@ public class ApprovalService {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
 			Files.write(path, bytes);
-			// dao.writeFile(idx,oriFileName,newFileName);
+			// dao.writeFile(idx,oriFileName,newFileName); // file테이블에 insert
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -112,13 +119,57 @@ public class ApprovalService {
 		return dao.waitingList(employeeID);
 	}
 
-	public ArrayList<ApprovalDTO> draftDetail(int idx, int employeeID) {
-		return dao.draftDetail(idx,employeeID);
+	public ApprovalDTO draftDetail(int idx) {
+		return dao.draftDetail(idx);
 	}
 
 
 	public void saveApprovalLine(int employeeID, String category) {
 		dao.saveApprovalLine(employeeID,category);
+		
+	}
+
+	public formDTO formTitle(int titleID) {
+		return dao.formTitle(titleID);
+	}
+
+	public ArrayList<ApprovalDTO> lineList(int idx,int employeeID) {
+		return dao.lineList(idx,employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> signList(String idx) {
+		return dao.signList(idx);
+	}
+
+	public ArrayList<ApprovalDTO> agrRef(int idx, int employeeID) {
+		return dao.agrRef(idx,employeeID);
+	}
+	
+	public ArrayList<ApprovalDTO> fileList(int idx) {
+		return dao.fileList(idx);
+	}
+
+	public void approval(Map<String, String> param) {
+		dao.approval(param);
+	}
+
+	public void rejectDraft(Map<String, String> param) {
+		dao.rejectDraft(param);
+		
+	}
+
+	public void rejectApp(Map<String, String> param) {
+		dao.rejectApp(param);
+		
+	}
+
+	public void approveDraft(Map<String, String> param) {
+		dao.approveDraft(param);
+		
+	}
+
+	public void approveApp(Map<String, String> param) {
+		dao.approveApp(param);
 		
 	}
 
