@@ -23,34 +23,132 @@ e.rankID = r.rankID ;
 </select>
  -->
 
+<!-- 
 
-<insert id="insert" parameterType="hashmap">
-		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
-values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber});
-	</insert>
 
  <delete id="del">
       DELETE FROM personalAddressBook WHERE addressNumber=#{param1};
    </delete>
 
 
-	
-<select id="interioraddressBooklist" resultType="outaddress">
-SELECT d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID ;
-</select>
-
-<select id="list" resultType="outaddress">
+<select id="list" resultType="address">
 
 		SELECT addressNumber, name, positionLevel,rankLevel,departmentName,phoneNumber 
 		FROM personalAddressBook
 	</select>
+	
+<select id="inlist" resultType="inaddress">
+		SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.status = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID 
+	</select>	
+ 
 
+	
+	
 
+<update id="update" parameterType="hashmap">
+		UPDATE personalAddressBook SET
+			name = #{name}
+			,positionLevel = #{positionLevel}
+			,rankLevel = #{rankLevel}
+			,departmentName = #{departmentName}
+			,phoneNumber = #{phoneNumber}
+		WHERE addressNumber =#{param1} 
+	</update>
+	-->
+
+	<select id="list" resultType="outaddress">
+		SELECT 
+			p.addressNumber, 
+			p.name, 
+			p.positionLevel , 
+			p.rankLevel ,
+			p.departmentName ,
+			p.phoneNumber 
+		FROM personalAddressBook p ORDER BY addressNumber asc
+	</select>
+	
+	
+	<delete id="delete">
+		DELETE FROM personalAddressBook WHERE addressNumber = #{param1}
+	</delete>
+	
+	<!--  검색 에러 -->
+	<select id="namesearch"  resultType="outaddress">	
+
+		SELECT * FROM personalAddressBook WHERE name IN
+			<foreach collection="list" item="item" open="(" separator="," close=")">
+				 #{item}
+			</foreach>
+					
+	</select>	
+	
+	<insert id="insert" parameterType="hashmap">
+		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
+values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber})
+	</insert>
+	
 	<select id="detail" resultType="outaddress">
 		SELECT * FROM 
 			personalAddressBook WHERE addressNumber = #{param1}
+	</select>
+	
+	
+	<update id="update" parameterType="map">
+	
+	UPDATE personalAddressBook 
+		<set>
+			<if test="!name.equals('')">name = #{name},</if>
+			<if test="!positionLevel.equals('')">positionLevel = #{positionLevel},</if>
+			<if test="!departmentName.equals('')">departmentName = #{departmentName}</if>
+			<if test="!rankLevel.equals('')">rankLevel = #{rankLevel}</if>
+			<if test="!phoneNumber.equals('')">phoneNumber = #{phoneNumber}</if>
+		</set>
+		WHERE addressNumber = #{addressNumber}
+	</update>
+	<!--  수정 -->
+	<update id="outaddressupdate" parameterType="hashmap">
+     	UPDATE personalAddressBook SET name=#{name}, positionLevel=#{positionLevel}, rankLevel=#{rankLevel}, 
+	departmentName=#{departmentName},phoneNumber=#{phoneNumber}
+     		WHERE addressNumber=#{addressNumber}
+    </update>
+	
+	
+	
+	
+	<select id="inaddress" resultType="inaddress" >
+	
+	SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.employeeID is not null AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID 
+	
+	</select>
+
+<!--  내부서치 -->
+<select id="insearch" parameterType="list" resultType="inaddress">	
+    SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName
+    FROM employee e, department d, `position` p, `rank` r
+    WHERE e.departmentID = d.departmentID AND e.positionID = p.positionID AND e.rankID = r.rankID
+        AND e.rankID IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+</select>
+	
+	
+	
+	
+	<!-- 수정페이지 접속 리스트 -->
+	<select id="outupdate" resultType="outaddress">
+		SELECT * FROM 
+			personalAddressBook WHERE addressNumber = #{param1}
+	</select>
+	
+	<select id="myInfo" resultType="mypage">
+	SELECT e.name, e.employeeID ,e.phoneNumber, d.departmentName, p.positionName,r.rankName,e.remainingAnnualLeave s  FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.employeeID=#{param1}  AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID
 	</select>
 
 </mapper>

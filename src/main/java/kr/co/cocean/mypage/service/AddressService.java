@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.mypage.dao.AddressDAO;
 import kr.co.cocean.mypage.dto.InaddressDTO;
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.mypage.dto.OutAddressDTO;
 
 @Service
@@ -39,18 +40,8 @@ public class AddressService {
       return cnt;
    }
    //이름 검색
-
-   public ModelAndView namesearch(List<String> name) {
-      logger.info("서비스 시작");
-      ModelAndView mav = new ModelAndView();
-      ArrayList<OutAddressDTO> list = dao.namesearch(name);
-      logger.info("검색중");
-      mav.addObject("list", list);
-      logger.info("list :" +list);
-      mav.setViewName("mypage/outsideaddressBook");
-      logger.info("뷰접속");
-      return mav;
-   }
+   
+  
    
    
    public String outsidejoin(HashMap<String, Object> params) {
@@ -78,7 +69,7 @@ public class AddressService {
    //내부 검색
    public ModelAndView insearch(List<String> inname) {
       ModelAndView mav = new ModelAndView();
-      ArrayList<InaddressDTO> list = dao.insearch(inname);
+      ArrayList<LoginDTO> list = dao.insearch(inname);
       mav.addObject("list", list);
       mav.setViewName("list");
       return mav;
@@ -91,15 +82,18 @@ public class AddressService {
       return dao.outupdate(addressNumber);
    }
 
-   public void outsideupdate(OutAddressDTO dto) {
-      dao.outsideupdate(dto);
-      
+
+   //수정버튼
+   public void outaddressupdate(OutAddressDTO dto) {
+	   logger.info("서비스 도착");
+	   dao.outaddressupdate(dto);      
    }
 
-   public void outaddressupdate(OutAddressDTO dto) {
-      // TODO Auto-generated method stub
-      
-   }
+   //검색
+public HashMap<String, Object> namesearch(String name) {
+	
+	return dao.namesearch(name);
+}
 
    
    

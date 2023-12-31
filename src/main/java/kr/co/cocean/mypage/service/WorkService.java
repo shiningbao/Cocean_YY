@@ -19,6 +19,7 @@ public class WorkService {
 	
 	@Autowired WorkDAO dao;
 
+	
 	public ArrayList<OutAddressDTO> work() {
 		
 		return dao.work();

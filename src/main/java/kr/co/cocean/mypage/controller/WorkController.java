@@ -1,5 +1,8 @@
 package kr.co.cocean.mypage.controller;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.co.cocean.mypage.dto.OutAddressDTO;
 import kr.co.cocean.mypage.dto.WorkDTO;
@@ -23,11 +27,16 @@ public class WorkController {
 	@Autowired WorkService service;
 	
 	@GetMapping(value="mypage/work")
-	public String work(Model model,HttpSession session) {		
+	public String work(Model model,HttpSession session) {	
+		logger.info("출/퇴근 접속");
 		ArrayList<OutAddressDTO> list = service.work();
 		model.addAttribute("list",list);
+		logger.info("출/퇴근 서비스");
 		return "mypage/work";
 	}
 	
+	
+	
+
 	
 }

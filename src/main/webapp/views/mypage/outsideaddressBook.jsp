@@ -11,50 +11,39 @@ table, th, td{
    padding: 5px 10px;
 }
 
-*{
-  margin:0; padding:0;
-  font-size:15px; 
-  line-height:1.3;
-}
-ul{list-style:none;}
-.tabmenu{ 
-  max-width:600px; 
-  margin: 0 auto; 
-  position:relative; 
-}
-.tabmenu ul{
-  position: relative;
-}
-.tabmenu ul li{
-  display:  inline-block;
-  width:33.33%; 
-  float:left;  
-  text-align:center; 
-  background :#f9f9f9;
-  line-height:40px;
-}
-.tabmenu label{
-  display:block;
-  width:100%; 
-  height:40px;
-  line-height:40px;
-}
-.tabmenu input{display:none;}
-.tabCon{
-  display:none; 
-  width: 100%;
-  text-align:left; 
-  padding: 20px;
-  position:absolute; 
-  left:0; top:40px; 
-  box-sizing: border-box; 
-  border : 5px solid #f9f9f9;
-}
-.tabmenu input:checked ~ label{
-  background:#ccc;
-}
-.tabmenu input:checked ~ .tabCon{
-  display:block;
+html,body {width:100%;  }
+body,div,ul,li{margin:0; padding:0;}
+ul,li {list-style:none;}
+
+
+/*tab css*/
+.tab{float:left; width:1200px; height:600px; overflow: auto;}
+.tabnav li{display: inline-block;  height:46px; text-align:center; border-right:1px solid #ddd;}
+.tabnav li a:before{content:""; position:absolute; left:0; top:0px; width:100%; height:3px; }
+.tabnav li a.active:before{background:#7ea21e;}
+.tabnav li a.active{border-bottom:1px solid #fff;}
+.tabnav li a{ position:relative; display:block; background: #f8f8f8; color: #000; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px;}
+.tabnav li a:hover,
+.tabnav li a.active{background:#fff; color:#7ea21e; }
+
+
+.outaddress{
+position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  overflow: auto;
+} 
+
+.inaddress{
+position: absolute;
+  top: 90%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 50px;
 }
 
 </style>
@@ -63,24 +52,26 @@ ul{list-style:none;}
 <body>
 
 
+<jsp:include page="../side.jsp"></jsp:include>
 
 
-   
-   
 
-   
-   
-    
-    
-    <!-- 외부 검색 -->
+<div class="tab">
+<!-- 외부검색 -->
+    <ul class="tabnav">
+      <li><a href="#tab01">탭1</a></li>
+      <li><a href="#tab02">탭2</a></li>
+    </ul>
+    <div class="tabcontent">
+      <div id="tab01">
 
    <input type="text" name="name" placeholder="이름을 입력해주세요."/>
    <button id="search">검색</button>
     
     
     <button onclick="del()">삭제</button>
-    <input id="outsidejoin" type="button" value="주소록 저장"/>
-   <table>
+    <input id="outsidejoin" type="button" value="주소록 추가"/>
+   <table class="outaddress">
       <thead>
       <tr>
          <th><input type="checkbox" id="all"/></th>
@@ -96,30 +87,79 @@ ul{list-style:none;}
       <tbody id="list">      
       </tbody>      
    </table>
+	</div>
+	
+	
+      <div id="tab02">
+       	<form action="insearch" method="get">
+<input type="text" name="inname" placeholder="이름을 입력해주세요."/>
+	<button id="search">검색</button>
+</form>
 
-    
- 
+	<table class="inaddress">
+		<tr>	
+			<th>이름</th>
+			<th>전화번호</th>
+			<th>직급</th>
+			<th>직책</th>
+			<th>부서</th>
+		</tr>	
+		<c:if test="${list.size()==0}">
+		<tr><td colspan="5">게시물이 존재하지 않습니다.</td></tr>
+		</c:if>
+		<c:forEach items="${list}" var="inaddress">
+		<tr>
+			<td>${inaddress.name}</a></td>
+			<td>${inaddress.phoneNumber}</td>
+			<td>${inaddress.rankName}</td>
+			<td>${inaddress.positionName}</td>
+			<td>${inaddress.departmentName}</td>
+		</tr>
+		</c:forEach>
+	</table>
+      
+     
+      </div>
+    </div>
+  </div>
+
 
 </body>
 <script>
+listCall();
+
+
+//탭버튼 전환
+$(function(){
+	  $('.tabcontent > div').hide();
+	  $('.tabnav a').click(function () {
+	    $('.tabcontent > div').hide().filter(this.hash).fadeIn();
+	    $('.tabnav a').removeClass('active');
+	    $(this).addClass('active');
+	    return false;
+	  }).filter(':eq(0)').click();
+	  });
+
+
+
+
+
 var msg = "${msg}";
 if(msg != ""){
    alert(msg);
 }
 
-listCall();
 
 
-/*
-   function selectAll(selectAll)  {
-        const checkboxes 
-             = document.getElementsByName('chk');
-        
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = selectAll.checked;
-        })
-      }
-*/      
+
+//내부검색
+
+
+
+
+
+
+     
 
 $('#outsidejoin').on('click',function(){
    location.href='./outsidejoin';
@@ -211,7 +251,7 @@ function drawList(list){
    
 }
 
-
+//외부 검색
 $('#search').on('click',function(){
    var $name = $('input[name="name"]').val();
    console.log($name);
@@ -222,14 +262,17 @@ $('#search').on('click',function(){
       data:{"name":$name},
       dataType:'json',
       success:function(data){
-         drawList(data.list);
+    	  console.log(data);
+         drawList(data);
       },
       error:function(e){
          console.log(e);
       }
    });   
-   listCall();
+ 
 });
+
+
 
 
 
