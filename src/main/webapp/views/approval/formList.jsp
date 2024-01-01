@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -41,6 +43,12 @@ table,th,td{
 		<input type="search" name="keyword" placeholder="문서양식을 검색하세요"/>
 		<button class="btn btn-primary">검색</button>
 	</form>
+	
+	<% 
+   Date myDate = new Date();
+   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+   String formattedDate = dateFormat.format(myDate);
+	%>
 		
 	<table id="formTable">
 		<tr id="formTableHead">
@@ -50,7 +58,7 @@ table,th,td{
 		<c:forEach items="${list}" var="form">
 		<tr>
 			<td>${form.category}</td>
-			<td><a href="writeDraft.go?title=${form.title}">${form.title}</a></td>
+			<td><a href="writeDraft.go?titleID=${form.titleID}&date=<%= formattedDate %>">${form.formTitle}</a></td>
 		</tr>	
 		</c:forEach>
 	</table>

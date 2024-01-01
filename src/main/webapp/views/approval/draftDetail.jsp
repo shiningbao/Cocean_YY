@@ -26,8 +26,18 @@ button{
 	margin : 5px 0;
 }
 
+#approvalLine{
+	font-size : 10px;
+	
+}
+
+#approvalLine, #approvalLine th, #approvalLine td {
+  border: none;
+}
+
 #approvalSignature{
 	margin-left : 20px;
+	width : 44%;
 }
 
 #approvalSignature td{
@@ -35,7 +45,7 @@ button{
 }
 
 #workDraftContent{
-	width : 50%;
+	width : 99%;
 }
 
 #attendanceDraftContent{
@@ -58,6 +68,65 @@ button{
 	width : 840.8px;
 }
 
+.topTitle{
+	position: absolute;
+    width: 50%;
+    top: 12%;
+    font-size: 30px;
+    left: 18%;
+}
+
+#contentLine{
+	margin: 14px;
+    padding: 6% 2% 2% 2%;
+    border: 5px solid #e8e8e8;
+    width: 60%;
+    height: 93%;
+    position: absolute;
+    left: 17%;
+    top: 17%;
+}
+
+#formTitle{
+	position: absolute;
+    width: 40%;
+    text-align: center;
+    top: -18%;
+    font-size: 41px;
+    right: 29%;
+}
+
+#bottom{
+	position: absolute;
+    left: 19%;
+    bottom: -29%;
+}
+
+#rightContainer{
+	display: flex;
+    flex-direction: column;
+    width: 22%;
+    position: absolute;
+    right: 0%;
+    top: 19%;
+}
+
+#contentContainer{
+	position: absolute;
+    width: 94%;
+    height: 83%;
+    top: 20%;
+}
+
+#approvalLine, #approvalLine th, #approvalLine td {
+  border: none;
+}
+
+.modal-content{
+	width: 94%;
+    height: 53%;
+	/* overflow-y: auto; */
+}
 
 
 </style>
@@ -70,9 +139,44 @@ button{
 <script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
 <!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
 
-<c:forEach items="${list}" var="list">
+
 <div id="container">
-<div id="detailInfo" style="display: flex;">
+<div class="modal fade" id="opinion" tabindex="-1" role="dialog"
+		aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 모달창 제목 -->
+					<h5 class="modal-title"></h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				<form action="approval.do" method="post"><!-- 입력폼 -->
+	              <div class="form-group">
+					<textarea name="opinion" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
+	              </div>
+	              <div class="modal-footer">
+	                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                <button type="submit" class="btn btn-primary"></button>
+	              </div>
+	                <input type="hidden" value="${loginId}" name="loginId">
+					<input type="hidden" value="${list.idx}" name="idx">
+					<input type="hidden" id="approvalAction" name="action" value="">
+                </form>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="topTitle">
+<h2>결재</h2>
+</div>
+<div id="contentLine">
+<div id="contentContainer">
+<div id="formTitle">${list.formTitle}</div>
+<div id="detailInfoTop" style="display: flex;">
 		<table id="detailInfo">
 			<tr>
 			    <th>상신자</th>
@@ -90,34 +194,61 @@ button{
 		
 		<table id="approvalSignature">
 			 <tr>
-		        <td rowspan="3" style="width: 20px; ">상신</td>
-		        <td style="width: 80px; font-size:13px; padding : 0;">${draft.rankName}</td>
+		        <td rowspan="3" style="width: 10%; ">상신</td>
+		        <td style="width: 50%; font-size:13px; padding : 0;">${list.rankName}</td>
 		    </tr>
 		    <tr>
-		        <td style="width: 80px; font-size:10px; vertical-align: bottom;">${draft.name}</td>
+		        <td style="width: 50%; font-size:10px;">${list.name}</td>
 		    </tr>
 		    <tr>
-		        <td style="width: 80px;"></td>
+		        <td style="width: 50%;">${list.draftDate}</td>
 		    </tr>
 		</table>
 	</div>
-</div>	
+
 
 
 <br/>
 
-<%-- <c:if test="${title eq '업무기안서'}"> --%>
+<c:if test="${list.formTitle eq '업무기안서'}">
 <table id="workDraftContent">
+	
+	<tr>
+	    <th>합의자</th>
+	    <c:forEach items="${agrRef}" var="agr">
+	    <c:if test="${agr.category eq '합의'}">
+	    <td>
+	    <label>${agr.hqName}</label>
+	    <label>${agr.departmentName}</label>
+	    <label>${agr.rankName}</label>
+	    <label>${agr.name}</label>
+	    </td>
+	    </c:if>
+	    </c:forEach>
+	</tr>
+	<tr>
+	    <th>참조자</th>
+	    <c:forEach items="${agrRef}" var="ref">
+	    <c:if test="${ref.category eq '참조'}">
+	    <td>
+	    <label>${ref.hqName}</label>
+	    <label>${ref.departmentName}</label>
+	    <label>${ref.rankName}</label>
+	    <label>${ref.name}</label>
+	    </td>
+	    </c:if>
+	    </c:forEach>
+	</tr>
 	<tr>
 		<th>제목</th>
 			<td>${list.title}</td>
 		</tr>
 		<tr>
-			<td colspan="2">${list.content}</td>
+			<td colspan="2" style="height:40%;">${list.content}</td>
 	</tr>
 </table>
-</c:forEach>
-<%-- </c:if> --%>
+
+</c:if>
 
 <%-- <c:if test="${title eq '휴가신청서'}">
 <table id="attendanceDraftContent">
@@ -162,11 +293,47 @@ button{
 </table>
 </c:if> --%>
 <br/>
-<input type="button" value="결재" onclick="save(true)"/>
-<input type="button" value="반려" onclick="save(false)"/>
-<input type="button" value="취소"/>
-
-
+<label>첨부파일 : 
+<c:choose>
+        <c:when test="${not empty fileList}">
+            <c:forEach items="${fileList}" var="file">
+                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            없음
+        </c:otherwise>
+    </c:choose>
+</label>
+</div>
+</div>
+<div id="bottom">
+<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
+<input type="button" value="반려" data-toggle="modal" data-target="#opinion"/>
+<input type="button" value="결재" data-toggle="modal" data-target="#opinion"/>
+</div>
+<div id="rightContainer">
+	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+	<hr/>
+		<table id="approvalLine">
+			<tr>
+				<td>상신</td>
+				<td>${list.hqName}/${list.departmentName}</td>
+				<td>${list.rankName}</td>
+				<td>${list.name}</td>
+			</tr>
+			<c:forEach items="${lineList}" var="lL">
+			<tr>
+				<td>결재</td>
+				<td>${lL.hqName}/${lL.departmentName}</td>
+				<td>${lL.rankName}</td>
+				<td>${lL.name}</td>
+			</tr>	
+			</c:forEach>
+		</table>
+	</div>
+	</div>
+</div>	
 
 
 
@@ -176,7 +343,82 @@ button{
 
 <script>
 
+$('input[value="결재"]').click(function () {
+    updateModalContent('approve');
+    $('#approvalAction').val('결재');
+});
 
-</script>
+$('input[value="반려"]').click(function () {
+    updateModalContent('reject');
+    $('#approvalAction').val('반려');   
+});
+
+
+function updateModalContent(action) {
+    var modalTitle, modalButtonText;
+
+    if (action === 'approve') {
+        modalTitle = '결재하기';
+        modalButtonText = '결재';
+    } else if (action === 'reject') {
+        modalTitle = '반려하기';
+        modalButtonText = '반려';
+    }
+    $('.modal-title').text(modalTitle);
+    $('.modal-footer button[type="submit"]').text(modalButtonText);
+    
+}
+
+$('.modal-footer button[type="submit"]').click(function(){
+	if($('.modal-footer button[type="submit"]').text()=='결재'){
+		var msg = "결재하시겠습니까?";
+		    if (window.confirm(msg)) {
+		        $('form').submit();
+		    } else {
+	    }
+	}else{
+		var msg = "반려하시겠습니까?";
+		    if (window.confirm(msg)) {
+		        $('form').submit();
+		    } else {
+	    }
+	}
+});
+
+var loginId = $('input[name="loginId"]').val()
+var idx = $('input[name="idx"]').val()
+// console.log(loginId);
+// console.log(idx); 
+
+ $(document).ready(function () {
+     $.ajax({
+         url: "drawSign",
+         type: "GET",
+         data:{'loginId':loginId,'idx':idx},
+         success: function (data) {
+        	 var signList = data.signList;
+        	 signList.forEach(function(item,idx){
+        		 approvalSignature(item);
+        	 });
+             
+         },
+         error: function (e) {
+             console.log(e);
+         }
+     });
+ });
+
+
+function approvalSignature(item){
+	
+	var frLastTd=$('#approvalSignature tr:first td:last');
+    var scLastTd=$('#approvalSignature tr:odd td:last');
+    var lastTd=$('#approvalSignature td:last');
+    
+    $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + item.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" +item.rankName+ "</td>").insertAfter(frLastTd);
+    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'>" +item.name + "</td>").insertAfter(scLastTd);
+    $("<td style='width: 38%;'><input type='hidden' class='empID' value='" + item.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+}
+ </script>
 </body>
 </html>

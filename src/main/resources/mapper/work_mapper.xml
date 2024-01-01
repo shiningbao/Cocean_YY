@@ -5,8 +5,10 @@
 <mapper namespace="kr.co.cocean.mypage.dao.WorkDAO">
 <select id="work" resultType="work">
 SELECT workDate, workID,employeeID,
-DATE_FORMAT(gowork,'%H:%i:%s'),date_format(leavework,'%H:%i:%s')from work
+gowork,leavework from work
 </select>
+
+
 
 
 

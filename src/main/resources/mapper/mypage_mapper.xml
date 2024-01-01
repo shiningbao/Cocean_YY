@@ -12,7 +12,10 @@ e.rankID = r.rankID ;
 
 </select>
 
+
+
 <!-- 수정 -->
+<!-- 
 	<select id="attendanceDraft" resultType="map">
 		SELECT
 		COUNT(CASE WHEN reviewNo = 1 then reviewNo end) as high
@@ -21,6 +24,28 @@ e.rankID = r.rankID ;
 		FROM userReview WHERE
 		userId = #{param1}
 	</select>
+-->
+ 
+ <!-- 조회 
+ 
+<select id="pwCheck" resultType="String">
+select password from employee where employeeID = #{employeeID}
+</select>
+-->
 
+<!-- 수정 
+<update id="pwUpdate">
+update employee set password = #{password} where employeeID = #{employeeID}
+</update>
+-->
+
+<!--  수정 맵퍼쪽에 문제가 있음 -->
+<select id="selectEncpw" parameterType="int">
+SELECT password FROM employee WHERE employeeID = #{rm}
+</select>
+
+<update id="changepw">
+update employee set password = #{newPw} where employeeID = #{employeeID}
+</update>
 
 </mapper>

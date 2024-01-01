@@ -98,7 +98,7 @@
 								<option value="정상">정상</option>
 								<option value="질병">질병</option>
 								<option value="격리">격리</option>
-								<option value="폐기">폐기</option>
+								<option value="폐사">폐사</option>
 							</select>
 						</td>
 					</tr>

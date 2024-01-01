@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.cocean.aquarium.dao.AnimalDAO">	
 	
 	<select id="animalList"  parameterType="animalfilter" resultType="animal">
-		SELECT am.animalID, am.nickname, bct.commonName,am.status, fi.serverFileName
+		SELECT am.animalID, am.nickname, bct.commonName, bct.scientificName, am.status, fi.serverFileName
 			,CONCAT(am.classificationCode, LPAD(am.CodeNumber,6,'0')) AS animalCode
 			FROM animalManagement am
 			NATURAL JOIN biologicalClassificationTable bct

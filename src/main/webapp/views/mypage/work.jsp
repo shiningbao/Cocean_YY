@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +19,10 @@ table, th, td{
 </style>
 </head>
 <body>
+
+<!-- 마이페이지 클릭하면 출퇴근 모달창 넘어가게 모달창 만들기 -->
+<jsp:include page="../side.jsp"></jsp:include>
+
     <div id="dateserch" style="float: left; margin-left: 19%; margin-top: 2%;">
 		<label for="date">
         <input type="date" id="dfirstsearchdate" value="" />
@@ -25,11 +32,12 @@ table, th, td{
     	</label>
 </div>
 
-<!-- 
+
 <table>
+
 		<tr>	   
-			<th>날짜</th>
 			<th>번호</th>
+			<th>날짜</th>
 			<th>출근시간</th>
 			<th>퇴근시간</th>
 		</tr>
@@ -39,38 +47,23 @@ table, th, td{
 		</c:if>
 		<c:forEach items="${list}" var="work">
 		<tr>
-			<td>${work.workDate}</td>
 			<td>${work.workID}</td>
-			<td>${work.gowork}</td>
-			<td>${work.leavework}</td>		
+			<td>${work.workDate}</td>
+			<td id="go">${fn:substring(work.gowork, 10,19)}</td>
+			<td id="leave">${fn:substring(work.leavework, 10,19)}</td>		
 		</tr>
 		</c:forEach>
 	</table>
- -->
- 
- <table>
-		<thead>
-		<tr>
-			<th>날짜</th>
-			<th>이름</th>
-			<th>부서</th>
-			<th>직급</th>
-			<th>직책</th>
-			<th>출근시간</th>
-			<th>퇴근시간</th>
-			
-		</tr>
-		</thead>
-		<!-- 내용 -->
-		<tbody id="list">		
-		</tbody>		
-	</table>	
-	
-	
+
+
 	
 	
 </body>
 <script>
+
+
+/*스크립트로 시간 따로 뽑기*/
+
 const today = new Date();
 const yesterday = new Date(today);
 yesterday.setDate(today.getDate() - 1);
@@ -89,6 +82,52 @@ function formatDateFromTimestamp(timestamp) {
     var day = ('0' + date.getDate()).slice(-2);
     return year + '-' + month + '-' + day;
 }
+
+
+
+
+//검색버튼 클릭시 일어나는일 다시 정리하기 
+$(document).ready(function() {
+    $("#searchButton").click(function() {
+        // 어제 날짜 가져오기
+        const yesterday = getFormattedYesterday();
+
+        // AJAX를 사용하여 서버에 어제 날짜로 조회하는 요청을 보냅니다.
+        $.ajax({
+            url: "search",
+            method: "GET",
+            data: { date: yesterday },
+            success: function(result) {
+                console.log(result);
+                // 결과를 처리하는 로직을 추가할 수 있습니다.
+            },
+            error: function(error) {
+                console.error("Error during search:", error);
+            }
+        });
+    });
+
+    function getFormattedYesterday() {
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        return formattedDate(yesterday);
+    }
+
+    function formattedDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return year + '-' + month + '-' + day;
+    }
+
+
+
+
+
+
+
 
 
 //달력으로 조회

@@ -2,95 +2,103 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <meta charset="UTF-8">
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<div id="animalDetailBase">
-	<div class="animalImg">
-		<div class="mainImgDiv">
-			<div class="imgButton">
-				<img alt="carrot-side2.png"	src='<c:url value="/resource/img/carrot-side2.png"/>' onclick="imgChange(-1)">
-			</div>
-			<div class="mainImg">
-					<img class="animalImg" id="mainPic"alt="#" src="#">
-			</div>
-			<div class="imgButton">
-				<img alt="carrot-side.png" src='<c:url value="/resource/img/carrot-side.png"/>' onclick="imgChange(1)">
-			</div>
-		</div>
-		<div class="subImgDiv">
-			<div class="subImg">
-				<img class="animalImg" alt="#" src="#" width="120px" height="120px">
-			</div>
-			<div class="subImg">
-				<img class="animalImg" alt="#" src="#" width="120px" height="120px">
-			</div>
-			<div class="subImg">
-				<img class="animalImg" alt="#" src="#" width="120px" height="120px">
-			</div>
-		</div>
-	</div>
 
-	<div class="animalBase">
-		<table class="animalTable">
-			<colgroup>
-				<col style="width: 30%">
-				<col style="width: 70%">
-			</colgroup>
+<div class="row">
+	<div class="col-md-6">
+		<div id="animalImgDiv">
+			<div class="row">
+				<div class="imgChange col-md-1 mb-2" onclick="imgChange(-1)">
+					<img class="img-fluid" alt="carrot-side2.png"
+						src='<c:url value="/resource/img/carrot-side2.png"/>'>
+				</div>
+				<div class="col-md-10 mb-2 text-center">
+					<div style="height:100%; width:100%; margin:0 auto; ">
+						<img class="img-fluid img-thumbnail" id="mainPic" alt="#" src="#" style="max-height: 500px; min-height: 100%;min-width: 80%;">
+					</div>
+				</div>
+				<div class="imgChange col-md-1 mb-2" onclick="imgChange(1)">
+					<img class="img-fluid" alt="carrot-side.png"
+						src='<c:url value="/resource/img/carrot-side.png"/>'>
+				</div>
+				<div class="col-md-4 p-1 text-center">
+					<div class="animalImg">
+						<img class="img-fluid img-thumbnail" alt="#" src="#">
+					</div>
+				</div>
+				<div class="col-md-4 p-1">
+					<div class="animalImg text-center">
+						<img class="img-fluid img-thumbnail" alt="#" src="#">
+					</div>
+				</div>
+				<div class="col-md-4 p-1">
+					<div class="animalImg text-center">
+						<img class="img-fluid img-thumbnail" alt="#" src="#">
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div class="col-md-6">
+		<table class="animalTable table table-bordered">
 			<tr>
-				<th>코션친구들코드</th>
+				<th class="text-center" scope="col">코션친구들 코드</th>
 				<td>${base.animalCode}</td>
 			</tr>
 			<tr>
-				<th>분류</th>
+				<th class="text-center" scope="col">분류</th>
 				<td>${base.taxonomy}</td>
 			</tr>
 			<tr>
-				<th>학명</th>
+				<th class="text-center" scope="col">학명</th>
 				<td>${base.scientificName}</td>
 			</tr>
 			<tr>
-				<th>국명</th>
+				<th class="text-center" scope="col">국명</th>
 				<td>${base.commonName}</td>
 			<tr>
-				<th>지점</th>
+				<th class="text-center" scope="col">지점</th>
 				<td>${base.branchName}</td>
 			</tr>
 			<tr>
-				<th>코션하우스</th>
-				<td>${base.tankName}</td>
+				<th class="text-center" scope="col">코션하우스</th>
+				<td>${base.tankName}<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button></td>
 			</tr>
 			<tr>
-				<th>마리 수</th>
+				<th class="text-center" scope="col">마리 수</th>
 				<td>${base.individual}</td>
 			</tr>
 			<tr>
-				<th>태어난 날</th>
+				<th class="text-center" scope="col">태어난 날</th>
 				<td>${base.birthDate}</td>
 			</tr>
 			<tr>
-				<th>들어온 날</th>
+				<th class="text-center" scope="col">들어온 날</th>
 				<td>${base.entryDate}</td>
 			</tr>
 			<tr>
-				<th>세부 정보</th>
+				<th class="text-center" scope="col">세부 정보</th>
 				<td>${base.details}</td>
 			</tr>
 			<tr>
-				<th>담당자</th>
+				<th class="text-center" scope="col">
+					<p>담당자</p>
+					<button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#inchargeModal">담당자 지정</button>
+				</th>
 				<td>
-					<button data-toggle="modal" data-target="#inchargeModal">담당자
-						지정</button>
-					<br /> <c:if test="${empty incharge}">담당자 없음</c:if> <c:forEach
-						items="${incharge}" var="ic">${ic.departmentName} ${ic.name}<br />
+					<c:if test="${empty incharge}">담당자 없음</c:if> <c:forEach
+						items="${incharge}" var="ic"><p>${ic.departmentName} ${ic.name}</p>
 					</c:forEach>
 				</td>
 			</tr>
 		</table>
+		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+			<button class="btn btn-secondary mr-2" onclick="animalUpdate(${base.animalID})">이전</button>
+			<button class="btn btn-primary mr-2" onclick="animalUpdate(${base.animalID})">수정</button>
+			<button class="btn btn-primary" onclick="animalDel(${base.animalID})">삭제</button>
+		</div>
 	</div>
 
-	<div>
-		<button onclick="animalUpdate(${base.animalID})">수정</button>
-	</div>
-
+</div>
 	<!-- 담당자 지정 모달창 -->
 	<!-- 버튼 클릭 시 열리는 모달창 -->
 	<div class="modal fade" id="inchargeModal" tabindex="-1" role="dialog"
@@ -156,40 +164,20 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 <script>
-	$('#animalDetailBase').css({'display':'flex'});
-	// $('.animalImg').css({'width':'50%'});
-	$('.mainImgDiv').css({'display':'flex','width':'600px'});
-	$('.imgButton').css({'width':'50px'});
-	$('.mainImg').css({'width':'500px','height':'400px','overflow':'hidden'});
-	
-	$('.subImgDiv').css({'width':'600px', 'height':'180px','display':'flex'});
-	$('.subImg').css({'width':'33%','height':'150px','border':'1px solid black'});
-	
-	//$('.animalImg').css({'max-width':'100%','max-height':'100%','width':'auto','height':'auto','display':'block','margin':'auto'});
-	$('.animalImg').css({'max-width':'100%','max-height':'100%','width':'100%','height':'100%','object-fit': 'contain'});
-	$('.animalBase').css({'width':'50%'});
-	$('.animalTable').css({'width':'400px'});
 
-
-	$('#oraganizationDiv').css({
-
-	});
 	$('#jstree').css({
 		'height':'435px',
 		'overflow-y':'auto'
 	});
-	$('#inchargeList').css({
-		//'border':'1px solid black',
-
-	});
 	
-	// 상태 그리기
-	drawStatus('${base.status}');
+	$('.animalImg').css({'width':'100%','height':'100%','margin':'0 auto'});
+	$('.animalImg').find('img').css({'width':'100%','height':'100%'});
+	
+	createTitle('${base.status}','${base.nickname}','${base.commonName}');
 	
 	// 이미지 리스트
-	// var imgList = ['00.png','01.png','02.png','03.png','04.png','05.png','06.png'];
 	var imgList = [];
 	<c:forEach items='${image}' var='item'>
 	imgList.push('${item.serverFileName}');
@@ -222,9 +210,9 @@
 		}
 		if(length > 1){
 			var index = num;
-			for(var i = 0; i < 3; i++){
+			for(var i = 0; i <3; i++){
 				index = numCalc(index, 1);
-				var $selector = $('.subImgDiv').find('img').eq(i);
+				var $selector = $('.animalImg').eq(i).find('img');
 				$selector.attr('alt',imgList[index]);
 				$selector.attr('src','/photo/cocean/animal/'+imgList[index]);
 			}
@@ -296,25 +284,45 @@
 	// 담당자 변경
 	function inchargeChange(){
 		if(inchargeList_after.length == 0){
-			alert('담당자가 없습니다.');
+			swal({
+				title: "담당자를 추가해주세요.",
+				button: "확인"
+			});
 		}else{
-			console.log(inchargeList_after);
-			var data = {};
-			data.animalID = '${base.animalID}';
-			data.inchargeList_before = inchargeList_before;
-			data.inchargeList_after = inchargeList_after;
-			console.log(data);
-			$.ajax({
-				type:'post',
-				url:'inchargeChange',
-				contentType:'application/json; charset=utf-8',
-				data:JSON.stringify(data),
-				dataType:'JSON',
-				success:function(data){
-					alert(data.msg);
-					getContents('base');
-				},
-				error:function(e){console.log(e);}
+			swal({
+				title: "담당자를 변경하시겠습니까?",
+				icon:'info',
+				buttons:['취소','확인']
+			}).then((isOkey) => {
+				if(isOkey){
+					console.log(inchargeList_after);
+					var data = {};
+					data.animalID = '${base.animalID}';
+					data.inchargeList_before = inchargeList_before;
+					data.inchargeList_after = inchargeList_after;
+					console.log(data);
+					$.ajax({
+						type:'post',
+						url:'inchargeChange',
+						contentType:'application/json; charset=utf-8',
+						data:JSON.stringify(data),
+						dataType:'JSON',
+						success:function(data){
+							swal({
+								title: data.msg,
+								button: "확인"
+							}).then((isOkey) => {
+								if(isOkey){
+									console.log('aaaa');
+									$("#inchargeModal").modal('hide');
+									$('.modal-backdrop').remove();
+									getContents('base');
+								}
+							});
+						},
+						error:function(e){console.log(e);}
+					});
+				}
 			});
 		}
 	}
@@ -322,7 +330,6 @@
 	function animalUpdate(animalID){
 		swal({
 			title:'수정하시겠습니까?',
-			text:'text',
 			icon:'info',
 			buttons:['취소','수정']
 		}).then((isOkey) => {
@@ -331,10 +338,6 @@
 			}
 		});
 	}
-	
-	// alert 창
-	//swal('tile','','success');
-	
 	
 
 </script>

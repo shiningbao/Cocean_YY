@@ -22,10 +22,38 @@
 	}
 	.animalDetail{
 		width: 90%;
-		min-width: 900px;
 		margin: 0 auto;
-		border: 1px solid black;
-	}	
+	}
+	
+	.topBar {
+		width: 100%;
+		height: 60px;
+/* 		left: 22%; */
+/* 		position: absolute; */
+		background-color: #86B0F3;
+		display: flex;
+		
+		justify-content: space-evenly;
+	}
+	.topBar div{
+		
+		width: 33%;
+		height: 100%;
+		position: relative;
+		text-align: center;
+		font-size: 21px;
+		padding-top: 14px;
+		cursor: default;
+	}
+	.barItem:hover{
+		cursor: pointer;
+		background-color: #2F80ED;
+		padding-top: 13px;
+	}
+	.imgChange:hover{
+		cursor: pointer;
+	}
+
 </style>
 </head>
 <body>
@@ -33,12 +61,13 @@
 	<div class="animalContent">
 		<h1>코션친구들</h1>
 		<div class="animalDetail">
-			<h2 id="nick">${nickname}</h2>
-			<ul style="display: flex;">
-				<li style="margin-right: 40px" id="base">기본 정보</li>
-				<li style="margin-right: 40px" id="log">일지</li>
-				<li style="margin-right: 40px" id="plan">계획</li>
-			</ul>
+			
+			<div class="topBar">
+				<div class="barItem" id="base">친구들 정보</div>
+				<div class="barItem" id="log">친구들 기록</div>
+				<div class="barItem" id="plan">관리 계획</div>
+			</div>
+			<h2 class="animalTilte"></h2>
 			
 			<div class="drawContent"></div>
 		</div>
@@ -55,6 +84,8 @@ function resizeWidth(){
 	//console.log(sideWidth);
 	var contentWidth = winWidth-sideWidth;
 	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
+	$('.animalDetail').css({'width':contentWidth*0.9, 'margin':'0 auto'});
+
 }
 
 var animalID = '${animalID}';
@@ -80,7 +111,7 @@ function getContents(con){
 	});
 }
 
-$('li').on('click',function(){
+$('.barItem').on('click',function(){
 	con = this.id;
 	getContents(con);
 });
@@ -90,10 +121,14 @@ function drawContent(data){
 	$('.drawContent').html('');
 	$('.drawContent').html(content);
 }
+var titleName;
+function createTitle(status,nickname,commonName){
+	titleName = '('+status + ') (' + nickname+') ('+commonName+')';
+	drawTitle();
+}
 
-function drawStatus(status){
-	var statusNickname = '('+status + ')   ' + nickname;
-	$('#nick').html(statusNickname);
+function drawTitle(){
+	$('.animalTilte').html(titleName);
 }
 
 // 일지,계획 달 변경 시 다시 그리기
