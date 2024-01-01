@@ -1,24 +1,25 @@
 package kr.co.cocean.statistics.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
-import kr.co.cocean.statistics.dto.ProductHistoryDTO;
+import kr.co.cocean.statistics.dto.SalesHistoryDTO;
 import kr.co.cocean.statistics.dto.TankHistoryDTO;
-import kr.co.cocean.statistics.dto.TicketHistoryDTO;
-import kr.co.cocean.statistics.dto.VisitorsHistoryDTO;
 
 @Mapper
 public interface StatisticsDAO {
 
-	AnimalDTO animalHistory();
+	ArrayList<AnimalDTO> animalHistory();
 	
-	TankHistoryDTO tankHistory();
+	ArrayList<TankHistoryDTO> tankHistory();
 
-	ProductHistoryDTO productHistory();
+	ArrayList<SalesHistoryDTO> productHistory();
 
-	TicketHistoryDTO ticketHistroy();
+	ArrayList<SalesHistoryDTO> ticketHistory();
 
-	VisitorsHistoryDTO visitorsHistory();
+	ArrayList<SalesHistoryDTO> visitorsHistory();
+
 
 }

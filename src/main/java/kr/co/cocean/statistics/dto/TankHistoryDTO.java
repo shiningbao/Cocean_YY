@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("tank")
+@Alias("tankHistory")
 public class TankHistoryDTO {
 	private int tankID;
 	private int categoryID;

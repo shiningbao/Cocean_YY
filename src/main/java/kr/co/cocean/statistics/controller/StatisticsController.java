@@ -18,6 +18,7 @@ public class StatisticsController {
 	
 	@GetMapping(value="/statistics/list.go")
 	public ModelAndView statisticsList() {
+		logger.info("통계페이지 이동");
 		return service.statisticsList();
 	}
 	

@@ -13,16 +13,28 @@
 		INNER JOIN tankCategory tc ON tm.categoryID = tc.categoryID
 	</select>
 
-	<select id="productHistory" resultType="product">
-	
+	<select id="productHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, ph.salesRegDate, ph.salesNumber 
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
 	</select>
 
-	<select id="ticketHistroy" resultType="ticket">
-	
+	<select id="ticketHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, th.salesRegDate, th.salesNumber 
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN ticketHistory th ON bp.productIndex = th.productIndex
 	</select>
 	
-	<select id="visitorsHistory" resultType="visitors">
-	
+	<select id="visitorsHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, vh.entryDate, vh.visitorsNumber
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN visitorsHistory vh ON bp.productIndex = vh.productIndex
 	</select>
 
 </mapper>
