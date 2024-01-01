@@ -1,9 +1,13 @@
 package kr.co.cocean.store.service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +35,7 @@ public class StoreService {
 	
 	StoreDTO storedto = new StoreDTO();
 	// 상품 사진 경로
-	private String root = "/Users/chajaeho/Desktop/upload/cocean/product";
+	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
 	
 	// 카카오 지도 api 사용
 	public JSONObject kakaoAPi(Model model) {
@@ -122,31 +127,82 @@ public class StoreService {
 		map.put("modalSearchedList", list);
 		return map;
 	}
+	
+	public Map<String, Object> modalTicketList(String currentBranchName) {
+		Map<String, Object> map =  new HashMap<String, Object>();
+		ArrayList<StoreProductDTO> list = dao.modalTicketList(currentBranchName);
+		map.put("modalSearchedList", list);
+		return map;
+	}
 
 	public int branchProductRegister(String currentBranchName, String currentProductName) {
 		int branchID = dao.branchIDSearch(currentBranchName);
 		int productID = dao.productIDSearch(currentProductName);
+		logger.info("productID : "+productID);
 		return dao.branchProductRegister(branchID, productID);
 	}
-
-	public ModelAndView storeProductDetail(int id) {
+	public ModelAndView storeProductDetail(int productID) {
 		ModelAndView mav = new ModelAndView();
-		ArrayList<StoreProductDTO> list = dao.storeProductDetail(id);
+		StoreProductDTO list = dao.storeProductDetail(productID);
+		list.setBranchID(1);
 		mav.addObject("list",list);
-		mav.setViewName("storeProductDetail");
+		mav.setViewName("store/storeProductDetail");
+		return mav;
+	}
+	
+	public ModelAndView storeProductDetail(int productID, int branchID) {
+		ModelAndView mav = new ModelAndView();
+		StoreProductDTO list = dao.storeProductDetail(productID);
+	   list.setBranchID(branchID);
+		mav.addObject("list",list);
+		mav.setViewName("store/storeProductDetail");
 		return mav;
 	}
 
-	public int productInfoRegister(Map<String, String> params) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int productInfoRegister(Map<String, String> params, MultipartFile photo) {
+		int fileupload = 0;
+		dao.productInfoRegister(params);
+		int productID = dao.productInfoID(params.get("productName"));
+		dao.branchProductRegister(1, productID);
+		String oriFileName = photo.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		
+		logger.info("서버파일네임");
+		logger.info(newFileName);
+		logger.info("원래파일명");
+		logger.info(oriFileName);
+		
+		if(photo.getSize()!=0) {
+			try {
+				byte[] bytes = photo.getBytes();
+				Path path = Paths.get(root+"product/"+newFileName);
+				Files.write(path, bytes);
+				fileupload = dao.productFileRegister("상품", productID, "product", newFileName, oriFileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return fileupload;
+	}
+
+	public int productTicketInfoRegister(Map<String, String> params) {
+		logger.info("티켓 등록");
+		int result = dao.productInfoRegister(params);
+		int productID = dao.productInfoID(params.get("productName"));
+		dao.branchProductRegister(1, productID);
+		return result;
+	}
+
+	public void branchProductDelete(int productID, int branchID) {
+		 dao.branchProductDelete(productID, branchID);
 	}
 
 	
 
-//	public int ticketRegister(String branchName, String productName, int price, String category) {
-//		int branchID = dao.branchSelect(branchName);
-//		 dao.branchRegisterProduct(branchID, i);
-//	}
+	
+
+	
+
 
 }

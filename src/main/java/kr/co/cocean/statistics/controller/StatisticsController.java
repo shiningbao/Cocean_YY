@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class StatisticsController {
 
-	@GetMapping(value="statistics.list.do")
+	@GetMapping(value="/statistics/list.go")
 	public String statisticsList(Model model) {
-		model.addAttribute("string","string");
 		return "statistics/statistics";
 	}
+	
 }
