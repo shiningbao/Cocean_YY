@@ -89,7 +89,7 @@ public class ApprovalService {
 		
 		logger.info("params:{}",param);
 		
-		// dao.write(dto); // draft테이블에 insert
+		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
 		
 		if(files!=null) {
@@ -98,18 +98,18 @@ public class ApprovalService {
 		}}
 		String content = param.get("content");
 		if(titleID.equals("1")) {
-		// dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
 		}else if(titleID.equals("2")) {
 			logger.info(param.get("textArea"));
-			// dao.writeattendenceDraft(dto); // 휴가신청서 insert
+			dao.writeattendenceDraft(dto); // 휴가신청서 insert
 		}else if(titleID.equals("3")){
 			logger.info("휴직원");
-			// dao.writeLeaveDraft(dto); // 휴직원 insert
+			dao.writeLeaveDraft(dto); // 휴직원 insert
 		}else {
-			// dao.writeReincrement(dto); // 복직원 insert
+			dao.writeReincrement(dto); // 복직원 insert
 		}
 		if(tempSave==0) {
-			 dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 		}else { // 임시저장
 			
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우

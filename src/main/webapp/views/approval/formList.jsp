@@ -11,38 +11,82 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
-	
-table,th,td{
-	border-bottom: 1px solid lightgray;
-    border-collapse: collapse;
-    padding: 5px 10px;
-}
 
 #formTableHead{
 	background-color: #86B0F3;
+	text-align: center;
 }
 
 #formTable{
-	width: 500px;
+	width: 72%;
+	height: 30%;
+	top: 255px;
+	left: 400px;
+	position: absolute;
+}
+
+#formList{
 	text-align: center;
 }
+
+#hTitle {
+	width: 120px;
+	height: 50px;
+	left: 400px; 
+	position: absolute;
+	top: 120px;
+}
+
+#hTitle a {
+	font-size: 22px;
+}
+
+#search input {
+	z-index: 99999;
+}
+
+#search{
+	    position: absolute;
+	    top:27%;
+   		left: 78%;
+}
+
+@media screen and (max-width: 1457px) {
+	#search {
+		top: 23%;
+	}
+	#search button {
+		width: 233px;
+	}
+	#search input {
+		margin-bottom: 5px;
+	}
+}
+
 
 </style>
 </head>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
-	
-	<form action="searchList.do" method="POST">
+	<div id="hTitle">
+		<a>기안 작성</a>
+	</div>
+	<!-- <form action="searchList.do" method="POST">
 	<select id="category" name="formCategory">
 	  <option value="전체" selected="selected">전체</option>
 	  <option value="일반">일반</option>
 	  <option value="근태">근태</option>
 	  <option value="인사">인사</option>
 	</select>
+	</form> -->
 
-		<input type="search" name="keyword" placeholder="문서양식을 검색하세요"/>
-		<button class="btn btn-primary">검색</button>
-	</form>
+		 <nav class="navbar navbar" id="search">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+            </form>
+          </nav>
+	
 	
 	<% 
    Date myDate = new Date();
@@ -50,19 +94,25 @@ table,th,td{
    String formattedDate = dateFormat.format(myDate);
 	%>
 		
-	<table id="formTable">
-		<tr id="formTableHead">
-			<th>유형</th>
-			<th>문서양식</th>
-		</tr>
-		<c:forEach items="${list}" var="form">
-		<tr>
-			<td>${form.formCategory}</td>
-			<td><a href="writeDraft.go?titleID=${form.titleID}&date=<%= formattedDate %>">${form.formTitle}</a></td>
-		</tr>	
-		</c:forEach>
-	</table>
-	
+	<div id="formTable">
+		<table class="table table-hover">
+			<thead id="formTableHead">
+				<tr>
+					<th scope="col">유형</th>
+					<th scope="col">문서양식</th>
+				</tr>
+			</thead>
+			
+			<tbody id=formList>
+				<c:forEach items="${list}" var="form">
+					<tr>
+						<td scope="row">${form.formCategory}</td>
+						<td><a href="writeDraft.go?titleID=${form.titleID}&date=<%= formattedDate %>">${form.formTitle}</a></td>
+					</tr>	
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 </body>
 <script>
 

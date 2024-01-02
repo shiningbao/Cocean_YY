@@ -9,10 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="<c:url value='/resource/richtexteditor/rte_theme_default.css'/>">
-<!-- <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/runtime/richtexteditor_content.css'/>"> -->
-<!-- <link rel="stylesheet" href="<c:url value='/resource/css/approval/jquery.timepicker.css'/>"> -->
+<script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
+<script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
+
+
 <style>
 table,th,td{
 		border : 1px solid black;
@@ -162,11 +163,6 @@ button{
 </head>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
-
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
 <div class="container">
 <div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
@@ -250,7 +246,7 @@ button{
 		</tr>
 		<tr>
 			<td colspan="2">
-				<div id="rich_editor"></div>
+				<div id="summernote"></div>
 			<!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
 			<input type="hidden" name="content" value=""/>
 		</td>
@@ -372,13 +368,7 @@ button{
 
 
 <script>
-	/* 
-	$("#time1").timepicker({	
-		step: 30,       
-		timeFormat: "H:i"
 
-	}); 
-	*/
 	var textArea = $('#textarea').text();
 	var startDate;
 	var endDate;
@@ -389,10 +379,7 @@ button{
 	 $('input[name="endDate"]').on('change', function() {
 		 endDate=$(this).val();
 	    });
-	
-	
-	
-	
+
 	// 휴가신청서 시간 부분
 	 $('input[name="start"]').on('change', function() {
 	        var start=$(this).val();
@@ -443,7 +430,7 @@ button{
 	 
 	function remainedEmpID() {
 	    remLine = [];
-
+		// console.log($("#summernote").summernote('code'));
 	    if ($("#approvalLine tbody tr .employeeID").length > 0) {
 	        $("#approvalLine tbody tr .employeeID").each(function () {
 	            remLine.push($(this).val());
@@ -468,9 +455,17 @@ button{
 	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
 	};
 
-	var config = {}
+/* 	var config = {}
 	config.editorResizeMode = "none";
-	var editor = new RichTextEditor("#rich_editor", config);
+	var editor = new RichTextEditor("#rich_editor", config); */
+	
+	$('#summernote').summernote({
+		height: 200, width: 700,
+		maxHeight: 200,
+		minHeight: 200,
+		focus: true
+	});
+
 	
 	function saveCf(isTemp) {
 	    if (isTemp) {
@@ -502,7 +497,7 @@ button{
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
 	    if ("${form.formTitle}" === "업무기안서") {
-	    	var content = editor.getHTMLCode(); // 업무기안서
+	    	var content = $("#summernote").summernote('code') // 업무기안서
 	        formData.append('content', content);
 	    	formData.append('title',title);
 	    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
@@ -635,30 +630,11 @@ button{
 
 	}
 	
-
-	/*  $(document).ready(function () {
-         $.ajax({
-             url: "getData.do",
-             type: "GET",
-             success: function (data) {
-            	 var lineData = data.lineData;
-                 console.log(lineData);
-                     for (var i = 0; i < lineData.length; i++) {
-                         console.log("Category:", lineData[i].category);
-                         console.log("HQ:", lineData[i].hqName);
-                         console.log("dpName:"+lineData[i].departmentName);
-                         console.log("Rank:", lineData[i].rank);
-                         console.log("Name:", lineData[i].name);
-                         
-                         addLineToTable(lineData[i]);
-                     }
-             },
-             error: function (e) {
-                 console.log(e);
-             }
-         });
-     }); */
      
+	
+	
+	
+	
      function getApprovalLine(lineData){
  		// console.log(lineData);
  		 for (var i = 0; i < lineData.length; i++) {
