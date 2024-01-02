@@ -54,7 +54,7 @@ public class AnimalController {
 	
 	
 		
-	/* 코션친구들 작성 관련 */
+/* 코션친구들 작성 관련 */
 	
 	@GetMapping(value = "/animal/write.go")
 	public ModelAndView animalWriteGo(HttpSession session) {
@@ -80,7 +80,7 @@ public class AnimalController {
 		return "aquarium/classificationModal";
 	}
 	
-	// 작성 중 분류군 값 가져오기
+// 작성 중 분류군 값 가져오기
 	@GetMapping(value = "/animal/classficationSearch")
 	@ResponseBody
 	public HashMap<String, Object> search(@RequestParam String keyword) {
@@ -91,23 +91,35 @@ public class AnimalController {
 		return result;
 	}
 	
-	/* 코션친구들 수정 */
+/* 코션친구들 수정 */
 	@GetMapping(value = "/animal/update.go")
 	public ModelAndView animalUpdateDo(@RequestParam int animalID) {
 		return service.animalUpdateGo(animalID);
 	}
 	
 	@PostMapping(value = "/animal/update.do")
-	public ModelAndView animalUpdate(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr, HttpSession session) {
+	public String animalUpdate(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr, HttpSession session) {
 		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
 		logger.info("tank name : {}",param.getTankName());
-		return service.animalUpdate(files,param,rAttr,employeeID);
+		
+		service.animalUpdate(files,param,employeeID);
+		
+		String page = "redirect: detail.go?animalID="+param.getAnimalID();
+		rAttr.addFlashAttribute("msg", "코션친구들을 수정했습니다.");
+		
+		return page;
 	}
 	
+/* 코션친구들 삭제 */
+	@GetMapping(value = "/animal/delete.do")
+	public String animalDel(@RequestParam int animalID, Model model) {
+		service.animalDel(animalID);
+		model.addAttribute("msg", "코션친구를 삭제했습니다.");
+		return "redirect: list.go";
+	}
 	
-	
-	/* 코션친구들 상세보기 */
+/* 코션친구들 상세보기 */
 	@GetMapping(value = "/animal/detail.go")
 	public ModelAndView animalDetailGo(@RequestParam int animalID) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
@@ -131,7 +143,7 @@ public class AnimalController {
 		return service.animalDetailAjax(intAnimalID, con, month, model);
 	}
 	
-	
+/* 기록 계획 관련 */
 	@PostMapping(value = "/animal/logplanWrite.go")
 	@ResponseBody
 	public HashMap<String, Object> logplanWrite(LogPlanDTO param, HttpSession session) {
@@ -147,13 +159,13 @@ public class AnimalController {
 		return result;
 	}
 	
-	@PostMapping(value = "/animal/employeeInfo")
+	@PostMapping(value = "/animal/logplanDel")
 	@ResponseBody
-	public HashMap<String, Object> employeeInfo(@RequestParam int employeeID) {	
-		return service.employeeInfo(employeeID);
+	public HashMap<String, Object> logplanDel(@RequestParam int logID) {
+		return service.logplanDel(logID);
 	}
 	
-
+/* 담당자 변경 */
 	@PostMapping(value = "/animal/inchargeChange")
 	@ResponseBody
 	public HashMap<String, Object> inchargeChange(
@@ -162,23 +174,15 @@ public class AnimalController {
 	}
 	
 	
+	
 	@PostMapping(value = "/animal/organization")
 	public String organization() {
 		return "personnel/organization";
 	}
 	
-	@PostMapping(value = "/animal/logplanDel")
+	@PostMapping(value = "/animal/employeeInfo")
 	@ResponseBody
-	public HashMap<String, Object> logplanDel(@RequestParam int logID) {
-		return service.logplanDel(logID);
+	public HashMap<String, Object> employeeInfo(@RequestParam int employeeID) {	
+		return service.employeeInfo(employeeID);
 	}
-	
-	@GetMapping(value = "/animal/del")
-	public String animalDel(@RequestParam int animalID, Model model) {
-		service.animalDel(animalID);
-		model.addAttribute("msg", "코션친구를 등록했습니다.");
-		//rAttr.addFlashAttribute("msg", "코션친구를 등록했습니다.");
-		return "aquarium/animalList";
-	}
-	
 }
