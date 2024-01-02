@@ -171,7 +171,7 @@ label {
 				<c:forEach items="${list}" var="item">
 					<tr>
 						<td scope="row">${item.getTankID()}</td>
-						<td><a href="detail.go?tankID=${item.getTankID()}&emName=${item.getName()}">${item.getTankName()}</a></td>
+						<td><a href="detail.go?tankID=${item.getTankID()}">${item.getTankName()}</a></td>
 						<td>${item.getTankType()}</td>
 						<td>${item.getBranchName()}</td>
 						<td>${item.getTankStatus()}</td>
