@@ -3,38 +3,48 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
+	<!-- 통계 데이터 가져오기 -->
 	<select id="animalHistory" resultType="animal">
-		SELECT animalID, branchID, classificationCode, entryDate, status FROM animalManagement
+		SELECT am.animalID, am.branchID, am.classificationCode, am.entryDate, am.status, b.branchName 
+		FROM animalManagement am
+		INNER JOIN branch b ON b.branchID = am.branchID
 	</select>	
 	
 	<select id="tankHistory" resultType="tank">
-		SELECT tc.categoryID, tc.tankType, tm.tankID, tm.branchID, tm.registrationDate, tm.tankStatus
+		SELECT tc.categoryID, tc.tankType, tm.tankID, tm.branchID, tm.registrationDate, tm.tankStatus, b.branchName
 		FROM tankManagement tm
 		INNER JOIN tankCategory tc ON tm.categoryID = tc.categoryID
+		INNER JOIN branch b ON b.branchID = tm.branchID
 	</select>
 
 	<select id="productHistory" resultType="sales">
 		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
-		bp.status, ph.salesRegDate, ph.salesNumber 
+        bp.status, ph.salesRegDate, ph.salesNumber, b.branchName
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
+		INNER JOIN branch b ON b.branchID = bp.branchID
+		WHERE pi.category = "상품"
 	</select>
 
 	<select id="ticketHistory" resultType="sales">
 		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
-		bp.status, th.salesRegDate, th.salesNumber 
+		bp.status, th.salesRegDate, th.salesNumber, b.branchName 
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN ticketHistory th ON bp.productIndex = th.productIndex
+		INNER JOIN branch b ON b.branchID = bp.branchID
+		WHERE pi.category = "티켓"
 	</select>
 	
 	<select id="visitorsHistory" resultType="sales">
 		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
-		bp.status, vh.entryDate, vh.visitorsNumber
+		bp.status, vh.entryDate, vh.visitorsNumber, b.branchName
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN visitorsHistory vh ON bp.productIndex = vh.productIndex
+		INNER JOIN branch b ON b.branchID = bp.branchID
+		WHERE pi.category = "관람객"
 	</select>
 
 </mapper>

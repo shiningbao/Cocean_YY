@@ -266,7 +266,7 @@ function logplanCancle(id){
 }
 
 
-// 삭제
+// 일지계획 삭제
 function logplanDel(id){
 	console.log(id);
 	$.ajax({
@@ -275,8 +275,10 @@ function logplanDel(id){
 		data:{'logID':id},
 		dataType:'JSON',
 		success:function(data){
-			
-			alert(data.msg);
+			swal({
+				title: data.msg,
+				button: '확인'
+			});
 			getContents(con);
 		},
 	    error: function(xhr, status, error) {

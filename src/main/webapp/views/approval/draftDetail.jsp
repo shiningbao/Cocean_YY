@@ -165,6 +165,8 @@ button{
 	                <input type="hidden" value="${loginId}" name="loginId">
 					<input type="hidden" value="${list.idx}" name="idx">
 					<input type="hidden" id="approvalAction" name="action" value="">
+					<input type="hidden" id="lastOrder" name="lastOrder" value="">
+					<input type="hidden" id="order" name="order" value="">
                 </form>
 				</div>
 			</div>
@@ -213,7 +215,7 @@ button{
 <c:if test="${list.formTitle eq '업무기안서'}">
 <table id="workDraftContent">
 	
-	<tr>
+	<%-- <tr>
 	    <th>합의자</th>
 	    <c:forEach items="${agrRef}" var="agr">
 	    <c:if test="${agr.category eq '합의'}">
@@ -225,7 +227,7 @@ button{
 	    </td>
 	    </c:if>
 	    </c:forEach>
-	</tr>
+	</tr> --%>
 	<tr>
 	    <th>참조자</th>
 	    <c:forEach items="${agrRef}" var="ref">
@@ -250,54 +252,58 @@ button{
 
 </c:if>
 
-<%-- <c:if test="${title eq '휴가신청서'}">
+<c:if test="${list.formTitle eq '휴가신청서'}">
 <table id="attendanceDraftContent">
 	<tr>
 		<th>휴가 종류</th>
-			<td colspan="2"><select id="vacationCategory" name="vacationCategory">
-					  <option value="연차" selected="selected">연차</option>
-					  <option value="반차">반차</option>
-					  <option value="조퇴">조퇴</option>
-					  <option value="지각">지각</option>
-					  <option value="병가">병가</option>
-					  <option value="공가">공가</option>
-					  <option value="경조사">경조사</option>
-					</select>
-			</td>
-		</tr>
-	<tr>
-	    <th>사용 날짜</th>
-	    <td><input type="date" name="startDate">~<input type="date" name="endDate"></td>
+		<td colspan="2">${vac.category}</td>
 	</tr>
 	<tr>
-		<th>사용 시간</th>
-		<td><input type="text"></td>
+		<th>잔여 연차</th>
+		<td></td>
+	</tr>
+	<tr>
+	    <th>사용 날짜</th>
+	    <td> <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly>
+							    <select class="timeSelect" name="startTime" readonly>
+									  <option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
+									</select>
+							    
+							    <p>&nbsp;~&nbsp;</p>
+							    <input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
+							    <select class="timeSelect" name="endTime">
+									<option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
+								</select></div></td>
+	</tr>
+	<tr>
+		<th>총 사용일</th>
+		<td>${vac.usageTime}</td>
 	</tr>
 	<tr>
 		<th>사유</th>
-		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력"></textarea></td>
+		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력" readonly>${vac.vacationReason}</textarea></td>
 	</tr>
 </table>
 </c:if>
 
-<c:if test="${title eq '휴직원' or title eq '복직원'}">
+<c:if test="${list.formTitle eq '휴직원' or list.formTitle eq '복직원'}">
 <table id="leaveDraftContent">
 	<tr>
 		<th>휴직 기간</th>
-			<td><input type="date" name="startDate">~<input type="date" name="endDate"></td>
+			<td>${lv.leaveStartDate}<p>~</p>${lv.leaveEndDate}</td>
 		</tr>
 	<tr>
 		<th>사유</th>
-		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력"></textarea></td>
+		<td colspan="2">${lv.leaveReason}</td>
 	</tr>
 </table>
-</c:if> --%>
+</c:if>
 <br/>
 <label>첨부파일 : 
 <c:choose>
         <c:when test="${not empty fileList}">
             <c:forEach items="${fileList}" var="file">
-                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a>
+                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}<br/></a>
             </c:forEach>
         </c:when>
         <c:otherwise>
@@ -313,7 +319,7 @@ button{
 <input type="button" value="결재" data-toggle="modal" data-target="#opinion"/>
 </div>
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -324,11 +330,16 @@ button{
 			</tr>
 			<c:forEach items="${lineList}" var="lL">
 			<tr>
-				<td>결재</td>
+				<td>${lL.category}</td>
 				<td>${lL.hqName}/${lL.departmentName}</td>
 				<td>${lL.rankName}</td>
-				<td>${lL.name}</td>
+				<td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
+				
 			</tr>	
+			<tr>
+			<td></td>
+			<td colspan=3><c:if test="${lL.opinion ne '-'}"><input type="text" readonly class="form-control" value="${lL.opinion}" style="height:18px;"></c:if></td>
+			</tr>
 			</c:forEach>
 		</table>
 	</div>
@@ -346,13 +357,20 @@ button{
 $('input[value="결재"]').click(function () {
     updateModalContent('approve');
     $('#approvalAction').val('결재');
+    $('#lastOrder').val($('#approvalLine tr:last').index()+1);
 });
 
 $('input[value="반려"]').click(function () {
     updateModalContent('reject');
-    $('#approvalAction').val('반려');   
+    $('#approvalAction').val('반려'); 
+   
+    
 });
 
+/* var myLine = $("#approvalLine").find('input[name="employeeID"]').filter(function() {
+    return $(this).val() === loginId;
+});
+myLine.css('background-color', '#86B0F3'); */
 
 function updateModalContent(action) {
     var modalTitle, modalButtonText;
@@ -360,6 +378,7 @@ function updateModalContent(action) {
     if (action === 'approve') {
         modalTitle = '결재하기';
         modalButtonText = '결재';
+        console.log($('input[name="empId"]').index());
     } else if (action === 'reject') {
         modalTitle = '반려하기';
         modalButtonText = '반려';
@@ -375,12 +394,14 @@ $('.modal-footer button[type="submit"]').click(function(){
 		    if (window.confirm(msg)) {
 		        $('form').submit();
 		    } else {
+		    	return;
 	    }
 	}else{
 		var msg = "반려하시겠습니까?";
 		    if (window.confirm(msg)) {
 		        $('form').submit();
 		    } else {
+		    	return;
 	    }
 	}
 });
@@ -390,16 +411,19 @@ var idx = $('input[name="idx"]').val()
 // console.log(loginId);
 // console.log(idx); 
 
+var order;
  $(document).ready(function () {
      $.ajax({
          url: "drawSign",
          type: "GET",
-         data:{'loginId':loginId,'idx':idx},
+         data:{'loginId':loginId, 'idx':idx},
          success: function (data) {
         	 var signList = data.signList;
         	 signList.forEach(function(item,idx){
         		 approvalSignature(item);
         	 });
+        	 var order = data.order.approvalOrder;
+        	 $('#order').val(order);
              
          },
          error: function (e) {
@@ -417,8 +441,9 @@ function approvalSignature(item){
     
     $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + item.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" +item.rankName+ "</td>").insertAfter(frLastTd);
     $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'>" +item.name + "</td>").insertAfter(scLastTd);
-    $("<td style='width: 38%;'><input type='hidden' class='empID' value='" + item.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+    $("<td style='width: 38%;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>"+item.approvalDate+"</td>").insertAfter(lastTd);
 }
+
  </script>
 </body>
 </html>

@@ -10,26 +10,11 @@
 
 <style>
 
-/* 	.animalWriteContent{ */
-/* 	} */
-/* 	.animalWriteTable{ */
-/* 		margin: 0 auto; */
-/* 	} */
-	
-/* 	.animalWriteTable table, */
-/* 	.animalWriteTable tr, */
-/* 	.animalWriteTable th, */
-/* 	.animalWriteTable td{ */
-/* 		border: 1px solid black; */
-/* 		border-collapse: collapse; */
-/* 		text-align: center; */
-/* 		font-size: 25px; */
-/* 	} */
-/* 	.animalWriteTable td *{ */
-/* 		width: 100%; */
-/* 		height: 40px; */
-/* 		margin: 10px 0; */
-/* 	} */
+	textarea {
+		height: 8em;
+		border: none;
+		resize: none;
+	}
 		
 </style>
 
@@ -37,9 +22,9 @@
 <body>
 	<c:import url="/side"/>
 	<div class="animalContent">
-		<div class="animalWrite col-md-6">
-			<h1>ANIMAL WRITE</h1>
-			<div class="animalWriteTable">
+		<h1>ANIMAL WRITE</h1>
+		<div class="row">
+			<div class="col-md-6 m-auto">
 				<form action="write.do" method="post" enctype="multipart/form-data">
 					<table class="table">
 						<colgroup>
@@ -111,10 +96,11 @@
 							<td><input type="file" class="form-control" name="files" multiple="multiple"/></td>
 						</tr>
 					</table>
-						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-							<button type="button" class="btn btn-secondary mr-2">이전</button>
-							<button type="submit" class="btn btn-primary mr-2">등록</button>
-						</div>
+					
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button type="button" class="btn btn-secondary mr-2">이전</button>
+						<button type="submit" class="btn btn-primary mr-2">등록</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -146,7 +132,6 @@ function resizeWidth(){
 	//console.log(sideWidth);
 	var contentWidth = winWidth-sideWidth;
 	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
-	$('.animalWrite').css({'width':contentWidth*0.9, 'margin':'0 auto'});
 }
 
 function getClassifi(){

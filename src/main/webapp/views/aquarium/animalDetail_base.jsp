@@ -339,6 +339,18 @@
 		});
 	}
 	
+	function animalDel(animalID){
+		swal({
+			title:'삭제하시겠습니까?',
+			icon:'error',
+			buttons:['취소','삭제']
+		}).then((isOkey) => {
+			if(isOkey){
+				//location.href= "update.go?animalID="+animalID;
+			}
+		});
+	}
+	
 
 </script>
 

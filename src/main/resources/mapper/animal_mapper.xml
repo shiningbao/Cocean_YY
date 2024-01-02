@@ -124,6 +124,15 @@
 		DELETE FROM logPlanTable WHERE coceanCategory = 'animal' AND logID = #{param1}
 	</delete>
 	
+	<update id="animalUpdate" parameterType="animal">
+		UPDATE animalManagement SET tankID=#{tankID}, nickname=#{nickname}, individual=#{individual}
+			,birthDate=#{birthDate}, entryDate=#{entryDate}, status=#{status}, details=#{details}
+		WHERE animalID=#{animalID}
+	</update>
+	
+	<delete id="animalDel">
+		DELETE FROM animalManagement WHERE animalID=#{param1}
+	</delete>
 	
 </mapper>
 

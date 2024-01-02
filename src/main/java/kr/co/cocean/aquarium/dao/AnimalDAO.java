@@ -48,4 +48,8 @@ public interface AnimalDAO {
 	void statusChange(@Param("animalID") int animalID, @Param("status") String status);
 
 	int logplanDel(int logID);
+
+	void animalUpdate(AnimalDTO param);
+
+	void animalDel(int animalID);
 }
