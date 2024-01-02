@@ -9,6 +9,13 @@ public class TankHistoryDTO {
 	private int tankID;
 	private int categoryID;
 	private int branchID;
+	private String branchName;
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
 	private Date registrationDate;
 	private String tankStatus;
 	private String tankType;

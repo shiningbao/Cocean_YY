@@ -37,72 +37,118 @@
     
     <div class="chartContainer">
         <div class="chartBox1">
-        	<div class="coceanFriends"></div>
+        	<div class="chartContent">
+        	<canvas id="animal"></canvas>
+        	</div>
         </div>
-        <div class="chartBox1"></div>
-        <div class="chartBox1"></div>
-
-        <div class="chartBox2"></div>
-        <div class="chartBox2"></div>
-        <div class="chartBox2"></div>
+       <%--  <div class="chartBox1">
+        	<div class="chartContent">
+        	<canvas id="tank"></canvas>
+        	</div>
+        </div>
+        <div class="chartBox1">
+        	<div class="chartContent">
+        	<canvas id="product"></canvas>
+        	</div>
+        </div>
+        <div class="chartBox1">
+        	<div class="chartContent">
+        	<canvas id="ticket"></canvas>
+        	</div>
+        </div>
+        <div class="chartBox1">
+        	<div class="chartContent">
+        	<canvas id="visitors"></canvas>
+        	</div>
+        </div> --%>
     </div>
 </body>
 <script>
-const config = {
-		  type: 'bar',
-		  data: data,
-		  options: {
-		    responsive: true,
-		    plugins: {
-		      legend: {
-		        position: 'top',
-		      },
-		      title: {
-		        display: true,
-		        text: 'Chart.js Bar Chart'
-		      }
-		    }
-		  },
-		};
-		
-const DATA_COUNT = 7;
-const NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+var animal = $('#animal');
+var tank = $('#tank');
+var product = $('#product');
+var ticket = $('#ticket');
+var visitors = $('#visitors');
 
-const labels = Utils.months({count: 7});
-const data = {
+
+
+$(document).ready(function(){
+	chart();
+});
+
+function chart() {
+  $.ajax({
+      type: 'get',
+      url: 'chart.do',
+      dataType: 'json',
+      success: function (data) {
+          console.log("통계 데이터 가져오기 성공");
+          console.log(data);
+          // drawChart(data);
+      },
+      error: function (e) {
+          console.log(e);
+      }
+  });
+}
+
+ function drawChart(data) {
+  var animalDataSets = [];
+  var tankDataSets = [];
+  var productDataSets = [];
+  var ticketDataSets = [];
+  var visitorsDataSets = [];
+  
+  console.log("차트 그리기");
+  console.log(data);
+  console.log(data.animal);
+  entryDate
+  // 동물 차트
+  const animalData = {
   labels: labels,
   datasets: [
-    {
-      label: 'Fully Rounded',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.red,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.red, 0.5),
-      borderWidth: 2,
-      borderRadius: Number.MAX_VALUE,
-      borderSkipped: false,
-    },
-    {
-      label: 'Small Radius',
-      data: Utils.numbers(NUMBER_CFG),
-      borderColor: Utils.CHART_COLORS.blue,
-      backgroundColor: Utils.transparentize(Utils.CHART_COLORS.blue, 0.5),
-      borderWidth: 2,
-      borderRadius: 5,
-      borderSkipped: false,
-    }
-  ]
-};
+  	{
+          label: '분류 코드', 
+          data: data.animal.classificationCode 
+          backgroundColor: 'rgba(75, 192, 192, 0.2)', // 차트 색상
+          borderColor: 'rgba(75, 192, 192, 1)',       // 테두리 색상
+          borderWidth: 1                              // 테두리 두께	
+      },
+      {
+      	label: ' 코드', 
+        data: data.animal.classificationCode 
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // 차트 색상
+        borderColor: 'rgba(75, 192, 192, 1)',       // 테두리 색상
+        borderWidth: 1
+      }
 
-const actions = [
-	  {
-	    name: 'Randomize',
-	    handler(chart) {
-	      chart.data.datasets.forEach(dataset => {
-	        dataset.data = Utils.numbers({count: chart.data.labels.length, min: -100, max: 100});
-	      });
-	      chart.update();
-	    }
-	  },
-	];
+      animalDataSets.push(animalDataSets);
+      }
+ }
+
+ /*  const config = {
+      type: 'bar',
+      data: {
+          labels: 
+          datasets: datasets
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  position: 'top',
+              },
+              title: {
+                  display: true,
+                  text: 'Chart.js Bar Chart'
+              }
+          }
+      },
+  }; */
+
+  /* var myChart = new Chart(엘리먼, config); */
+
+
+
 </script>
 </html>
