@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
         .chartContainer {
             display: flex;
@@ -24,7 +26,15 @@
 
 <body>
     <jsp:include page="../side.jsp"></jsp:include>
-	${string }
+    <c:forEach var="animal" items="${animal}">
+    <tr>
+        <td>${animal.animalID}</td>
+        <td>${animal.branchID}</td>
+        <td>${animal.branchName}</td>
+        <td>${animal.classificationCode}</td>
+    </tr>
+</c:forEach>
+    
     <div class="chartContainer">
         <div class="chartBox1">
         	<div class="coceanFriends"></div>

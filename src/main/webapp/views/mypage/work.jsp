@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,20 +19,13 @@ table, th, td{
 </style>
 </head>
 <body>
-    <div id="dateserch" style="float: left; margin-left: 19%; margin-top: 2%;">
-		<label for="date">
-        <input type="date" id="dfirstsearchdate" value="" />
-        ~
-        <input type="date" id="dlastsearchdate" value="" />
-        <input type="button" id="dsearchButton" class="comm-btn" value="검색" />
-    	</label>
-</div>
 
 <!-- 
 <table>
+
 		<tr>	   
-			<th>날짜</th>
 			<th>번호</th>
+			<th>날짜</th>
 			<th>출근시간</th>
 			<th>퇴근시간</th>
 		</tr>
@@ -39,34 +35,69 @@ table, th, td{
 		</c:if>
 		<c:forEach items="${list}" var="work">
 		<tr>
-			<td>${work.workDate}</td>
 			<td>${work.workID}</td>
-			<td>${work.gowork}</td>
-			<td>${work.leavework}</td>		
+			<td>${work.workDate}</td>
+			<td id="go">${fn:substring(work.gowork, 10,19)}</td>
+			<td id="leave">${fn:substring(work.leavework, 10,19)}</td>		
 		</tr>
 		</c:forEach>
 	</table>
  -->
- 
+
+
+<!-- 마이페이지 클릭하면 출퇴근 모달창 넘어가게 모달창 만들기 -->
+<jsp:include page="../side.jsp"></jsp:include>
+<!--  
+    <div id="dateserch" style="float: left; margin-left: 19%; margin-top: 2%;">
+		<label for="date">
+        <input type="date" id="pfirstsearchdate" value="" />
+        ~
+        <input type="date" id="plastsearchdate" value="" />
+        <input type="button" id="psearchButton" class="comm-btn" value="검색" />
+    </label>
+
+
+
  <table>
 		<thead>
-		<tr>
-			<th>날짜</th>
-			<th>이름</th>
-			<th>부서</th>
-			<th>직급</th>
-			<th>직책</th>
-			<th>출근시간</th>
-			<th>퇴근시간</th>
-			
-		</tr>
+        	<tr>
+        		<th>번호</th>
+				<th>날짜</th>
+				<th>출근시간</th>
+				<th>퇴근시간</th>
+        	</tr>
 		</thead>
-		<!-- 내용 -->
-		<tbody id="list">		
-		</tbody>		
-	</table>	
+    	<tbody id="worklist">
+    	</tbody>
+	</table>
+
+	</div>
+	-->
 	
 	
+<div id="topPointContainer" style="float: left; margin-left:2%; margin-top: 5%; margin-bottom: 40px;">
+	<label for="date">
+        <input type="date" id="pfirstsearchdate" value="" />
+        ~
+        <input type="date" id="plastsearchdate" value="" />
+        <input type="button" id="psearchButton" class="comm-btn" value="검색" />
+    </label>
+	<table>
+		<thead>
+        	<tr>
+        		<th>번호</th>
+				<th>날짜</th>
+				<th>출근시간</th>
+				<th>퇴근시간</th>
+        	</tr>
+		</thead>
+    	<tbody id="worklist">
+    	</tbody>
+	</table>
+</div>	
+	
+	
+
 	
 	
 </body>
@@ -76,37 +107,88 @@ const yesterday = new Date(today);
 yesterday.setDate(today.getDate() - 1);
 
 const year = today.getFullYear();
-const month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1 해주고 두 자리로 포맷
+const month = (today.getMonth() + 1).toString().padStart(2, '0'); 
 const firstDayOfMonth = year + '-' + month + '-01';
 
-// 어제 날짜를 "yyyy-mm-dd" 형식으로 포맷
+
 const formattedYesterday = yesterday.getFullYear() + '-' + (yesterday.getMonth() + 1).toString().padStart(2, '0') + '-' + yesterday.getDate().toString().padStart(2, '0');
 
 function formatDateFromTimestamp(timestamp) {
     var date = new Date(timestamp);
-    var year = date.getFullYear(); // 연도를 4자리로 가져옵니다.
+    var year = date.getFullYear(); 
     var month = ('0' + (date.getMonth() + 1)).slice(-2);
     var day = ('0' + date.getDate()).slice(-2);
     return year + '-' + month + '-' + day;
 }
 
 
-//달력으로 조회
-/*
-$('#searchButton').on('click', function () {
-    if($('#firstsearchdate').val() && $('#lastsearchdate').val()){
-    firstSearchDateValue = $('#firstsearchdate').val();
-    lastSearchDateValue = $('#lastsearchdate').val();
-    console.log(firstpage);
-    if(firstpage){
-    	adminGroupBuyIntList(searchblock,firstSearchDateValue,lastSearchDateValue);		
-	}else{
-		adminGroupBuySerUserIntList(searchblock, seruser,firstSearchDateValue,lastSearchDateValue);       		
-	}
-    }else{
-    	alert('날짜를 모두 선택해 주세요.');
-    }
-});*/
+
+//두 개의 input 요소에 formattedYesterday 값을 설정
+const pfirstSearchDateInput = document.getElementById('pfirstsearchdate');
+const plastSearchDateInput = document.getElementById('plastsearchdate');
+
+pfirstSearchDateInput.value = firstDayOfMonth;
+plastSearchDateInput.value = formattedYesterday;
+
+drawwork(pfirstSearchDateInput.value,plastSearchDateInput.value);
+
+
+function drawwork(pfirstSearchDate, plastSearchDate) {
+    $.ajax({
+        type: 'GET',
+        url: 'worklist',
+        data: { 'pfirstsearchdate': pfirstSearchDate, 'plastsearchdate': plastSearchDate },
+        dataType: 'json',
+        success: function (data) {
+        	console.log(data)
+        	var content ='';   	
+        	data.work.forEach(function(item, idx){
+	    		idx += 1;
+	    		content +='<tr>';
+	    		content +='<td>'+item.workID+'</td>';
+	    		content +='<td>'+item.workDate+'</td>';
+	    		content +='<td>'+item.gowork.substring(11,19)+'</td>';
+	    		content +='<td>'+item.leavework.substring(11,19)+'</td>';
+	    		content +='</tr>';
+	    	});
+        	$('#worklist').empty();
+			$('#worklist').append(content);
+        },
+        error: function (error) {
+            console.error(error);
+        }
+    });
+}
+
+//출퇴근 날짜 검색
+document.getElementById('psearchButton').addEventListener('click', function () {
+	  const pfirstSearchDate = pfirstSearchDateInput.value;
+	  const plastSearchDate = plastSearchDateInput.value;
+	  drawwork(pfirstSearchDate, plastSearchDate);
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

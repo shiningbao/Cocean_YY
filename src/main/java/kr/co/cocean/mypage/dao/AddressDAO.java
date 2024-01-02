@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.co.cocean.mypage.dto.InaddressDTO;
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.mypage.dto.OutAddressDTO;
 
 @Mapper
@@ -18,8 +19,9 @@ public interface AddressDAO {
    ArrayList<OutAddressDTO> list();
 
    int delete(String addressNumber);
-
-   ArrayList<OutAddressDTO> namesearch(List<String> name);
+  
+   //외부검색
+   HashMap<String, Object> namesearch(String name);
    
    //외부주소록 저장
    int insert(HashMap<String, Object> params);
@@ -34,7 +36,7 @@ public interface AddressDAO {
    ArrayList<InaddressDTO> inaddress();
    
    //내부 검색
-   ArrayList<InaddressDTO> insearch(List<String> inname);
+   ArrayList<LoginDTO> insearch(List<String> inname);
 
    //수정
    /*
@@ -44,7 +46,18 @@ public interface AddressDAO {
    OutAddressDTO outupdate(String addressNumber);
 
    //수정
-   void outsideupdate(OutAddressDTO dto);
+void outaddressupdate(OutAddressDTO dto);
+
+//외부검색
+ArrayList<OutAddressDTO> reserchuser(String name);
+
+
+//내부리스트
+ArrayList<InaddressDTO> inlistCall();
+
+
+
+
    
    //내부주소록 페이지
    /*

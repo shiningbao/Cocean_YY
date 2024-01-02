@@ -13,6 +13,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../side.jsp"></jsp:include>
 
 <form action="outsidejoins" method="post">
      <table>
@@ -51,6 +52,7 @@
          <tr>
              <th colspan="2">
                  <input type="submit" value="저장" />
+                 <input type="button" onclick="location.href='./list'" value="리스트"/>
              </th>
          </tr>
      </table>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
+	<select id="animalHistory" resultType="animal">
+		SELECT animalID, branchID, classificationCode, entryDate, status FROM animalManagement
+	</select>	
+	
+	<select id="tankHistory" resultType="tank">
+		SELECT tc.categoryID, tc.tankType, tm.tankID, tm.branchID, tm.registrationDate, tm.tankStatus
+		FROM tankManagement tm
+		INNER JOIN tankCategory tc ON tm.categoryID = tc.categoryID
+	</select>
+
+	<select id="productHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, ph.salesRegDate, ph.salesNumber 
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
+	</select>
+
+	<select id="ticketHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, th.salesRegDate, th.salesNumber 
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN ticketHistory th ON bp.productIndex = th.productIndex
+	</select>
+	
+	<select id="visitorsHistory" resultType="sales">
+		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		bp.status, vh.entryDate, vh.visitorsNumber
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN visitorsHistory vh ON bp.productIndex = vh.productIndex
+	</select>
+
+</mapper>

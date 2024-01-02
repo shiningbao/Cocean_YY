@@ -102,10 +102,9 @@ public class AnimalController {
 	
 	/* 코션친구들 상세보기 */
 	@GetMapping(value = "/animal/detail.go")
-	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
+	public ModelAndView animalDetailGo(@RequestParam int animalID) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
 		mav.addObject("animalID", animalID);
-		mav.addObject("nickname", nickname);
 		return mav;
 	}
 	

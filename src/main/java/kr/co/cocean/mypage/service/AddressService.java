@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.mypage.dao.AddressDAO;
 import kr.co.cocean.mypage.dto.InaddressDTO;
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.mypage.dto.OutAddressDTO;
 
 @Service
@@ -24,6 +25,7 @@ public class AddressService {
 
    @Autowired AddressDAO dao;
 
+   //외부리스트
    public ArrayList<OutAddressDTO> list() {
       
       return dao.list();
@@ -32,27 +34,11 @@ public class AddressService {
    public int delete(ArrayList<String> delList) {
       int cnt = 0;      
       for (String addressNumber : delList) {
-         // 글에 해당되는 사진이 있는지 확인
-         cnt += dao.delete(addressNumber); // 글 지우기
-         // 사진이 있으면 삭제
+         cnt += dao.delete(addressNumber); 
       }      
       return cnt;
    }
-   //이름 검색
 
-   public ModelAndView namesearch(List<String> name) {
-      logger.info("서비스 시작");
-      ModelAndView mav = new ModelAndView();
-      ArrayList<OutAddressDTO> list = dao.namesearch(name);
-      logger.info("검색중");
-      mav.addObject("list", list);
-      logger.info("list :" +list);
-      mav.setViewName("mypage/outsideaddressBook");
-      logger.info("뷰접속");
-      return mav;
-   }
-   
-   
    public String outsidejoin(HashMap<String, Object> params) {
       logger.info("서비스 도착");
       int row = dao.insert(params);      
@@ -70,6 +56,7 @@ public class AddressService {
       return mav;
    }
 
+   //본래 내부주소록리스트
    public ArrayList<InaddressDTO> inaddress() {
       logger.info("내부 서비스 도착");
       return dao.inaddress();
@@ -77,12 +64,16 @@ public class AddressService {
 
    //내부 검색
    public ModelAndView insearch(List<String> inname) {
+	  logger.info("내부 검색 서비스 접속");
       ModelAndView mav = new ModelAndView();
-      ArrayList<InaddressDTO> list = dao.insearch(inname);
+      ArrayList<LoginDTO> list = dao.insearch(inname);
+      logger.info("list :"+list);
       mav.addObject("list", list);
       mav.setViewName("list");
+      logger.info("지금 다오로 가는중");
       return mav;
    }
+  
 
    
 
@@ -91,16 +82,55 @@ public class AddressService {
       return dao.outupdate(addressNumber);
    }
 
-   public void outsideupdate(OutAddressDTO dto) {
-      dao.outsideupdate(dto);
-      
-   }
 
+   //수정버튼
    public void outaddressupdate(OutAddressDTO dto) {
-      // TODO Auto-generated method stub
-      
+	   logger.info("서비스 도착");
+	   dao.outaddressupdate(dto);      
    }
 
+   //외부검색 다시
+public ArrayList<OutAddressDTO> reserch(String name) {
+	
+	ArrayList<OutAddressDTO> relist = dao.reserchuser(name);
+	
+	return relist;
+}
+
+//내부 리스트(다시)
+public ArrayList<InaddressDTO> inlistCall() {
+	
+	return dao.inlistCall();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   //외부검색
+   
+	/*
+	 * public HashMap<String, Object> namesearch(String name) {
+	 * logger.info("외부 검색 서비스 접속"); return dao.namesearch(name); }
+	 */
    
    
    /*
