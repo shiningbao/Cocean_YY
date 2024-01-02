@@ -3,6 +3,7 @@ package kr.co.cocean.mypage.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -118,13 +119,15 @@ public class MypageService {
 
 
 
-	//마이페이지 리스트
 	
-	public ArrayList<MypageDTO> mypagelist() {
-		
 
-		return dao.mypagelist();
+
+	//마이페이지 리스트
+	public List<HashMap<String, Object>> detail(int employeeID) {
+		
+		return dao.datail(employeeID);
 	}
+	
 
 	
 	//마이페이지 리스트 ajax

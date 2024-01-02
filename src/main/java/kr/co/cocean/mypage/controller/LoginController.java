@@ -62,7 +62,7 @@ public class LoginController {
 	public ModelAndView logout(HttpSession session) {
 	session.removeAttribute("userInfo");
 	ModelAndView mav = new ModelAndView();
-	mav.setViewName("mypage/login");
+	mav.setViewName("login");
 	mav.addObject("msg", "로그아웃되었습니다");
 	return mav ;
 	}

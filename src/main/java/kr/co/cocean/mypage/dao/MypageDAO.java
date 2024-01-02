@@ -2,6 +2,7 @@ package kr.co.cocean.mypage.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -33,11 +34,11 @@ public interface MypageDAO {
 	
 	String selectEncpw(int employeeID);
 	
-	ArrayList<MypageDTO> mypagelist();
-	
-	
-
 	void changePw(String newPass, int employeeID);
+
+	//마이페이지 리스트
+	List<HashMap<String, Object>> datail(int employeeID);
+
 	
 	
 	

@@ -105,9 +105,9 @@ button {
 	<c:import url="/side" />
 	<div id="hTitle">
 		<p>${map.tankName}</p>
-		 <a>${map.branchName} / 배치구역: ${map.area}</a></br>
-		 <a>${map.tankType} / 용량: ${map.capacity}</a></br>
-		 <a>${fn:substring(map.registrationDate,0,10)}</a>
+		 <a>${map.branchName} [${map.area}]</a></br>
+		 <a>${map.tankType} [${map.capacity}]</a></br>
+		 <a>등록일 [${fn:substring(map.registrationDate,0,10)}]</a>
 	</div>
 	<div class="topBar">
 		<div>하우스 정보</div>
@@ -203,9 +203,14 @@ button {
     
 </body>
 <script>
+const offset = 1000 * 60 * 60 * 9
+const koreaNow = new Date((new Date()).getTime() + offset)
+console.log(koreaNow.toISOString().replace("T", " ").split('.')[0]);
+
 
 var tankID = ${map.tankID}
-var tdy = new Date().toISOString().substring(0, 10).toString();
+var tdy = koreaNow.toISOString().replace("T", " ").split('.')[0].substring(0, 10).toString();
+
 
 const ctx = $('#myChart');
 

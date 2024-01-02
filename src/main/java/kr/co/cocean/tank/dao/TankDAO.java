@@ -7,13 +7,14 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 import kr.co.cocean.tank.dto.TankRecordDTO;
 
 @Mapper
 public interface TankDAO {
 
-	List<TankDTO> tankList(TankDTO tankDTO);
+	List<TankDTO> tankList(Pager pager);
 
 	List<Map<String, Object>> getBranch();
 
@@ -30,5 +31,11 @@ public interface TankDAO {
 	int tankSet(Map<String, Object> params);
 
 	List<Map<String, Object>> tankAnimal(int tankID);
+
+	List<Integer> tankCount();
+
+	int recordData(Map<String, Integer> map);
+
+//	Long getTotalCount(Pager pager);
 
 }

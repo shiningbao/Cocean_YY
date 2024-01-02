@@ -46,6 +46,8 @@ position: absolute;
   height: 50px;
 }
 
+
+
 </style>
 </head>
 
@@ -59,8 +61,8 @@ position: absolute;
 <div class="tab">
 <!-- 외부검색 -->
     <ul class="tabnav">
-      <li><a href="#tab01">탭1</a></li>
-      <li><a href="#tab02">탭2</a></li>
+      <li><a href="#tab01" value="tab01">탭1</a></li>
+      <li><a href="#tab02" value="tab02">탭2</a></li>
     </ul>
     
     <div class="tabcontent">
@@ -94,12 +96,10 @@ position: absolute;
 	
 	
       <div id="tab02">
-      
-      
        <input type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
 	<input type="button" id="inreserch" value="검색" style="margin: 0px 5px;"/>
     
-    <table class="outaddress">
+    <table class="address">
       <thead>
       <tr>
          <th>이름</th>
@@ -155,6 +155,8 @@ position: absolute;
 </body>
 <script>
 listCall();
+addresslistCall();
+
 
 
 //탭버튼 전환
@@ -264,14 +266,9 @@ function drawList(list){
       content += '<td>'+item.departmentName+'</td>';
       content += '</tr>';
    });
-   $('#list').empty();
-   $('#list').append(content);
-   
+	   $('#list').empty();
+	   $('#list').append(content);
 }
-
-
-
-
 
 
 //외부 주소록 검색
@@ -326,6 +323,11 @@ $('#reserch').on('click', function () {
 
 
 
+
+
+
+
+
 //내부 주소 리스트
 
 function addresslistCall(){
@@ -340,22 +342,23 @@ function addresslistCall(){
             alert('로그인이 필요한 서비스 입니다.');
             location.href='./';
          }else{
-            drawList(data1.list);
+        	 addressdrawList(data1.list1);
          }      
       },
       error:function(e){
          console.log(e);
       }
    });   
+   
 }
 
 
 //내부주소리스트
 
-function addressdrawList(list){
+function addressdrawList(list1){
    console.log(list);
    var content = '';
-   list.forEach(function(item1,idx){
+   list1.forEach(function(item1,idx){
       content += '<tr>';
       content += '<td>'+item1.name+'</td>';   
       content += '<td>'+item1.phoneNumber+'</td>';
@@ -390,7 +393,7 @@ $('#inreserch').on('click', function () {
                 content = '<tr>';
                 content += '<td style="text-align: center; color: red;">' + name + '가 존재하지 않습니다.</td>';
                 content += '</tr>';
-                $('#list').append(content);
+                $('#inlist').append(content);
             } else {
                 for (var i = 0; i < data1.size; i++) {
                     var item1 = data1.list[i];

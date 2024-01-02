@@ -95,6 +95,16 @@ public class AddressController {
 	      }
 	      logger.info("in 서비스 넘어가기전");   
 	      return result1;
+	      
+	      
+	//내부 검색
+
+	      
+	      
+	      
+	      
+	      
+	      
 	   
 	   /*
       logger.info("list 시작");

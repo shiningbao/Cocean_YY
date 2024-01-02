@@ -60,25 +60,6 @@
 </div>
 <script>	
 logplanStart();
-// 	ClassicEditor.create(document.querySelector('#editor'));
 
-// 	$('#summernote').summernote({
-// 		height: 200, width: 700,
-// 		maxHeight: 200,
-// 		minHeight: 200,
-// 		focus: true,
-// 		toolbar:['picture']
-// 	});
-	
-// function logplanWrite(){
-// 	var status = $('#status').val();
-// 	var content = $('#summernote').summernote('code');
-// 	if(con.length > (2*1024*1024)){
-// 		alert('컨텐츠의 크기가 큽니다. 이미지 갯수나 크기를 줄여주세요');
-// 	}else{
-// 		logplanWriteDo(content,status);
-// 	}
-
-// }
 
 </script>

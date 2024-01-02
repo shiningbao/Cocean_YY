@@ -16,7 +16,7 @@ gowork,leavework from work
 		GROUP BY workdate
 -->
 
-
+ 
 <select id="work" resultType="work">
 	<![CDATA[
 SELECT w.workID ,e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
@@ -28,4 +28,15 @@ GROUP BY e.employeeID, w.workDate
 	]]>
 </select>
 
+<!--  
+<select id="work" resultType="work">
+	<![CDATA[
+SELECT w.workID, e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
+FROM employee e
+INNER JOIN work w ON e.employeeID = w.employeeID
+WHERE e.employeeID = #{param1} AND w.workDate >= #{param2} AND w.workDate <= #{param3}
+GROUP BY e.employeeID, w.workDate
+	]]>
+</select>
+-->
 </mapper>
