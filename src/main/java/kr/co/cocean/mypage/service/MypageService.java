@@ -87,18 +87,15 @@ public class MypageService {
 	
 	//비밀번호 수정
 	
-	public int changePw(HashMap<String, Object> params) {
+	public int changePw(HashMap<String, Object> params, int employeeID) {
 		logger.info("비밀번호 변경 서비스 도착");
 		int success = 0;
 		logger.info("success :"+success);
 		logger.info("params :"+params);
-		String emNo = String.valueOf (params.get("EmployeeID"));
-		int rm = Integer.parseInt(emNo);
-		logger.info("emNo :"+emNo);
+
 		
-		String encpw = dao.selectEncpw(rm);
+		String encpw = dao.selectEncpw(employeeID);
 		
-		logger.info("currentpw :"+params.get("currentPw"));
 	
 		String currentPw = (String) params.get("currentPw");
 		logger.info("currentpw :"+currentPw);
@@ -106,8 +103,9 @@ public class MypageService {
 		logger.info("encpw :" +encpw,"currentPw :"+currentPw,"newPw :"+newPw );
 		
 		if(encoder.matches(currentPw,encpw)) {
-			params.put("newPw",encoder.encode(newPw) );
-			dao.changePw(params);
+			
+			String newPass = encoder.encode(newPw);
+			dao.changePw(newPass,employeeID);
 			success = 1;
 			logger.info("성공");
 		}else {

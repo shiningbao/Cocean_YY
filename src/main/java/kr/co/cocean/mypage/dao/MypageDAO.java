@@ -25,16 +25,19 @@ public interface MypageDAO {
 */
 	
 	
-	String selectEncpw(@Param("rm") int rm);
+
 /*
 	int changepw(HashMap<String, Object> params);
 */
 	//마이페이지 리스트
 	
+	String selectEncpw(int employeeID);
+	
 	ArrayList<MypageDTO> mypagelist();
 	
 	
-	void changePw(HashMap<String, Object> params);
+
+	void changePw(String newPass, int employeeID);
 	
 	
 	

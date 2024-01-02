@@ -146,18 +146,19 @@ public class MypageController {
 		String page= "mypage/mypageupdate";
 
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		params.put("EmployeeID", dto.getEmployeeID());
+		int employeeID = dto.getEmployeeID();
 		logger.info("parmas: "+params);
+		logger.info("employeeID :"+employeeID);
 		//비밀번호 변경 서비스 호출
 		
-		int result =service.changePw(params);
+		int result =service.changePw(params,employeeID);
 		
 		logger.info("result: "+result );
 		
 
 		if(result >0) {
 			model.addAttribute("msg","수정에 성공 했습니다");
-			page = "redirect:/login";
+			page = "redirect:/home";
 		}else {
 			model.addAttribute("msg", "현재 비밀번호가 일치 하지 않습니다.");
 		}
