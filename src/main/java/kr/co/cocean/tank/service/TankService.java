@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.cocean.tank.dao.TankDAO;
+import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 import kr.co.cocean.tank.dto.TankRecordDTO;
 
@@ -24,8 +25,9 @@ public class TankService {
 	
 	
 	// 전체 수조 리스트
-	public List<TankDTO> tankList(TankDTO tankDTO) {
-		List<TankDTO> list = dao.tankList(tankDTO);
+	public List<TankDTO> tankList(Pager pager) {
+//		Long totalCount = dao.getTotalCount(pager);
+		List<TankDTO> list = dao.tankList(pager);
 		return list;
 	}
 
@@ -74,6 +76,17 @@ public class TankService {
 
 	public List<Map<String, Object>> tankAnimal(int tankID) {
 		return dao.tankAnimal(tankID);
+	}
+
+
+	public List<Integer> tankCount() {
+		return dao.tankCount();
+	}
+
+
+	public void recordData(Map<String, Integer> map) {
+		dao.recordData(map);
+		
 	}
 
 }
