@@ -48,6 +48,13 @@ public interface AddressDAO {
    //수정
 void outaddressupdate(OutAddressDTO dto);
 
+//외부검색
+ArrayList<OutAddressDTO> reserchuser(String name);
+
+
+//내부리스트
+ArrayList<InaddressDTO> inlistCall();
+
 
 
 

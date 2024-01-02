@@ -1,5 +1,6 @@
 package kr.co.cocean.mypage.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,18 +72,18 @@ public class MypageService {
 	
 
 	//비밀번호 조회
-	
+	/*
 	public String pwCheck(int employeeID) {	
 		logger.info("다오로 가는중");
 		return dao.pwCheck(employeeID);
 	}
 	
 	//비밀번호 수정
+	
 	public Object pwUpdate(String memberId, String hashedPw) {
 
 		return dao.pwUpdate(memberId,hashedPw);
-	}
-
+	}*/
 	
 	//비밀번호 수정
 	
@@ -92,7 +94,7 @@ public class MypageService {
 		logger.info("params :"+params);
 		String emNo = String.valueOf (params.get("EmployeeID"));
 		int rm = Integer.parseInt(emNo);
-		logger.info("emNo :"+params);
+		logger.info("emNo :"+emNo);
 		
 		String encpw = dao.selectEncpw(rm);
 		
@@ -105,7 +107,7 @@ public class MypageService {
 		
 		if(encoder.matches(currentPw,encpw)) {
 			params.put("newPw",encoder.encode(newPw) );
-			dao.changepw(params);
+			dao.changePw(params);
 			success = 1;
 			logger.info("성공");
 		}else {
@@ -116,6 +118,37 @@ public class MypageService {
 		return success;
 	}
 
+
+
+	//마이페이지 리스트
+	
+	public ArrayList<MypageDTO> mypagelist() {
+		
+
+		return dao.mypagelist();
+	}
+
+	
+	//마이페이지 리스트 ajax
+	/*
+	public String animalDetailAjax(int animalID, String con, Model model) {
+		String page = "aquarium/animalDetail_"+con;
+		if(con.equals("base")) {
+			// 기본 정보
+			model.addAttribute("base", dao.animalDetail(animalID));
+			// 이미지
+			model.addAttribute("image", dao.animalImage(animalID));
+			// 담당자
+			model.addAttribute("incharge", dao.animalInCharge(animalID));
+		}else{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String month = sdf.format(System.currentTimeMillis());
+			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("month", month);
+		}
+		
+		return page;
+	}*/
 
 	
 	/*

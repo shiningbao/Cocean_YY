@@ -12,6 +12,10 @@ public interface WorkDAO {
 	//리스트 
 	ArrayList<OutAddressDTO> work();
 
+	//ajax
+	ArrayList<WorkDTO> work(String pfirstSearchDate, String plastSearchDate);
+
+	
 	
 
 	
