@@ -121,7 +121,10 @@ function resizeWidth(){
 
 	var msg = "${msg}";
 	if(msg != ""){
-		alert(msg);
+		swal({
+			title: msg,
+			button: '확인'
+		});
 	}
 	
 	$('#write').on('click',function(){
@@ -153,7 +156,10 @@ function resizeWidth(){
 			classifiValues.push($(this).val());
 		});
 		if(statusValues == '' || classifiValues == ''){
-			alert('선택 필요');
+			swal({
+				title: '조건을 선택해 주세요',
+				button: '확인'
+			});
 		}else{
 			var formData = new FormData();
 			formData.append("inchargeEmployeeID", inchargeEmployeeID);
