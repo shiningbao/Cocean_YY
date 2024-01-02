@@ -1,7 +1,6 @@
 package kr.co.cocean.approval.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +36,11 @@ public interface ApprovalDAO {
 
 	formDTO formTitle(int titleID);
 
-	ArrayList<ApprovalDTO> lineList(int idx, int EmployeeID);
+	ArrayList<ApprovalDTO> lineList(int idx);
 
 	ArrayList<ApprovalDTO> signList(String idx);
 
-	ArrayList<ApprovalDTO> agrRef(int idx, int employeeID);
+	ArrayList<ApprovalDTO> agrRef(int idx);
 
 	ArrayList<ApprovalDTO> fileList(int idx);
 
@@ -54,6 +53,50 @@ public interface ApprovalDAO {
 	void approveDraft(Map<String, String> param);
 
 	void approveApp(Map<String, String> param);
+
+	ApprovalDTO getOrder(String idx, String loginId);
+
+	void passApp(String idx,int order);
+
+	void myApprove(Map<String, String> param);
+
+	void approvalTs(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
+
+	void lineEmptyTs(int idx, String lastOrder,int employeeID);
+
+	void writeLeaveDraft(ApprovalDTO dto);
+
+	void writeReincrement(ApprovalDTO dto);
+
+	void writeattendenceDraft(ApprovalDTO dto);
+
+	ArrayList<ApprovalDTO> saveList(int employeeID);
+
+	ApprovalDTO vacDetail(int idx);
+
+	ApprovalDTO lvDetail(int idx);
+
+	ArrayList<ApprovalDTO> myList(int employeeID);
+
+	ArrayList<ApprovalDTO> refList(int employeeID);
+
+	ArrayList<ApprovalDTO> comList(int employeeID);
+
+	ArrayList<ApprovalDTO> departmentList(int employeeID);
+
+	/*
+	 * void update(ApprovalDTO dto);
+	 * 
+	 * void updateWd(String title, String content, int idx);
+	 * 
+	 * void updateAd(ApprovalDTO dto);
+	 * 
+	 * void updateLd(ApprovalDTO dto);
+	 * 
+	 * void updateRd(ApprovalDTO dto);
+	 */
+
+
 
 
 

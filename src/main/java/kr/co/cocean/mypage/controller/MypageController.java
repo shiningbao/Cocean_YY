@@ -1,5 +1,6 @@
 package kr.co.cocean.mypage.controller;
 
+import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,21 +57,28 @@ public class MypageController {
 		return map;
 	}*/
 	
-	//ajax로 리스트 받아오기
-	@GetMapping(value="mypage/")
+
+	@GetMapping(value="mypage/listcall")
 	@ResponseBody
-	public HashMap<String, Object> mypagelist(){
+	public HashMap<String, Object> mypagelist(HttpSession session){
 		logger.info("mypage 컨트롤 접속");
+		HashMap<String, Object>result = new HashMap<String, Object>();
+		ArrayList<MypageDTO> list = service.mypagelist();
 		
+		result.put("list", list);
 		
-		
-		
-		return null;
+		return result;
 	}
 	
 	
-	
-	
+	/*
+	@PostMapping(value = "/animal/detail.ajax")
+	public String animalDetailAjax(@RequestParam String animalID, @RequestParam String con, Model model) {
+		logger.info("animalID : {}",animalID);
+		int intAnimalID = Integer.parseInt(animalID);
+		logger.info("con : {}",con);
+		return service.animalDetailAjax(intAnimalID, con, model);
+	}*/	
 
 
 	
@@ -100,8 +108,9 @@ public class MypageController {
 	}*/
 	
 	/*
-	@PostMapping(value="/mypage/pwCheck")
+	@PostMapping(value="mypage/pwCheck")
 	@ResponseBody
+	
 	public boolean pwCheck(String memberPw,HttpSession session){
 		logger.info("암호화 비밀번호 조회");
 	    LoginDTO logindto = (LoginDTO) session.getAttribute("userInfo");
@@ -109,6 +118,7 @@ public class MypageController {
 		logger.info("비밀번호 조회 서비스 이동");
 		return chk;		
 	}*/
+	
 	
 	
 	
@@ -125,35 +135,48 @@ public class MypageController {
 		return "redirect:/mypage/login";
 	}*/
 	
+	
+	
+	
+	
 	//수정(암호화)
+	
 	@PostMapping(value="/mypage/changePw")
 	public String changePw(HttpSession session,@RequestParam HashMap<String , Object>params,Model model) {
 		String page= "mypage/mypageupdate";
-		
+
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		params.put("EmployeeID", dto.getEmployeeID());
+		int employeeID = dto.getEmployeeID();
 		logger.info("parmas: "+params);
+		logger.info("employeeID :"+employeeID);
 		//비밀번호 변경 서비스 호출
 		
-		int result =service.changePw(params);
+		int result =service.changePw(params,employeeID);
 		
 		logger.info("result: "+result );
 		
+
 		if(result >0) {
 			model.addAttribute("msg","수정에 성공 했습니다");
-			page = "redirect:/login";
+			page = "redirect:/home";
 		}else {
 			model.addAttribute("msg", "현재 비밀번호가 일치 하지 않습니다.");
 		}
 		
 		return page;
 	}
+
 	
 	
+	
+	
+	
+	
+		
+	}
+
 	
 
 	
 	
 
-	
-}

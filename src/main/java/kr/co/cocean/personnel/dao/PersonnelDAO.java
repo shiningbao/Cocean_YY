@@ -45,4 +45,10 @@ public interface PersonnelDAO {
 
 	void upload(FileDTO dto);
 
+	List<HashMap<String, Object>> datail(int parsedEmployeeID);
+
+	List<HashMap<String, Object>> employeeHistory(int employeeID);
+
+	List<HashMap<String, Object>> workHistory(int employeeID);
+
 }

@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<!-- 
+<!--  
 <form action="/mypage/pwUpdate" method="post" id="pwUpdateForm" name="pwUpdateForm">
                        <input type="hidden" id="memberId" name="memberId" value="${login.memberId}">
     <div class="col-sm-8 col-sm-offset-2">
@@ -30,6 +30,7 @@
     </form>
  -->
  
+   
  <form action="changePw" method="post" name="mypage=form">
 		<div class="mypage-row">
 			<label>현재 비밀번호</label>
@@ -40,15 +41,16 @@
 			<input type="password" name="newPw" maxlength="20"/> 
 		</div>
 		<div class="mypage-row">
-			<label>새 비밀번호 확인</label>
-			<input type="password" name="newPwConfirm" maxlength="20"/> 
-		</div>
+    <label>새 비밀번호 확인</label>
+    <input type="password" name="newPwConfirm" maxlength="20"/>
+</div>
 		<input type="button" onclick="location.href='./list'" value="리스트"/>
-		<button id="info-update-btn">수정</button>
+		<button type="submit" id="info-update-btn">수정</button>
 	</form>
     
     
-
+    
+    
     
 </body>
 
@@ -58,13 +60,7 @@ if(msg != ""){
    alert(msg);
 }
 
-
-
-
-
-/*type="text/javascript" 신경 안써도됨*/
- /*
-
+/*
 $(document).ready(function(){
 	
 	$("#pwUpdate").on("click", function(){
@@ -105,14 +101,17 @@ $(document).ready(function(){
 					
 				}
 			}
-		});
-		}
+		})
+		
 	});
 	
 		
 	
-});
-*/
+})*/
+
+
+
+
 
 </script>
 </html>

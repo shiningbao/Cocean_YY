@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("mypage")
 public class MypageDTO {
 
-	
+	private int employeeID;
 	private String name;
 	private int rankID;
 	private int departmentID;
@@ -19,7 +19,9 @@ public class MypageDTO {
 	
 	//file
 	private int imageID;
+	private String serverFileName;
 	private String category;
+	private String path;
 	private int idx;
 	
 	

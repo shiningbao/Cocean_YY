@@ -43,9 +43,9 @@
 						<span class="d-none d-md-inline ml-1">마이페이지</span>
 					</a>
 					<div class="collapse" id="myPage_bar">
-						<a href="#" class="list-group-item" data-parent="#sidebar">내정보</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">근태기록</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">주소록</a>
+					<a href="<c:url value='/mypage/mypage'/>" class="list-group-item" data-parent="#sidebar">내정보</a>
+						<a href="<c:url value='/mypage/work'/>" class="list-group-item" data-parent="#sidebar">근태기록</a>
+						<a href="<c:url value='/mypage/address'/>" class="list-group-item" data-parent="#sidebar">주소록</a>
 					</div>
 					<a href="<c:url value='/animal/list.go'/>" class="list-group-item d-inline-block collapsed"
 						 data-parent="#sidebar">
@@ -82,11 +82,11 @@
 						<span class="d-none d-md-inline ml-1">인사 관리</span>
 					</a>
 					<div class="collapse" id="group_bar">
-						<a href='<c:url value="/personnel/getChart.go"/>' class="list-group-item" data-parent="#sidebar">조직 관리</a>
+						<a href='<c:url value="/personnel/orgManage.go"/>' class="list-group-item" data-parent="#sidebar">조직 관리</a>
 						<a href='<c:url value="/personnel/personnelList.go"/>' class="list-group-item" data-parent="#sidebar">사원 관리</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">연차 관리</a>
+						<a href='<c:url value="/personnel/annualManage.go"/>' class="list-group-item" data-parent="#sidebar">연차 관리</a>
 					</div>
-					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+					<a href='<c:url value="/facility/facility.go"/>' class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
 						<img style="width: 27px; margin-right: 5px; margin-bottom: 3px;"
 							src="<c:url value='/resource/img/facility.svg'/>">
 						<span class="d-none d-md-inline ml-1">시설 관리</span>
@@ -100,11 +100,11 @@
 					<div class="collapse" id="approval_bar">
 						<a href='<c:url value="/approval/formList.go"/>' class="list-group-item" data-parent="#sidebar">결재문서작성</a>
 						<a href='<c:url value="/approval/waitingList.go"/>' class="list-group-item" data-parent="#sidebar">결재대기함</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">수신함</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">발신함</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">완료함</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">반려함</a>
-						<a href="#" class="list-group-item" data-parent="#sidebar">임시저장함</a>
+						<a href='<c:url value="/approval/refList.go"/>' class="list-group-item" data-parent="#sidebar">참조/열람함</a>
+						<a href='<c:url value="/approval/myDraftList.go"/>' class="list-group-item" data-parent="#sidebar">나의기안함</a>
+						<a href='<c:url value="/approval/completeList.go"/>' class="list-group-item" data-parent="#sidebar">완료함</a>
+						<a href='<c:url value="/approval/department.go"/>' class="list-group-item" data-parent="#sidebar">부서함</a>
+						<a href='<c:url value="/approval/tempSaveList.go"/>' class="list-group-item" data-parent="#sidebar">임시저장함</a>
 					</div>
 					<a href="#board_bar" class="list-group-item d-inline-block collapsed"
 						data-toggle="collapse" data-parent="#sidebar" aria-expanded="false">

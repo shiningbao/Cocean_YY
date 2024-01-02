@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 public class formDTO {
 
 	private String titleID;
-	private String category;
+	private String formCategory;
 	private String formTitle;
 	
 	public String getTitleID() {
@@ -15,11 +15,12 @@ public class formDTO {
 	public void setTitleID(String titleID) {
 		this.titleID = titleID;
 	}
-	public String getCategory() {
-		return category;
+
+	public String getFormCategory() {
+		return formCategory;
 	}
-	public void setCategory(String category) {
-		this.category = category;
+	public void setFormCategory(String formCategory) {
+		this.formCategory = formCategory;
 	}
 	public String getFormTitle() {
 		return formTitle;

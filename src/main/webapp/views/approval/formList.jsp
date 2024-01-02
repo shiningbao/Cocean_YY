@@ -57,7 +57,7 @@ table,th,td{
 		</tr>
 		<c:forEach items="${list}" var="form">
 		<tr>
-			<td>${form.category}</td>
+			<td>${form.formCategory}</td>
 			<td><a href="writeDraft.go?titleID=${form.titleID}&date=<%= formattedDate %>">${form.formTitle}</a></td>
 		</tr>	
 		</c:forEach>

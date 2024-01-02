@@ -143,11 +143,17 @@ public class PersonnelController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/personnel/detail.go")
-	public ModelAndView detail(@RequestParam String employeeID) {
+	@GetMapping(value="/personnel/detail.go")
+	public ModelAndView detail(@RequestParam int employeeID) {
 		logger.info("employeeID" +employeeID);
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
-		
+		List<HashMap<String, Object>> list = service.detail(employeeID);
+		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
+		List<HashMap<String, Object>> workHistory = service.workHistory(employeeID);
+		logger.info("detailList=="+list);
+		mav.addObject("list", list);
+		mav.addObject("employeeHistory", employeeHistory);
+		mav.addObject("workHistory", workHistory);
 		return mav;
 	}
 	
@@ -185,6 +191,16 @@ public class PersonnelController {
 		return result;
 	}
 	
+	@RequestMapping(value="/personnel/orgManage.go")
+	public String orgManage() {
+		
+		return "personnel/orgManage";
+	}
+	@RequestMapping(value="/personnel/annualManage.go")
+	public String annualManage() {
+		
+		return "personnel/annualManage";
+	}
 
 	
 }

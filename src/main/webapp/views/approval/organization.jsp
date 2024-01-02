@@ -110,7 +110,7 @@ $(function () {
     	        	url:"/Cocean/approval/getEmployeeID.do",
     	        	data:{employeeID:employeeID},
     	        	success:function(data){
-    	        		// console.log(data);
+    	        		console.log(data);
     	        		drawLine(data.employeeInfo,employeeID);
 
     	        	},
@@ -141,43 +141,41 @@ function getAddedLineData(lineData){
 }
 
 
-// var remLine;
+var remLine;
 
 function getRemainedEmpID(remLine){
-        console.log(remLine);
+       //  console.log("getRemainedEmpID호출");
    
 }
 
 // 조직도에서 사원 선택해서 옆에 그리는 부분
 function drawLine(employeeInfo, currentEmployeeID) {
-    employeeInfo.forEach(function (item, idx) {
-        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
-        var isRemLineEmpID = remLine.includes(currentEmployeeID);
-		
-        if (!isRemLineEmpID && !existingEmployee) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
-            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
-            var content = '<div class="lineItem">';
-            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
-            if (!hqDepartmentRank) {
-                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
-                content += '<label class="rank">' + item.rankName + '</label>' + '\u00A0' + '\u00A0';
-            }
-            content += '<label class="name">' + item.name + '</label>' + '<label class="cancel">' + '\u00A0' + '\u00A0' + '\u00A0' + 'x' + '</label>' + '<br/>';
-            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
-            content += '</div>';
+	if (currentEmployeeID == loginId) {
+	    alert('지정할 수 없습니다.');
+	} else {
+	    employeeInfo.forEach(function (item, idx) {
+	        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
+	        var isRemLineEmpID = remLine.includes(currentEmployeeID);
 
-            $('#line').append(content);
-            appendCancel();
-        } else {
-            alert('이미 지정된 사원입니다.');
-        }
-       
-        
-        
-    });
-    if(currentEmployeeID==loginId){
-    	alert('지정할 수 없습니다.');
-    }
+	        if (!isRemLineEmpID && !existingEmployee) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
+	            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
+	            var content = '<div class="lineItem">';
+	            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
+	            if (!hqDepartmentRank) {
+	                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
+	                content += '<label class="rank">' + item.rankName + '</label>' + '\u00A0' + '\u00A0';
+	            }
+	            content += '<label class="name">' + item.name + '</label>' + '<label class="cancel">' + '\u00A0' + '\u00A0' + '\u00A0' + 'x' + '</label>' + '<br/>';
+	            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
+	            content += '</div>';
+
+	            $('#line').append(content);
+	            appendCancel();
+	        } else {
+	            alert('이미 지정된 사원입니다.');
+	        }
+	    });
+	}
 }
 function appendCancel() { // 모달창에서 x
 $('.cancel').off('click').on('click', function() {
@@ -189,8 +187,8 @@ $('.cancel').off('click').on('click', function() {
 });
 }
 var lineData;
-// 결재라인 저장
-function saveApprovalLine(lineData) { // 모달창 결재라인저장
+// 모달창 결재라인 저장
+function saveApprovalLine(lineData) {
 	lineData=[];
    	
     $('.lineItem').each(function () {

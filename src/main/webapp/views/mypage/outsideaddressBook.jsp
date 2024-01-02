@@ -62,12 +62,15 @@ position: absolute;
       <li><a href="#tab01">탭1</a></li>
       <li><a href="#tab02">탭2</a></li>
     </ul>
+    
     <div class="tabcontent">
       <div id="tab01">
-
+      <!-- 
    <input type="text" name="name" placeholder="이름을 입력해주세요."/>
    <button id="search">검색</button>
-    
+    -->
+    <input type="text" name="name" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
+	<input type="button" id="reserch" value="검색" style="margin: 0px 5px;"/>
     
     <button onclick="del()">삭제</button>
     <input id="outsidejoin" type="button" value="주소록 추가"/>
@@ -91,6 +94,29 @@ position: absolute;
 	
 	
       <div id="tab02">
+      
+      
+       <input type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
+	<input type="button" id="inreserch" value="검색" style="margin: 0px 5px;"/>
+    
+    <table class="outaddress">
+      <thead>
+      <tr>
+         <th>이름</th>
+         <th>전화번호</th>
+         <th>직급</th>
+         <th>직책</th>
+         <th>부서</th>
+      </tr>
+      </thead>
+      <!-- 내용 -->
+      <tbody id="inlist">      
+      </tbody>      
+   </table>
+    
+    
+    
+      <!--  
        	<form action="insearch" method="get">
 <input type="text" name="inname" placeholder="이름을 입력해주세요."/>
 	<button id="search">검색</button>
@@ -118,6 +144,8 @@ position: absolute;
 		</c:forEach>
 	</table>
       
+     -->
+     
      
       </div>
     </div>
@@ -142,25 +170,13 @@ $(function(){
 
 
 
-
-
 var msg = "${msg}";
 if(msg != ""){
    alert(msg);
 }
 
-
-
-
-//내부검색
-
-
-
-
-
-
      
-
+//외부주소록
 $('#outsidejoin').on('click',function(){
    location.href='./outsidejoin';
 });
@@ -168,7 +184,7 @@ $('#outsidejoin').on('click',function(){
 
 
 
-
+//외부주소록
 $('#all').on('click',function(){
    var $chk = $('input[type="checkbox"]');
    console.log($chk);
@@ -180,6 +196,7 @@ $('#all').on('click',function(){
    
 });
 
+//외부주소록
 function del(){
    var chkArr = [];
    $('input[type="checkbox"]:checked').each(function(addressNumber,item){
@@ -198,7 +215,7 @@ function del(){
       success:function(data){
          console.log(data);
          if(data.del_cnt>0){
-            alert('선택한'+data.del_cnt+' 개의 게시물이 삭제 되었습니다.');
+            alert('선택한'+data.del_cnt+' 개의 주소록이 삭제 되었습니다.');
             listCall();
          }
       },
@@ -209,6 +226,7 @@ function del(){
    });
 }
 
+//외부주소록
 
 function listCall(){
    $.ajax({
@@ -231,7 +249,7 @@ function listCall(){
    });   
 }
 
-
+//외부주소록
 function drawList(list){
    console.log(list);
    var content = '';
@@ -251,25 +269,55 @@ function drawList(list){
    
 }
 
-//외부 검색
-$('#search').on('click',function(){
-   var $name = $('input[name="name"]').val();
-   console.log($name);
-   var content = '';
-   $.ajax({
-      type:'get',
-      url:'namesearch',
-      data:{"name":$name},
-      dataType:'json',
-      success:function(data){
-    	  console.log(data);
-         drawList(data);
-      },
-      error:function(e){
-         console.log(e);
-      }
-   });   
- 
+
+
+
+
+
+//외부 주소록 검색
+$('#reserch').on('click', function () {
+    var name = $('input[name="name"]').val();
+    console.log(name);
+
+    $.ajax({
+        type: 'get',
+        url: 'addresssearch',
+        data: { 'name': name },
+        dataType: 'JSON',
+        success: function (data) {
+            console.log(data);
+
+            var content = '';
+            $('#list').empty();
+
+            if (data.size == 0) {
+                content = '<tr>';
+                content += '<td style="text-align: center; color: red;">' + name + '가 존재하지 않습니다.</td>';
+                content += '</tr>';
+                $('#list').append(content);
+            } else {
+                for (var i = 0; i < data.size; i++) {
+                    var item = data.list[i];
+                    content += '<tr>';
+                    content += '<td><input type="checkbox" value="' + item.addressNumber + '"/></td>';
+                    content += '<td>' + item.addressNumber + '</td>';
+                    content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
+                    content += '<td>' + item.phoneNumber + '</td>';
+                    content += '<td>' + item.rankLevel + '</td>';
+                    content += '<td>' + item.positionLevel + '</td>';
+                    content += '<td>' + item.departmentName + '</td>';
+                    content += '</tr>';
+                }
+
+                $('#list').append(content);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+    $('input[name="name"]').val('');
 });
 
 
@@ -278,10 +326,94 @@ $('#search').on('click',function(){
 
 
 
+//내부 주소 리스트
 
+function addresslistCall(){
+   $.ajax({
+      type:'get',
+      url:'addresslistCall',
+      data:{},
+      dataType:'json',
+      success:function(data1){
+         console.log(data1);
+         if(!data1.login){
+            alert('로그인이 필요한 서비스 입니다.');
+            location.href='./';
+         }else{
+            drawList(data1.list);
+         }      
+      },
+      error:function(e){
+         console.log(e);
+      }
+   });   
+}
+
+
+//내부주소리스트
+
+function addressdrawList(list){
+   console.log(list);
+   var content = '';
+   list.forEach(function(item1,idx){
+      content += '<tr>';
+      content += '<td>'+item1.name+'</td>';   
+      content += '<td>'+item1.phoneNumber+'</td>';
+      content += '<td>'+item1.rankName+'</td>';
+      content += '<td>'+item1.positionName+'</td>';
+      content += '<td>'+item1.departmentName+'</td>';
+      content += '</tr>';      
+   });
+   $('#inlist').empty();
+   $('#inlist').append(content);
    
+}
 
 
+//내부 주소록 서치
+$('#inreserch').on('click', function () {
+    var inname = $('input[name="inname"]').val();
+    console.log(name);
+
+    $.ajax({
+        type: 'get',
+        url: 'inaddresssearch',
+        data: { 'inname': inname },
+        dataType: 'JSON',
+        success: function (data1) {
+            console.log(data1);
+
+            var content = '';
+            $('#inlist').empty();
+
+            if (data1.size == 0) {
+                content = '<tr>';
+                content += '<td style="text-align: center; color: red;">' + name + '가 존재하지 않습니다.</td>';
+                content += '</tr>';
+                $('#list').append(content);
+            } else {
+                for (var i = 0; i < data1.size; i++) {
+                    var item1 = data1.list[i];
+                    content += '<tr>';
+                    content += '<td>' + item1.addressNumber + '</td>';
+                    content += '<td>' + item1.name + '</td>';
+                    content += '<td>' + item1.phoneNumber + '</td>';
+                    content += '<td>' + item1.rankLevel + '</td>';
+                    content += '<td>' + item1.positionLevel + '</td>';
+                    content += '<td>' + item1.departmentName + '</td>';
+                    content += '</tr>';
+                }
+
+                $('#inlist').append(content);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    });
+
+    $('input[name="inname"]').val('');
+});
 
 
 
