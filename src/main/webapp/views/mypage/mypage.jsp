@@ -24,95 +24,57 @@
 
 <jsp:include page="../side.jsp"></jsp:include>
 
-<main>
-		
-		<div id="userImg">
-			<img src="<c:url value='/resources/img/mypageimg.png'/>" alr="유저이미지" />
-		</div>
-	
 
+<div id="title">
+		<a>내 정보</a>
+	</div>
+	<c:forEach var='mypage' items="${list}">
 
+		 <table class="list_box">
+		 
+    
+            <tr>
+                <td class="profile_image" rowspan="4">
+                    <span class="img_profile">
+                       <label class="photo" for="fileInput" style="width: 10%;">
+                        <c:choose>
+                            <c:when test="${mypage.profileImage != null}">
+                                <img src="/photo/cocean/personnel/${mypage.profileImage}" id="thumbnail_image" alt="프로필 사진">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="/Cocean/resource/img/psProfile.jpg" id="thumbnail_image" alt="프로필 사진">
+                            </c:otherwise>
+                        </c:choose>
+				    </label>
+                    </span>
+                </td>
+                <th class="name">이름</th>
+                <td class="" colspan="3">${mypage.name }</td>
+                <th class="team">소속</th>
+                <td class="last" colspan="3">${mypage.departmentName }</td>
+            </tr>
+            <tr>
+                <th class="number">사번</th>
+                <td class="number_txt">${mypage.employeeID }</td>
+                <th class="telephone">지점</th>
+                <td class="telephone_txt last">${mypage.branchName }</td>
+            </tr>
+            <tr>
+                <th class="email">직위 / 직책</th>
+                <td class="email_txt">${mypage.positionName} / ${mypage.rankName }</td>
+                <th class="mobile">휴대번호</th>
+                <td class="mobile_txt last">${mypage.phoneNumber }</td>
+            </tr>
+            <tr>
+                <th class="rank">담당</th>
+                <td class="rank_txt">${mypage.responsibility }</td>
+                <th class="address">주소</th>
+                <td class="address_txt ">${mypage.address }</td>
+            </tr>
+    </table>
  
-		<div id="mypage">
-			<table>
-			<div id="userImg">
-				<img alt="" src="">
-			</div>
-				<tr>
-					<td>이름</td>
-					<td id="name"></td>
-				</tr>
-				<tr>
-					<td>사번</td>
-					<td id="employeeID"></td>
-				</tr>
-				<tr>
-					<td>직급</td>
-					<td id="rankName"></td>
-				</tr>
-				<tr>
-					<td>부서</td>
-					<td id="departmentName"></td>
-				</tr>
-				<tr>
-					<td>직책</td>
-					<td id="positionName"></td>
-				</tr>
-				<tr>
-					<td>전화</td>
-					<td id="phoneNumber"></td>
-				</tr>
-				<tr>
-					<td>남은 연차</td>
-					<td id="remainingAnnualLeave"></td>
-				</tr>
-			
-			</table>
-		</div>
-		
-		
-	 
-		<div id="remainingAnnualLeave">
-			<div class="residue">
-				잔여 연차 일수
-				<div id="count_1"></div>
-			</div>
+    </c:forEach>
 
-			<div class="Annual">
-				연차 사용 일수
-				<div id="count_2"></div>
-			</div>
-
-			<div class="Banchacha">
-				반차 사용 일수
-				<div id="count_3"></div>
-			</div>
-		</div>
-	</main>
- 
-    
-    
-    <!--  
-    <table>
-		<thead>
-		<tr>
-			<th>img</th>
-			<th>이름</th>
-			<th>사번</th>
-			<th>직급</th>
-			<th>직책</th>
-			<th>부서</th>
-			<th>전화</th>
-			<th>남은연차<th>
-		</tr>
-		</thead>
-		<!-- 내용 
-		<tbody id="list">		
-		</tbody>		
-	</table>
-    -->
-    
-    <div class="drawList"></div>
     
     <input type="button" id="usermody" OnClick="location.href ='./mypageupdate'" value="수정">    
         

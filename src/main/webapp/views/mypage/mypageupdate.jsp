@@ -4,9 +4,21 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<title>Insert title here</title>
+
+<style>
+.update {
+    border: 2px solid #020715; /* 테두리의 두께와 색상 설정 */
+    padding: 10px; /* 테두리와 내용 사이의 간격 설정 */
+    width: 300px; /* 테두리가 포함된 div 요소의 너비 설정 */
+    margin: 0 auto; /* 가운데 정렬을 위한 margin 설정 */
+  }
+
+</style>
+
+
 </head>
 <body>
+<jsp:include page="../side.jsp"></jsp:include>
 <!--  
 <form action="/mypage/pwUpdate" method="post" id="pwUpdateForm" name="pwUpdateForm">
                        <input type="hidden" id="memberId" name="memberId" value="${login.memberId}">
@@ -32,6 +44,9 @@
  
    
  <form action="changePw" method="post" name="mypage=form">
+ 
+ <div class="update">
+ <h2 class="pwupadte">비밀번호 수정 </h2>
 		<div class="mypage-row">
 			<label>현재 비밀번호</label>
 			<input type="password" name="currentPw" id="currentPw" maxlength="20"/> 
@@ -46,6 +61,8 @@
 </div>
 		<input type="button" onclick="location.href='./list'" value="리스트"/>
 		<button type="submit" id="info-update-btn">수정</button>
+</div>
+
 	</form>
     
     
