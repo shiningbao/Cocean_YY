@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -18,11 +16,11 @@ table,th,td{
     padding: 5px 10px;
 }
 
-#formTableHead{
+#saveTableHead{
 	background-color: #86B0F3;
 }
 
-#formTable{
+#saveTable{
 	width: 500px;
 	text-align: center;
 }
@@ -40,25 +38,35 @@ table,th,td{
 	  <option value="인사">인사</option>
 	</select>
 
-		<input type="search" name="keyword" placeholder="문서양식을 검색하세요"/>
+		<input type="search" name="keyword" placeholder="제목"/>
 		<button class="btn btn-primary">검색</button>
 	</form>
-	
-	<% 
-   Date myDate = new Date();
-   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-   String formattedDate = dateFormat.format(myDate);
-	%>
 		
-	<table id="formTable">
-		<tr id="formTableHead">
+	<table id="saveTable">
+		<tr id="saveTableHead">
+			<th>기안일</th>
 			<th>유형</th>
-			<th>문서양식</th>
+			<th>제목</th>
+			<th>상태</th>
 		</tr>
-		<c:forEach items="${list}" var="form">
+		<c:forEach items="${my}" var="my">
 		<tr>
-			<td>${form.formCategory}</td>
-			<td><a href="writeDraft.go?titleID=${form.titleID}&date=<%= formattedDate %>">${form.formTitle}</a></td>
+			<td>${my.draftDate}</td>
+			<td>${my.category}</td>
+			<td> 
+				<c:choose>
+	                <c:when test="${my.title == null}">
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${my.employeeID}">${my.formTitle}</a>
+	                </c:when>
+	                <c:when test="${my.title == ''}">
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${my.employeeID}">${my.formTitle}</a>
+	                </c:when>
+	                <c:otherwise>
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${my.employeeID}">${my.title}</a>
+	                </c:otherwise>
+	            	</c:choose>
+            </td>
+			<td>${my.draftStatus}</td>
 		</tr>	
 		</c:forEach>
 	</table>
