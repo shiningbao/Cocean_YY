@@ -62,9 +62,11 @@ public class AnimalService {
 		dao.animalWrte(param);
 		int animalID = param.getAnimalID();
 		// 업로드
-		for (MultipartFile uploadfile : files) {
-			upload(uploadfile, animalID);
-		}
+
+//		for (MultipartFile uploadfile : files) {
+//			upload(uploadfile, animalID);
+//		}
+
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/animal/list.go");
