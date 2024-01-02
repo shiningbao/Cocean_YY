@@ -149,5 +149,19 @@
 		const date = new Date();
 		curTime.innerHTML = date.toLocaleTimeString();
 	}, 1000);
+	
+	
+	var  employeeID = '${userInfo.employeeID}';
+	var eventSource = new EventSource('/alarm/'+employeeID);
+	
+	eventSource.addEventListener('sse', function(event){
+		console.log(event.data);
+	});
+	
+	
+	
+	
+	
+	
 </script>
 </html>

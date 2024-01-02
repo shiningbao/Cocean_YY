@@ -1,5 +1,5 @@
 package kr.co.cocean.alarm.service;
 
-public class test {
+public class WebsocketService {
 
 }
