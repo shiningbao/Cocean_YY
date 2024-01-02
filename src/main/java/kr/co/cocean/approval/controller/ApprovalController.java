@@ -1,7 +1,11 @@
 package kr.co.cocean.approval.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,12 +87,15 @@ public class ApprovalController {
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int loginId = dto.getEmployeeID();
-			ApprovalDTO list = new ApprovalDTO();
-			list = service.draftDetail(idx);
-			ArrayList<ApprovalDTO> lineList = service.lineList(idx,employeeID);
-			ArrayList<ApprovalDTO> agrRef = service.agrRef(idx,employeeID);
+			ApprovalDTO list = service.draftDetail(idx);
+			ApprovalDTO vac = service.vacDetail(idx);
+			ApprovalDTO lv = service.lvDetail(idx);
+			ArrayList<ApprovalDTO> lineList = service.lineList(idx);
+			ArrayList<ApprovalDTO> agrRef = service.agrRef(idx);
 			ArrayList<ApprovalDTO> fileList = service.fileList(idx);
 			logger.info("idx:"+idx);
+			mav.addObject("vac",vac);
+			mav.addObject("lv",lv);
 			mav.addObject("lineList",lineList);
 			mav.addObject("loginId",loginId);
 			mav.addObject("list", list);
@@ -102,14 +109,37 @@ public class ApprovalController {
 		return mav;
 	}
 	
+	@GetMapping(value="/approval/tempSaveForm.go")
+	public ModelAndView updateForm(int idx, String employeeID) {
+		ModelAndView mav = new ModelAndView("approval/tempSaveForm");
+		ApprovalDTO list = service.draftDetail(idx);
+		ApprovalDTO vac = service.vacDetail(idx);
+		ApprovalDTO lv = service.lvDetail(idx);
+		ArrayList<ApprovalDTO> lineList = service.lineList(idx);
+		ArrayList<ApprovalDTO> agrRef = service.agrRef(idx);
+		ArrayList<ApprovalDTO> fileList = service.fileList(idx);
+		logger.info("idx:"+idx);
+		mav.addObject("vac",vac);
+		mav.addObject("lv",lv);
+		mav.addObject("lineList",lineList);
+		mav.addObject("list", list);
+		mav.addObject("agrRef",agrRef);
+		mav.addObject("fileList",fileList);
+		mav.setViewName("approval/tempSaveForm");
+		return mav;
+	}
+	
 
 	@RequestMapping(value = "/approval/drawSign")
 	@ResponseBody
 	public HashMap<String, Object> drawSign(@RequestParam String loginId, String idx) {
 		logger.info(loginId+"/"+idx);
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		ArrayList<ApprovalDTO> signList = service.signList(idx);
+		ArrayList<ApprovalDTO> signList = service.signList(idx,loginId);
 		result.put("signList", signList);
+		ApprovalDTO order = new ApprovalDTO();
+		order = service.getOrder(idx,loginId);
+		result.put("order", order);
 		return result;
 	}
 
@@ -143,16 +173,6 @@ public class ApprovalController {
 		return mav;
 	}
 
-//	@GetMapping(value="writeDraft/.do")
-//	public ModelAndView writeDraftForm() {
-//		
-//		ArrayList<ApprovalDTO> list = service.list();
-//		mav.addObject("list",list);
-//		mav.setViewName("approval/formList");
-//		logger.info("list:"+list);
-//		return mav;
-//	}
-	
 	@PostMapping(value = "/approval/writeDraft.do", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Map<String, Object> writeDraft(@RequestParam(name = "files", required = false) MultipartFile[] files, HttpSession session,
@@ -164,8 +184,7 @@ public class ApprovalController {
 	        param.put("writerID", String.valueOf(employeeID));
 
 	        logger.info("params: {}", param);
-	        
-	        
+ 
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
 	            String lastLineJson = param.get("lastLine");
@@ -186,7 +205,7 @@ public class ApprovalController {
 
 	                lastLineInfoList.add(lastLineInfo);  
 	            }
-
+	            	logger.info("line:"+lastLineInfoList);
 	            
 	                // service.write(files, param, lastLineInfoList);
 	     
@@ -248,14 +267,126 @@ public class ApprovalController {
 	@PostMapping(value = "/approval/approval.do")
 	public String formSearch(HttpSession session, @RequestParam Map<String, String> param) {
 		logger.info("param:{}",param);
-		if(param.get("action")=="결재") {
-			service.approveDraft(param);
-			service.approveApp(param);
-		}else {
-			service.rejectDraft(param);
-			service.rejectApp(param);
-		}
-		return "redirect:/approval/waitingList.go";
+		int order = Integer.parseInt((param).get("order"));
+		int lastOrder = Integer.parseInt((param).get("lastOrder"));
+		String idx=param.get("idx");
+		 if(param.get("action")=="결재") { 
+			 service.approveDraft(param);
+			 service.approveApp(param);
+			 if(order<lastOrder) {
+				 service.passApp(idx,order);
+			 }
+		 }else { 
+			 service.rejectDraft(param);
+			 service.rejectApp(param); 
+		 }
+		 
+		return "";
 	}
+	
+	@PostMapping(value = "/approval/calculateUsageTime")
+	@ResponseBody
+	public HashMap<String, Object> formSearch(@RequestParam String start, String startTime, String end, String endTime) {
+		logger.info(start+"/"+startTime+"/"+end+"/"+endTime);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		if(start!=null&&startTime!=null&&end!=null&&endTime!=null) {
+		 String startDateTimeStr = start + " " + startTime;
+         String endDateTimeStr = end + " " + endTime;
+
+         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+         LocalDateTime startDateTime = LocalDateTime.parse(startDateTimeStr, formatter);
+         LocalDateTime endDateTime = LocalDateTime.parse(endDateTimeStr, formatter);
+
+         long totalMinutes = java.time.Duration.between(startDateTime, endDateTime).toMinutes();
+         double usageTime = (double) totalMinutes / (24 * 60);
+         BigDecimal roundedUsageTime = new BigDecimal(Math.ceil(usageTime * 10) / 10).setScale(1, RoundingMode.DOWN);
+
+         result.put("usageTime", roundedUsageTime);
+		}
+		return result;
+	}
+	
+	@GetMapping(value = "/approval/tempSaveList.go")
+	public ModelAndView tempSaveList(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if (dto != null) {
+			int employeeID = dto.getEmployeeID();
+			ArrayList<ApprovalDTO> save = service.saveList(employeeID);
+			mav.addObject("save", save);
+			mav.setViewName("approval/tempSaveList");
+		} else {
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+		}
+		return mav;
+	}
+	
+	@GetMapping(value = "/approval/myDraftList.go")
+	public ModelAndView myDraftList(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if (dto != null) {
+			int employeeID = dto.getEmployeeID();
+			ArrayList<ApprovalDTO> my = service.myList(employeeID);
+			mav.addObject("my", my);
+			mav.setViewName("approval/myDraftList");
+		} else {
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+		}
+		return mav;
+	}
+	
+	@GetMapping(value = "/approval/refList.go")
+	public ModelAndView refList(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if (dto != null) {
+			int employeeID = dto.getEmployeeID();
+			ArrayList<ApprovalDTO> ref = service.refList(employeeID);
+			mav.addObject("ref", ref);
+			mav.setViewName("approval/refList");
+		} else {
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+		}
+		return mav;
+	}
+	
+	@GetMapping(value = "/approval/completeList.go")
+	public ModelAndView completeList(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if (dto != null) {
+			int employeeID = dto.getEmployeeID();
+			ArrayList<ApprovalDTO> comList = service.comList(employeeID);
+			mav.addObject("com", comList);
+			mav.setViewName("approval/completeList");
+		} else {
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+		}
+		return mav;
+	}
+	
+	@GetMapping(value = "/approval/department.go")
+	public ModelAndView departmentList(HttpSession session, RedirectAttributes rAttr) {
+		ModelAndView mav = new ModelAndView();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		if (dto != null) {
+			int employeeID = dto.getEmployeeID();
+			ArrayList<ApprovalDTO> departmentList = service.departmentList(employeeID);
+			mav.addObject("list", departmentList);
+			mav.setViewName("approval/departmentDraftList");
+		} else {
+			mav.setViewName("redirect:/");
+			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
+		}
+		return mav;
+	}
+	
+	
 
 }

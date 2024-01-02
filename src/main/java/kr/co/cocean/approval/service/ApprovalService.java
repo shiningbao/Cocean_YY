@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +63,15 @@ public class ApprovalService {
 		int employeeID = Integer.parseInt(param.get("writerID"));
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
+		String usageTimeStr = param.get("usageTime");
+		int usageTime = 0;
+		if (usageTimeStr != null && !usageTimeStr.isEmpty()) {
+		    try {
+		        usageTime = Integer.parseInt(usageTimeStr);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace();
+		    }
+		}
 		String title = param.get("title");
 		String titleID = param.get("titleID");
 		String lastOrder = param.get("lastOrder");
@@ -73,6 +81,11 @@ public class ApprovalService {
 		dto.setTempSave(tempSave);
 		dto.setDocumentNo(title);
 		dto.setTitleID(titleID);
+		dto.setStartDate(param.get("startDate"));
+		dto.setEndDate(param.get("endDate"));
+		dto.setTextArea(param.get("textArea"));
+		dto.setVacationCategory(param.get("vacationCategory"));
+		dto.setUsageTime(usageTime);
 		
 		logger.info("params:{}",param);
 		
@@ -84,14 +97,31 @@ public class ApprovalService {
 			upload(file,idx);
 		}}
 		String content = param.get("content");
-	
+		if(titleID.equals("1")) {
+		// dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		}else if(titleID.equals("2")) {
+			logger.info(param.get("textArea"));
+			// dao.writeattendenceDraft(dto); // 휴가신청서 insert
+		}else if(titleID.equals("3")){
+			logger.info("휴직원");
+			// dao.writeLeaveDraft(dto); // 휴직원 insert
+		}else {
+			// dao.writeReincrement(dto); // 복직원 insert
+		}
+		if(tempSave==0) {
+			 dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+		}else { // 임시저장
+			
+				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
+					dao.lineEmptyTs(idx,lastOrder,employeeID); // approval테이블에 insert
+				}else{
+				dao.approvalTs(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+				}
 
-		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
-		dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
-		
-		// dao.writeAttendanceDraftContent(param);
+		}
 		
 	}
+	
 	// file 테이블에 insert 
 	public void upload(MultipartFile uploadFile, int idx) {
 		
@@ -103,8 +133,7 @@ public class ApprovalService {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
 			Files.write(path, bytes);
-			// dao.writeFile(idx,oriFileName,newFileName); // file테이블에 insert
-			
+			dao.writeFile(idx,oriFileName,newFileName); // file테이블에 insert
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,16 +162,17 @@ public class ApprovalService {
 		return dao.formTitle(titleID);
 	}
 
-	public ArrayList<ApprovalDTO> lineList(int idx,int employeeID) {
-		return dao.lineList(idx,employeeID);
+	public ArrayList<ApprovalDTO> lineList(int idx) {
+		return dao.lineList(idx);
 	}
 
-	public ArrayList<ApprovalDTO> signList(String idx) {
+	public ArrayList<ApprovalDTO> signList(String idx, String loginId) {
+		
 		return dao.signList(idx);
 	}
 
-	public ArrayList<ApprovalDTO> agrRef(int idx, int employeeID) {
-		return dao.agrRef(idx,employeeID);
+	public ArrayList<ApprovalDTO> agrRef(int idx) {
+		return dao.agrRef(idx);
 	}
 	
 	public ArrayList<ApprovalDTO> fileList(int idx) {
@@ -171,6 +201,53 @@ public class ApprovalService {
 	public void approveApp(Map<String, String> param) {
 		dao.approveApp(param);
 		
+	}
+
+	public ApprovalDTO getOrder(String idx, String loginId) {
+		return dao.getOrder(idx, loginId);
+	}
+
+	public void myApprove(Map<String, String> param) {
+		dao.myApprove(param);
+		
+	}
+
+	
+	public void passApp(String idx, int order) {
+		dao.passApp(idx,order);
+		
+	}
+
+	public ArrayList<ApprovalDTO> saveList(int employeeID) {
+		return dao.saveList(employeeID);
+	}
+
+	public Object tempSaveForm(int idx, String employeeID) {
+		return dao.draftDetail(idx);
+	}
+
+	public ApprovalDTO vacDetail(int idx) {
+		return dao.vacDetail(idx);
+	}
+
+	public ApprovalDTO lvDetail(int idx) {
+		return dao.lvDetail(idx);
+	}
+
+	public ArrayList<ApprovalDTO> myList(int employeeID) {
+		return dao.myList(employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> refList(int employeeID) {
+		return dao.refList(employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> comList(int employeeID) {
+		return dao.comList(employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> departmentList(int employeeID) {
+		return dao.departmentList(employeeID);
 	}
 
 

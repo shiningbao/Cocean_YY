@@ -54,7 +54,16 @@ table,th,td{
 		<tr>
 			<td>${list.draftDate}</td>
 			<td>${list.category }</td>
-			<td><a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a></td>
+			<td>
+				<c:choose>
+					<c:when test="${list.title == null}">
+					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+					</c:when>
+					<c:otherwise>
+			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a>
+			        </c:otherwise>
+				</c:choose>
+			</td>
 			<td>${list.approvalStatus}</td>
 			<td>${list.name}</td>
 		</tr>	

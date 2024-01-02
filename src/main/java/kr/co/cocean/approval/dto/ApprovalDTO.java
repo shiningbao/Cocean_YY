@@ -27,8 +27,128 @@ public class ApprovalDTO {
 	private String oriFileName;
 	private int imageID;
 	private String serverFileName;
+	private String approvalOrder;
+	private String opinion;
+	private Date approvalDate;
+	private String startDate;
+	private String endDate;
+	private String textArea;
+	private String remainingAnnualLeave;
+	private String vacationCategory;
+	private int usageTime;
+	private String draftStatus;
+	private Date vacationStartDate;
+	private Date vacationEndDate;
+	private String vacationReason;
+	private String leaveStartDate;
+	private String leaveEndDate;
+	private String leaveReason;
+	private String formCategory;
 	
 	
+	public String getFormCategory() {
+		return formCategory;
+	}
+	public void setFormCategory(String formCategory) {
+		this.formCategory = formCategory;
+	}
+	public String getLeaveStartDate() {
+		return leaveStartDate;
+	}
+	public void setLeaveStartDate(String leaveStartDate) {
+		this.leaveStartDate = leaveStartDate;
+	}
+	public String getLeaveEndDate() {
+		return leaveEndDate;
+	}
+	public void setLeaveEndDate(String leaveEndDate) {
+		this.leaveEndDate = leaveEndDate;
+	}
+	public String getLeaveReason() {
+		return leaveReason;
+	}
+	public void setLeaveReason(String leaveReason) {
+		this.leaveReason = leaveReason;
+	}
+	public Date getVacationStartDate() {
+		return vacationStartDate;
+	}
+	public void setVacationStartDate(Date vacationStartDate) {
+		this.vacationStartDate = vacationStartDate;
+	}
+	public Date getVacationEndDate() {
+		return vacationEndDate;
+	}
+	public void setVacationEndDate(Date vacationEndDate) {
+		this.vacationEndDate = vacationEndDate;
+	}
+	public String getVacationReason() {
+		return vacationReason;
+	}
+	public void setVacationReason(String vacationReason) {
+		this.vacationReason = vacationReason;
+	}
+	public String getDraftStatus() {
+		return draftStatus;
+	}
+	public void setDraftStatus(String draftStatus) {
+		this.draftStatus = draftStatus;
+	}
+	public String getVacationCategory() {
+		return vacationCategory;
+	}
+	public void setVacationCategory(String vacationCategory) {
+		this.vacationCategory = vacationCategory;
+	}
+	public int getUsageTime() {
+		return usageTime;
+	}
+	public void setUsageTime(int usageTime) {
+		this.usageTime = usageTime;
+	}
+	
+	public String getRemainingAnnualLeave() {
+		return remainingAnnualLeave;
+	}
+	public void setRemainingAnnualLeave(String remainingAnnualLeave) {
+		this.remainingAnnualLeave = remainingAnnualLeave;
+	}
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getTextArea() {
+		return textArea;
+	}
+	public void setTextArea(String textArea) {
+		this.textArea = textArea;
+	}
+	public Date getApprovalDate() {
+		return approvalDate;
+	}
+	public void setApprovalDate(Date approvalDate) {
+		this.approvalDate = approvalDate;
+	}
+	public String getOpinion() {
+		return opinion;
+	}
+	public void setOpinion(String opinion) {
+		this.opinion = opinion;
+	}
+	public String getApprovalOrder() {
+		return approvalOrder;
+	}
+	public void setApprovalOrder(String approvalOrder) {
+		this.approvalOrder = approvalOrder;
+	}
 	public String getServerFileName() {
 		return serverFileName;
 	}
