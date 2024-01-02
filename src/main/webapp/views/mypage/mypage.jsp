@@ -25,14 +25,16 @@
 <jsp:include page="../side.jsp"></jsp:include>
 
 
+<!--  
+    <c:url value=''/>
+    -->
+
 <div id="title">
 		<a>내 정보</a>
 	</div>
 	<c:forEach var='mypage' items="${list}">
 
 		 <table class="list_box">
-		 
-    
             <tr>
                 <td class="profile_image" rowspan="4">
                     <span class="img_profile">
@@ -48,6 +50,7 @@
 				    </label>
                     </span>
                 </td>
+                
                 <th class="name">이름</th>
                 <td class="" colspan="3">${mypage.name }</td>
                 <th class="team">소속</th>
@@ -70,10 +73,32 @@
                 <td class="rank_txt">${mypage.responsibility }</td>
                 <th class="address">주소</th>
                 <td class="address_txt ">${mypage.address }</td>
+                <th class="remain">연차</th>
+                <td class="remain_txt">${mypage.remainingAnnualLeave}</td>
             </tr>
     </table>
  
     </c:forEach>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     <input type="button" id="usermody" OnClick="location.href ='./mypageupdate'" value="수정">    

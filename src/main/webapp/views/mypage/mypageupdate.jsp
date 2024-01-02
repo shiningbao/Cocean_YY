@@ -49,19 +49,27 @@
  <h2 class="pwupadte">비밀번호 수정 </h2>
 		<div class="mypage-row">
 			<label>현재 비밀번호</label>
-			<input type="password" name="currentPw" id="currentPw" maxlength="20"/> 
+			<input type="password" name="currentPw" id="currentPw"  maxlength="20"/> 
 		</div>
 		<div class="mypage-row">
 			<label>새 비밀번호</label>
-			<input type="password" name="newPw" maxlength="20"/> 
+			<input type="password" name="newPw" id="password_1" class="pw" maxlength="20"/> 
 		</div>
 		<div class="mypage-row">
     <label>새 비밀번호 확인</label>
-    <input type="password" name="newPwConfirm" maxlength="20"/>
-</div>
-		<input type="button" onclick="location.href='./list'" value="리스트"/>
+    <input type="password" name="newPwConfirm" id="password_2" class="pw" maxlength="20"/>
+	
+	<th colspan="2" id="pwCh">
+           <font id="checkPw" size ="2"></font>          
+       </th>
+
+
+	</div>
+	<!--  
+		<input type="button" onclick="location.href='./mypageback'" value="이전"/>
+	-->	
 		<button type="submit" id="info-update-btn">수정</button>
-</div>
+	</div>
 
 	</form>
     
@@ -76,6 +84,45 @@ var msg = "${msg}";
 if(msg != ""){
    alert(msg);
 }
+
+
+
+$('.pw').keyup(function(){
+	   let pass1 = $("#password_1").val();
+	   let pass2 = $("#password_2").val();
+	   let checkPw = $("#checkPw");
+
+	   if (pass1 !== "" || pass2 !== "") {
+	      if (pass1 === pass2) {
+	         checkPw.html("비밀번호가 일치합니다.");
+	         checkPw.css("color", "green");
+	      } else {
+	         checkPw.html("비밀번호가 불일치합니다.");
+	         checkPw.css("color", "red");
+	      }
+	   } else {
+	      checkPw.html(""); 
+	   }
+	});
+
+
+
+/*
+$('.pw').keyup(function(){
+   let pass1 =$("#password_1").val();
+   let pass2 =$("#password_2").val();
+   
+   if(pass1 != "" || pass2 !=""){
+      if(pass1 == pass2){
+         $("#checkPw").html("비밀번호가 일치합니다.");
+         $("#checkPw").attr("color","green");
+      }else{
+         $("#checkPw").html("비밀번호가 불일치합니다.");
+         $("#checkPw").attr("color","red");
+      }
+   }
+})*/
+
 
 /*
 $(document).ready(function(){
