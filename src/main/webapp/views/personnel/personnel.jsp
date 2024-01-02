@@ -5,93 +5,122 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Insert title here</title>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
+ <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style>
- .photo  {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .photo img {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%; /* 이미지를 동그랗게 처리하는 CSS */
-    }
-    .photo2{
-    
-    }
-    .photo2 img {
-        width: 100px;
-        height: 100px;
-    }
-
-        .file-icon {
-        width:40px;
-        height:40px;
-        transform: translate(-100%, 100%);
-        font-size: 24px;
-        color: #379cff;
-        cursor: pointer;
-        border-radius: 50%;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-      .file-icon2 {
-        width:40px;
-        height:40px;
-        transform: translate(180%, -80%);
-        font-size: 24px;
-        color: #379cff;
-        cursor: pointer;
-        border-radius: 50%;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    
-
-    #fileInput ,#fileSignatureInput{
-        display: none;
-    }
-    .form-control{
-    	margin-bottom: 12px !important;
-    }
-    .psSelect {
-    /* form-control 클래스 스타일 */
-    margin-bottom:12px;
-    height:38px;
-    display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+.photo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.modal-content{
+
+.photo img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%; /* 이미지를 동그랗게 처리하는 CSS */
+}
+
+.photo2 img {
+	width: 55px;
+	height: 55px;
+}
+
+.file-icon {
+	width: 40px;
+	height: 40px;
+	transform: translate(-100%, 100%);
+	font-size: 24px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.file-icon2 {
+	width: 30px;
+	height: 30px;
+	transform: translate(120%, -80%);
+	font-size: 20px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.file-icon3 {
+	width: 40px;
+	height: 40px;
+	transform: translate(650%, -130%);
+	font-size: 20px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#fileInput, #fileSignatureInput {
+	display: none;
+}
+
+.form-control {
+	margin-bottom: 12px !important;
+}
+
+.psSelect {
+	/* form-control 클래스 스타일 */
+	margin-bottom: 12px;
+	height: 38px;
+	display: block;
+	width: 100%;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.modal-content {
 	width: 800px;
 }
-.regibtn{
+
+.regibtn {
 	float: right;
 }
-.desc{
+
+.desc {
 	color: #96b6d3;
 }
+
 tbody tr {
-        margin-bottom: 10px; /* 각 tr 요소 사이에 10px의 여백을 주겠습니다. */
-    }
+	margin-bottom: 10px; /* 각 tr 요소 사이에 10px의 여백을 주겠습니다. */
+}
+
+.desc1 {
+	font-size: 12px;
+	color: #96b6d3;
+}
+.wrap_photo{
+	margin-left: 15%
+}
 </style>
 </head>
 <body>
@@ -158,21 +187,25 @@ tbody tr {
                             </select>
                         </td>
                     </tr>
-                    
-                    
-                    
-                    <tr>
-                        <th>주소</th>
-                        <td>
-                            <input type="text" name="address" class="form-control mb-2" required/>
-                        </td>
-                    </tr>
-                    <tr>
+                     <tr>
                         <th>전화번호</th>
                         <td>
                             <input type="text" name="phoneNumber" class="form-control mb-2"placeholder="010-0000-0000"  pattern="\d{3}-\d{4}-\d{4}" title="전화번호 형식인 010-0000-0000으로 입력하세요."required/>
                         </td>
                     </tr>
+                    
+                    
+                    <tr>
+                        <th style="vertical-align: top; padding-top: 10px;">주소</th>
+                        <td>
+                            <input type="text" name="address" id="address" class="form-control mb-2" required/>
+                            <label class="photo2" for="fileSignatureInput" style="height: 10px; cursor: pointer;">
+							    <span class="file-icon3"><i class="fas fa-map-marker-alt" onclick="sample6_execDaumPostcode()"></i></span>
+							</label>
+                        </td>
+                        
+                    </tr>
+                   
                     <!-- 중략 -->
                 </table>
             </div>
@@ -217,8 +250,9 @@ tbody tr {
                     </tr>
                    
                      <tr>
-					    <th style="vertical-align: top; padding-top:10px;">서명이미지</th>
+					    <th style="vertical-align: top; padding-top:10px; width:80px;">서명이미지</th>
 					    	<td>
+					    	<span class="desc1" style="font-size=12px;">※ 서명이미지는 자동으로 55x55 사이즈로 적용됩니다.</span>
 					            <label class="photo2" for="fileSignatureInput" style="height: 10px;">
 					            <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
 					                <span class="file-icon2"><i class="fas fa-upload"></i></span>
@@ -420,7 +454,53 @@ $('input[name="employeeID"]').on('focusout',function(){
 		}
 	});
 })
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                document.getElementById("address").value = extraAddr;
+            
+            } else {
+                document.getElementById("address").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('address').value = data.zonecode;
+            document.getElementById("address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("address").focus();
+        }
+    }).open();
+}
 
 
 

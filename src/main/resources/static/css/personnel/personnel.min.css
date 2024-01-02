@@ -1,0 +1,84 @@
+ .photo  {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .photo img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* 이미지를 동그랗게 처리하는 CSS */
+    }
+
+    .photo2 img {
+        width: 55px;
+        height: 55px;
+    }
+
+        .file-icon {
+        width:40px;
+        height:40px;
+        transform: translate(-100%, 100%);
+        font-size: 24px;
+        color: #379cff;
+        cursor: pointer;
+        border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+      .file-icon2 {
+        width:30px;
+        height:30px;
+        transform: translate(120%, -80%);
+        font-size: 20px;
+        color: #379cff;
+        cursor: pointer;
+        border-radius: 50%;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+
+    #fileInput ,#fileSignatureInput{
+        display: none;
+    }
+    .form-control{
+    	margin-bottom: 12px !important;
+    }
+    .psSelect {
+    /* form-control 클래스 스타일 */
+    margin-bottom:12px;
+    height:38px;
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.modal-content{
+	width: 800px;
+}
+.regibtn{
+	float: right;
+}
+.desc{
+	color: #96b6d3;
+}
+tbody tr {
+        margin-bottom: 10px; /* 각 tr 요소 사이에 10px의 여백을 주겠습니다. */
+    }
+    .desc1{
+    	font-size: 12px;
+    	color: #96b6d3;
+    }
