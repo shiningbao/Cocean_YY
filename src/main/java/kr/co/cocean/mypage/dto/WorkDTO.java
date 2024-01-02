@@ -1,6 +1,8 @@
 package kr.co.cocean.mypage.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 
 import org.apache.ibatis.type.Alias;
@@ -12,8 +14,10 @@ public class WorkDTO {
 	private int workID;
 	private int employeeID;
 	private Date workDate;
-	private LocalDateTime gowork;
-	private LocalDateTime leavework;
+	private Timestamp gowork;
+	private Timestamp leavework;
+
+	 
 	
 	
 	public int getWorkID() {
@@ -34,18 +38,26 @@ public class WorkDTO {
 	public void setWorkDate(Date workDate) {
 		this.workDate = workDate;
 	}
-	public LocalDateTime getGowork() {
+	public Timestamp getGowork() {
 		return gowork;
 	}
-	public void setGowork(LocalDateTime gowork) {
+	public void setGowork(Timestamp gowork) {
 		this.gowork = gowork;
 	}
-	public LocalDateTime getLeavework() {
+	public Timestamp getLeavework() {
 		return leavework;
 	}
-	public void setLeavework(LocalDateTime leavework) {
+	public void setLeavework(Timestamp leavework) {
 		this.leavework = leavework;
 	}
+	
+	
+
+
+	
+	
+	
+
 	
 
 	

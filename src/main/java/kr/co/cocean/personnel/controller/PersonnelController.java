@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.personnel.dto.PersonnelDTO;
@@ -57,8 +58,10 @@ public class PersonnelController {
 		return res;
 	}
 	@PostMapping(value="/personnel/join.do")
-	public ModelAndView join(@RequestParam HashMap<String, Object> params) {
-		ModelAndView mav = new ModelAndView("personnel/personnel");
+	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
+	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
+		ModelAndView mav = new ModelAndView();
+		logger.info("files!!! : {}"+file);
 		logger.info("params =="+params);
 		String page= "";
 		String pw = "cocean1111";
@@ -66,17 +69,17 @@ public class PersonnelController {
 		String password = encoder.encode(pw);
 		params.put("password", password);
 		logger.info("aaa=="+params.get("positionID"));
-		
-		int row= service.join(params);
+		String status ="재직";
+		params.put("status",status);
+		params.put("remainingAnnualLeave", "0");
+		int row= service.join(params,file,fileSignature);
 		
 		if(row>0) {
 			service.joinTree(params);
 			String perNum = (String) params.get("employeeID");
-			page="personnel/personnel";
-			mav.addObject("msg", "사원 등록 성공");
+			mav.setViewName("redirect:/personnel/personnelList.go");
 		}else {
-			page="personnel/personnel";
-			mav.addObject("msg", "사원 등록 실패");
+			mav.setViewName("redirect:/personnel/personnelList.go");
 		}
 		return mav;
 	}
@@ -140,11 +143,17 @@ public class PersonnelController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/personnel/detail.go")
-	public ModelAndView detail(@RequestParam String employeeID) {
+	@GetMapping(value="/personnel/detail.go")
+	public ModelAndView detail(@RequestParam int employeeID) {
 		logger.info("employeeID" +employeeID);
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
-		
+		List<HashMap<String, Object>> list = service.detail(employeeID);
+		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
+		List<HashMap<String, Object>> workHistory = service.workHistory(employeeID);
+		logger.info("detailList=="+list);
+		mav.addObject("list", list);
+		mav.addObject("employeeHistory", employeeHistory);
+		mav.addObject("workHistory", workHistory);
 		return mav;
 	}
 	
@@ -163,6 +172,35 @@ public class PersonnelController {
 		return list;
 	}
 	
+	@GetMapping(value="/personnel/searchPerson.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption){
+		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
+		logger.info("aaa==="+selectedOption);
+			 list= service.searchPerson(searchValue,selectedOption);
+		
+		
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/checkDuplicateEmployeeID.do")
+	@ResponseBody
+	public Boolean checkDuplicateEmployeeID(String employeeID) {
+		Boolean result = service.checkDuplicateEmployeeID(employeeID);
+		logger.info("result!!! =="+result);
+		return result;
+	}
+	
+	@RequestMapping(value="/personnel/orgManage.go")
+	public String orgManage() {
+		
+		return "personnel/orgManage";
+	}
+	@RequestMapping(value="/personnel/annualManage.go")
+	public String annualManage() {
+		
+		return "personnel/annualManage";
+	}
 
 	
 }

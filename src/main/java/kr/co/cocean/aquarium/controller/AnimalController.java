@@ -94,18 +94,24 @@ public class AnimalController {
 	/* 코션친구들 수정 */
 	@GetMapping(value = "/animal/update.go")
 	public ModelAndView animalUpdateDo(@RequestParam int animalID) {
-		return service.animalUpdateDo(animalID);
+		return service.animalUpdateGo(animalID);
 	}
 	
+	@PostMapping(value = "/animal/update.do")
+	public ModelAndView animalUpdate(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr, HttpSession session) {
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = userInfo.getEmployeeID();
+		logger.info("tank name : {}",param.getTankName());
+		return service.animalUpdate(files,param,rAttr,employeeID);
+	}
 	
 	
 	
 	/* 코션친구들 상세보기 */
 	@GetMapping(value = "/animal/detail.go")
-	public ModelAndView animalDetailGo(@RequestParam int animalID, @RequestParam String nickname) {
+	public ModelAndView animalDetailGo(@RequestParam int animalID) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
 		mav.addObject("animalID", animalID);
-		mav.addObject("nickname", nickname);
 		return mav;
 	}
 	
@@ -167,5 +173,12 @@ public class AnimalController {
 		return service.logplanDel(logID);
 	}
 	
+	@GetMapping(value = "/animal/del")
+	public String animalDel(@RequestParam int animalID, Model model) {
+		service.animalDel(animalID);
+		model.addAttribute("msg", "코션친구를 등록했습니다.");
+		//rAttr.addFlashAttribute("msg", "코션친구를 등록했습니다.");
+		return "aquarium/animalList";
+	}
 	
 }

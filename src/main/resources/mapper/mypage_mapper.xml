@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
-<mapper namespace="kr.co.cocean.mypage.dao.LoginDAO">
-
+<mapper namespace="kr.co.cocean.mypage.dao.MypageDAO">
+<!--  
 <select id="myinfo" resultType="mypage"> 
    	SELECT e.name,e.phoneNumber,e.employeeID , d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
 WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
@@ -11,8 +11,34 @@ e.rankID = r.rankID ;
 
 
 </select>
+-->
+<!-- 리스트 -->
+<select id="mypagelist" resultType="mypage">
+		 <!--  
+		   SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName,e.remainingAnnualLeave  
+   FROM employee e ,department d , `position` p, `rank` r 
+WHERE e.employeeID = #{parma1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
+e.rankID = r.rankID
+-->
+
+SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName, e.remainingAnnualLeave
+FROM employee e
+JOIN department d ON e.departmentID = d.departmentID
+JOIN `position` p ON e.positionID = p.positionID
+JOIN `rank` r ON e.rankID = r.rankID
+WHERE e.employeeID = #{param1}
+
+UNION
+
+SELECT idx, serverFileName
+FROM file
+WHERE path = 'profile' AND idx = #{param2}
+
+	</select>
+
 
 <!-- 수정 -->
+<!-- 
 	<select id="attendanceDraft" resultType="map">
 		SELECT
 		COUNT(CASE WHEN reviewNo = 1 then reviewNo end) as high
@@ -21,6 +47,29 @@ e.rankID = r.rankID ;
 		FROM userReview WHERE
 		userId = #{param1}
 	</select>
+-->
+ 
+ <!-- 조회 
+ 
+<select id="pwCheck" resultType="String">
+select password from employee where employeeID = #{employeeID}
+</select>
+-->
 
+<!-- 수정 
+<update id="pwUpdate">
+update employee set password = #{password} where employeeID = #{employeeID}
+</update>
+-->
+
+<!--  수정 맵퍼쪽에 문제가 있음 -->
+
+<select id="selectEncpw" parameterType="int" resultType="string">
+SELECT password FROM employee WHERE employeeID = #{employeeID}
+</select>
+
+<update id="changePw" >
+update employee set password = #{newPass} where employeeID = #{employeeID}
+</update>
 
 </mapper>

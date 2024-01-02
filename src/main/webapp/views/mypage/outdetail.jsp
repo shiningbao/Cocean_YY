@@ -10,6 +10,7 @@
 </style>
 </head>
 <body>
+<jsp:include page="../side.jsp"></jsp:include>
 
  <table>
 
@@ -37,7 +38,8 @@
    
          <tr>
              <th colspan="2">
-                  <input type="button" onclick="location.href='./outsideupdate?addressNumber=${outaddress.addressNumber}'" value="주소록 수정ㄴ"/>   
+                  <input type="button" onclick="location.href='./outsideupdate?addressNumber=${outaddress.addressNumber}'" value="수정"/>   
+                 <input type="button" onclick="location.href='./list'" value="리스트"/>
              </th>
          </tr>
      </table>

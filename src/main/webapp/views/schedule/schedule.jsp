@@ -23,7 +23,7 @@
 <!--js 파일관리  -->
 <script src='<c:url value="/resource/js/schedule/main.js"/>'></script>
 <!-- 풀캘린더 라이브러리 -->
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 
 
 <!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
