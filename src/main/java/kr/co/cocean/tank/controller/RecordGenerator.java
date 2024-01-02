@@ -22,24 +22,24 @@ public class RecordGenerator {
 	@Autowired
 	TankService service;
 	
-	@Scheduled(fixedRate = 3600000) // 2시간(7,200,000 밀리초)마다 실행/일단 지금은 1시간으로 테스트 중
-	public void recordGenerator() {
-		logger.info("스케줄러 작동");
-		List<Integer> tankCount = service.tankCount();
-		logger.info("tankList: "+tankCount.toString());
-		Random random = new Random();
-		for (int i = 0; i < tankCount.size(); i++) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			map.put("tankID", tankCount.get(i));
-				for (int j = 0; j < 9; j++) {
-					int randomNumber = random.nextInt(101);
-					map.put("num"+j, randomNumber);
-				}
-				logger.info("map"+map);
-				service.recordData(map);
-			// 이때 수치 비교 
-		}
-		
-	}
+//	@Scheduled(fixedRate = 3600000) // 2시간(7,200,000 밀리초)마다 실행/일단 지금은 1시간으로 테스트 중
+//	public void recordGenerator() {
+//		logger.info("스케줄러 작동");
+//		List<Integer> tankCount = service.tankCount();
+//		logger.info("tankList: "+tankCount.toString());
+//		Random random = new Random();
+//		for (int i = 0; i < tankCount.size(); i++) {
+//			Map<String, Integer> map = new HashMap<String, Integer>();
+//			map.put("tankID", tankCount.get(i));
+//				for (int j = 0; j < 9; j++) {
+//					int randomNumber = random.nextInt(101);
+//					map.put("num"+j, randomNumber);
+//				}
+//				logger.info("map"+map);
+//				service.recordData(map);
+//			// 이때 수치 비교 
+//		}
+//		
+//	}
 
 }
