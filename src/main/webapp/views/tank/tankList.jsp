@@ -96,6 +96,7 @@ label {
 </head>
 <body>
 	<c:import url="/side"/>
+<main>
 	<div id="hTitle">
 		<a>코션하우스</a>
 	</div>
@@ -193,6 +194,7 @@ label {
 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
 	</c:if>
 </section>
+</main>
 </body>
 <script>
 
