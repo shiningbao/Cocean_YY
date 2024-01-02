@@ -61,7 +61,8 @@ public class PersonnelController {
 	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
 	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
 		ModelAndView mav = new ModelAndView();
-		logger.info("files!!! : {}"+file);
+		logger.info("files!!! : {}",file.getSize());
+		logger.info("fileSignature!!! : {}",fileSignature.getSize());
 		logger.info("params =="+params);
 		String page= "";
 		String pw = "cocean1111";
@@ -72,6 +73,7 @@ public class PersonnelController {
 		String status ="재직";
 		params.put("status",status);
 		params.put("remainingAnnualLeave", "0");
+
 		int row= service.join(params,file,fileSignature);
 		
 		if(row>0) {
@@ -147,11 +149,11 @@ public class PersonnelController {
 	public ModelAndView detail(@RequestParam int employeeID) {
 		logger.info("employeeID" +employeeID);
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
-		List<HashMap<String, Object>> list = service.detail(employeeID);
+		HashMap<String, Object> list = service.detail(employeeID);
 		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
 		List<HashMap<String, Object>> workHistory = service.workHistory(employeeID);
 		logger.info("detailList=="+list);
-		mav.addObject("list", list);
+		mav.addObject("person", list);
 		mav.addObject("employeeHistory", employeeHistory);
 		mav.addObject("workHistory", workHistory);
 		return mav;
@@ -201,6 +203,20 @@ public class PersonnelController {
 		
 		return "personnel/annualManage";
 	}
-
 	
+	@PostMapping(value="/personnel/getPositionName.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getPositionName(){
+		
+		List<HashMap<String, Object>> list = service.getPositionName();
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/getRankName.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getRankName(){
+		
+		List<HashMap<String, Object>> list = service.getRankName();
+		return list;
+	}
 }

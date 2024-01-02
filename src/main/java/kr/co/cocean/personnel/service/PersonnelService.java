@@ -81,8 +81,13 @@ public class PersonnelService {
 		}
 		String employeeIDString = (String) params.get("employeeID");
 		int employeeID = Integer.parseInt(employeeIDString);
-		UploadContext(file,employeeID);
-		UploadSgniture(fileSignature,employeeID);
+		if(file.getSize()!=0) {
+			UploadContext(file,employeeID);
+		}
+		if(fileSignature.getSize()!=0) {
+			
+			UploadSgniture(fileSignature,employeeID);
+		}
 		
 		return dao.join(params);
 	}
@@ -212,7 +217,7 @@ public class PersonnelService {
 	public Boolean checkDuplicateEmployeeID(String employeeID) {
 		return dao.checkDuplicateEmployeeID(employeeID);
 	}
-	public List<HashMap<String, Object>> detail(int parsedEmployeeID) {
+	public HashMap<String, Object> detail(int parsedEmployeeID) {
 		return dao.datail(parsedEmployeeID);
 	}
 	public List<HashMap<String, Object>> employeeHistory(int employeeID) {
@@ -220,6 +225,13 @@ public class PersonnelService {
 	}
 	public List<HashMap<String, Object>> workHistory(int employeeID) {
 		return dao.workHistory(employeeID);
+	}
+	public List<HashMap<String, Object>> getPositionName() {
+		return dao.getPositionName();
+	}
+	public List<HashMap<String, Object>> getRankName() {
+		// TODO Auto-generated method stub
+		return dao.getRankName();
 	}
 
 	

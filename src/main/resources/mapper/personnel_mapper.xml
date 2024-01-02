@@ -88,8 +88,8 @@
 	
 	<select id="datail">
 		SELECT 
-		    e.employeeID, e.name, p.positionName, r.rankName, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
-		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage
+		    e.employeeID, e.name, p.positionName, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
+		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
 		JOIN headquarters h ON d.hqID = h.hqID 
@@ -107,6 +107,14 @@
 
 	<select id="workHistory">
 		SELECT startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
+	</select>
+	
+	<select id="getPositionName">
+		SELECT positionID ,positionName  from `position` p;
+	</select>
+	
+	<select id="getRankName">
+		SELECT rankID,rankName from rank;
 	</select>
 
 </mapper>
