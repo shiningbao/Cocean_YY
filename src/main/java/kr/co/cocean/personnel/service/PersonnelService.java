@@ -212,6 +212,15 @@ public class PersonnelService {
 	public Boolean checkDuplicateEmployeeID(String employeeID) {
 		return dao.checkDuplicateEmployeeID(employeeID);
 	}
+	public List<HashMap<String, Object>> detail(int parsedEmployeeID) {
+		return dao.datail(parsedEmployeeID);
+	}
+	public List<HashMap<String, Object>> employeeHistory(int employeeID) {
+		return dao.employeeHistory(employeeID);
+	}
+	public List<HashMap<String, Object>> workHistory(int employeeID) {
+		return dao.workHistory(employeeID);
+	}
 
 	
 

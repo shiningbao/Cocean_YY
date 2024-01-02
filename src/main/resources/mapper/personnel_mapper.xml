@@ -85,7 +85,28 @@
 		INSERT INTO file(category, idx, path, serverFileName, oriFileName)
 			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
 	</insert>
+	
+	<select id="datail">
+		SELECT 
+		    e.employeeID, e.name, p.positionName, r.rankName, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
+		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID = h.hqID 
+		JOIN branch b ON h.branchID = b.branchID 
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r ON e.rankID = r.rankID
+		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
+		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
+		WHERE e.employeeID = #{employeeID}
+	</select>
+	
+	<select id="employeeHistory">
+		SELECT startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='학력' AND employeeID =#{employeeID}
+	</select>
 
-
+	<select id="workHistory">
+		SELECT startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
+	</select>
 
 </mapper>

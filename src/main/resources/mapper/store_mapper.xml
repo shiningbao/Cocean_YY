@@ -22,17 +22,12 @@
 	</select>
 	
 	<select id="searchProduct" resultType="branchProduct">
-	<!-- SELECT pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
-	FROM productInformation pi
-	JOIN branchProduct bp ON pi.productID = bp.productID
-	JOIN branch b ON bp.branchID = b.branchID
-	WHERE pi.productName = #{param1} AND b.branchName = #{param2} -->
 	<choose>
         <when test="branchName == '본사상품'">
         	select * from productInformation  where productName =#{searchKeyword}  AND category="상품"
         </when>
     	<otherwise>
-			select  pi.productID, pi.productName, pi.price, bp.branchID, bp.status 
+			select  pi.productID, pi.productName,pi.category, pi.price, bp.branchID, bp.status 
 			FROM productInformation pi
             JOIN branchProduct bp ON pi.productID = bp.productID
             JOIN branch b ON bp.branchID = b.branchID
@@ -58,14 +53,37 @@
 	INSERT INTO brachProduct(branchID, productID) VALUES(#{param1}, #{param2})
 	</insert>
 	
-	<insert id="storeProductRegister">
-	INSERT INTO productInformation(productName, price, category) VALUES(#{param1}, #{param2}, #{param3})
+	<!-- 본사 상품 등록 -->
+	<insert id="productInfoRegister">
+	INSERT INTO productInformation(productName, price, category) VALUES(#{productName}, #{price}, #{category})
 	</insert>
 	
+	<select id="productInfoID">
+	SELECT productID FROM productInformation WHERE productName=#{param1}
+	</select>
+	
+	<insert id="productFileRegister">
+	INSERT INTO file(category, idx, path, serverFileName, oriFileName) VALUES(#{param1},#{param2},#{param3},#{param4},#{param5})
+	</insert>
+	
+	<!-- 지점상품 등록 모달창에서 상품 리스트 보여주기 -->
 	<select id="modalProductList" resultType="branchProduct">
 	SELECT *
 	FROM productInformation pi
 	WHERE pi.category = "상품"
+	  AND pi.productID NOT IN (
+	    SELECT bp.productID
+	    FROM branchProduct bp
+	    JOIN branch b ON bp.branchID = b.branchID
+	    WHERE b.branchName = #{currentBranchName}
+	  )
+	</select>
+	
+	<!-- 지점티켓 등록 모달창에서 상품 리스트 보여주기 -->
+	<select id="modalTicketList" resultType="branchProduct">
+	SELECT *
+	FROM productInformation pi
+	WHERE pi.category = "티켓"
 	  AND pi.productID NOT IN (
 	    SELECT bp.productID
 	    FROM branchProduct bp
@@ -80,7 +98,7 @@
 	WHERE branchName = #{param1}
 	</select>
 	
-	<select id="productIDSearch">
+	<select id="productIDSearch" >
 	SELECT productID
 	FROM productInformation
 	WHERE productName = #{param1}
@@ -89,4 +107,15 @@
 	<insert id="branchProductRegister">
 	INSERT INTO branchProduct (branchID, productID) VALUES(#{param1}, #{param2})
 	</insert>
+	
+	<select id="storeProductDetail" resultType="branchProduct">
+	SELECT pi.*, f.idx, f.serverFileName
+	FROM productInformation pi
+	JOIN file f ON pi.productID = f.idx AND f.category ="상품"
+	WHERE pi.productID = #{param1}
+	</select>
+	
+	<delete id="branchProductDelete">
+	DELETE FROM branchProduct WHERE productID=#{param1} AND branchID=#{param2}
+	</delete>
 </mapper>

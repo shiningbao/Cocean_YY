@@ -54,40 +54,92 @@ public class AddressController {
       logger.info("서비스 넘어가기전");   
       return result;
    }
+   
+   
    //외부검색 
+   @GetMapping(value = "mypage/addresssearch")
+	@ResponseBody
+	public HashMap<String,Object> reserch (@RequestParam String name,Model model){		
+		logger.info("검색 list");
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();		
+		
+		ArrayList<OutAddressDTO> list = service.reserch(name);
+		
+		result.put("list", list);
+		result.put("size", list.size());
+		
+		logger.info("result :"+result);
+		
+		return result;
+	}
+   
+   
 
-         @GetMapping(value="mypage/namesearch")
-         @ResponseBody
-         public HashMap<String, Object> namesearch(@RequestParam String name) {
-            logger.info("검색");
-            logger.info("name : {}",name);
-            return service.namesearch(name);
-         }
+   
+   
+   //내부 리스트(다시)
+   @GetMapping(value="mypage/addresslistCall")
+   @ResponseBody
+   public HashMap<String, Object> inlistCall(HttpSession session) {
+	   
+	   logger.info("in list 시작");
+	      HashMap<String, Object>result1 = new HashMap<String, Object>();
+	      
+	      if(session.getAttribute("userInfo") == null) {
+	         result1.put("login", false);
+	      }else {
+	         result1.put("login", true);
+	         ArrayList<InaddressDTO> list1 = service.inlistCall();
+	         result1.put("list1", list1);
+	      }
+	      logger.info("in 서비스 넘어가기전");   
+	      return result1;
+	   
+	   /*
+      logger.info("list 시작");
+      HashMap<String, Object>result1 = new HashMap<String, Object>();
+         ArrayList<InaddressDTO> list1 = service.inlistCall();
+         result1.put("list1", list1);
+      logger.info("서비스 넘어가기전");   
+      return result1;*/
+   }
+   
   
    
       
   
    
    //내부 주소록 리스트
+   /*
    @GetMapping(value="mypage/address")
    public String list(Model model,HttpSession session) {      
       ArrayList<InaddressDTO> list = service.inaddress();
       model.addAttribute("list",list);
       return "mypage/outsideaddressBook";
-   }
+   }*/
    
-         
-
    
    //내부 검색
+   /*
    @GetMapping(value="mypage/insearch")
    public ModelAndView insearch(@RequestParam List<String> inname) {
       logger.info("inname : {}",inname);
       return service.insearch(inname);
-   }
+   }*/
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
    
 
-   //선택삭제,전체삭제
+   //외부선택삭제,전체삭제
    @GetMapping(value="mypage/delete")
    @ResponseBody
    public HashMap<String, Object> delete(
@@ -119,7 +171,7 @@ public class AddressController {
          return "mypage/outsidejoin";
       }
       
-      //외부주소록 저장(404)
+      //외부주소록 저장
       @PostMapping(value="mypage/outsidejoins")
       public ModelAndView outsidejoins(@RequestParam HashMap<String, Object> params,HttpSession session) {
          logger.info("params : "+params);

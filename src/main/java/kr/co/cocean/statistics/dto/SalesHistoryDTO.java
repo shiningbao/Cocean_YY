@@ -1,23 +1,25 @@
-package kr.co.cocean.store.dto;
+package kr.co.cocean.statistics.dto;
+
+import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("branchProduct")
-public class StoreProductDTO {
+@Alias("sales")
+public class SalesHistoryDTO {
 	private int branchID;
 	private String branchName;
-	private String branchLocation;
-	private double branchLatitude;
-	private double branchLongitude;
 	private int productID;
-	private String status;
 	private String productName;
 	private String category;
 	private int price;
 	private int productIndex;
-	private int idx;
-	private String serverFileName;
+	private String status;
 	
+	private Date salesRegDate;
+	private int salesNumber;
+	
+	private Date entryDate;
+	private int visitorsNumber;
 	public int getBranchID() {
 		return branchID;
 	}
@@ -30,35 +32,11 @@ public class StoreProductDTO {
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
-	public String getBranchLocation() {
-		return branchLocation;
-	}
-	public void setBranchLocation(String branchLocation) {
-		this.branchLocation = branchLocation;
-	}
-	public double getBranchLatitude() {
-		return branchLatitude;
-	}
-	public void setBranchLatitude(double branchLatitude) {
-		this.branchLatitude = branchLatitude;
-	}
-	public double getBranchLongitude() {
-		return branchLongitude;
-	}
-	public void setBranchLongitude(double branchLongitude) {
-		this.branchLongitude = branchLongitude;
-	}
 	public int getProductID() {
 		return productID;
 	}
 	public void setProductID(int productID) {
 		this.productID = productID;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public String getProductName() {
 		return productName;
@@ -84,19 +62,35 @@ public class StoreProductDTO {
 	public void setProductIndex(int productIndex) {
 		this.productIndex = productIndex;
 	}
-	public int getIdx() {
-		return idx;
+	public String getStatus() {
+		return status;
 	}
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public String getServerFileName() {
-		return serverFileName;
+	public Date getSalesRegDate() {
+		return salesRegDate;
 	}
-	public void setServerFileName(String serverFileName) {
-		this.serverFileName = serverFileName;
+	public void setSalesRegDate(Date salesRegDate) {
+		this.salesRegDate = salesRegDate;
 	}
-	
-	
+	public int getSalesNumber() {
+		return salesNumber;
+	}
+	public void setSalesNumber(int salesNumber) {
+		this.salesNumber = salesNumber;
+	}
+	public Date getEntryDate() {
+		return entryDate;
+	}
+	public void setEntryDate(Date entryDate) {
+		this.entryDate = entryDate;
+	}
+	public int getVisitorsNumber() {
+		return visitorsNumber;
+	}
+	public void setVisitorsNumber(int visitorsNumber) {
+		this.visitorsNumber = visitorsNumber;
+	}
 	
 }

@@ -1,6 +1,8 @@
 package kr.co.cocean.mypage.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,16 @@ public class WorkService {
 		
 		return dao.work();
 	}
+
+	//ajax
+	public Map<String, Object> work(String pfirstSearchDate, String plastSearchDate) {
+		ArrayList<WorkDTO> workdto = dao.work(pfirstSearchDate,plastSearchDate);
+		Map<String, Object>map= new HashMap<String, Object>();
+		map.put("work", workdto);
+		return map;
+	}
+
+
 
 	
 }

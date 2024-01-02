@@ -10,14 +10,15 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
-	
-<!-- 부트스트랩 자바스크립트 -->
-<script src="/resource/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
 <!-- 부트스트랩 CSS/favicon -->
-<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resource/css/modal.css">
+
 <title>Insert title here</title>
 <style>
 #personnel_head {
@@ -46,38 +47,30 @@
 }
 
 
-
-#tankSubmit {
-	
-	position: absolute;
-	left: 87%;
-	width: 100px;
-	top: 850px;
-}
-
 @media screen and (max-width: 1457px) {
-	#search {
+	#psSchBtn {
 		top: 23%;
 	}
-	#search button {
+	#psSchBtn button {
 		width: 233px;
 	}
-	#search input {
+	#psSchBtn input {
 		margin-bottom: 5px;
 	}
 }
 #personnelRegist{
-	    margin-right: 300px;
-    top: 17%;
-    width: 17%;
+    top: 26%;
+    width:5%%;
     position: absolute;
-    left: 78%
+    left: 90%
 }
-
+#psSchBtn{
+	margin-bottom: 10px !important;
+}
 #search{
 	    position: absolute;
-    left: 77%;
-    top: 22%;
+	    top:20%;
+    left: 73%;
 }
 
 
@@ -108,7 +101,33 @@ img{
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+.psSelect2 {
+    /* form-control 클래스 스타일 */
+    margin-bottom:12px;
+    height:38px;
+    display: block;
+    width: 20%%;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 
+/* .thisMember{
+	height: 10%;
+	width: 70%;
+	position: absolute;
+	top: 21%;
+	left: 25%;
+	z-index: -1;
+	box-shadow: 0 0 10px 2px #86B0F3; /* 그림자 설정 */
+	border: none; /* 테두리 제거 */
+	background: none;
+} */
 </style>
 </head>
 <body>
@@ -116,13 +135,13 @@ img{
 	<div id="hTitle">
 		<a>사원리스트</a>
 	</div>
-	
+<!-- 	<div class="thisMember">현재 사원수</div> -->
 		<button type="button" id="personnelRegist" class="btn btn-primary" data-toggle="modal" data-target="#regModal">사원등록</button>
         <div id="checkBox">
         
         <nav class="navbar navbar" id="search">
             <form class="form-inline">
-           		<select id="emName">
+           		<select id="emName" class="psSelect2">
            			<option value="employeeID">사번</option>
            			<option value="name">이름</option>
            		</select>

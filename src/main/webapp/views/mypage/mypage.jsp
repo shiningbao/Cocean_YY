@@ -23,7 +23,7 @@
 <body>
 
 <jsp:include page="../side.jsp"></jsp:include>
-<!-- 
+
 <main>
 		
 		<div id="userImg">
@@ -36,9 +36,8 @@
 		<div id="mypage">
 			<table>
 			<div id="userImg">
-			
+				<img alt="" src="">
 			</div>
-			
 				<tr>
 					<td>이름</td>
 					<td id="name"></td>
@@ -72,7 +71,7 @@
 		</div>
 		
 		
-		<!-- 
+	 
 		<div id="remainingAnnualLeave">
 			<div class="residue">
 				잔여 연차 일수
@@ -91,9 +90,9 @@
 		</div>
 	</main>
  
-       -->  
     
     
+    <!--  
     <table>
 		<thead>
 		<tr>
@@ -102,16 +101,18 @@
 			<th>사번</th>
 			<th>직급</th>
 			<th>직책</th>
+			<th>부서</th>
 			<th>전화</th>
 			<th>남은연차<th>
 		</tr>
 		</thead>
-		<!-- 내용 -->
+		<!-- 내용 
 		<tbody id="list">		
 		</tbody>		
 	</table>
+    -->
     
-    
+    <div class="drawList"></div>
     
     <input type="button" id="usermody" OnClick="location.href ='./mypageupdate'" value="수정">    
         
@@ -123,6 +124,23 @@
     
 </body>
 <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 listCall();
 
 
@@ -150,37 +168,25 @@ function listCall(){
 
 function drawList(list){
 	console.log(list);
-	/*for(var i=0;i<list.length;i++){}*/
-	// 배열의 값을 하나씩 빼서 함수를 실행(개별값,인덱스)
+	
 	var content = '';
 	list.forEach(function(item, idx){
-		content += '<tr>';
-		content += '<td>'+item.+'</td>';
-		content += '<td>';
-		if(item.img>0){
-			content += '<img src="resources/img/carrot-down.PNG" width="20px"/>';	
-		}else{
-			content += '<img src="resources/img/carrot-side.PNG" width="20px"/>';	
-		}
-		content += '</td>';
-		
-		content += '<td>'+item.subject+'</td>';
-		content += '<td>'+item.user_name+'</td>';
-		content += '<td>'+item.bHit+'</td>';
-		// java.sql.Date 는 jsp 에서는 정상동작 되나 js 에서는 밀리세컨드를 반환 한다.
-		// 방법 1. DTO 에서 reg_date 를 String 으로 반환하는 방법
-		// content += '<td>'+item.reg_date+'</td>';
-		// 방법 2. js 에서 직접 변환
-		var date = new Date(item.reg_date);
-		var dateStr = date.toLocaleDateString("ko-KR"); //en-US
-		content += '<td>'+dateStr+'</td>';		
-		content += '</tr>';
+		  content += '<tr>';
+		  content +='<td>'+item.idx+'</td>'
+		  content += '<td>'+item.name+'</td>';
+	      content += '<td>'+item.employeeID+'</td>';   
+	      content += '<td>' + item.rankName + '</a></td>';
+	      content += '<td>'+item.positionName+'</td>';
+	      content += '<td>'+item.departmentName+'</td>';
+	      content += '<td>'+item.phoneNumber+'</td>';
+	      content += '<td>'+item.remainingAnnualLeave+'</td>';    
+		  content += '</tr>';
 	});
 	$('#list').empty();
 	$('#list').append(content);
 	
 }
-
+*/
 
 
 
