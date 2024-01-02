@@ -1,8 +1,10 @@
 package kr.co.cocean.store.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.store.dto.StoreDTO;
 import kr.co.cocean.store.dto.StoreProductDTO;
@@ -22,17 +24,26 @@ public interface StoreDAO {
 
 	int branchRegisterProduct(int branchID, int i);
 
-	int ticketRegister(String productName, int price, String category);
-
-	int storeProductRegister(String productName, int price, String category);
-
 	ArrayList<StoreProductDTO> modalProductList(String currentBranchName);
 
+	ArrayList<StoreProductDTO> modalTicketList(String currentBranchName);
+	
 	int branchIDSearch(String currentBranchName);
 
 	int productIDSearch(String currentProductName);
 
 	int branchProductRegister(int branchID, int productID);
+
+	StoreProductDTO storeProductDetail(int productID);
+
+	int productInfoRegister(Map<String, String> params);
+
+	int productInfoID(String productName);
+
+	int productFileRegister(String category, int productID, String path, String newFileName, String oriFileName);
+
+	void branchProductDelete(int productID, int branchID);
+
 
 
 
