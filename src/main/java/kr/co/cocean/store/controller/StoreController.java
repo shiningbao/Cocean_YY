@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.cocean.store.dto.StoreDTO;
+import kr.co.cocean.store.dto.StoreProductDTO;
 import kr.co.cocean.store.service.StoreService;
 	
 @Controller
@@ -59,19 +65,52 @@ public class StoreController {
 		return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.go")
-	public String storeProductRegisterGo() {
+	@GetMapping(value="/store/productInfoRegister.go")
+	public String productInfoRegister() {
 		logger.info("상품 등록 페이지 이동");
-		return "store/storeProductRegister";
+		return "store/productInfoRegister";
 	}
 	
-	@GetMapping(value="/store/storeProductRegister.do")
-	public int storeProductRegister(@RequestParam String productName, @RequestParam int price, @RequestParam String category) {
-		logger.info("본사상품 등록");
-		logger.info("productName : "+productName);
-		logger.info("price : "+price);
-		logger.info("category : "+category);
-		return service.storeProductRegister(productName, price, category);
+	@PostMapping(value="/store/productInfoRegister.do")
+	public String productInfoRegister(@RequestParam Map<String, String>params, @RequestParam(name = "photo", required = false) MultipartFile photo) {
+	    logger.info("본사상품 등록");
+	    logger.info("상품 정보 : "+params);
+	    logger.info("사진 : "+photo);
+	    String page="store/productInfoRegister";
+	    int result = 0;
+	    if(photo!=null) {
+	        result = service.productInfoRegister(params, photo);
+	        if(result > 0){
+	            page="store/store";
+	        }
+	    }else{
+	        result = service.productTicketInfoRegister(params);
+	        if(result > 0){
+	            page="store/store";
+	        }
+	    }
+	    return page;
+	}
+
+	
+	@GetMapping("/store/storeProductDetail.do")
+	public ModelAndView storeProductDetail(@RequestParam int productID, @RequestParam (name="branchID", required = false)int branchID) {
+		logger.info("본사 상품 상세보기");
+		logger.info("productID : "+productID);
+		if(branchID>0) {
+			return service.storeProductDetail(productID, branchID);
+		}else {
+		return service.storeProductDetail(productID);
+	}
+	}
+	
+	@GetMapping("/store/branchProductDelete.do")
+	public String branchProductDelete(@RequestParam int productID, @RequestParam int branchID) {
+		logger.info("지점 상품 삭제");
+		logger.info("productID : "+productID);
+		logger.info("branchID : "+branchID);
+		service.branchProductDelete(productID, branchID);
+		return "store/store";
 	}
 	
 	@GetMapping(value="/store/modalProductList.do")
@@ -81,27 +120,24 @@ public class StoreController {
 		return service.modalProductList(currentBranchName);
 	}
 	
+	@GetMapping(value="/store/modalTicketList.do")
+	@ResponseBody
+	public Map<String, Object> modalTicketList(@RequestParam String currentBranchName){
+		logger.info("모달 티켓 리스트");
+		return service.modalTicketList(currentBranchName);
+	}
+	
 	@PostMapping(value="/store/branchProductRegister.do")
 	@ResponseBody
 	public int branchProductRegister(@RequestParam String currentBranchName, @RequestParam String currentProductName) {
 		logger.info("지점 상품 등록");
-		logger.info(currentBranchName);
-		logger.info(currentProductName);
+		logger.info("currentBranchName : "+currentBranchName);
+		logger.info("currentProductName : "+currentProductName);
 		return service.branchProductRegister(currentBranchName, currentProductName);
-
-		
 	}
-//	@GetMapping(value="/store/ticketRegister.do")
-//	@ResponseBody
-//	public int ticketRegister(@RequestParam String branchName, @RequestParam String productName,@RequestParam int price, @RequestParam String category) {
-//		logger.info("티켓 등록");
-//		logger.info("branchName : "+branchName);
-//		logger.info("productName : "+productName);
-//		logger.info("price : "+price);
-//		logger.info("category : "+category);
-//		return service.ticketRegister(branchName,productName,price,category);
-//	}
 	
+	
+
 	
 	
 }

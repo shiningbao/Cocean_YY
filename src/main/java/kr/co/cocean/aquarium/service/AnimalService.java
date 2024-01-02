@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,13 +65,15 @@ public class AnimalService {
 		dao.animalWrte(param);
 		int animalID = param.getAnimalID();
 		// 업로드
+
 		for (MultipartFile uploadfile : files) {
 			upload(uploadfile, animalID);
 		}
+
 		
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:/animal/list.go");
 		rAttr.addFlashAttribute("msg", "코션친구를 등록했습니다.");
+		mav.setViewName("redirect:/animal/list.go");
 		
 		return mav;
 	}
@@ -202,13 +207,13 @@ public class AnimalService {
 		logger.info("cnt : {}",cnt);
 		String msg = "asf";
 		if(cnt == 1) {
-			msg = "을 삭제했습니다.";
+			msg = "삭제했습니다.";
 		}
 		result.put("msg", msg);
 		return result;
 	}
 
-	public ModelAndView animalUpdateDo(int animalID) {
+	public ModelAndView animalUpdateGo(int animalID) {
 		ModelAndView mav = new ModelAndView("/aquarium/animalUpdate");
 		
 		AnimalDTO content = dao.animalDetail(animalID);
@@ -217,6 +222,64 @@ public class AnimalService {
 		mav.addObject("tankList", dao.tankList(content.getBranchID()));
 		return mav;
 	}
+
+	public ModelAndView animalUpdate(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr, int employeeID) {
+		String page = "redirect:detail.go?animalID="+param.getAnimalID();
+		ModelAndView mav = new ModelAndView(page);
+		
+		AnimalDTO ori = dao.animalDetail(param.getAnimalID());
+		
+		String log = equalsAnimalDTO(ori, param);
+		if(!log.equals("")) {
+			dao.animalUpdate(param);
+			
+			LogPlanDTO dto = new LogPlanDTO();
+			dto.setEmployeeID(employeeID);
+			dto.setManageCategory("log");
+			dto.setCoceanCategory("animal");
+			dto.setIdx(param.getAnimalID());
+			dto.setContent(log);
+			dto.setStatus(param.getStatus());
+			dao.logplanWrite(dto);
+			
+		}
+		rAttr.addFlashAttribute("msg", "코션친구들을 수정했습니다.");
+		
+		return mav;
+	}
+
+	private String equalsAnimalDTO(AnimalDTO ori, AnimalDTO param) {
+		String log = "";
+		if(!Objects.equals(ori.getTankName(),param.getTankName())){
+			log += "<p>코션하우스 변경 : "+ori.getTankName()+" -> "+param.getTankName()+"</p>";
+		}
+		if(!Objects.equals(ori.getNickname(),param.getNickname())){
+			log += "<p>애칭 변경 : "+ori.getNickname()+" -> "+param.getNickname()+"</p>";
+		}
+		if(!Objects.equals(ori.getIndividual(),param.getIndividual())){
+			log += "<p>개체수 변경 : "+ori.getIndividual()+" -> "+param.getIndividual()+"</p>";
+		}
+		if(!Objects.equals(ori.getBirthDate(),param.getBirthDate())){
+			log += "<p>태어난 날 변경 : "+ori.getBirthDate()+" -> "+param.getBirthDate()+"</p>";
+		}
+		if(!Objects.equals(ori.getEntryDate(),param.getEntryDate())){
+			log += "<p>들어온 날 변경 : "+ori.getEntryDate()+" -> "+param.getEntryDate()+"</p>";
+		}
+		if(!Objects.equals(ori.getStatus(),param.getStatus())){
+			log += "<p>상태 변경 : "+ori.getStatus()+" -> "+param.getStatus()+"</p>";
+		}
+		if(!Objects.equals(ori.getDetails(),param.getDetails())){
+			log += "<p>세부정보 변경 : "+ori.getDetails()+" -> "+param.getDetails()+"</p>";
+		}
+		
+		return log;
+	}
+
+	public void animalDel(int animalID) {
+		dao.animalDel(animalID);
+		
+	}
+	
 
 
 	

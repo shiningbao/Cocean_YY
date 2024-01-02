@@ -54,36 +54,64 @@ public class AddressController {
       logger.info("서비스 넘어가기전");   
       return result;
    }
+   
+   
    //외부검색 
+   @GetMapping(value = "mypage/addresssearch")
+	@ResponseBody
+	public HashMap<String,Object> reserch (@RequestParam String name,Model model){		
+		logger.info("검색 list");
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();		
+		
+		ArrayList<OutAddressDTO> list = service.reserch(name);
+		
+		result.put("list", list);
+		result.put("size", list.size());
+		
+		logger.info("result :"+result);
+		
+		return result;
+	}
    
-         @GetMapping(value="mypage/namesearch")
-         @ResponseBody
-         public ModelAndView namesearch(@RequestParam List<String> name) {
-            logger.info("검색");
-            logger.info("name : {}",name);
-            return service.namesearch(name);
-         }
    
+
+   
+   
+   //내부 리스트(다시)
+   @GetMapping(value="mypage/addresslistCall")
+   @ResponseBody
+   public HashMap<String, Object> inlistCall(HttpSession session) {
+	   
+	   logger.info("in list 시작");
+	      HashMap<String, Object>result1 = new HashMap<String, Object>();
+	      
+	      if(session.getAttribute("userInfo") == null) {
+	         result1.put("login", false);
+	      }else {
+	         result1.put("login", true);
+	         ArrayList<InaddressDTO> list1 = service.inlistCall();
+	         result1.put("list1", list1);
+	      }
+	      logger.info("in 서비스 넘어가기전");   
+	      return result1;
+	   
+	   /*
+      logger.info("list 시작");
+      HashMap<String, Object>result1 = new HashMap<String, Object>();
+         ArrayList<InaddressDTO> list1 = service.inlistCall();
+         result1.put("list1", list1);
+      logger.info("서비스 넘어가기전");   
+      return result1;*/
+   }
+   
+  
    
       
+  
    
-   //내부 리스트
+   //내부 주소록 리스트
    /*
-   @RequestMapping(value="/mypage/address")
-   public String inaddress( Model model,HttpSession session) {
-         String page = "mypage/login";
-      logger.info("내부 리스트");
-      if(session.getAttribute("userInfo") != null) {
-         ArrayList<InaddressDTO> list = service.inaddress();
-         model.addAttribute("list", list);
-         page = "mypage/outsideaddressBook";
-      }else {
-         model.addAttribute("msg", "로그인이 필요한 서비스 입니다.");
-      }
-      
-      return page;
-   }*/
-   /*위에꺼하고 둘중에 하나 골라서 테스트 해서 내부 리스트 가져오는거 정하기
    @GetMapping(value="mypage/address")
    public String list(Model model,HttpSession session) {      
       ArrayList<InaddressDTO> list = service.inaddress();
@@ -91,24 +119,27 @@ public class AddressController {
       return "mypage/outsideaddressBook";
    }*/
    
-         
-   /*
-   @GetMapping(value = "/list.do")
-   public String list(Model model) {
-      ArrayList<BoardDTO> list = service.list();
-      model.addAttribute("list", list);
-      logger.info("test list");
-      return "list";
-   }*/
    
    //내부 검색
+   /*
    @GetMapping(value="mypage/insearch")
    public ModelAndView insearch(@RequestParam List<String> inname) {
       logger.info("inname : {}",inname);
       return service.insearch(inname);
-   }
+   }*/
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
 
-   //선택삭제,전체삭제
+   //외부선택삭제,전체삭제
    @GetMapping(value="mypage/delete")
    @ResponseBody
    public HashMap<String, Object> delete(
@@ -153,7 +184,7 @@ public class AddressController {
          String msg = service.outsidejoin(params);
          ModelAndView mav = new ModelAndView();
          mav.addObject("msg", msg);
-         mav.addObject("mypage/outsideaddressBook"); // 요청명 변경
+         mav.setViewName("/mypage/outsideaddressBook"); // 요청명 변경
          return mav ;
       }
       
@@ -184,106 +215,27 @@ public class AddressController {
             }
             
          //수정
-            @PostMapping(value = "mypage/outaddressupdate")
-            public String outaddressupdate(OutAddressDTO dto) {
-               logger.info("update실행");
-               logger.info(dto.getName()+"/"+dto.getPhoneNumber());
-               service.outaddressupdate(dto);
-               return "redirect:/mypage/outsideupdate";
-            }
-      
-            /*
-      @GetMapping(value="mypage/outaddressupdate")   
-      public String outaddressupdate(OutAddressDTO dto) {
-         logger.info("update실행");
-         logger.info(dto.getAddressNumber()+"/"+dto.getName());
-         service.outaddressupdate(dto);
-         return "redirect:/mypage/";
-      }*/
-            
-            
-            
-            /*
-      @GetMapping(value="mypage/outaddressupdate")   
-      public ModelAndView outaddressupdate(@RequestParam String )
-      */      
-            
-            
-            
-            
-      //수정
-            /*
-            @RequestMapping(value="mypage/addressupdate", method= {RequestMethod.GET, RequestMethod.POST})
-            public ModelAndView update(@RequestParam Map<String,String> param) {      
-               logger.info("params : {}",param);      
-               return service.update(param);      
-            }*/
-            
-            //수정하기 기능
-            /*
-            @GetMapping(value = "mypage/outsideupdate")
-            public String outsideupdate(OutAddressDTO dto) {
-               logger.info("update실행");
-               logger.info(dto.getName()+"/"+dto.getPhoneNumber());
-               service.outsideupdate(dto);
-               return "mypage/outdetail";
-            }*/
-      
-      
-   
-   //내부주소록
-   
-   
-   //내부 주소록
-   /*
-   @GetMapping(value="mypage/address")
-   public String list(Model model,HttpSession session) {      
-      ArrayList<InaddressDTO> list = service.inlist();
-      model.addAttribute("list",list);
-      
-      return "mypage/outsideaddressBook";
-   }*/
-   
+          @PostMapping(value="mypage/outaddressupdate")
+          public String outaddressupdate(OutAddressDTO dto,Model model) {
+      		logger.info("update실행");
+      		logger.info(dto.getName()+"/"+dto.getAddressNumber());
+      		service.outaddressupdate(dto);
+      		logger.info("service 들어가기전");
+      		return "/mypage/outsideaddressBook";
+      	}
+          
+          
+          
+          //디테일,수정,저장 리스트로 돌아가기
+          @RequestMapping(value="mypage/list")
+          public String list() {
+             return "mypage/outsideaddressBook";
+          }
+          
+          
+         
+          
 
-   //먼저 보열줄거 내부주소록
-   //그다음 외부주소록
-   //외부주소록 (수정할거 css)(끝)
-   /*
-   @GetMapping(value="mypage/address")
-   public String list(Model model,HttpSession session) {      
-      ArrayList<OutAddressDTO> list = service.list();
-      model.addAttribute("list",list);
-      return "mypage/outsideaddressBook";
-   }
-   
-   
-   
-   
-   
-   
-   //수정
-      @PostMapping(value="mypage/addressupdate")
-      public String update(Model mode, @RequestParam HashMap<String, Object> params) {
-         logger.info("params : "+params);
-         OutAddressDTO dto = new OutAddressDTO();
-         params.put("addressNumber", dto);
-         String page = "redirect:/outsideupdate?addressNumber="+params.get("addressNumber");      
-         if(service.update(params)>0) {
-            page = "redirect:/outsideaddressBook?addressNumber="+params.get("addressNumber");         
-         }
-         return page;
-      }*/
-
-   /*내용이 안뜸*/
-   /*
-   
-
-   
-   @GetMapping(value = "/mypage/del")//(삭제는 됨) 문제는 체크박스로 삭제가 안됨
-   public String del(int addressNumber) {
-      service.del(addressNumber);
-      return "mypage/outsideaddressBook";
-   }*/
    
 
    

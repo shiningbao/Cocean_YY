@@ -1,6 +1,7 @@
 package kr.co.cocean.aquarium.dto;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import org.apache.ibatis.type.Alias;
 
@@ -141,5 +142,6 @@ public class AnimalDTO {
 	public void setAnimalCode(String animalCode) {
 		this.animalCode = animalCode;
 	}
+
 	
 }
