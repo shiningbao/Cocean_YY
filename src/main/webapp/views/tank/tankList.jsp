@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
 #tank_head {
 	background-color: #86B0F3;
@@ -94,7 +95,7 @@ label {
 </style>
 </head>
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
+	<c:import url="/side"/>
 	<div id="hTitle">
 		<a>코션하우스</a>
 	</div>
@@ -104,40 +105,40 @@ label {
         <div id="box1">
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option1">
+            <input class="form-check-input" type="checkbox" checked name="selectAll"  value="selectAll" id="option1" onclick="selectAll(this)">
             <label class="form-check-label" for="option1">전체&nbsp;&nbsp;</label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option2">
+            <input class="form-check-input" type="checkbox" checked value="${sessionScope.userInfo.employeeID}" id="option2" name="empolyeeID">
             <label class="form-check-label" for="option2">담당하우스</label>
         </div>
 
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option3">
+            <input class="form-check-input" type="checkbox" checked value="정상" name="tankStatus" id="option3">
             <label class="form-check-label" for="option3">정상&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option4">
+            <input class="form-check-input" type="checkbox" checked value="이상" name="tankStatus" id="option4">
             <label class="form-check-label" for="option4">이상&nbsp;&nbsp;</label>
         </div>
     </div>
     <div id="box2">
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option5">
+            <input class="form-check-input" type="checkbox" checked value="1" name="tankType" id="option5">
             <label class="form-check-label" for="option5">해수&nbsp;&nbsp;</label>
         </div>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option6">
+            <input class="form-check-input" type="checkbox" checked value="2" name="tankType" id="option6">
             <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option7">
+            <input class="form-check-input" type="checkbox" checked value="3" name="tankType" id="option7">
             <label class="form-check-label" for="option7">반수생&nbsp;</label>
         </div>
             <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" value="" id="option8">
+            <input class="form-check-input" type="checkbox" checked value="4" name="tankType" id="option8">
             <label class="form-check-label" for="option8">육상&nbsp;&nbsp;</label>
         </div>
     </div>
@@ -180,15 +181,39 @@ label {
 		</table>
 	</div>
 	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary">등록</button>
-	<button type="button" id="randomTest" onclick="location.href='random'" class="btn btn-primary">랜덤</button>
 	
+	<section id="paging">
+	<button class="p" data-list-pn="${pager.startNum-1}" type="button">이전</button>
+
+	<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
+		<span class="p" data-list-pn="${i}" >${i}</span>
+	</c:forEach>
+
+	<c:if test="${!pager.lastCheck}">
+		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
+	</c:if>
+</section>
 </body>
 <script>
 
+$(".p").click(function() {
+	const n= $(this).attr("data-list-pn");
+	$("#pageNum").val(n);
+	$('#frm').submit();
+			
+});
 
-// $('#tankSubmit').on('click',function(){
-// 	location.href='write.go';
-// });
+
+	
+	function selectAll(selectAll){
+		const chkBoxes = $('input[type="checkbox"]');
+		
+		Array.from(chkBoxes).forEach(function(box, index) {
+			box.checked = selectAll.checked;
+		})
+	}
+
+
 
 </script>
 </html>

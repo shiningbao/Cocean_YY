@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 import kr.co.cocean.tank.dto.TankRecordDTO;
 import kr.co.cocean.tank.service.TankService;
@@ -38,10 +39,11 @@ public class TankController {
 
 	
 	@GetMapping(value="/tank/list.go")
-	public ModelAndView tankList(ModelAndView mav, TankDTO tankDTO) {
+	public ModelAndView tankList(ModelAndView mav, TankDTO tankDTO, Pager pager) {
 		mav.setViewName("tank/tankList");
-		List<TankDTO> list = service.tankList(tankDTO); 
+		List<TankDTO> list = service.tankList(pager); 
 		mav.addObject("list",list);
+		mav.addObject("pager",pager);
 		return mav;
 		
 	}
