@@ -189,14 +189,14 @@
 
 function submitForm(form){
 	swal({
-		title: "하우스 정보를 수정하시겠습니까?",
+		title: "새로운 하우스를 등록하시겠습니까?",
 		text: "",
 		icon: "info",
-		buttons: ["취소","수정"],
+		buttons: ["취소","등록"],
 	})
 	.then((isOkey) => {
 		if (isOkey) {
-			swal('수정이 완료되었습니다.','','success')
+			swal('등록이 완료되었습니다.','','success')
 			.then((isOkey) => {
 				if(isOkey){
 			form.submit();					

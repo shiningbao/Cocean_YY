@@ -31,6 +31,10 @@
 			<img	style="width: 75px; height: 75px; margin-left: 20px; margin-top: -3px;" 
 				src="<c:url value='/resource/img/logo.svg'/>"/>
 				</a>
+				<div class="thisTime" style="height: 50px; width: 200px; float: right; margin-top: 30px;">
+				<img style="width: 25px; margin-right: 5px;" src="<c:url value='/resource/img/Time.svg'/>"/>
+					<a id="curTime"></a>
+				</div>
 		</div>
 	</header>
 	<div class="container-fluid">
@@ -138,4 +142,12 @@
 		</div>
 	</div>
 </body>
+<script>
+	const curTime = document.getElementById('curTime');
+	
+	setInterval(() => {
+		const date = new Date();
+		curTime.innerHTML = date.toLocaleTimeString();
+	}, 1000);
+</script>
 </html>
