@@ -55,8 +55,7 @@ body {
 }
 
 #calendar {
-	max-width: 70%;
-	margin-top: 100px;
+	max-width: 90%;
 }
 
 /* .sidebar {
@@ -275,6 +274,17 @@ img{
 
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
+		<main>
+		<div class="content">
+		
+			<div class="hTitle">
+				<a>캘린더</a>
+			</div>
+
+
+
+			
+	
 	<div class="modal fade" id="chartModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -509,13 +519,14 @@ img{
 	</div>
 	</div>
 	<div id="calendar"></div>
-
+	</div>
+</main>
 </body>
 
 				
 
 <script>
-
+resizeWidth();
 	
 	var loginEmployeeID = ${userInfo.employeeID};
 	var img= $('.myCallenderbtn img');
@@ -575,13 +586,15 @@ document.addEventListener('DOMContentLoaded', function() {
 				text:"시설 예약",
 				click:function(){
 					$("#modal").modal("show");
-				}
+				}, 
+				removeClass:"",
+				addClass: "btn btn-primary" 
 			},
 			myCustomButon2:{
 				text:"일정 등록",
 				click:function(){
 					$("#regModal").modal("show");
-				}
+				}, addClass: "btn btn-primary" 
 			},
 			
 			customNextY: { // 다음 연도로 이동

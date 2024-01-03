@@ -18,7 +18,7 @@
 <!-- Bootstrap JS -->
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <link rel="stylesheet"
 	href="<c:url value='/resource/css/personnel/personnel.min.css'/>">
 
@@ -40,17 +40,14 @@
 	justify-content: start !important;
 }
 /* 컨텐츠 영역 */
-.content {
+/* .content {
     margin: 20px auto;
     width: 80%;
     background-color: #fff;
-    padding: 20px;
 
-}
+} */
 
 .wrap_info_content {
-        margin-left: 17%;
-    margin-top: 15% !important;
 }
 
 /* 테이블 */
@@ -93,10 +90,7 @@ th {
 	
 }
 
-.type_list_box{
-	margin-left: 20%;
-    width: 90%;
-}
+
 
 .tab_menu {
     list-style: none;
@@ -122,11 +116,6 @@ th {
     
 }
 
-
-
-.tab_menu_wrap{
-	margin-left: 27%;
-}
     .tab.active {
         color: grey; /* 회색으로 변경 */
         font-size: 100%; /* 글씨 크기 조정 */
@@ -154,16 +143,22 @@ th {
     	margin-left: 40%;
     }
     
-    
+    .type_list_box{
+    	width:95%
+    }
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-	<div id="hTitle">
+	<main>
+		<div class="content">
+		
+	
+	<div class="hTitle">
 		<a>사원상세</a>
 	</div>
 		<form action="detailSave.do" method="POST" id="detailSave">
-		<div class="content">
+		<div class="">
 			<div class="wrap_info_content" style="margin-top: 10%;">
 				<div class="wrap_header">
 					<div class="wrap_photo"></div>
@@ -417,10 +412,12 @@ th {
         <button class="btn btn-primary detailSaveBtn" type="button">저장</button>
         </div>
 </form>
+	</div>
+	</main>
 </body>
 
 <script>
-
+resizeWidth();
 var rankID = '${person.rankID}';
 var positionID ='${person.positionID}';
 var branchPsID ='${person.branchID}';
