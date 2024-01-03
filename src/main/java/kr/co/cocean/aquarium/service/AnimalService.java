@@ -117,7 +117,8 @@ public class AnimalService {
 		}else{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 			String month = sdf.format(System.currentTimeMillis());
-			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("category", con);
+			model.addAttribute("content", dao.animalLogPlan(animalID, con,month));
 			model.addAttribute("month", month);
 		}
 		

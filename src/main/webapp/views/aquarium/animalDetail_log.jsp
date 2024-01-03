@@ -31,7 +31,7 @@
 		</table>
 	</div>
 	<div>
-		<c:forEach items="${log}" var="item" varStatus="st">
+		<c:forEach items="${content}" var="item" varStatus="st">
 			<div style="border:1px solid black">
 				<table>
 					<tr>
