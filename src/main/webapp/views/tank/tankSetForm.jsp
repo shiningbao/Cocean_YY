@@ -71,14 +71,14 @@
 	<jsp:include page="../side.jsp"></jsp:include>
 		<div id="hTitle">
 		<h3>${map.tankName}</h3>
-		<p>	${map.branchName} / 배치구역: ${map.area} / 담당자: ${emName}</p>
+		<p>	${map.branchName} / 배치구역: ${map.area} / 담당자: ${map.emName}</p>
 	</div>
 	<form action="tankSet.do" method="post" id="tankForm" onsubmit="return submitForm(this);">
 	<table class="formTable">
 	
 	<tr>
 		<input type="text" name="tankID" value="${map.tankID}" style="display:none;"/>
-		<input type="text" name="emName" value="${emName}" style="display:none;"/>
+		<input type="text" name="emName" value="${map.emName}" style="display:none;"/>
 		<th class="th_one">하우스 이름</th>
 		<td>
 			<input type="text" name="tankName" value="${map.tankName}" required/>

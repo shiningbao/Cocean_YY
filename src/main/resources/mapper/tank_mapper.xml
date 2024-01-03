@@ -92,5 +92,10 @@
 		VALUES (null,#{tankID},curdate(),now(),#{num0},#{num1},#{num2},#{num3},#{num4},#{num5},#{num6},#{num7},#{num8}) 
 	</insert>
 	
+	<select id="getEm" resultType="String">
+		SELECT e.name FROM employee e 
+		WHERE employeeID = (SELECT ic.employeeID FROM inCharge ic WHERE ic.category = 'tank' AND ic.idx = #{param1})
+	</select>
+	
 	
 </mapper>

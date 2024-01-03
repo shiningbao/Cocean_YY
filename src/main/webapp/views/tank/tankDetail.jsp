@@ -131,7 +131,7 @@ button {
 					
 				</tr>
 				<tr>
-					<td>${emName}</td>
+					<td>${map.emName}</td>
 					<td>${map.flooring}</td>
 					<td>${map.filter}</td>
 					<td>${map.mercury}</td>
@@ -159,7 +159,7 @@ button {
 	</div>
 	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
-	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}&emName=${emName}'">수정</button>	
+	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>
 
     <div class="modal fade" id="animo" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">

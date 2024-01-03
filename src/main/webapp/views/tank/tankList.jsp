@@ -96,6 +96,7 @@ label {
 </head>
 <body>
 	<c:import url="/side"/>
+<main>
 	<div id="hTitle">
 		<a>코션하우스</a>
 	</div>
@@ -170,7 +171,7 @@ label {
 				<c:forEach items="${list}" var="item">
 					<tr>
 						<td scope="row">${item.getTankID()}</td>
-						<td><a href="detail.go?tankID=${item.getTankID()}&emName=${item.getName()}">${item.getTankName()}</a></td>
+						<td><a href="detail.go?tankID=${item.getTankID()}">${item.getTankName()}</a></td>
 						<td>${item.getTankType()}</td>
 						<td>${item.getBranchName()}</td>
 						<td>${item.getTankStatus()}</td>
@@ -193,6 +194,7 @@ label {
 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
 	</c:if>
 </section>
+</main>
 </body>
 <script>
 

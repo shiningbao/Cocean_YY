@@ -48,34 +48,22 @@ public class AddressService {
    public OutAddressDTO detail(String addressNumber) {
       return dao.detail(addressNumber);
    }
-
+/*
    public ModelAndView update(Map<String, String> param) {
       ModelAndView mav = new ModelAndView();
       mav.setViewName("redirect:/detail?employeeID="+param.get("employeeID"));
       dao.update(param);
       return mav;
    }
-
+*/
    //본래 내부주소록리스트
+   /*
    public ArrayList<InaddressDTO> inaddress() {
       logger.info("내부 서비스 도착");
       return dao.inaddress();
-   }
+   }*/
 
-   //내부 검색
-   public ModelAndView insearch(List<String> inname) {
-	  logger.info("내부 검색 서비스 접속");
-      ModelAndView mav = new ModelAndView();
-      ArrayList<LoginDTO> list = dao.insearch(inname);
-      logger.info("list :"+list);
-      mav.addObject("list", list);
-      mav.setViewName("list");
-      logger.info("지금 다오로 가는중");
-      return mav;
-   }
-  
 
-   
 
    //수정 페이지
    public OutAddressDTO outupdate(String addressNumber) {
@@ -89,7 +77,7 @@ public class AddressService {
 	   dao.outaddressupdate(dto);      
    }
 
-   //외부검색 다시
+   //외부검색 
 public ArrayList<OutAddressDTO> reserch(String name) {
 	
 	ArrayList<OutAddressDTO> relist = dao.reserchuser(name);
@@ -97,10 +85,18 @@ public ArrayList<OutAddressDTO> reserch(String name) {
 	return relist;
 }
 
-//내부 리스트(다시)
+//내부 리스트
 public ArrayList<InaddressDTO> inlistCall() {
 	
 	return dao.inlistCall();
+}
+
+//내부 검색
+public ArrayList<OutAddressDTO> inaddresssearch(String inname) {
+	
+	ArrayList<OutAddressDTO> relist1 = dao.inaddresssearch(inname);
+	
+	return relist1;
 }
 
 

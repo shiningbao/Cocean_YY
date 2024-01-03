@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
@@ -138,6 +139,8 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
+		SseService sse = new SseService();
+		sse.alarm(1, animalID);
 		
 	}
 

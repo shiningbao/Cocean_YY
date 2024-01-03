@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.mypage.dto.OutAddressDTO;
 import kr.co.cocean.mypage.dto.WorkDTO;
 import kr.co.cocean.mypage.service.WorkService;
@@ -36,27 +37,29 @@ public class WorkController {
 	      return "mypage/work";
 	   }
 	
-	/*
-	@GetMapping(value="mypage/work")
-	public String work(Model model,HttpSession session) {	
-		logger.info("출/퇴근 접속");
-		ArrayList<OutAddressDTO> list = service.work();
-		model.addAttribute("list",list);
-		logger.info("출/퇴근 서비스");
-		return "mypage/work";
-	}*/
+
 	
 
 		@GetMapping(value="mypage/worklist")
 		@ResponseBody
-		public Map<String, Object> work(@RequestParam("pfirstsearchdate") String pfirstSearchDate,
-			    @RequestParam("plastsearchdate") String plastSearchDate){
+		public Map<String, Object> worklist(@RequestParam("pfirstsearchdate") String pfirstSearchDate,
+			    @RequestParam("plastsearchdate") String plastSearchDate,HttpSession session){
 			logger.info("work 컨트롤러 접속");
-			return service.work(pfirstSearchDate,plastSearchDate);
+			LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+	        logger.info("userInfo: "+userInfo);
+	        int userId = userInfo.getEmployeeID();
+			return service.worklist(pfirstSearchDate,plastSearchDate,userId);
 		}
 	
 	
-
+		@GetMapping(value="mypage/gowork")
+		public String gowork(WorkDTO dto,HttpSession session ) {
+			LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+	        logger.info("userInfo: "+userInfo);
+	        int userId = userInfo.getEmployeeID();
+			Timestamp gotime = dto.getGowork();
+			return service.gowork(userId,gotime);
+		}
 	
 
 	

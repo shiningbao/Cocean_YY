@@ -119,13 +119,12 @@ public class MypageService {
 
 
 
-	
+
 
 
 	//마이페이지 리스트
-	public List<HashMap<String, Object>> detail(int employeeID) {
-		
-		return dao.datail(employeeID);
+	public List<HashMap<String, Object>> mypagedetail(int userId) {
+		return dao.mypagedetail(userId);
 	}
 	
 

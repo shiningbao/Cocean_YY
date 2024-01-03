@@ -59,7 +59,10 @@ public class TankService {
  
 	// 수조 상세보기
 	public HashMap<String, Object> tankDetail(int tankID) {
-		return dao.tankDetail(tankID);
+		HashMap<String, Object> map = dao.tankDetail(tankID);
+		String emName = dao.getEm(tankID);
+		map.put("emName", emName);
+		return map;
 	}
 
 	// 차트 데이터 가져오기
