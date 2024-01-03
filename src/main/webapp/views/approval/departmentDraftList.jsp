@@ -73,7 +73,6 @@
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
 			<th scope="col">기안자</th>
-			<th scope="col">상태</th>
 		</tr>
 		
 		<tbody id=dpList>
@@ -95,7 +94,6 @@
 	            	</c:choose>
             </td>
             <td>${list.name}</td>
-			<td>${list.draftStatus}</td>
 		</tr>	
 		</c:forEach>
 		</tbody>

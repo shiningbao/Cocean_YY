@@ -189,6 +189,7 @@ public class ApprovalController {
 	        param.put("writerID", String.valueOf(employeeID));
 
 	        logger.info("params: {}", param);
+	        logger.info("files:"+files);
  
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
@@ -212,7 +213,7 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            
-	                service.write(files, param, lastLineInfoList);
+	                // service.write(files, param, lastLineInfoList);
 	     
 	        	} catch (Exception e) {
 	        		e.printStackTrace();

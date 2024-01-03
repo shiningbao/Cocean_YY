@@ -109,26 +109,10 @@
         </choose>)
 	    </foreach>
 	</insert>
-	
-	<insert id="approvalWrite" parameterType="map">
-	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    VALUES
-	    <foreach collection="lastLineInfoList" item="line" separator=",">
-	        (#{idx}, #{line.approvalEmp}, #{line.category},
-	        <choose>
-	            <when test="line.order != null">#{line.order}</when>
-	            <otherwise>'0'</otherwise>
-	        </choose>, #{lastOrder}, 
-	        <choose>
-            <when test="line.order == 2"> '대기' </when>
-            <otherwise>'미대기'</otherwise>
-        </choose>)
-	    </foreach>
-	</insert>
-	
+
 	<insert id="publicApp">
 		INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    VALUES (#{idx},(select employeeID from employee where status='재직'), '열람','0','0','열람')
+	    SELECT #{idx},employeeID from employee where status='재직', '열람','0','0','열람'
 	</insert>
 	
 	<insert id="lineEmptyTs">
@@ -240,7 +224,7 @@
 	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='미대기' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category='참조' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="comList" resultType="approval">

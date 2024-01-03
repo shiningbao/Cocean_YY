@@ -501,10 +501,10 @@ function approvalSignature(item){
     }
    
     if (item.approvalStatus !== "대기" && item.approvalStatus !== "미대기") {
-    	if(item.approvalStatus == "승인" || item.approvalStatus == "합의"){
+    	if(item.approvalStatus == "결재" || item.approvalStatus == "합의"){
 	    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'><img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'>" +item.name + "</td>").insertAfter(scLastTd);
         $("<td style='width: 38%;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
-    	}else{
+    	}else if(item.approvalStatus =="반려" || item.approvalStatus =="거부"){
     		$("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" + item.name + "</td>").insertAfter(scLastTd);
     	        $("<td style='width: 38%; color:red;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
     	}
