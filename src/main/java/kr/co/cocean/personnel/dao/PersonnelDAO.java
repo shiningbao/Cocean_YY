@@ -67,6 +67,6 @@ public interface PersonnelDAO {
 			String category);
 
 	int schistorySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
-			String category);
+			String sccategory);
 
 }

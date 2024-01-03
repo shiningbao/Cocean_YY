@@ -292,6 +292,17 @@ th {
 											<td>
 												  <select id="resSelect" name="responsibility" class="psSelect"></select>
 											</td>
+											<tr>
+												<th>
+												서명이미지
+													<td></td>
+												</th>
+												<th>
+												잔여연차
+													<td></td>
+												</th>
+												
+											</tr>
 									</tbody>
 								</table>
 						</div>
@@ -304,6 +315,7 @@ th {
 	
 	<div class="tab-content" id="workHistoryTab" style="display: none;">
 	<input type="hidden" name="employeeID" value="${person.employeeID }"> 
+	<input type="hidden" name="tabID">
 		<table style="width:100%" id="workHistoryTable">
 		
 			<tbody>
@@ -343,6 +355,7 @@ th {
 	</div>
 	<!-- 학력 탭 내용 -->
 	<div class="tab-content" id="historyTab" style="display: none;">
+	
 		<table style="width:100%;" id="historyTable">
 			<tr>
 				<th>입학일</th>
@@ -613,6 +626,7 @@ $(document).ready(function() {
         $(".tab-content").hide();
 
         var tabId = $(this).attr("data-tab");
+       	$('input[name="tabID"]').val(tabId);
         $("#" + tabId + "Tab").show();
     });
     

@@ -197,9 +197,10 @@ img{
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.fc-popover.fc-more-popover.fc-day.fc-day-fri.fc-day-today {
-	top: 50% !important;
-	left: 10% !important;
+.fc-popover.fc-more-popover {
+    position: fixed; /* 모달이 스크롤에 영향을 받지 않도록 고정 위치로 설정 */
+    top: 10%; /* 원하는 위치의 상단 여백 조정 */
+    left: 10%; /* 원하는 위치의 왼쪽 여백 조정 */
 }
 .fc-scrollgrid-sync-table{
 	width:100% !important;
