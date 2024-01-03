@@ -141,7 +141,7 @@ public class AnimalService {
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
 		SseService sse = new SseService();
-		sse.alarm(1, animalID);
+		//sse.alarm(1, animalID);
 		
 	}
 
