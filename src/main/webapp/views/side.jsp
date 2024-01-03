@@ -152,6 +152,7 @@
 	
 </body>
 <script>
+
 	const curTime = document.getElementById('curTime');
 	
 	setInterval(() => {
@@ -170,11 +171,11 @@
 		$('main').css({'width':contentWidth, 'left':sideWidth,'top':'80px'});
 	}
 	
-	
+	resizeWidth();
 	
 	
 	// 알람창
-	/*
+
 	var  employeeID = '${userInfo.employeeID}';
 	var eventSource = new EventSource('<c:url value="/sse/subscibe/'+employeeID+'"/>');
 	
@@ -183,7 +184,7 @@
 		$('#alarm').html(event.data);
 		
 	});
-	*/
+
 	
 	
 	

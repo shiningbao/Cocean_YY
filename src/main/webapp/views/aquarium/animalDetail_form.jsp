@@ -16,10 +16,7 @@
 <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
 
 <style>
-	.animalContent{
-		position: absolute;
-		top: 80px;
-	}
+
 	.animalDetail{
 		width: 90%;
 		margin: 0 auto;
@@ -28,8 +25,7 @@
 	.topBar {
 		width: 100%;
 		height: 60px;
-/* 		left: 22%; */
-/* 		position: absolute; */
+
 		background-color: #86B0F3;
 		display: flex;
 		
@@ -50,6 +46,7 @@
 		background-color: #2F80ED;
 		padding-top: 13px;
 	}
+	
 	.imgChange:hover{
 		cursor: pointer;
 	}
@@ -58,20 +55,25 @@
 </head>
 <body>
 	<c:import url="/side"/>
-	<div class="animalContent">
-		<h1>코션친구들</h1>
-		<div class="animalDetail">
-			
+	<main>
+		<div class="content">
+		
+			<div class="hTitle">
+				<a>코션친구들</a>
+			</div>
+
 			<div class="topBar">
 				<div class="barItem" id="base">친구들 정보</div>
 				<div class="barItem" id="log">친구들 기록</div>
 				<div class="barItem" id="plan">관리 계획</div>
 			</div>
+			
 			<h2 class="animalTilte"></h2>
 			
 			<div class="drawContent"></div>
-		</div>
-	</div>
+
+			</div>
+	</main>
 </body>
 <script>
 
@@ -85,17 +87,7 @@ if(msg != ""){
 
 
 resizeWidth();
-window.addEventListener('resize',resizeWidth);
-function resizeWidth(){
-	var winWidth = window.innerWidth;
-	//console.log(winWidth);
-	var sideWidth = $('nav').outerWidth();
-	//console.log(sideWidth);
-	var contentWidth = winWidth-sideWidth;
-	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
-	$('.animalDetail').css({'width':contentWidth*0.9, 'margin':'0 auto'});
 
-}
 
 var animalID = '${animalID}';
 var nickname = '${nickname}';
