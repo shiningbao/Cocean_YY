@@ -16,35 +16,31 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 
 
 <style>
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
-
-#hTitle a {
-	font-size: 22px;
-}
 
 
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-	<div id="hTitle">
-		<a>조직관리</a>
-	</div>
+	
+	<main>
+		<div class="content">
+			<div class="hTitle">
+				<a>조직관리</a>
+			</div>
+
+		</div>
+	</main>
+	
 
 
 </body>
 
 <script>
-
+resizeWidth();
 </script>
 </html>

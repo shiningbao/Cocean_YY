@@ -15,39 +15,13 @@
 	text-align: center;
 }
 
-#dpTable{
-	width: 72%;
-	height: 30%;
-	top: 255px;
-	left: 400px;
-	position: absolute;
-}
+
 
 #dpList{
 	text-align:center;
 }
 
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
 
-#hTitle a {
-	font-size: 22px;
-}
-
-#search input {
-	z-index: 99999;
-}
-
-#search{
-	    position: absolute;
-	    top:27%;
-   		left: 78%;
-}
 
 @media screen and (max-width: 1457px) {
 	#search {
@@ -63,11 +37,16 @@
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-	<div id="hTitle">
-		<a>부서함</a>
-	</div>
+<jsp:include page="../side.jsp"></jsp:include>
+<main>
+	<div class="content">
 	
+		<div class="hTitle">
+			<a>부서함</a>
+		</div>
+		
+	
+
 	<!-- <form action="searchList.do" method="POST">
 	<select id="category" name="formCategory">
 	  <option value="전체" selected="selected">전체</option>
@@ -79,7 +58,7 @@
 		<input type="search" name="keyword" placeholder="제목"/>
 		<button class="btn btn-primary">검색</button>
 	</form> -->
-	<nav class="navbar navbar" id="search">
+	<nav class="navbar navbar float-right" id="search">
             <form class="form-inline">
               <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
@@ -90,7 +69,7 @@
 	<table class="table table-hover">
 		<thead id="dpTableHead">
 		<tr>
-			<th scope="col">기안일</th>
+			<th scope="col">완료일</th>
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
 			<th scope="col">기안자</th>
@@ -100,18 +79,18 @@
 		<tbody id=dpList>
 		<c:forEach items="${list}" var="list">
 		<tr>
-			<td scope="row">${list.draftDate}</td>
+			<td scope="row">${list.approvalDate}</td>
 			<td>${list.formCategory}</td>
 			<td> 
 				<c:choose>
 	                <c:when test="${list.title == null}">
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.formTitle}</a>
 	                </c:when>
 	                <c:when test="${list.title == ''}">
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.formTitle}</a>
 	                </c:when>
 	                <c:otherwise>
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.title}</a>
 	                </c:otherwise>
 	            	</c:choose>
             </td>
@@ -122,11 +101,13 @@
 		</tbody>
 	</table>
 	</div>
-	
+	</div>
+</main>	
 </body>
 <script>
+resizeWidth();
 
-    $("#category").change(function () {
+    /* $("#category").change(function () {
         var selectedCategory = $(this).val();
         var keyword = $("input[name='keyword']").val();
         console.log(selectedCategory);
@@ -144,7 +125,9 @@
                  return categoryMatch && keywordMatch;
             }).show();
         }
-    }
+    } */
+
+
 
 </script>
 </html>

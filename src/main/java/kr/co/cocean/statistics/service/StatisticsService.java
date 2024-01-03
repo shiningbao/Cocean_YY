@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.statistics.dao.StatisticsDAO;
+import kr.co.cocean.statistics.dto.AnimalHistoryDTO;
 import kr.co.cocean.statistics.dto.SalesHistoryDTO;
 import kr.co.cocean.statistics.dto.TankHistoryDTO;
 
@@ -22,7 +23,7 @@ public class StatisticsService {
 	@Autowired StatisticsDAO dao;
 	public Map<String, Object> statisticsChart(Model model) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		ArrayList<AnimalDTO> animal = dao.animalHistory();
+		ArrayList<AnimalHistoryDTO> animal = dao.animalHistory();
 		ArrayList<TankHistoryDTO> tank = dao.tankHistory();
 		ArrayList<SalesHistoryDTO> product = dao.productHistory();
 		ArrayList<SalesHistoryDTO> ticket = dao.ticketHistory();

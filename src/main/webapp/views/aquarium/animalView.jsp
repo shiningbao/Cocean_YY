@@ -36,16 +36,9 @@
 
 
 <script>
-	//$(".animalDiv").css({"width":"100px","float":"left","margin":"0"});
+
 	$(".animalImg").css({"width":"100%","height":"200px"});
-// 	resizeWidth();
-	
-// 	window.addEventListener('resize',resizeWidth);
-	
-// 	function resizeWidth(){
-// 		var imgWidth = $(".animalImg").outerWidth();
-// 		$(".animalImg").css({"height":imgWidth});
-// 	}
+
 
 	$(".col-md-2").hover(
 		function(){

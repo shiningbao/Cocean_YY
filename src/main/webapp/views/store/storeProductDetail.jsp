@@ -36,7 +36,7 @@
     </tr>
     <tr>
         <th>사진</th>
-        <td><img src="/upload/cocean/product/${list.serverFileName}" ></td>
+        <td><img src="/Users/chajaeho/Desktop/upload/cocean/product/${list.serverFileName}" ></td>
     </tr>
 
 </table>

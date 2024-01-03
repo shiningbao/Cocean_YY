@@ -5,8 +5,8 @@
 
 <div id="animalDetailLog">
 	<div style="display: flex">
-	<h2>친구들 기록</h2>
-	<input type="month" name="month" value="${month}" onchange="monthchange()"/>
+	<h4>친구들 기록</h4>
+	<input class="form-control" type="month" name="month" value="${month}" onchange="monthchange()" style="width:200px"/>
 	</div>
 	<br/>
 	
@@ -31,7 +31,7 @@
 		</table>
 	</div>
 	<div>
-		<c:forEach items="${log}" var="item" varStatus="st">
+		<c:forEach items="${content}" var="item" varStatus="st">
 			<div style="border:1px solid black">
 				<table>
 					<tr>

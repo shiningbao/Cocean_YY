@@ -12,50 +12,13 @@
 	background-color: #86B0F3;
 }
 
-#tank_table {
-	width: 72%;
-	height: 80%;
-	text-align: center;
-	position: absolute;
-	top: 255px;
-	left: 400px;
-}
 
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
-
-#hTitle a {
-	font-size: 22px;
-}
 
 #checkBox {
-	width: 70%;
-	height: 20%;
+
 	font-size: 13px;
-	top: 100px;
-	left: 400px;
-	padding-top: 45px;
-	position: absolute;
 }
 
-#box1 {
-	position: absolute;
-	top: 110px;
-	left: 25px;
-	z-index: 9999;
-}
-
-#box2 {
-	position: absolute;
-	left: 450px;
-	top: 110px;
-	z-index: 9999;
-}
 
 label {
 	padding-right: 25px;
@@ -63,7 +26,7 @@ label {
 }
 
 #search {
-	position: absolute;
+
 	left: 77%;
 	top: 45%;
 	width: 450px;
@@ -97,7 +60,8 @@ label {
 <body>
 	<c:import url="/side"/>
 <main>
-	<div id="hTitle">
+	<div class="content">
+	<div class="hTitle">
 		<a>코션하우스</a>
 	</div>
 	
@@ -194,6 +158,7 @@ label {
 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
 	</c:if>
 </section>
+</div>
 </main>
 </body>
 <script>
@@ -215,7 +180,7 @@ $(".p").click(function() {
 		})
 	}
 
-
+	resizeWidth();
 
 </script>
 </html>

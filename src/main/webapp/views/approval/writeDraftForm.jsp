@@ -617,7 +617,7 @@ button{
 		        success: function (data) {
 		            console.log(data);
 		            if (!isTemp) {
-		                location.href = './formList.go';
+		                location.href = './myDraftList.go';
 		               
 		            }else{
 		            	location.href = './tempSaveList.go';
