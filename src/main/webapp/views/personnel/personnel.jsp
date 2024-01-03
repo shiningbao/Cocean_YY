@@ -326,7 +326,7 @@ function onBranchSelectChange() {
                     text: option
                 }))
             });
-
+			
             if (branchID == 1) {
                 $('#deSelect').val('1').trigger('change');
             } else {

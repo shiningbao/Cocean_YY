@@ -18,7 +18,7 @@
 <!-- Bootstrap JS -->
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <link rel="stylesheet"
 	href="<c:url value='/resource/css/personnel/personnel.min.css'/>">
 
@@ -40,17 +40,14 @@
 	justify-content: start !important;
 }
 /* 컨텐츠 영역 */
-.content {
+/* .content {
     margin: 20px auto;
     width: 80%;
     background-color: #fff;
-    padding: 20px;
 
-}
+} */
 
 .wrap_info_content {
-        margin-left: 17%;
-    margin-top: 15% !important;
 }
 
 /* 테이블 */
@@ -93,10 +90,7 @@ th {
 	
 }
 
-.type_list_box{
-	margin-left: 20%;
-    width: 90%;
-}
+
 
 .tab_menu {
     list-style: none;
@@ -122,11 +116,6 @@ th {
     
 }
 
-
-
-.tab_menu_wrap{
-	margin-left: 27%;
-}
     .tab.active {
         color: grey; /* 회색으로 변경 */
         font-size: 100%; /* 글씨 크기 조정 */
@@ -154,15 +143,22 @@ th {
     	margin-left: 40%;
     }
     
-    
+    .type_list_box{
+    	width:95%
+    }
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-	<div id="hTitle">
+	<main>
+		<div class="content">
+		
+	
+	<div class="hTitle">
 		<a>사원상세</a>
 	</div>
-		<div class="content">
+		<form action="detailSave.do" method="POST" id="detailSave">
+		<div class="">
 			<div class="wrap_info_content" style="margin-top: 10%;">
 				<div class="wrap_header">
 					<div class="wrap_photo"></div>
@@ -228,8 +224,7 @@ th {
 					<li data-tab="basic" class="tab">기본</li>
 					<li data-tab="workHistory" class="tab">이력</li>
 					<li data-tab="history" class="tab">학력</li>
-					<li data-tab="departmentChangeLog" class="tab">발령</li>
-					<li data-tab="vacation" class="tab">휴직</li>
+					<li data-tab="departmentChangeLog" class="tab">부서변경로그</li>
 
 					<!-- 다른 탭 추가 -->
 				</ul>
@@ -237,8 +232,8 @@ th {
 					<div>
 						<h3 class="tab_title" style="display: none;">기본 정보</h3>
 						<div class="ehr_basic viewForm">
-							<form id="data_form">
-								<table class="multi-row-table">
+						
+								<table class="multi-row-table" style="width:100%;">
 									<tbody>
 										<tr>
 											<th class="col1">입사일</th>
@@ -275,14 +270,14 @@ th {
 												지점
 											</th>
 											<td class="col4">
-												<select id="branchSelect" class="psSelect">
+												<select id="branchSelect" class="psSelect" name="branchID">
 												</select>
 											</td>
 											<th>
 												본부
 											</th>
 											<td>
-												<select id="deSelect" class="psSelect"></select>
+												<select id="deSelect" class="psSelect" name="hqID"></select>
 											</td>
 											<th>
 												부서
@@ -303,71 +298,107 @@ th {
 					</div>
 
 				</div>
+
 	<!-- 이력 탭 내용 -->
+
+	
 	<div class="tab-content" id="workHistoryTab" style="display: none;">
-		<table>
+	<input type="hidden" name="employeeID" value="${person.employeeID }"> 
+		<table style="width:100%" id="workHistoryTable">
+		
 			<tbody>
 				<tr>
-					<th>입사일</th>
-					<th>지점</th>
+					
+					<th>입사일 
+					
+					</th>
+					<th>퇴사일</th>
 					<th>회사명</th>
 					<th>비고</th>
+					<th>수정</th>
 				</tr>
-				<c:forEach var="history" items="${employeeHistory}">
+
+				<c:forEach var="history" items="${workHistory}">
 					<tr>
 						<td>${history.startDate}</td>
 						<td>${history.endDate}</td>
 						<td>${history.organizationName}</td>
 						<td>${history.remarks}</td>
+						<td></td>
 					</tr>
 				</c:forEach>
+								<tr>
+			
+			<td><input type="date" name="historyArray[0].startDate"></td>
+            <td><input type="date" name="historyArray[0].endDate"></td>
+            <td><input type="text" name="historyArray[0].organizationName"></td>
+            <td><input type="text" name="historyArray[0].remarks"></td>
+					<td>
+					<input type="hidden" name="historyArray[0].category" value="이력">
+						<button onclick="addRow1()" type="button">+</button>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
 	<!-- 학력 탭 내용 -->
 	<div class="tab-content" id="historyTab" style="display: none;">
-		<table>
+		<table style="width:100%;" id="historyTable">
 			<tr>
 				<th>입학일</th>
 				<th>졸업일</th>
 				<th>학교명</th>
 				<th>비고</th>
+				<th>수정</th>
 			</tr>
-			<c:choose>
-				<c:when test="${empty workHistory}">
-					<tr>
-						<td colspan="4">학력 정보가 없습니다.</td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-					<c:forEach var="history" items="${workHistory}">
+
+					<c:forEach var="history" items="${employeeHistory}">
 						<tr>
 							<td>${history.startDate}</td>
 							<td>${history.endDate}</td>
 							<td>${history.organizationName}</td>
 							<td>${history.remarks}</td>
+							<td></td>
 						</tr>
 					</c:forEach>
-				</c:otherwise>
-			</c:choose>
+					<tr>
+			<td><input type="date" name="schistoryArray[0].startDate"></td>
+            <td><input type="date" name="schistoryArray[0].endDate"></td>
+            <td><input type="text" name="schistoryArray[0].organizationName"></td>
+            <td><input type="text" name="schistoryArray[0].remarks"></td>
+
+					<td>
+					<input type="hidden" name="schistoryArray[0].category" value="학력">
+						<button onclick="addRow()" type="button">+</button>
+					</td>
+				</tr>
+
 		</table>
+		
 	</div>
 	<div class="subPs2 tab-content" id="departmentChangeLogTab"
 		style="display: none;">
-		<table>
+		<table style="width:100%">
 			<tr>
-				<th>입학일</th>
-				<th>졸업일</th>
-				<th>학교명</th>
-				<th>비고</th>
+				<th>변경일</th>
+				<th>사유</th>
+				<th>변경전부서</th>
+				<th>변경후부서</th>
 			</tr>
+			<c:forEach var="dplog" items="${departmentChangeLog}">
 			<tr>
-				<td colspan=""></td>
-				<td colspan=""></td>
-				<td colspan=""></td>
-				<td colspan=""></td>
+				<td>${dplog.changeDate}</td>
+				<td>${dplog.remarks}</td>
+				<td>${dplog.beforedpID}</td>
+				<td>${dplog.afterdpID}</td>
 			</tr>
+			</c:forEach>
 		</table>
+		 <c:choose>
+        <c:when test="${empty departmentChangeLog}">
+            <p>부서 변경 로그가 없습니다.</p>
+        </c:when>
+    </c:choose>
 	</div>
 
 	<div class="tool_bar">
@@ -377,17 +408,188 @@ th {
         </span>
     </div>
         <div class="formbtn">
-        <button class="btn btn-outline-primary">취소</button>
-        <button class="btn btn-primary" type="submit">저장</button>
+        <button class="btn btn-outline-primary detailCancleBtn">취소</button>
+        <button class="btn btn-primary detailSaveBtn" type="button">저장</button>
         </div>
-	</form>
-		
-
-<script
-	src="<c:url value='/resource/js/personnel/personnel.register.js'/>"></script>
+</form>
+	</div>
+	</main>
 </body>
+
 <script>
+resizeWidth();
+var rankID = '${person.rankID}';
+var positionID ='${person.positionID}';
+var branchPsID ='${person.branchID}';
+var hqPsID = '${person.hqID}';
+var dpName ='${person.departmentName}';
+var psResponsibility = '${person.responsibility}';
+console.log('------------');
+
+
+var departmentSelect = $('#departmentSelect');
+var resSelect = $('#resSelect');
+var branchSelect = $('#branchSelect');
+
+function getPositionName() {
+    $.ajax({
+        url: 'getPositionName.do',
+        method: 'POST',
+        data: {},
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                var $option = $('<option>', {
+                    value: option.positionID,
+                    text: option.positionName
+                });
+
+                // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                if (option.positionID == positionID) {
+                    $option.prop('selected', true);
+                }
+
+                $('#selectPositionID').append($option);
+            });
+
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+function getRankName() {
+    $.ajax({
+        url: 'getRankName.do',
+        method: 'POST',
+        data: {},
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                var $option = $('<option>', {
+                    value: option.rankID,
+                    text: option.rankName
+                });
+
+                // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                if (option.rankID == rankID) {
+                    $option.prop('selected', true);
+                }
+
+                $('#selectRankID').append($option);
+            });
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+function onBranchSelectChange() {
+    console.log('지점 선택시 본부항목 변경!!!!!!!!!!!!!!!!!');
+    var branchID = $('#branchSelect').val();
+    console.log(branchID);
+    $.ajax({
+        url: 'getBranchID.do',
+        method: 'GET',
+        data: { branchID: branchID },
+        success: function(data) {
+            console.log(data);
+            $('#deSelect').empty();
+            data.forEach(function(option, index) {
+                var value = branchID == 2 ? index + 4 : index + 1;
+                var $option = $('<option>', {
+                    value: value,
+                    text: option
+                });
+
+                // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                if (index == hqPsID) {
+                    $option.prop('selected', true);
+                    
+                }
+
+                $('#deSelect').append($option);
+            });
+            $('#deSelect').val(hqPsID).trigger('change');
+		
+                
+            console.log($('#branchSelect').val());
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+
+function onDeSelectChange() {
+    console.log('본부 선택시 부서항목 변경!!!!!!!!!!!!');
+    departmentSelect.empty();
+    var hqID = $('#deSelect').val();
+    console.log(hqID);
+    $.ajax({
+        url: 'getHqID.do',
+        data: { hqID: hqID },
+        success: function(data) {
+            console.log(data);
+            var departmentText = $('#departmentSelect option:selected').text();
+            var firstOptionValue = $('#departmentSelect option:first').val();
+            data.forEach(function(option, index) {
+                var value = index + 1;
+                var $option = $('<option>', {
+                    value: option,
+                    text: option
+                });
+
+                // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                if (option == dpName) {
+                    $option.prop('selected', true);
+                    
+                }
+
+                $('#departmentSelect').append($option);
+            });
+            $('#departmentSelect').val(dpName).trigger('change');
+
+           
+        },
+        error: function(e) {	
+            console.log(e);
+        }
+    });
+}
+
+function onDepartmentSelect() {
+    console.log('부서 선택시 담당 변경!!!!!!!!!!!!');
+    resSelect.empty();
+    var departmentText = $('#departmentSelect option:selected').text();
+    var selectPositionID = $('#selectPositionID').val();
+    
+    console.log(departmentText);
+    
+        $.ajax({
+            url: 'getDepartmentText.do',
+            data: { departmentText: departmentText },
+            success: function(data) {
+                console.log(data);
+                data.forEach(function(option, index) {
+                    $('#resSelect').append($('<option>', {
+                        value: option,
+                        text: option
+                    }))
+                });
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+}
+
 $(document).ready(function() {
+	var employeeID = '${person.employeeID}';
+	console.log(employeeID);
     // 기본 탭을 선택한 상태로 초기화
     $('.tab').removeClass('active');
     $('.tab-content').removeClass('active');
@@ -414,19 +616,200 @@ $(document).ready(function() {
         $("#" + tabId + "Tab").show();
     });
     
+	getPositionName();
+	getRankName();
 
-    // 각 옵션에서 해당 rankName을 찾아 선택합니다.
+	$('input[name="joinDate"]').val(new Date().toISOString().substring(0, 10).toString());
+    $('#branchSelect').change(function() {
+        onBranchSelectChange();
+        console.log('지점변경!!!');
+    });
 
+    $('#deSelect').on('change', function() {
+        console.log('본부변경!!!');
+        onDeSelectChange();
+        console.log($('#deSelect').val() + '!!!!!!!!!!!!!');
+    });
+
+    $('#departmentSelect').change(function() {
+        console.log('부서변경!!!');
+        console.log('@@@@@@@@@' + $(this).val());
+        onDepartmentSelect();
+    });
+
+    $.ajax({
+        url: 'getBranch.do',
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                var $option = $('<option>', {
+                    value: index+1,
+                    text: option
+                });
+
+                // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                if (index == branchPsID) {
+                    $option.prop('selected', true);
+                    
+                }
+
+                $('#branchSelect').append($option);
+            });
+            $('#branchSelect').val(branchPsID).trigger('change');
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+
+      
+
+    departmentSelect.empty();
+    resSelect.empty();
+    $('#deSelect').empty();
 });
-var rankID = '${person.rankID}';
-console.log('------------');
-console.log(rankID);
-$('#selectRankID').val(rankID);
-$('#selectRankID').val(rankID).prop("selected",true);
+var rowIndex = 1;
+var rowIndex1= 1;
+function addRow() {
+    var newRow = "<tr>" +
+        "<td><input type='date' name='schistoryArray[" + rowIndex + "].startDate'></td>" +
+        "<td><input type='date' name='schistoryArray[" + rowIndex + "].endDate'></td>" +
+        "<td><input type='text' name='schistoryArray[" + rowIndex + "].organizationName'></td>" +
+        "<td><input type='text' name='schistoryArray[" + rowIndex + "].remarks'></td>" +
+        "<td>" +
+        "<input type='hidden' name='schistoryArray[" + rowIndex + "].category' value='학력'>" +
+        "<button onclick='delRow(this)' type='button'>-</button>" +
+        "<button onclick='addRow()' type='button'>+</button>" +
+        "</td>" +
+        "</tr>";
 
-$('#selectRankID').on('change', function() {
-    console.log($("#selectRankID option:selected").text());
+    rowIndex++;
+    $("#historyTable").append(newRow);
+}
+
+function delRow(btn) {
+    rowIndex--;
+    $(btn).closest("tr").remove();
+}
+function addRow1() { // 이력
+    var newRow = "<tr>" +
+        "<td><input type='date' name='historyArray[" + rowIndex1 + "].startDate'></td>" +
+        "<td><input type='date' name='historyArray[" + rowIndex1 + "].endDate'></td>" +
+        "<td><input type='text' name='historyArray[" + rowIndex1 + "].organizationName'></td>" +
+        "<td><input type='text' name='historyArray[" + rowIndex1 + "].remarks'></td>" +
+        "<td>" +
+        "<input type='hidden' name='historyArray[" + rowIndex1 + "].category' value='이력'>" +
+        "<button onclick='delRow1(this)' type='button'>-</button>" +
+        "<button onclick='addRow1()' type='button'>+</button>" +
+        "</td>" +
+        "</tr>";
+	
+        rowIndex1++;
+    $("#workHistoryTable").append(newRow);
+}
+
+
+function delRow1(btn) {
+    $(btn).closest("tr").remove();
+}
+$('#fileInput').on('change', function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        $('#thumbnail_image').attr('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
 });
+
+$('#fileSignatureInput').on('change', function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        $('#signatureImg').attr('src', e.target.result);
+    };
+    reader.readAsDataURL(file);
+});
+
+$('input[name="employeeID"]').on('focusout',function(){
+	var employeeID = $('#employeeID').val();
+	console.log(employeeID);
+	$.ajax({
+		url:'checkDuplicateEmployeeID.do',
+		type:'POST',
+		data:{employeeID:employeeID},
+		success:function(result){
+			if(result== true){
+				$('#duplicateMsg').css('display', 'block');
+				$('#employeeID').val('');
+			}else{
+				$('#duplicateMsg').css('display', 'none');
+			}
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
+})
+
+$('.detailSaveBtn').on('click',function(){
+	console.log('click');
+	if(confirm("저장 하시겠습니까?")){
+		$('#detailSave').submit();	
+		/* location.href = '/Cocean/personnel/detail.go?employeeID='+${person.employeeID}; */
+	}else{
+		
+	}
+	
+   
+    
+});
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function(data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                addr = data.roadAddress;
+            } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                addr = data.jibunAddress;
+            }
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if(data.userSelectedType === 'R'){
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if(data.buildingName !== '' && data.apartment === 'Y'){
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if(extraAddr !== ''){
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                document.getElementById("address").value = extraAddr;
+            
+            } else {
+                document.getElementById("address").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('address').value = data.zonecode;
+            document.getElementById("address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("address").focus();
+        }
+    }).open();
+}
 
 
 

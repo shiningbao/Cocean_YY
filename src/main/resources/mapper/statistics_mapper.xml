@@ -4,13 +4,13 @@
 >
 <mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
 	<!-- 통계 데이터 가져오기 -->
-	<select id="animalHistory" resultType="animal">
-		SELECT am.animalID, am.branchID, am.classificationCode, am.entryDate, am.status, b.branchName 
+	<select id="animalHistory" resultType="AnimalHistoryDTO">
+		SELECT DATE_FORMAT(entryDate , '%Y-%m') AS entryMonth, am.entryDate, am.animalID, am.branchID, am.classificationCode, am.status, b.branchName 
 		FROM animalManagement am
-		INNER JOIN branch b ON b.branchID = am.branchID
+		INNER JOIN branch b ON b.branchID = am.branchID;
 	</select>	
 	
-	<select id="tankHistory" resultType="tank">
+	<select id="tankHistory" resultType="TankHistoryDTO">
 		SELECT tc.categoryID, tc.tankType, tm.tankID, tm.branchID, tm.registrationDate, tm.tankStatus, b.branchName
 		FROM tankManagement tm
 		INNER JOIN tankCategory tc ON tm.categoryID = tc.categoryID
