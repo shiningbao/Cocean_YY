@@ -48,22 +48,33 @@ position: absolute;
     left: 800px;
     top: 400px;
 }
-.branchName{
-}
 #modalSearch{
 	width: 300px;
 }
-
+.commonContent{
+top: 100px;
+	left: 400px;
+}
+#branchLocation{
+	width: 50%;
+	height: 50%;
+	top: 255px;
+	left: 400px;
+}
+#map{
+	width:500px;
+	height:500px;
+}
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
 <div class="commonContainer">	
-	<div class="commonTitle"><h2>스토어관리</h2></div>
-	<div class="commonContent">
-<div class="branchLocation">지점 위치
+	<div><h2>스토어관리</h2></div>
+	<div class="commonContent" style="top:100px; left:400px;">
+<div class="branchLocation" id="branchLocation">지점 위치
 <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" >등록</button>
 </div>
-<div id="map" style="width:500px;height:400px;"></div>
+<div id="map"></div>
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
 <!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#modal">등록</button> -->
 
@@ -832,7 +843,7 @@ searchProduct(searchKeyword, currentBranchName);
       var currentBranchName = document.getElementById('currentProductBranchName').value;
   	  var currentProductName = document.getElementById('currentProductName').value;
   	  var isConfirmed = confirm("등록하시겠습니까?");
-      
+      branchProductRegister(currentBranchName, currentProductName);
       /* if (isConfirmed) {
       	 swal("등록되었습니다.", "", "success");
           branchProductRegister(currentBranchName, currentProductName);
@@ -843,7 +854,7 @@ searchProduct(searchKeyword, currentBranchName);
       var currentBranchName = document.getElementById('currentTicketBranchName').value;
   	  var currentProductName = document.getElementById('currentTicketName').value;
   	  var isConfirmed = confirm("등록하시겠습니까?");
-      
+  	  branchProductRegister(currentBranchName, currentProductName);
       /* if (isConfirmed) {
           branchProductRegister(currentBranchName, currentProductName);
       } */

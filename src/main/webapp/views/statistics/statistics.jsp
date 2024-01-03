@@ -84,7 +84,11 @@ function chart() {
       success: function (data) {
           console.log("통계 데이터 가져오기 성공");
           console.log(data);
-          // drawChart(data);
+          drawBarGraph(data.animal);
+          /* drawBarGraph(data.tank);
+          drawBarGraph(data.product);
+          drawBarGraph(data.ticket);
+          drawBarGraph(data.visitors); */
       },
       error: function (e) {
           console.log(e);
@@ -92,14 +96,29 @@ function chart() {
   });
 }
 
- function drawChart(data) {
-  var animalDataSets = [];
-  var tankDataSets = [];
-  var productDataSets = [];
-  var ticketDataSets = [];
-  var visitorsDataSets = [];
+/* function drawBarGraph(data) {
+  var month = [];
   
-  console.log("차트 그리기");
+  if(data == data.animal){
+  	var totalAnimal = [];
+  	var normalAnimal = [];
+  	var illedAnimal = [];
+  	var deadAnimal = [];
+  	console.log("코션친구들 막대그래프 그리기");
+  	console.log(data);
+  	
+  	
+  } */
+  /* else if(data == data.tank){
+  }else if(data == data.product){
+  	
+  }else if(data == data.ticket){
+  	
+  }else if(data == data.visitors){
+  	
+  } */
+  
+  /* console.log("차트 그리기");
   console.log(data);
   console.log(data.animal);
   entryDate
@@ -124,29 +143,9 @@ function chart() {
 
       animalDataSets.push(animalDataSets);
       }
- }
-
- /*  const config = {
-      type: 'bar',
-      data: {
-          labels: 
-          datasets: datasets
-      },
-      options: {
-          responsive: true,
-          plugins: {
-              legend: {
-                  position: 'top',
-              },
-              title: {
-                  display: true,
-                  text: 'Chart.js Bar Chart'
-              }
-          }
-      },
-  }; */
-
-  /* var myChart = new Chart(엘리먼, config); */
+ } 
+ */
+ 
 
 
 
