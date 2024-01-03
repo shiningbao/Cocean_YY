@@ -1,5 +1,6 @@
 package kr.co.cocean.mypage.service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,10 +35,18 @@ public class WorkService {
 
 
 
-
+	/*
 	public String gowork(int userId, Timestamp gotime) {
 		
 		return dao.gowork(userId,gotime);
+	}*/
+
+
+
+
+	public void saveTimestamp(Timestamp tp, int userId, Date de) {
+		
+		dao.saveTimestamp(tp,userId,de);
 	}
 
 

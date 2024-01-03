@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
+import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 
@@ -232,6 +236,18 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> getRankName() {
 		// TODO Auto-generated method stub
 		return dao.getRankName();
+	}
+	public List<HashMap<String, Object>> departmentChangeLog(int employeeID) {
+		return dao.departmentChangeLog(employeeID);
+	}
+
+	public int historySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
+			String category) {
+		return dao.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
+	}
+	public int schistorySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
+			String sccategory) {
+		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	}
 
 	

@@ -32,7 +32,7 @@ public class SseService {
 		return emitter;
 	}
 	
-	public void alarm(int employeeID, int historyID) {
+	public void alarm(int employeeID, String category, int idx) {
 		
 		long ID = employeeID;
 		
@@ -48,6 +48,21 @@ public class SseService {
 			}
 		}
 		
+		/*
+		각각의 서비스에서 알림종류, 콘텐츠, 알려줄 사원ID, idx 값을 보낸다
+		컨텐츠는 업무기안서, 휴가신청서, 시설명 등
+		
+		db 인서트
+		
+		sse send
+		
+		결재 대기 : (업무기안서)를 결재해주세요.
+		
+		결재 완료 : (업무기안서)가 결재되었습니다
+		
+		예약 : (4446 소렌토) 예약 30분 전 입니다.
+		
+		*/
 		
 		
 	}

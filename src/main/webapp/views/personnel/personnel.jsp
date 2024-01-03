@@ -251,7 +251,7 @@ tbody tr {
 					</tr>
                     <tr>
                         <th colspan="2">
-                            <input type="submit" value="회원가입" class="btn btn-primary regibtn"/>
+                            <input type="submit" value="등록" class="btn btn-primary regibtn"/>
                         </th>
                     </tr>
                 </table>
@@ -326,7 +326,7 @@ function onBranchSelectChange() {
                     text: option
                 }))
             });
-
+			
             if (branchID == 1) {
                 $('#deSelect').val('1').trigger('change');
             } else {
