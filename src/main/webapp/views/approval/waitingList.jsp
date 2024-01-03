@@ -101,10 +101,10 @@
 			<td>
 				<c:choose>
 					<c:when test="${list.title == null}">
-					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}">${list.formTitle}</a>
+					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}&hTitle=waiting">${list.formTitle}</a>
 					</c:when>
 					<c:otherwise>
-			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}">${list.title}</a>
+			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}&hTitle=waiting">${list.title}</a>
 			        </c:otherwise>
 				</c:choose>
 			</td>

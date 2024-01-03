@@ -90,9 +90,10 @@ public class ApprovalService {
 		dto.setUsageTime(usageTime);
 		
 		logger.info("params:{}",param);
-		
+	
 		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
+		
 		
 		if(files!=null) {
 		for (MultipartFile file : files) {
@@ -112,6 +113,9 @@ public class ApprovalService {
 		}
 		if(tempSave==0) {
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+			if(param.get("publicStatus").equals("1")) {
+				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
+			}
 		}else { // 임시저장
 			
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우

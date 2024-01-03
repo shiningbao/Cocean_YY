@@ -319,12 +319,17 @@ button{
 </div>
 </div>
 <div id="bottom">
-<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-<c:if test="${category eq '합의'}">
+
+<c:if test="${hTitle ne 'waiting'}">
+<input type="button" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
+</c:if>
+<c:if test="${category eq '합의' && hTitle eq 'waiting'}">
+	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
     <input type="button" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
     <input type="button" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
-<c:if test="${category ne '합의'}">
+<c:if test="${category ne '합의' && hTitle eq 'waiting'}">
+	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
     <input type="button" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
     <input type="button" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
