@@ -133,7 +133,7 @@
 	</insert>
 	
 	<insert id="schistorySave">
-		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{category});
+		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{sccategory});
 	</insert>
 
 </mapper>
