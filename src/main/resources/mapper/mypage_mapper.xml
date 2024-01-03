@@ -39,9 +39,9 @@ WHERE path = 'profile' AND idx = #{param2}
 -->
 
 <!-- 마이페이지 리스트 -->
-	<select id="datail">
+	<select id="mypagedetail">
 		SELECT 
-		    e.employeeID, e.name, p.positionName, r.rankName, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
+		    e.employeeID, e.name, p.positionName, r.rankName, e.address, e.phoneNumber,e.remainingAnnualLeave ,b.branchName, d.departmentName, h.hqName, e.responsibility,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
@@ -52,7 +52,9 @@ WHERE path = 'profile' AND idx = #{param2}
 		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
 		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
 		WHERE e.employeeID = #{employeeID}
+	
 	</select>
+	
 	
 	
 
