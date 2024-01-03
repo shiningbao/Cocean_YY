@@ -18,8 +18,15 @@
 </head>
 <body>
 	<c:import url="/side"/>
+	
+	<main>
+		<div class="content">
+	
+			<div class="hTitle">
+				<a>코션친구들 수정</a>
+			</div>
 	<div class="animalContent">
-		<h1>ANIMAL WRITE</h1>
+
 		<div class="row">
 			<div class="col-md-6 m-auto">
 				<form action="update.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
@@ -107,6 +114,8 @@
 		<c:import url="/animal/classifi"/>
 
 	</div>
+	</div>
+	</main>
 </body>
 
 <script>
@@ -125,17 +134,6 @@ function drawClassifi(sp,ta,cl,sc,co){
 
 resizeWidth();
 
-window.addEventListener('resize',resizeWidth);
-
-function resizeWidth(){
-	var winWidth = window.innerWidth;
-	//console.log(winWidth);
-	var sideWidth = $('nav').outerWidth();
-	//console.log(sideWidth);
-	var contentWidth = winWidth-sideWidth;
-	var contentTableWidth = Math.floor(contentWidth*0.7);
-	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
-}
 
 function getClassifi(){
 	$("#classifiModal").modal('show');

@@ -18,35 +18,14 @@
 	text-align: center;
 }
 
-#waitingTable{
-	width: 72%;
-	height: 30%;
-	top: 255px;
-	left: 400px;
-	position: absolute;
-}
 
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
 
-#hTitle a {
-	font-size: 22px;
-}
+
 
 #search input {
-	z-index: 99999;
+	z-index: 2;
 }
 
-#search{
-	    position: absolute;
-	    top:27%;
-   		left: 78%;
-}
 
 @media screen and (max-width: 1457px) {
 	#search {
@@ -62,8 +41,13 @@
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-	<div id="hTitle">
+<jsp:include page="../side.jsp"></jsp:include>
+<main>
+	<div class="content">
+	
+
+
+	<div class="hTitle">
 		<a>결재대기함</a>
 	</div>
 	<!-- <form action="searchList.do" method="POST">
@@ -74,7 +58,7 @@
 	  <option value="인사">인사</option>
 	</select> -->
 
-	<nav class="navbar navbar" id="search">
+	<nav class="navbar navbar float-right" id="search">
           <form class="form-inline">
             <input class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
@@ -97,14 +81,14 @@
 		<c:forEach items="${list}" var="list">
 		<tr>
 			<td scope="row">${list.draftDate}</td>
-			<td>${list.formCategory}</td>
+			<td>${list.category}</td>
 			<td>
 				<c:choose>
 					<c:when test="${list.title == null}">
-					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}">${list.formTitle}</a>
 					</c:when>
 					<c:otherwise>
-			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a>
+			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&category=${list.category}">${list.title}</a>
 			        </c:otherwise>
 				</c:choose>
 			</td>
@@ -115,10 +99,11 @@
 		</tbody>
 	</table>
 	</div>
-	
+	</div>
+</main>
 </body>
 <script>
-
+resizeWidth();
     $("#category").change(function () {
         var selectedCategory = $(this).val();
         var keyword = $("input[name='keyword']").val();

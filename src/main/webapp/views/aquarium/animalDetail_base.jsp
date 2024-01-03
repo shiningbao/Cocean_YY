@@ -61,7 +61,11 @@
 			</tr>
 			<tr>
 				<th class="text-center" scope="col">코션하우스</th>
-				<td>${base.tankName}<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button></td>
+				<td>${base.tankName} 
+					<a href="<c:url value='/tank/detail.go?tankID=${base.tankID}'/>">
+						<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th class="text-center" scope="col">마리 수</th>

@@ -12,46 +12,6 @@
 <main>
 본문
 </main>
-<div class="commonContainer">
-	<div class="commonTitle"><h2>HOME</h2></div>
-	<div class="commonContent">
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-				<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-				<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		<h1>내용</h1><br/>
-		
-		
-	
-	</div>
-
-</div>
-
 
 </body>
 <script>

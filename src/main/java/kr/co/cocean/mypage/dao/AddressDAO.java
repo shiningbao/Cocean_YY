@@ -55,6 +55,9 @@ ArrayList<OutAddressDTO> reserchuser(String name);
 //내부리스트
 ArrayList<InaddressDTO> inlistCall();
 
+//내부검색
+ArrayList<OutAddressDTO> inaddresssearch(String inname);
+
 
 
 
