@@ -140,7 +140,8 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
-		SseService sse = new SseService();
+
+
 		
 	}
 
