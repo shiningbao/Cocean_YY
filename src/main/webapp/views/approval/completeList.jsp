@@ -15,39 +15,14 @@
 	text-align: center;
 }
 
-#comTable{
-	width: 72%;
-	height: 30%;
-	top: 255px;
-	left: 400px;
-	position: absolute;
-}
-
 #comList{
 	text-align: center;
 }
 
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
-
-#hTitle a {
-	font-size: 22px;
-}
-
 #search input {
-	z-index: 99999;
+	z-index: 2;
 }
 
-#search{
-	    position: absolute;
-	    top:27%;
-   		left: 78%;
-}
 
 @media screen and (max-width: 1457px) {
 	#search {
@@ -65,9 +40,12 @@
 </head>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
-	<div id="hTitle">
-		<a>완료함</a>
-	</div>
+<main>
+	<div class="content">
+		<div class="hTitle">
+			<a>완료함</a>
+		</div>
+
 	<!-- <form action="searchList.do" method="POST">
 	<select id="category" name="formCategory">
 	  <option value="전체" selected="selected">전체</option>
@@ -80,7 +58,7 @@
 		<button class="btn btn-primary">검색</button>
 	</form>
 		 -->
-		 <nav class="navbar navbar" id="search">
+		 <nav class="navbar navbar float-right" id="search">
             <form class="form-inline">
               <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
@@ -121,10 +99,12 @@
 		</tbody>
 	</table>
 	</div>
-	
+	</div>
+</main>
 </body>
 <script>
-
+resizeWidth();
+	
     $("#category").change(function () {
         var selectedCategory = $(this).val();
         var keyword = $("input[name='keyword']").val();

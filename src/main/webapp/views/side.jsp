@@ -22,19 +22,7 @@
 <link rel="stylesheet"	href="<c:url value='/resource/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<style>
-	#alarm{
-	    position: fixed;
-	    bottom: 10px;
-	    right: 10px;
-	    width: 200px;
-	    height: 100px;
-    	border: 1px solid #004085;
-    	border-radius: 0.25rem;
-    	background-color: #b8daff
-	}
 
-</style>
 </head>
 
 <body>
@@ -164,6 +152,7 @@
 	
 </body>
 <script>
+
 	const curTime = document.getElementById('curTime');
 	
 	setInterval(() => {
@@ -171,7 +160,22 @@
 		curTime.innerHTML = date.toLocaleTimeString();
 	}, 1000);
 	
+	// main 사이즈 조절
+	window.addEventListener('resize',resizeWidth);
+	function resizeWidth(){
+		var winWidth = window.innerWidth;
+		//console.log(winWidth);
+		var sideWidth = $('nav').outerWidth();
+		//console.log(sideWidth);
+		var contentWidth = winWidth-sideWidth;
+		$('main').css({'width':contentWidth, 'left':sideWidth,'top':'80px'});
+	}
+	
+	resizeWidth();
+	
+	
 	// 알람창
+
 	var  employeeID = '${userInfo.employeeID}';
 	var eventSource = new EventSource('<c:url value="/sse/subscibe/'+employeeID+'"/>');
 	
@@ -180,7 +184,7 @@
 		$('#alarm').html(event.data);
 		
 	});
-	
+
 	
 	
 	

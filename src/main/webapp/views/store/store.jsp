@@ -57,8 +57,14 @@ position: absolute;
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
+<main>
+
+	<div class="content">
+		<div class="hTitle">
+			<a>스토어 관리</a>
+		</div>
+
 <div class="commonContainer">	
-	<div class="commonTitle"><h2>스토어관리</h2></div>
 	<div class="commonContent">
 <div class="branchLocation">지점 위치
 <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" >등록</button>
@@ -279,18 +285,11 @@ position: absolute;
       </div>
       </div>
     </div>
+ 	</div>
+</main>
 </body>
 <script>
 resizeWidth();
-window.addEventListener('resize',resizeWidth);
-function resizeWidth(){
-	var winWidth = window.innerWidth;
-	//console.log(winWidth);
-	var sideWidth = $('nav').outerWidth();
-	//console.log(sideWidth);
-	var contentWidth = winWidth-sideWidth;
-	$('.commonContainer').css({'width':contentWidth, 'margin-left':sideWidth});
-}
 
 var matchedProductList;
 var productListTable = $('.productList table');
