@@ -84,6 +84,7 @@ function chart() {
       success: function (data) {
           console.log("통계 데이터 가져오기 성공");
           console.log(data);
+          console.log(data.animal);
           drawBarGraph(data.animal);
           /* drawBarGraph(data.tank);
           drawBarGraph(data.product);
@@ -96,10 +97,12 @@ function chart() {
   });
 }
 
-/* function drawBarGraph(data) {
+function drawBarGraph(data) {
   var month = [];
+  console.log("drawBarGraph");
+  console.log(data);
   
-  if(data == data.animal){
+  if(data[0].animalID != null){
   	var totalAnimal = [];
   	var normalAnimal = [];
   	var illedAnimal = [];
@@ -108,43 +111,18 @@ function chart() {
   	console.log(data);
   	
   	
-  } */
-  /* else if(data == data.tank){
+  }else if(data == data.tank){
+  	
   }else if(data == data.product){
   	
   }else if(data == data.ticket){
   	
   }else if(data == data.visitors){
   	
-  } */
+  } 
   
-  /* console.log("차트 그리기");
-  console.log(data);
-  console.log(data.animal);
-  entryDate
-  // 동물 차트
-  const animalData = {
-  labels: labels,
-  datasets: [
-  	{
-          label: '분류 코드', 
-          data: data.animal.classificationCode 
-          backgroundColor: 'rgba(75, 192, 192, 0.2)', // 차트 색상
-          borderColor: 'rgba(75, 192, 192, 1)',       // 테두리 색상
-          borderWidth: 1                              // 테두리 두께	
-      },
-      {
-      	label: ' 코드', 
-        data: data.animal.classificationCode 
-        backgroundColor: 'rgba(75, 192, 192, 0.2)', // 차트 색상
-        borderColor: 'rgba(75, 192, 192, 1)',       // 테두리 색상
-        borderWidth: 1
-      }
-
-      animalDataSets.push(animalDataSets);
-      }
- } 
- */
+}
+ 
  
 
 
