@@ -36,6 +36,8 @@ public interface TankDAO {
 
 	int recordData(Map<String, Integer> map);
 
+	String getEm(int tankID);
+
 //	Long getTotalCount(Pager pager);
 
 }

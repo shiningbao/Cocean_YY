@@ -66,13 +66,12 @@ public class TankController {
 	}
 	
 	@GetMapping("tank/detail.go")
-	public ModelAndView detail(@RequestParam int tankID, String emName) {
+	public ModelAndView detail(@RequestParam int tankID) {
 		ModelAndView mav = new ModelAndView("tank/tankDetail");
 		HashMap<String, Object> map = service.tankDetail(tankID);
 		List<Map<String, Object>> tankAnimal = service.tankAnimal(tankID);
 		mav.addObject("tankAnimal",tankAnimal);			
 		mav.addObject("map",map);
-		mav.addObject("emName",emName);
 		return mav;
 	}
 	
@@ -86,13 +85,12 @@ public class TankController {
 	
 	
 	@GetMapping("tank/tankSet.go")
-	public ModelAndView tankSetForm(@RequestParam int tankID, String emName) {
+	public ModelAndView tankSetForm(@RequestParam int tankID) {
 		ModelAndView mav = new ModelAndView("tank/tankSetForm");
 		HashMap<String, Object> map = service.tankDetail(tankID);
 		List<Map<String, Object>> branchList = service.getBranch();
 		mav.addObject("map",map);
 		mav.addObject("branchList",branchList);
-		mav.addObject("emName",emName);
 		logger.info("map"+map);
 		return mav;
 	}
