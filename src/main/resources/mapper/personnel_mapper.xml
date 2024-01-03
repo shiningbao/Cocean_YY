@@ -88,7 +88,7 @@
 	
 	<select id="datail">
 		SELECT 
-		    e.employeeID, e.name, p.positionName, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
+		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName, h.hqName,h.hqID, e.responsibility,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
@@ -116,5 +116,24 @@
 	<select id="getRankName">
 		SELECT rankID,rankName from rank;
 	</select>
+	
+	<select id="departmentChangeLog">
+		SELECT dcl.changeDate,
+       dcl.remarks,
+       beforeD.departmentName AS beforedpID,
+       afterD.departmentName AS afterdpID
+		FROM departmentChangeLog dcl
+		JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
+		JOIN department afterD ON afterD.departmentID = dcl.afterdpID
+		where dcl.employeeID = #{employeeID}
+	</select>
+	
+	<insert id="historySave">
+		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{category});
+	</insert>
+	
+	<insert id="schistorySave">
+		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{category});
+	</insert>
 
 </mapper>
