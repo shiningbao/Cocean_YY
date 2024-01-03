@@ -46,10 +46,15 @@ table, th, td{
 	</table>
 
 	
-	
+	<!--  
 <form action="gowork" method="get">
         <input type="submit" value="출석" name="goButton">
     </form>
+    -->
+    <form method="post" action="/save-timestamp">
+        <button type="submit">출근 버튼</button>
+    </form>
+    <p th:text="${msg}"></p>
     
     <form action="leavework" method="get">
         <input type="submit" value="퇴근" name="leaveButton">
