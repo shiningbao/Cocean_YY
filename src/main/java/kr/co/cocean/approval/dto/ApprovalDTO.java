@@ -35,7 +35,7 @@ public class ApprovalDTO {
 	private String textArea;
 	private String remainingAnnualLeave;
 	private String vacationCategory;
-	private int usageTime;
+	private double usageTime;
 	private String draftStatus;
 	private Date vacationStartDate;
 	private Date vacationEndDate;
@@ -100,10 +100,10 @@ public class ApprovalDTO {
 	public void setVacationCategory(String vacationCategory) {
 		this.vacationCategory = vacationCategory;
 	}
-	public int getUsageTime() {
+	public double getUsageTime() {
 		return usageTime;
 	}
-	public void setUsageTime(int usageTime) {
+	public void setUsageTime(double usageTime) {
 		this.usageTime = usageTime;
 	}
 	

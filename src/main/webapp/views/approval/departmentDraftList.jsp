@@ -90,7 +90,7 @@
 	<table class="table table-hover">
 		<thead id="dpTableHead">
 		<tr>
-			<th scope="col">기안일</th>
+			<th scope="col">완료일</th>
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
 			<th scope="col">기안자</th>
@@ -100,18 +100,18 @@
 		<tbody id=dpList>
 		<c:forEach items="${list}" var="list">
 		<tr>
-			<td scope="row">${list.draftDate}</td>
+			<td scope="row">${list.approvalDate}</td>
 			<td>${list.formCategory}</td>
 			<td> 
 				<c:choose>
 	                <c:when test="${list.title == null}">
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.formTitle}</a>
 	                </c:when>
 	                <c:when test="${list.title == ''}">
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.formTitle}</a>
 	                </c:when>
 	                <c:otherwise>
-	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}">${list.title}</a>
+	                    <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.employeeID}&hTitle=department">${list.title}</a>
 	                </c:otherwise>
 	            	</c:choose>
             </td>
@@ -126,7 +126,7 @@
 </body>
 <script>
 
-    $("#category").change(function () {
+    /* $("#category").change(function () {
         var selectedCategory = $(this).val();
         var keyword = $("input[name='keyword']").val();
         console.log(selectedCategory);
@@ -144,7 +144,9 @@
                  return categoryMatch && keywordMatch;
             }).show();
         }
-    }
+    } */
+
+
 
 </script>
 </html>

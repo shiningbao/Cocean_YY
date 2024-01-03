@@ -64,10 +64,12 @@ public class ApprovalService {
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String usageTimeStr = param.get("usageTime");
-		int usageTime = 0;
+		
+		double usageTime = 0.0;
+
 		if (usageTimeStr != null && !usageTimeStr.isEmpty()) {
 		    try {
-		        usageTime = Integer.parseInt(usageTimeStr);
+		        usageTime = Double.parseDouble(usageTimeStr);
 		    } catch (NumberFormatException e) {
 		        e.printStackTrace();
 		    }
@@ -213,9 +215,8 @@ public class ApprovalService {
 	}
 
 	
-	public void passApp(String idx, int order) {
-		dao.passApp(idx,order);
-		
+	public void passApp(String idx, int approvalOrder) {
+		dao.passApp(idx,approvalOrder);
 	}
 
 	public ArrayList<ApprovalDTO> saveList(int employeeID) {
@@ -248,6 +249,30 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> departmentList(int employeeID) {
 		return dao.departmentList(employeeID);
+	}
+
+	public ApprovalDTO getSign(int idx, int employeeID) {
+		return dao.getSign(idx,employeeID);
+	}
+
+	public void passDraft(String idx) {
+		dao.passDraft(idx);
+		
+	}
+
+	public void myStatus(Map<String, String> param) {
+		dao.myStatus(param);
+		
+	}
+
+	public void myAgree(Map<String, String> param) {
+		dao.myAgree(param);
+		
+	}
+
+	public void rejectAgree(Map<String, String> param) {
+		dao.rejectAgree(param);
+		
 	}
 
 
