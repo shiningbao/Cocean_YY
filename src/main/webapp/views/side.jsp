@@ -22,6 +22,19 @@
 <link rel="stylesheet"	href="<c:url value='/resource/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<style>
+	#alarm{
+	    position: fixed;
+	    bottom: 10px;
+	    right: 10px;
+	    width: 200px;
+	    height: 100px;
+    	border: 1px solid #004085;
+    	border-radius: 0.25rem;
+    	background-color: #b8daff
+	}
+
+</style>
 </head>
 
 <body>
@@ -141,6 +154,14 @@
 			</nav>
 		</div>
 	</div>
+	
+	
+	
+	<div id="alarm">
+		eeeeeeeee
+	</div>
+	
+	
 </body>
 <script>
 	const curTime = document.getElementById('curTime');
@@ -150,12 +171,14 @@
 		curTime.innerHTML = date.toLocaleTimeString();
 	}, 1000);
 	
-	
+	// 알람창
 	var  employeeID = '${userInfo.employeeID}';
-	var eventSource = new EventSource('/alarm/'+employeeID);
+	var eventSource = new EventSource('<c:url value="/sse/subscibe/'+employeeID+'"/>');
 	
-	eventSource.addEventListener('sse', function(event){
+	eventSource.addEventListener('alarm', function(event){
 		console.log(event.data);
+		$('#alarm').html(event.data);
+		
 	});
 	
 	
