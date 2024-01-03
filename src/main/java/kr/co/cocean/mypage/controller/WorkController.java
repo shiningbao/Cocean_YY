@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.mypage.dto.OutAddressDTO;
@@ -51,8 +52,8 @@ public class WorkController {
 			return service.worklist(pfirstSearchDate,plastSearchDate,userId);
 		}
 	
-	
-		@GetMapping(value="mypage/gowork")
+	/*
+		@GetMapping(value="mypage/save-timestamp")
 		public String gowork(WorkDTO dto,HttpSession session ) {
 			LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
 	        logger.info("userInfo: "+userInfo);
@@ -60,7 +61,23 @@ public class WorkController {
 			Timestamp gotime = dto.getGowork();
 			return service.gowork(userId,gotime);
 		}
-	
+	*/
+		
+	    @PostMapping("mypage/save-timestamp")
+	    public ModelAndView saveTimestamp(WorkDTO dto,HttpSession session) {
+	    	logger.info("출근 컨트롤 접속");
+	    	LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+	        logger.info("userInfo: "+userInfo);
+	        int userId = userInfo.getEmployeeID();
+	    	Timestamp tp= dto.getGowork();
+	    	Date de= dto.getWorkDate();
+	        service.saveTimestamp(tp,userId,de);
+	        ModelAndView mav = new ModelAndView();
+	        mav.setViewName("mypage/work");
+	        mav.addObject("message", "출근 기록이 저장되었습니다.");
+	        return mav;
+	    }
+	}
 
 	
-}
+
