@@ -13,13 +13,14 @@ e.rankID = r.rankID ;
 </select>
 -->
 <!-- 리스트 -->
+<!--  
 <select id="mypagelist" resultType="mypage">
-		 <!--  
+		 
 		   SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName,e.remainingAnnualLeave  
    FROM employee e ,department d , `position` p, `rank` r 
 WHERE e.employeeID = #{parma1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
 e.rankID = r.rankID
--->
+
 
 SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName, e.remainingAnnualLeave
 FROM employee e
@@ -35,32 +36,34 @@ FROM file
 WHERE path = 'profile' AND idx = #{param2}
 
 	</select>
+-->
 
-
-<!-- 수정 -->
-<!-- 
-	<select id="attendanceDraft" resultType="map">
-		SELECT
-		COUNT(CASE WHEN reviewNo = 1 then reviewNo end) as high
-		,COUNT(CASE WHEN reviewNo = 2 then reviewNo end) as 'mid'
-		,COUNT(CASE WHEN reviewNo = 3 then reviewNo end) as low
-		FROM userReview WHERE
-		userId = #{param1}
+<!-- 마이페이지 리스트 -->
+	<select id="mypagedetail">
+		SELECT 
+		    e.employeeID, e.name, p.positionName, r.rankName, e.address, e.phoneNumber,e.remainingAnnualLeave ,b.branchName, d.departmentName, h.hqName, e.responsibility,
+		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID = h.hqID 
+		JOIN branch b ON h.branchID = b.branchID 
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r ON e.rankID = r.rankID
+		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
+		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
+		WHERE e.employeeID = #{employeeID}
+	
 	</select>
--->
- 
- <!-- 조회 
- 
-<select id="pwCheck" resultType="String">
-select password from employee where employeeID = #{employeeID}
-</select>
--->
+	
+	
+	
 
-<!-- 수정 
-<update id="pwUpdate">
-update employee set password = #{password} where employeeID = #{employeeID}
-</update>
--->
+
+
+
+
+
+
 
 <!--  수정 맵퍼쪽에 문제가 있음 -->
 

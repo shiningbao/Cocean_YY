@@ -3,21 +3,9 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="kr.co.cocean.mypage.dao.WorkDAO">
-<!--  
-<select id="work" resultType="work">
-SELECT workDate, workID,employeeID,
-gowork,leavework from work
-</select>
--->
 
-<!--  
-	SELECT workID,workDate,gowork,leavework   FROM work
-		WHERE workDate >= #{param1} AND workdate <=#{param2}
-		GROUP BY workdate
--->
-
-
-<select id="work" resultType="work">
+ <!--  
+<select id="worklist" resultType="work">
 	<![CDATA[
 SELECT w.workID ,e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
 FROM employee e
@@ -25,6 +13,17 @@ INNER JOIN work w ON e.employeeID = w.employeeID
 WHERE w.workDate >= #{param1} AND w.workDate <= #{param2}
 GROUP BY e.employeeID, w.workDate
 	
+	]]>
+</select>
+-->
+
+<select id="worklist" resultType="work">
+	<![CDATA[
+SELECT w.workID, e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
+FROM employee e
+INNER JOIN work w ON e.employeeID = w.employeeID
+WHERE e.employeeID = #{userId} AND w.workDate >= #{param1}AND w.workDate <= #{param2}
+GROUP BY e.employeeID, w.workDate
 	]]>
 </select>
 

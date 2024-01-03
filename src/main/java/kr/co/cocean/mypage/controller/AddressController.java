@@ -95,49 +95,30 @@ public class AddressController {
 	      }
 	      logger.info("in 서비스 넘어가기전");   
 	      return result1;
-	   
-	   /*
-      logger.info("list 시작");
-      HashMap<String, Object>result1 = new HashMap<String, Object>();
-         ArrayList<InaddressDTO> list1 = service.inlistCall();
-         result1.put("list1", list1);
-      logger.info("서비스 넘어가기전");   
-      return result1;*/
    }
    
-  
-   
-      
-  
-   
-   //내부 주소록 리스트
-   /*
-   @GetMapping(value="mypage/address")
-   public String list(Model model,HttpSession session) {      
-      ArrayList<InaddressDTO> list = service.inaddress();
-      model.addAttribute("list",list);
-      return "mypage/outsideaddressBook";
-   }*/
    
    
-   //내부 검색
-   /*
-   @GetMapping(value="mypage/insearch")
-   public ModelAndView insearch(@RequestParam List<String> inname) {
-      logger.info("inname : {}",inname);
-      return service.insearch(inname);
-   }*/
+   //내부검색 
+   @GetMapping(value = "mypage/inaddresssearch")
+	@ResponseBody
+	public HashMap<String,Object> inaddresssearch (@RequestParam String inname,Model model){		
+		logger.info("검색 list");
+		
+		HashMap<String, Object> result1 = new HashMap<String, Object>();		
+		
+		ArrayList<OutAddressDTO> list1 = service.inaddresssearch(inname);
+		
+		result1.put("list1", list1);
+		result1.put("size", list1.size());
+		
+		logger.info("result1 :"+result1);
+		
+		return result1;
+	}
    
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
+
 
    //외부선택삭제,전체삭제
    @GetMapping(value="mypage/delete")

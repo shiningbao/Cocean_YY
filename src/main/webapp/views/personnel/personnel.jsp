@@ -166,11 +166,6 @@ tbody tr {
                         <th>직책</th>
                         <td>
                             <select id="selectPositionID" name="positionID" class="psSelect">
-                                <option value="1">팀원</option>
-                                <option value="2">팀장</option>
-                                <option value="3">본부장</option>
-                                <option value="4">관장</option>
-                                <option value="5">대표이사</option>
                             </select>
                         </td>
                     </tr>
@@ -178,12 +173,6 @@ tbody tr {
                         <th>직급</th>
                         <td>
                             <select id="selectRankID" name="rankID" class="psSelect">
-                                <option value="1">계약직</option>
-                                <option value="2">주임</option>
-                                <option value="3">선임</option>
-                                <option value="4">책임</option>
-                                <option value="5">수석</option>
-                                <option value="6">-</option>
                             </select>
                         </td>
                     </tr>
@@ -199,9 +188,7 @@ tbody tr {
                         <th style="vertical-align: top; padding-top: 10px;">주소</th>
                         <td>
                             <input type="text" name="address" id="address" class="form-control mb-2" required/>
-                            <label class="photo2" for="fileSignatureInput" style="height: 10px; cursor: pointer;">
 							    <span class="file-icon3"><i class="fas fa-map-marker-alt" onclick="sample6_execDaumPostcode()"></i></span>
-							</label>
                         </td>
                         
                     </tr>
@@ -281,6 +268,46 @@ var departmentSelect = $('#departmentSelect');
 var resSelect = $('#resSelect');
 var branchSelect = $('#branchSelect');
 
+function getPositionName() {
+    $.ajax({
+        url: 'getPositionName.do',
+        method: 'POST',
+        data: {},
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                $('#selectPositionID').append($('<option>', {
+                    value: option.positionID,
+                    text: option.positionName
+                }))
+            });
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+function getRankName() {
+    $.ajax({
+        url: 'getRankName.do',
+        method: 'POST',
+        data: {},
+        success: function(data) {
+            console.log(data);
+            data.forEach(function(option, index) {
+                $('#selectRankID').append($('<option>', {
+                    value: option.rankID,
+                    text: option.rankName
+                }))
+            });
+
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
 function onBranchSelectChange() {
     console.log('지점 선택시 본부항목 변경!!!!!!!!!!!!!!!!!');
     var branchID = $('#branchSelect').val();
@@ -299,7 +326,7 @@ function onBranchSelectChange() {
                     text: option
                 }))
             });
-
+			
             if (branchID == 1) {
                 $('#deSelect').val('1').trigger('change');
             } else {
@@ -377,13 +404,16 @@ function onDepartmentSelect() {
 }
 
 $(document).ready(function() {
+	
+	getPositionName();
+	getRankName()
 	$('input[name="joinDate"]').val(new Date().toISOString().substring(0, 10).toString());
     $('#branchSelect').change(function() {
         onBranchSelectChange();
         console.log('지점변경!!!');
     });
 
-    $('#deSelect').off('change').on('change', function() {
+    $('#deSelect').on('change', function() {
         console.log('본부변경!!!');
         onDeSelectChange();
         console.log($('#deSelect').val() + '!!!!!!!!!!!!!');

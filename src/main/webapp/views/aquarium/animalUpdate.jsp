@@ -18,11 +18,18 @@
 </head>
 <body>
 	<c:import url="/side"/>
+	
+	<main>
+		<div class="content">
+	
+			<div class="hTitle">
+				<a>코션친구들 수정</a>
+			</div>
 	<div class="animalContent">
-		<h1>ANIMAL WRITE</h1>
+
 		<div class="row">
 			<div class="col-md-6 m-auto">
-				<form action="update.do" method="post" enctype="multipart/form-data">
+				<form action="update.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
 					<table class="table">
 						<colgroup>
 							<col style="width:30%">
@@ -49,24 +56,23 @@
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">애칭</th>
-							<td><input type="text" class="form-control" name="nickname"value="${content.nickname}" /></td>
+							<td><input type="text" class="form-control" name="nickname"value="${content.nickname}" required/></td>
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">코션하우스</th>
 							<td>
 								<input type="text" class="form-control" name="branchID" style="display: none;" value="${content.branchID}" readonly/>
-								<select class="form-control" id="tank">
+								<select class="form-control" name="tankID" id="tankID">
 									<c:forEach items="${tankList}" var="item" varStatus="idx">
-										<option value="${idx.index}">${item.tankName}</option>
+										<option value="${item.tankID}">${item.tankName}</option>
 									</c:forEach>
 								</select>
-								<input type="text" class="form-control" id="tankName" name="tanKName" value="${item.tankName}" style="display: none;" readonly/>
-								<input type="text" class="form-control" id="tankID" name="tankID" value="${item.tankID}" style="display: none;" readonly/>
+								<input type="text" class="form-control" id="tankName" name="tankName" value="${item.tankName}" style="display: none;" readonly/>
 							</td>
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">마리 수</th>
-							<td><input type="text" class="form-control" name="individual" value="${content.individual}"/></td>
+							<td><input type="text" class="form-control" name="individual" value="${content.individual}" required/></td>
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">태어난 날</th>
@@ -89,16 +95,16 @@
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">세부 정보</th>
-							<td><textarea class="form-control" name="details">${content.details}</textarea></td>
+							<td><textarea class="form-control" name="details" required>${content.details}</textarea></td>
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">사진</th>
-							<td><input type="file" class="form-control" name="files" multiple="multiple"/></td>
+							<td><input type="file" class="form-control" name="files" multiple="multiple" required/></td>
 						</tr>
 					</table>
 					
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-secondary mr-2">취소</button>
+						<button type="button" class="btn btn-secondary mr-2" onclick="animaList()">취소</button>
 						<button type="submit" class="btn btn-primary mr-2">수정</button>
 					</div>
 				</form>
@@ -108,6 +114,8 @@
 		<c:import url="/animal/classifi"/>
 
 	</div>
+	</div>
+	</main>
 </body>
 
 <script>
@@ -126,36 +134,30 @@ function drawClassifi(sp,ta,cl,sc,co){
 
 resizeWidth();
 
-window.addEventListener('resize',resizeWidth);
-
-function resizeWidth(){
-	var winWidth = window.innerWidth;
-	//console.log(winWidth);
-	var sideWidth = $('nav').outerWidth();
-	//console.log(sideWidth);
-	var contentWidth = winWidth-sideWidth;
-	var contentTableWidth = Math.floor(contentWidth*0.7);
-	$('.animalContent').css({'width':contentWidth, 'margin-left':sideWidth});
-}
 
 function getClassifi(){
 	$("#classifiModal").modal('show');
 }
 
-var tankNameList = [];
-var tankIDList = [];
-
-<c:forEach items='${tankList}' var='item'>
-	tankNameList.push('${item.tankName}');
-	tankIDList.push('${item.tankID}');
-</c:forEach>
-
-$('#tank').on('change',function(){
-	var idx = $(this).val();
-	$('#tankName').val(tankNameList[idx]);
-	$('#tankID').val(tankIDList[idx]);
+$('#tankID').on('change',function(){
+	var tankName = $('#tankID option:checked').text();
+	$('#tankName').val(tankName);
+	console.log($('input[name="tankName"]').val());
 });
 
+function writeSubmit(){
+	var result = false;
+	if($('#taxo').val() != ''){
+		result = true;
+	}else{
+		$("#classifiModal").modal('show');
+	}
+	return result;
+}
+
+function animaList(){
+	location.href = "list.go"
+}
 
 </script>
 

@@ -82,7 +82,7 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/draftDetail.go")
-	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, int employeeID) {
+	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, int employeeID, String category, String hTitle) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
@@ -90,10 +90,15 @@ public class ApprovalController {
 			ApprovalDTO list = service.draftDetail(idx);
 			ApprovalDTO vac = service.vacDetail(idx);
 			ApprovalDTO lv = service.lvDetail(idx);
+			logger.info("상신자:"+employeeID);
+			ApprovalDTO sign = service.getSign(idx,employeeID);
 			ArrayList<ApprovalDTO> lineList = service.lineList(idx);
 			ArrayList<ApprovalDTO> agrRef = service.agrRef(idx);
 			ArrayList<ApprovalDTO> fileList = service.fileList(idx);
 			logger.info("idx:"+idx);
+			logger.info("hTitle:"+hTitle);
+			mav.addObject("category",category);
+			mav.addObject("sign",sign);
 			mav.addObject("vac",vac);
 			mav.addObject("lv",lv);
 			mav.addObject("lineList",lineList);
@@ -101,6 +106,7 @@ public class ApprovalController {
 			mav.addObject("list", list);
 			mav.addObject("agrRef",agrRef);
 			mav.addObject("fileList",fileList);
+			mav.addObject("hTitle",hTitle);
 			mav.setViewName("approval/draftDetail");
 		} else {
 			mav.setViewName("redirect:/");
@@ -137,8 +143,7 @@ public class ApprovalController {
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		ArrayList<ApprovalDTO> signList = service.signList(idx,loginId);
 		result.put("signList", signList);
-		ApprovalDTO order = new ApprovalDTO();
-		order = service.getOrder(idx,loginId);
+		ApprovalDTO order = service.getOrder(idx,loginId);
 		result.put("order", order);
 		return result;
 	}
@@ -207,7 +212,7 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            
-	                // service.write(files, param, lastLineInfoList);
+	                service.write(files, param, lastLineInfoList);
 	     
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
@@ -265,23 +270,41 @@ public class ApprovalController {
 
 	// 결재,반려
 	@PostMapping(value = "/approval/approval.do")
-	public String formSearch(HttpSession session, @RequestParam Map<String, String> param) {
+	public ModelAndView approvalDo(HttpSession session, @RequestParam Map<String, String> param) {
+		ModelAndView mav = new ModelAndView("redirect:/approval/waitingList.go");
 		logger.info("param:{}",param);
-		int order = Integer.parseInt((param).get("order"));
+		int approvalOrder = Integer.parseInt((param).get("order"));
 		int lastOrder = Integer.parseInt((param).get("lastOrder"));
+		logger.info(param.get("action"));
 		String idx=param.get("idx");
-		 if(param.get("action")=="결재") { 
-			 service.approveDraft(param);
-			 service.approveApp(param);
-			 if(order<lastOrder) {
-				 service.passApp(idx,order);
+		 if(param.get("action").equals("결재")) { 
+			 logger.info("결재!!!");
+			 if(approvalOrder<lastOrder) {
+				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
+				 service.myStatus(param); // 내 상태 완료로 변경
+				 service.passDraft(idx); // draft update
+			 }else {
+				service.approveDraft(param); // draft update
+				service.approveApp(param); // approval update
 			 }
-		 }else { 
+		 }else if(param.get("action").equals("반려")){ 
+			 logger.info("반려!!!");
 			 service.rejectDraft(param);
 			 service.rejectApp(param); 
+		 }else if(param.get("action").equals("합의")) {
+			 if(approvalOrder<lastOrder) {
+				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
+				 service.myAgree(param); // 내 상태 완료로 변경
+				 service.passDraft(idx); // draft update
+			 }else {
+				service.approveDraft(param); // draft update
+				service.approveApp(param); // approval update
+			 }
+		 }else { // 거부
+			 service.rejectAgree(param);
+			 service.rejectDraft(param); 
 		 }
-		 
-		return "";
+		return mav;
 	}
 	
 	@PostMapping(value = "/approval/calculateUsageTime")

@@ -11,9 +11,39 @@ h1, h2, h3, h4 {
 }
 body {
   font-family: 'SOYOMapleBoldTTF';
-  height: 1120px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  
 }
+
+/* main { */
+/* 	left: 400px; */
+/* 	top: 80px; */
+/* 	width: 1370px;	 */
+/* 	height: 100%; */
+/* 	overflow: auto; */
+	
+/* } */
+
+main{
+	position: absolute;
+	top: 80px;
+}
+
+.content{
+	width: 1370px;
+	margin: 0 auto;
+}
+
+.hTitle{
+	margin: 20px 0;
+}
+
+.hTitle a {
+	font-size: 22px;
+}
+
+
 #sidebar{
   border-right: 1px solid #dedede;
 }
@@ -137,5 +167,18 @@ body {
     .swal-button {
   	font-size: 17px;
 	}
+
+
+#alarm{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 200px;
+    height: 100px;
+   	border: 1px solid #004085;
+   	border-radius: 0.25rem;
+   	background-color: #b8daff
+}
+
 
 

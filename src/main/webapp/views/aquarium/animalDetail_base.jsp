@@ -61,7 +61,11 @@
 			</tr>
 			<tr>
 				<th class="text-center" scope="col">코션하우스</th>
-				<td>${base.tankName}<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button></td>
+				<td>${base.tankName} 
+					<a href="<c:url value='/tank/detail.go?tankID=${base.tankID}'/>">
+						<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button>
+					</a>
+				</td>
 			</tr>
 			<tr>
 				<th class="text-center" scope="col">마리 수</th>
@@ -92,7 +96,7 @@
 			</tr>
 		</table>
 		<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-			<button class="btn btn-secondary mr-2" onclick="animalUpdate(${base.animalID})">이전</button>
+			<button class="btn btn-secondary mr-2" onclick="animaList()">이전</button>
 			<button class="btn btn-primary mr-2" onclick="animalUpdate(${base.animalID})">수정</button>
 			<button class="btn btn-primary" onclick="animalDel(${base.animalID})">삭제</button>
 		</div>
@@ -242,7 +246,10 @@
 	// 담당자 그리기
 	function inchargeDraw(emp){
 		if(inchargeList_after.includes(emp)){
-			alert('이미 지정된 담당자입니다.');
+			swal({
+				title :'이미 지정된 담당자입니다.',
+				button : '확인' 
+			});
 		}else{
 			$.ajax({
 				type:'post',
@@ -251,7 +258,10 @@
 				success:function(data){
 					//console.log(data);
 					if(data.msg != null){
-						alert(data.msg);
+						swal({
+							title:data.msg,
+							button:'확인'
+						});
 					}else{
 						var info = data.info
 						var con = '<tr><th>'+info.hqName+'</th><th>'+info.departmentName+'</th><th>'+info.name+'</th>';
@@ -327,6 +337,12 @@
 		}
 	}
 	
+	
+	function animaList(){
+		location.href = "list.go"
+	}
+	
+	
 	function animalUpdate(animalID){
 		swal({
 			title:'수정하시겠습니까?',
@@ -346,7 +362,7 @@
 			buttons:['취소','삭제']
 		}).then((isOkey) => {
 			if(isOkey){
-				//location.href= "update.go?animalID="+animalID;
+				location.href= "delete.do?animalID="+animalID;
 			}
 		});
 	}

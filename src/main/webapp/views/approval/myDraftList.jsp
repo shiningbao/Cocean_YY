@@ -9,28 +9,66 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
-	
-table,th,td{
-	border-bottom: 1px solid lightgray;
-    border-collapse: collapse;
-    padding: 5px 10px;
-}
-
-#saveTableHead{
+#myTableHead{
 	background-color: #86B0F3;
+	text-align: center;
 }
 
-#saveTable{
-	width: 500px;
+#myTable{
+	width: 72%;
+	height: 30%;
+	top: 255px;
+	left: 400px;
+	position: absolute;
+
+}
+
+#myList{
 	text-align: center;
+}
+
+#hTitle {
+	width: 120px;
+	height: 50px;
+	left: 400px; 
+	position: absolute;
+	top: 120px;
+}
+
+#hTitle a {
+	font-size: 22px;
+}
+
+#search input {
+	z-index: 99999;
+}
+
+#search{
+	    position: absolute;
+	    top:27%;
+   		left: 78%;
+}
+
+@media screen and (max-width: 1457px) {
+	#search {
+		top: 23%;
+	}
+	#search button {
+		width: 233px;
+	}
+	#search input {
+		margin-bottom: 5px;
+	}
 }
 
 </style>
 </head>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>	
-	
-	<form action="searchList.do" method="POST">
+	<div id="hTitle">
+		<a>나의 기안함</a>
+	</div>
+	<!-- <form action="searchList.do" method="POST">
 	<select id="category" name="formCategory">
 	  <option value="전체" selected="selected">전체</option>
 	  <option value="일반">일반</option>
@@ -40,19 +78,30 @@ table,th,td{
 
 		<input type="search" name="keyword" placeholder="제목"/>
 		<button class="btn btn-primary">검색</button>
-	</form>
-		
-	<table id="saveTable">
-		<tr id="saveTableHead">
+	</form> -->
+	
+	 <nav class="navbar navbar" id="search">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+            </form>
+          </nav>
+	<div id="myTable">
+	<table class="table table-hover">
+		<thead id="myTableHead">
+		<tr>
 			<th>기안일</th>
 			<th>유형</th>
 			<th>제목</th>
 			<th>상태</th>
 		</tr>
+		</thead>
+		
+		<tbody id=myList>
 		<c:forEach items="${my}" var="my">
 		<tr>
 			<td>${my.draftDate}</td>
-			<td>${my.category}</td>
+			<td>${my.formCategory}</td>
 			<td> 
 				<c:choose>
 	                <c:when test="${my.title == null}">
@@ -69,10 +118,18 @@ table,th,td{
 			<td>${my.draftStatus}</td>
 		</tr>	
 		</c:forEach>
+		</tbody>
 	</table>
+	</div>
 	
 </body>
 <script>
+	
+
+
+
+
+
 
     $("#category").change(function () {
         var selectedCategory = $(this).val();

@@ -64,10 +64,12 @@ public class ApprovalService {
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String usageTimeStr = param.get("usageTime");
-		int usageTime = 0;
+		
+		double usageTime = 0.0;
+
 		if (usageTimeStr != null && !usageTimeStr.isEmpty()) {
 		    try {
-		        usageTime = Integer.parseInt(usageTimeStr);
+		        usageTime = Double.parseDouble(usageTimeStr);
 		    } catch (NumberFormatException e) {
 		        e.printStackTrace();
 		    }
@@ -89,7 +91,7 @@ public class ApprovalService {
 		
 		logger.info("params:{}",param);
 		
-		// dao.write(dto); // draft테이블에 insert
+		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
 		
 		if(files!=null) {
@@ -98,18 +100,18 @@ public class ApprovalService {
 		}}
 		String content = param.get("content");
 		if(titleID.equals("1")) {
-		// dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
 		}else if(titleID.equals("2")) {
 			logger.info(param.get("textArea"));
-			// dao.writeattendenceDraft(dto); // 휴가신청서 insert
+			dao.writeattendenceDraft(dto); // 휴가신청서 insert
 		}else if(titleID.equals("3")){
 			logger.info("휴직원");
-			// dao.writeLeaveDraft(dto); // 휴직원 insert
+			dao.writeLeaveDraft(dto); // 휴직원 insert
 		}else {
-			// dao.writeReincrement(dto); // 복직원 insert
+			dao.writeReincrement(dto); // 복직원 insert
 		}
 		if(tempSave==0) {
-			 dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 		}else { // 임시저장
 			
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
@@ -213,9 +215,8 @@ public class ApprovalService {
 	}
 
 	
-	public void passApp(String idx, int order) {
-		dao.passApp(idx,order);
-		
+	public void passApp(String idx, int approvalOrder) {
+		dao.passApp(idx,approvalOrder);
 	}
 
 	public ArrayList<ApprovalDTO> saveList(int employeeID) {
@@ -248,6 +249,30 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> departmentList(int employeeID) {
 		return dao.departmentList(employeeID);
+	}
+
+	public ApprovalDTO getSign(int idx, int employeeID) {
+		return dao.getSign(idx,employeeID);
+	}
+
+	public void passDraft(String idx) {
+		dao.passDraft(idx);
+		
+	}
+
+	public void myStatus(Map<String, String> param) {
+		dao.myStatus(param);
+		
+	}
+
+	public void myAgree(Map<String, String> param) {
+		dao.myAgree(param);
+		
+	}
+
+	public void rejectAgree(Map<String, String> param) {
+		dao.rejectAgree(param);
+		
 	}
 
 

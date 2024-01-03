@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
@@ -116,7 +117,8 @@ public class AnimalService {
 		}else{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 			String month = sdf.format(System.currentTimeMillis());
-			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("category", con);
+			model.addAttribute("content", dao.animalLogPlan(animalID, con,month));
 			model.addAttribute("month", month);
 		}
 		
@@ -138,6 +140,8 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
+		SseService sse = new SseService();
+		sse.alarm(1, animalID);
 		
 	}
 
@@ -223,14 +227,16 @@ public class AnimalService {
 		return mav;
 	}
 
-	public ModelAndView animalUpdate(MultipartFile[] files, AnimalDTO param, RedirectAttributes rAttr, int employeeID) {
-		String page = "redirect:detail.go?animalID="+param.getAnimalID();
-		ModelAndView mav = new ModelAndView(page);
+	public void animalUpdate(MultipartFile[] files, AnimalDTO param, int employeeID) {
+		
+		logger.info("t id : {}",param.getTankID());
+		logger.info("t na : {}",param.getTankName());
 		
 		AnimalDTO ori = dao.animalDetail(param.getAnimalID());
 		
-		String log = equalsAnimalDTO(ori, param);
-		if(!log.equals("")) {
+		String change = equalsAnimalDTO(ori, param);
+		if(!change.equals("")) {
+			String log = "<p>코션 친구들구 변경 사항</p>"+change;
 			dao.animalUpdate(param);
 			
 			LogPlanDTO dto = new LogPlanDTO();
@@ -240,17 +246,16 @@ public class AnimalService {
 			dto.setIdx(param.getAnimalID());
 			dto.setContent(log);
 			dto.setStatus(param.getStatus());
-			dao.logplanWrite(dto);
 			
+			dao.logplanWrite(dto);
 		}
-		rAttr.addFlashAttribute("msg", "코션친구들을 수정했습니다.");
 		
-		return mav;
+
 	}
 
 	private String equalsAnimalDTO(AnimalDTO ori, AnimalDTO param) {
 		String log = "";
-		if(!Objects.equals(ori.getTankName(),param.getTankName())){
+		if(!Objects.equals(ori.getTankID(),param.getTankID())){
 			log += "<p>코션하우스 변경 : "+ori.getTankName()+" -> "+param.getTankName()+"</p>";
 		}
 		if(!Objects.equals(ori.getNickname(),param.getNickname())){

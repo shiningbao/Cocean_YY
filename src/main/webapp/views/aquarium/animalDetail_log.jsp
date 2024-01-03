@@ -5,8 +5,8 @@
 
 <div id="animalDetailLog">
 	<div style="display: flex">
-	<h2>친구들 기록</h2>
-	<input type="month" name="month" value="${month}" onchange="monthchange()"/>
+	<h4>친구들 기록</h4>
+	<input class="form-control" type="month" name="month" value="${month}" onchange="monthchange()" style="width:200px"/>
 	</div>
 	<br/>
 	
@@ -31,7 +31,7 @@
 		</table>
 	</div>
 	<div>
-		<c:forEach items="${log}" var="item" varStatus="st">
+		<c:forEach items="${content}" var="item" varStatus="st">
 			<div style="border:1px solid black">
 				<table>
 					<tr>
@@ -60,25 +60,6 @@
 </div>
 <script>	
 logplanStart();
-// 	ClassicEditor.create(document.querySelector('#editor'));
 
-// 	$('#summernote').summernote({
-// 		height: 200, width: 700,
-// 		maxHeight: 200,
-// 		minHeight: 200,
-// 		focus: true,
-// 		toolbar:['picture']
-// 	});
-	
-// function logplanWrite(){
-// 	var status = $('#status').val();
-// 	var content = $('#summernote').summernote('code');
-// 	if(con.length > (2*1024*1024)){
-// 		alert('컨텐츠의 크기가 큽니다. 이미지 갯수나 크기를 줄여주세요');
-// 	}else{
-// 		logplanWriteDo(content,status);
-// 	}
-
-// }
 
 </script>

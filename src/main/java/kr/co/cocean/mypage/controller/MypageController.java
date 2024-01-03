@@ -3,9 +3,11 @@ package kr.co.cocean.mypage.controller;
 import java.security.Provider.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,27 +40,27 @@ public class MypageController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired MypageService service;
+
+		
 	
 	@GetMapping(value="mypage/mypage")
-	public String mypage() {
+	public ModelAndView mypagedetail(HttpSession session) {
 		logger.info("마이 페이지 이동 요청");
-		return "mypage/mypage";
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+        logger.info("userInfo: "+userInfo);
+        int userId = userInfo.getEmployeeID();
+		logger.info("userId: "+userId);
+		ModelAndView mav = new ModelAndView("mypage/mypage");
+		logger.info("list접속전" );
+		List<HashMap<String, Object>> list = service.mypagedetail(userId);
+		logger.info("list: "+list);
+		mav.addObject("list", list);
+		return mav;
 	}
 
-	//마이페이지 리스트
-	/*
-	@GetMapping(value="/mypage/myInfo.ajax")
-	@ResponseBody
-	public HashMap<String, Object> myInfo(Model model, HttpSession session){
-		logger.info("리스트 가져오기 시작");
-		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
-		int userId = userInfo.getEmployeeID();
-		HashMap<String, Object> map = service.myInfo(userId);
-		logger.info("서비스 이동");
-		return map;
-	}*/
-	
 
+	
+/*
 	@GetMapping(value="mypage/listcall")
 	@ResponseBody
 	public HashMap<String, Object> mypagelist(HttpSession session){
@@ -68,76 +71,26 @@ public class MypageController {
 		result.put("list", list);
 		
 		return result;
-	}
+	}*/
 	
-	
+
+	//마이페이지 리스트 
 	/*
-	@PostMapping(value = "/animal/detail.ajax")
-	public String animalDetailAjax(@RequestParam String animalID, @RequestParam String con, Model model) {
-		logger.info("animalID : {}",animalID);
-		int intAnimalID = Integer.parseInt(animalID);
-		logger.info("con : {}",con);
-		return service.animalDetailAjax(intAnimalID, con, model);
-	}*/	
+	@GetMapping(value="mypage/")
+	
+	*/
 
 
 	
 	
-	//수정 페이지 이동(이건다시 테스트 하기)
+	//수정 페이지 이동
 	@GetMapping(value="/mypage/mypageupdate")
 	public String mypageupdate() {
 		logger.info("수정 페이지 이동");
 		return "mypage/mypageupdate";
 	}
 	
-	//암호화 비밀번호 조회
-	/*
-	@PostMapping(value="/mypage/pwCheck")
-	@ResponseBody
-	public int pwCheck(LoginDTO dto, HttpSession session)
-	{
-		
-		logger.info("컨틀롤입장");
-		dto = (LoginDTO) session.getAttribute("userInfo");
-		logger.info("dto :"+dto);
-		String memberPw = service.pwCheck(dto.getEmployeeID());
-		if( dto == null || !BCrypt.checkpw(dto.getPassword(), memberPw)) {
-			return 0;
-		}
-		return 1;
-	}*/
-	
-	/*
-	@PostMapping(value="mypage/pwCheck")
-	@ResponseBody
-	
-	public boolean pwCheck(String memberPw,HttpSession session){
-		logger.info("암호화 비밀번호 조회");
-	    LoginDTO logindto = (LoginDTO) session.getAttribute("userInfo");
-		boolean chk = encoder.matches(memberPw, logindto.getPassword());
-		logger.info("비밀번호 조회 서비스 이동");
-		return chk;		
-	}*/
-	
-	
-	
-	
-	//비밀번호 수정	
-	/*
-	@PostMapping(value="/mypage/pwUpdate" )
-	public String pwUpdate(String memberId,String memberPw1,Model model,HttpSession session){
-		logger.info("비밀번호 수정 컨트롤 입장");
-		String hashedPw = BCrypt.hashpw(memberPw1, BCrypt.gensalt());
-		service.pwUpdate(memberId, hashedPw);
-		session.invalidate(); /*https://m.blog.naver.com/truestar007/90037206672
-		model.addAttribute("msg", "정보 수정이 완료되었습니다. 다시 로그인해주세요.");
-		logger.info("수정 서비스로 넘어갑니다");
-		return "redirect:/mypage/login";
-	}*/
-	
-	
-	
-	
+
 	
 	//수정(암호화)
 	
@@ -168,6 +121,15 @@ public class MypageController {
 
 	
 	
+	
+	
+	//돌아가기버튼(이거는 버리기)
+	/*
+	  @RequestMapping(value="mypage/mypageback")
+      public String back() {
+         return "mypage/mypage";
+      }
+	*/
 	
 	
 	

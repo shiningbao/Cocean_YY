@@ -1,6 +1,10 @@
 package kr.co.cocean.personnel.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,14 +16,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.service.PersonnelService;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
@@ -61,7 +69,8 @@ public class PersonnelController {
 	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
 	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
 		ModelAndView mav = new ModelAndView();
-		logger.info("files!!! : {}"+file);
+		logger.info("files!!! : {}",file.getSize());
+		logger.info("fileSignature!!! : {}",fileSignature.getSize());
 		logger.info("params =="+params);
 		String page= "";
 		String pw = "cocean1111";
@@ -72,6 +81,7 @@ public class PersonnelController {
 		String status ="재직";
 		params.put("status",status);
 		params.put("remainingAnnualLeave", "0");
+
 		int row= service.join(params,file,fileSignature);
 		
 		if(row>0) {
@@ -147,13 +157,16 @@ public class PersonnelController {
 	public ModelAndView detail(@RequestParam int employeeID) {
 		logger.info("employeeID" +employeeID);
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
-		List<HashMap<String, Object>> list = service.detail(employeeID);
+		HashMap<String, Object> list = service.detail(employeeID);
 		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
 		List<HashMap<String, Object>> workHistory = service.workHistory(employeeID);
+		List<HashMap<String, Object>> departmentChangeLog = service.departmentChangeLog(employeeID);
+		logger.info("@@@@@"+departmentChangeLog);
 		logger.info("detailList=="+list);
-		mav.addObject("list", list);
+		mav.addObject("person", list);
 		mav.addObject("employeeHistory", employeeHistory);
 		mav.addObject("workHistory", workHistory);
+		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
 	}
 	
@@ -201,6 +214,81 @@ public class PersonnelController {
 		
 		return "personnel/annualManage";
 	}
-
 	
+	@PostMapping(value="/personnel/getPositionName.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getPositionName(){
+		
+		List<HashMap<String, Object>> list = service.getPositionName();
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/getRankName.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getRankName(){
+		
+		List<HashMap<String, Object>> list = service.getRankName();
+		return list;
+	}
+	
+
+	@PostMapping(value="/personnel/detailSave.do")
+	public ModelAndView historySave(@ModelAttribute HistoryDTO dto , @RequestParam int employeeID,
+			 @RequestParam HashMap<String, Object> params) {
+	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
+	    
+	    HistoryDTO[] historyArray = dto.getHistoryArray();
+	    HistoryDTO[] schistoryArray = dto.getSchistoryArray();
+	    logger.info("params!!=="+params); 
+	    logger.info("history"+dto.getHistoryArray());
+	    logger.info("history"+dto.getStartDate());
+	    String category = "";
+	    String sccategory = "";
+	    logger.info("category!!"+category);
+	    logger.info("sccategory!!"+sccategory);
+	    if ((historyArray[0].getCategory().equals("이력"))) {
+	    	  for (HistoryDTO history : historyArray) {
+	              // history 객체로부터 값 추출
+	    		  
+	    		  dto.setEmployeeID(employeeID);
+	              String startDate = history.getStartDate();
+	              String endDate = history.getEndDate();
+	              String organizationName = history.getOrganizationName();
+	              String remarks = history.getRemarks();
+	              category = history.getCategory();
+	              // 추출한 값 로깅 또는 다른 작업 수행
+	              logger.info("Employee ID: " + employeeID);
+	              logger.info("Start Date: " + startDate);
+	              logger.info("End Date: " + endDate);
+	              logger.info("Organization Name: " + organizationName);
+	              logger.info("Remarks: " + remarks);
+
+	              // 이후에 수행할 작업을 여기에 추가
+	              int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
+	          }
+	    }
+	    	
+	    if ((schistoryArray[0].getCategory().equals("학력"))) {
+		          for (HistoryDTO schistory : schistoryArray) {
+		        	  dto.setEmployeeID(employeeID);
+		              String startDate = schistory.getStartDate();
+		              String endDate = schistory.getEndDate();
+		              String organizationName = schistory.getOrganizationName();
+		              String remarks = schistory.getRemarks();
+		              sccategory = schistory.getCategory();
+		              logger.info("Employee ID: " + employeeID);
+		              logger.info("Start Date: " + startDate);
+		              logger.info("End Date: " + endDate);
+		              logger.info("Organization Name: " + organizationName);
+		              logger.info("Remarks: " + remarks);
+		              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,category);
+		  		}
+	    	  }
+	        
+          
+  	    
+      return mav; 
+      }
+        
+
 }

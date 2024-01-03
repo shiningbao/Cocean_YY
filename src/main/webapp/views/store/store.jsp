@@ -68,10 +68,22 @@ top: 100px;
 </style>
 <body>
 <jsp:include page="../side.jsp"></jsp:include>
+<main>
+
+	<div class="content">
+		<div class="hTitle">
+			<a>스토어 관리</a>
+		</div>
+
 <div class="commonContainer">	
+<<<<<<< HEAD
 	<div><h2>스토어관리</h2></div>
 	<div class="commonContent" style="top:100px; left:400px;">
 <div class="branchLocation" id="branchLocation">지점 위치
+=======
+	<div class="commonContent">
+<div class="branchLocation">지점 위치
+>>>>>>> 461f54d7e0f65383c75220a46aba861d33458dab
 <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" >등록</button>
 </div>
 <div id="map"></div>
@@ -290,18 +302,11 @@ top: 100px;
       </div>
       </div>
     </div>
+ 	</div>
+</main>
 </body>
 <script>
 resizeWidth();
-window.addEventListener('resize',resizeWidth);
-function resizeWidth(){
-	var winWidth = window.innerWidth;
-	//console.log(winWidth);
-	var sideWidth = $('nav').outerWidth();
-	//console.log(sideWidth);
-	var contentWidth = winWidth-sideWidth;
-	$('.commonContainer').css({'width':contentWidth, 'margin-left':sideWidth});
-}
 
 var matchedProductList;
 var productListTable = $('.productList table');
