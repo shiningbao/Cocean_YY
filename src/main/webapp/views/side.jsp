@@ -22,6 +22,7 @@
 <link rel="stylesheet"	href="<c:url value='/resource/css/bootstrap.min.css'/>">
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 
 <body>
@@ -141,13 +142,74 @@
 			</nav>
 		</div>
 	</div>
+	
+	
+	
+	<div id="alarm">
+		eeeeeeeee
+	</div>
+	
+	
 </body>
 <script>
+
 	const curTime = document.getElementById('curTime');
 	
 	setInterval(() => {
 		const date = new Date();
 		curTime.innerHTML = date.toLocaleTimeString();
 	}, 1000);
+	
+	// main 사이즈 조절
+	window.addEventListener('resize',resizeWidth);
+	function resizeWidth(){
+		var winWidth = window.innerWidth;
+		//console.log(winWidth);
+		var sideWidth = $('nav').outerWidth();
+		//console.log(sideWidth);
+		var contentWidth = winWidth-sideWidth;
+		$('main').css({'width':contentWidth, 'left':sideWidth,'top':'80px'});
+	}
+	
+	resizeWidth();
+	
+	
+	// 알람창
+
+	var  employeeID = '${userInfo.employeeID}';
+	var eventSource = new EventSource('<c:url value="/sse/subscibe/'+employeeID+'"/>');
+	
+	eventSource.addEventListener('alarm', function(event){
+		console.log(event.data);
+		$('#alarm').html(event.data);
+	});
+	
+	eventSource.addEventListener('connect', function(event){
+		console.log(event.data);	
+	});
+	alarmList();
+	function alarmList(){
+		$.ajax({
+			type:'post',
+			url:'<c:url value="/alarm/getList"/>',
+			data:{},
+			success:function(data){
+				console.log(data);
+				drawAlarm(data.alarmList);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function drawAlarm(list){
+		
+	}
+	
+	
+	
+	
+	
 </script>
 </html>

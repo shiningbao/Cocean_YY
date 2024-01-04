@@ -1,5 +1,8 @@
 package kr.co.cocean.personnel.dao;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.springframework.util.MultiValueMap;
 
 import kr.co.cocean.main.dto.FileDTO;
+import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 
@@ -27,9 +31,9 @@ public interface PersonnelDAO {
 
 	List<String> getBranchID(String branchID);
 
-	List<String> getHqID(String hqID);
+	List<HashMap<String, Object>> getHqID(String hqID);
 
-	List<String> getDepartmentText(String departmentText);
+	List<HashMap<String, Object>> getDepartmentText(String departmentText);
 
 	List<HashMap<String, Object>> personnelList();
 
@@ -53,6 +57,24 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> getPositionName();
 
-	List<HashMap<String, Object>> getRankName();
+	List<HashMap<String, Object>> getRankName(); 
+
+	List<HashMap<String, Object>> departmentChangeLog(int employeeID);
+
+	int historySave(HistoryDTO dto, int employeeID);
+
+	int historySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
+			String category);
+
+	int schistorySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
+			String sccategory);
+
+	void update(FileDTO dto);
+
+
+	int updateEmployeeInfo(int employeeID, String positionID, String status, String departmentID, String rankID,
+			String responID);
+
+	void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID);
 
 }

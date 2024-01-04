@@ -133,7 +133,7 @@ tbody tr {
 		                <img src="/Cocean/resource/img/psProfile.jpg" id="thumbnail_image" alt="프로필 사진">
 		                <span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 		            </label>
-		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
+		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;" required>
 		            
 		        </div>
 		        <div class="wrap_info" style="text-align: center;">
@@ -204,7 +204,7 @@ tbody tr {
                     <tr>
                         <th>지점</th>
                         <td>
-                            <select id="branchSelect" class="psSelect"></select>
+                            <select id="branchSelect" name="branchID" class="psSelect"></select>
                         </td>
                     </tr>
                     <tr>
@@ -224,7 +224,7 @@ tbody tr {
                     <tr>
                         <th>담당</th>
                         <td>
-                            <select id="resSelect" name="responsibility" class="psSelect">
+                            <select id="resSelect" name="responID" class="psSelect">
                                  <!-- 선택된 중분류에 따라 옵션이 동적으로 추가 -->
                              </select>
                         </td>
@@ -240,7 +240,7 @@ tbody tr {
 					    <th style="vertical-align: top; padding-top:10px; width:80px;">서명이미지</th>
 					    	<td>
 					    	<span class="desc1" style="font-size=12px;">※ 서명이미지는 자동으로 55x55 사이즈로 적용됩니다.</span>
-					            <label class="photo2" for="fileSignatureInput" style="height: 10px;">
+					            <label class="photo2" for="fileSignatureInput" style="height: 10px;" required>
 					            <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
 					                <span class="file-icon2"><i class="fas fa-upload"></i></span>
 					            </label>
@@ -251,7 +251,7 @@ tbody tr {
 					</tr>
                     <tr>
                         <th colspan="2">
-                            <input type="submit" value="회원가입" class="btn btn-primary regibtn"/>
+                            <input type="submit" value="등록" class="btn btn-primary regibtn" id="submitBtn"//>
                         </th>
                     </tr>
                 </table>
@@ -308,9 +308,10 @@ function getRankName() {
         }
     });
 }
+
 function onBranchSelectChange() {
     console.log('지점 선택시 본부항목 변경!!!!!!!!!!!!!!!!!');
-    var branchID = $('#branchSelect').val();
+var branchID = $('#branchSelect').val();
     console.log(branchID);
     $.ajax({
         url: 'getBranchID.do',
@@ -326,11 +327,12 @@ function onBranchSelectChange() {
                     text: option
                 }))
             });
-
+			
             if (branchID == 1) {
                 $('#deSelect').val('1').trigger('change');
             } else {
                 $('#deSelect').val('4').trigger('change');
+                
             }
 
             console.log($('#branchSelect').val());
@@ -343,6 +345,7 @@ function onBranchSelectChange() {
 
 
 function onDeSelectChange() {
+	var branchID = $('#branchSelect').val();
     console.log('본부 선택시 부서항목 변경!!!!!!!!!!!!');
     departmentSelect.empty();
     var hqID = $('#deSelect').val();
@@ -354,14 +357,18 @@ function onDeSelectChange() {
             console.log(data);
             var departmentText = $('#departmentSelect option:selected').text();
             var firstOptionValue = $('#departmentSelect option:first').val();
-            data.forEach(function(option, index) {
-                var value = index + 1;
+            data.forEach(function(option) {
+                
                 departmentSelect.append($('<option>', {
-                    value: option,
-                    text: option
+                    value: option.departmentID,
+                    text: option.departmentName
                 }))
             });
-            $('#departmentSelect').prop('selectedIndex', 0).trigger('change');
+            $('#departmentSelect').val('1').trigger('change');
+			if(branchID==2){
+				$('#departmentSelect').val('9').trigger('change');
+			}
+            
            /*  if ($('#deSelect').val()=='1') {
             	 console.log(firstOptionValue);
             } else {
@@ -390,10 +397,10 @@ function onDepartmentSelect() {
             data: { departmentText: departmentText },
             success: function(data) {
                 console.log(data);
-                data.forEach(function(option, index) {
+                data.forEach(function(option) {
                     $('#resSelect').append($('<option>', {
-                        value: option,
-                        text: option
+                        value: option.responID,
+                        text: option.responName
                     }))
                 });
             },
@@ -444,6 +451,16 @@ $(document).ready(function() {
     departmentSelect.empty();
     resSelect.empty();
     $('#deSelect').empty();
+    
+    $('#submitBtn').click(function(event) {
+        var fileInput = $('#fileInput');
+        var fileSignatureInput = $('#fileSignatureInput');
+
+        if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
+            event.preventDefault();
+            alert('이미지를 선택해주세요.');
+        }
+    });
 });
 
 $('#fileInput').on('change', function(e) {

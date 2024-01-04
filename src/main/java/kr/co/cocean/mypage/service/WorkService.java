@@ -1,5 +1,7 @@
 package kr.co.cocean.mypage.service;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,18 +23,30 @@ public class WorkService {
 	
 	@Autowired WorkDAO dao;
 
-	
-	public ArrayList<OutAddressDTO> work() {
-		
-		return dao.work();
-	}
 
-	//ajax
-	public Map<String, Object> work(String pfirstSearchDate, String plastSearchDate) {
-		ArrayList<WorkDTO> workdto = dao.work(pfirstSearchDate,plastSearchDate);
+	
+
+	public Map<String, Object> worklist(String pfirstSearchDate, String plastSearchDate, int userId) {
+		ArrayList<WorkDTO> workdto = dao.worklist(pfirstSearchDate,plastSearchDate,userId);
 		Map<String, Object>map= new HashMap<String, Object>();
 		map.put("work", workdto);
 		return map;
+	}
+
+
+
+	/*
+	public String gowork(int userId, Timestamp gotime) {
+		
+		return dao.gowork(userId,gotime);
+	}*/
+
+
+
+
+	public void saveTimestamp(Timestamp tp, int userId, Date de) {
+		
+		dao.saveTimestamp(tp,userId,de);
 	}
 
 

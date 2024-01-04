@@ -57,8 +57,8 @@
 	</select>
 	
 	<select id="waitingList" resultType="approval">
-		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기'
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
@@ -67,7 +67,7 @@
 	</select>
 	
 	<select id="vacDetail" resultType="approval">
-		SELECT * from attendanceDraft WHERE idx=#{idx}
+		SELECT ad.idx,ad.category,ad.vacationStartDate,ad.vacationEndDate ,ad.usageTime ,ad.vacationReason,e.remainingAnnualLeave,d.employeeID from attendanceDraft ad JOIN draft d ON ad.idx=d.idx JOIN employee e ON d.employeeID=e.employeeID WHERE ad.idx=#{idx}
 	</select>
 	
 	<select id="lvDetail" resultType="approval">
@@ -79,7 +79,7 @@
 	</select>
 	
 	<select id="signList" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category="결재"
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category="결재"
 	</select>
 	
 	<select id="agrRef" resultType="approval">
@@ -109,10 +109,15 @@
         </choose>)
 	    </foreach>
 	</insert>
+
+	<insert id="publicApp">
+		INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
+	    SELECT #{idx},employeeID from employee where status='재직', '열람','0','0','열람'
+	</insert>
 	
 	<insert id="lineEmptyTs">
 	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    VALUES (#{idx}, #{employeeID}, '-', '0', #{lastOrder}, '미대기')
+	    VALUES (#{idx}, #{writerID}, '-', '0', #{lastOrder}, '미대기')
 	</insert>
 	
 	<insert id="approvalTs">
@@ -132,34 +137,45 @@
 	</update> -->
 	
 	<update id="rejectDraft">
-		UPDATE draft SET draftStatus="완료" and publicStatus=0 WHERE idx=#{idx}
+		UPDATE draft SET draftStatus='완료', publicStatus=0 WHERE idx=#{idx}
 	</update>
 	
 	<update id="rejectApp">
-		UPDATE approval SET approvalStatus="반려", opinion=#{opinion} WHERE idx=#{idx} and employeeID=#{loginId}
+		UPDATE approval SET approvalStatus='반려', opinion=#{opinionWrite} WHERE idx=#{idx} and employeeID=#{loginId}
 	</update>
 	
 	<update id="approveDraft">
-		 <choose>
-	        <when test="order== 2">
-	            UPDATE draft SET draftStatus = '진행중' WHERE idx = #{idx}
-	        </when>
-	        <when test="order == lastOrder">
 	            UPDATE draft SET draftStatus = '완료' WHERE idx = #{idx}
-	        </when>
-    	</choose>
 	</update>
 	
 	<update id="approveApp">
-	    UPDATE approval SET approvalStatus = '승인' WHERE idx = #{idx}
+	    UPDATE approval SET approvalStatus = '결재', opinion=#{opinionWrite} WHERE idx = #{idx}
 	</update>
 	
 	<update id="passApp">
-		UPDATE approval SET approvalStatus="대기" WHERE idx=#{idx} and approvalOrder=#{idx}+1
+		UPDATE approval SET approvalStatus='대기' WHERE approvalOrder=#{approvalOrder}+1
 	</update>
 	
+	<update id="passDraft">
+		UPDATE draft SET draftStatus='진행중' WHERE idx=#{idx}
+	</update>
+	
+	<update id="myStatus">
+		UPDATE approval SET approvalStatus='결재', opinion=#{opinionWrite} WHERE idx=#{idx} AND employeeID=#{loginId}
+	</update>
+	
+	<update id="myAgree">
+		UPDATE approval SET approvalStatus='합의', opinion=#{opinionWrite} WHERE idx=#{idx} AND employeeID=#{loginId}
+	</update>
+	
+	
+	<update id="rejectAgree">
+		UPDATE approval SET approvalStatus='거부', opinion=#{opinionWrite} WHERE idx=#{idx} and employeeID=#{loginId}
+	</update>
+	
+	
 	<select id="getOrder" resultType="approval">
-		SELECT approvalOrder FROM approval WHERE idx=#{idx} and employeeID=#{loginId}
+		SELECT approvalOrder,employeeID FROM approval WHERE idx=#{idx} and employeeID=#{loginId}
 	</select>
 	
 	<insert id="writeLeaveDraft" parameterType="approval">
@@ -199,16 +215,16 @@
 </insert>
 	
 	<select id="saveList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장'
+		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="myList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장'
+		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='미대기' AND d.draftStatus!='임시저장'
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category='참조' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="comList" resultType="approval">
@@ -217,7 +233,15 @@
 	</select>
 	
 	<select id="departmentList" resultType="approval">
-		select d.idx,d.employeeID,d.draftDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND draftStatus!='임시저장'
+		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY idx ORDER BY a.approvalDate desc
+	</select>
+	
+	<select id="getSign" resultType="approval">
+		SELECT serverFileName from file WHERE idx=#{employeeID} and path="signature"
+	</select>
+	
+	<select id="getForm" resultType="approval">
+	SELECT df.formTitle FROM draft d JOIN draftForm df ON d.titleID=df.titleID WHERE idx=#{idx};
 	</select>
 	
 	<!-- <update id="update">

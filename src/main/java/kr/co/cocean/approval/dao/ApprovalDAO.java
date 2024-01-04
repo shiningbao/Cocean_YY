@@ -56,7 +56,7 @@ public interface ApprovalDAO {
 
 	ApprovalDTO getOrder(String idx, String loginId);
 
-	void passApp(String idx,int order);
+	void passApp(String idx, int approvalOrder);
 
 	void myApprove(Map<String, String> param);
 
@@ -83,6 +83,20 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> comList(int employeeID);
 
 	ArrayList<ApprovalDTO> departmentList(int employeeID);
+
+	ApprovalDTO getSign(int idx, int employeeID);
+
+	void passDraft(String idx);
+
+	void myStatus(Map<String, String> param);
+
+	void myAgree(Map<String, String> param);
+
+	void rejectAgree(Map<String, String> param);
+
+	void publicApp(int idx);
+
+	ApprovalDTO getForm(int idx);
 
 	/*
 	 * void update(ApprovalDTO dto);

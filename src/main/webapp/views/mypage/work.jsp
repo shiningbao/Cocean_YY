@@ -20,62 +20,12 @@ table, th, td{
 </head>
 <body>
 
-<!-- 
-<table>
 
-		<tr>	   
-			<th>번호</th>
-			<th>날짜</th>
-			<th>출근시간</th>
-			<th>퇴근시간</th>
-		</tr>
-		 <li>		
-		<c:if test="${list.size()==0}">
-		<tr><td colspan="5">게시물이 존재하지 않습니다.</td></tr>
-		</c:if>
-		<c:forEach items="${list}" var="work">
-		<tr>
-			<td>${work.workID}</td>
-			<td>${work.workDate}</td>
-			<td id="go">${fn:substring(work.gowork, 10,19)}</td>
-			<td id="leave">${fn:substring(work.leavework, 10,19)}</td>		
-		</tr>
-		</c:forEach>
-	</table>
- -->
-
-
-<!-- 마이페이지 클릭하면 출퇴근 모달창 넘어가게 모달창 만들기 -->
 <jsp:include page="../side.jsp"></jsp:include>
-<!--  
-    <div id="dateserch" style="float: left; margin-left: 19%; margin-top: 2%;">
-		<label for="date">
-        <input type="date" id="pfirstsearchdate" value="" />
-        ~
-        <input type="date" id="plastsearchdate" value="" />
-        <input type="button" id="psearchButton" class="comm-btn" value="검색" />
-    </label>
 
-
-
- <table>
-		<thead>
-        	<tr>
-        		<th>번호</th>
-				<th>날짜</th>
-				<th>출근시간</th>
-				<th>퇴근시간</th>
-        	</tr>
-		</thead>
-    	<tbody id="worklist">
-    	</tbody>
-	</table>
-
-	</div>
-	-->
 	
 	
-<div id="topPointContainer" style="float: left; margin-left:2%; margin-top: 5%; margin-bottom: 40px;">
+
 	<label for="date">
         <input type="date" id="pfirstsearchdate" value="" />
         ~
@@ -94,10 +44,21 @@ table, th, td{
     	<tbody id="worklist">
     	</tbody>
 	</table>
-</div>	
-	
-	
 
+	
+	<!--  
+<form action="gowork" method="get">
+        <input type="submit" value="출석" name="goButton">
+    </form>
+    -->
+    <form method="post" action="/save-timestamp">
+        <button type="submit">출근 버튼</button>
+    </form>
+    <p th:text="${msg}"></p>
+    
+    <form action="leavework" method="get">
+        <input type="submit" value="퇴근" name="leaveButton">
+    </form>
 	
 	
 </body>

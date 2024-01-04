@@ -264,8 +264,7 @@ button{
 		<th>휴가 종류</th>
 			<td colspan="2"><select id="vacationCategory" name="vacationCategory">
 					  <option value="연차" selected="selected">연차</option>
-					  <option value="조퇴">조퇴</option>
-					  <option value="지각">지각</option>
+					  <option value="반차">반차</option>
 					  <option value="병가">병가</option>
 					  <option value="공가">공가</option>
 					  <option value="경조사">경조사</option>
@@ -279,15 +278,15 @@ button{
 	<tr>
 	    <th>사용 날짜</th>
 	    <td> <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2">
-							    <select class="timeSelect" name="startTime">
+							    <!-- <select class="timeSelect" name="startTime">
 									  <option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-									</select>
+									</select> -->
 							    
 							    <p>&nbsp;~&nbsp;</p>
 							    <input type="date" name="end" id="endFac"  class="form-control mb-2">
-							    <select class="timeSelect" name="endTime">
+							   <!--  <select class="timeSelect" name="endTime">
 									<option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-								</select></div></td>
+								</select> --></div></td>
 	</tr>
 	<tr>
 		<th>총 사용일</th>
@@ -319,7 +318,7 @@ button{
 
 
 <br/>
-<input type="file" name="files" multiple="multiple"/>
+<input type="file" name="files" multiple="multiple">
 <br/>
 
 
@@ -478,7 +477,6 @@ button{
 	    }
 	}
 	
-	
 	var order;
 	$("#approvalLine tbody tr").each(function (index) {
 	    order = index + 1;
@@ -491,7 +489,20 @@ button{
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
 		var lastLine = [];
+		
 	    var formData = new FormData();
+
+	    var filesInput = $('input[name="files"]')[0];
+	    var files = filesInput.files;
+	    console.log(files.length);
+	    console.log(filesInput);
+	    if (files.length === 0) {
+	        formData.append('files', null);
+	    }else{
+	    for (var i = 0; i < files.length; i++) {
+	        formData.append('files', files[i]);
+	    }
+	    }
 	    
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
@@ -564,16 +575,6 @@ button{
 	    });
 
 	    formData.append('lastLine', JSON.stringify(lastLine));
-
-	    var filesInput = $('input[name="files"]')[0];
-	    var files = filesInput.files;
-	    console.log(files.length);
-	    if (files.length === 0) {
-	        formData.append('files', null);
-	    }
-	    for (var i = 0; i < files.length; i++) {
-	        formData.append('files', files[i]);
-	    }
 	    
 	    if (isTemp) {// 임시저장부분
 	        formData.append('tempSave', 1); // 1이면 임시저장
@@ -616,12 +617,12 @@ button{
 		        cache: false,
 		        success: function (data) {
 		            console.log(data);
-		            if (!isTemp) {
-		                location.href = './formList.go';
+		          /*   if (!isTemp) {
+		                location.href = './myDraftList.go';
 		               
 		            }else{
 		            	location.href = './tempSaveList.go';
-		            }
+		            } */
 		        },
 		        error: function (e) {
 		            console.error(e);

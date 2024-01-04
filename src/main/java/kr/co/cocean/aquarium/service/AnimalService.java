@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
 import kr.co.cocean.aquarium.dto.AnimalListFilterDTO;
@@ -116,7 +117,8 @@ public class AnimalService {
 		}else{
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 			String month = sdf.format(System.currentTimeMillis());
-			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
+			model.addAttribute("category", con);
+			model.addAttribute("content", dao.animalLogPlan(animalID, con,month));
 			model.addAttribute("month", month);
 		}
 		
@@ -138,7 +140,11 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
-		
+
+		SseService sse = new SseService();
+		logger.info("알람 등록 @@@@@@@@@@@@@@@@@@@@@@@@");
+		sse.alarm("로그", 1, animalID, "코션친구들");
+
 	}
 
 	public HashMap<String, Object> employeeInfo(int employeeID) {

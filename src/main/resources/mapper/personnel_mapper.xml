@@ -7,7 +7,7 @@
 
 	
 	<insert id="join" parameterType="map">
-		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responsibility})
+		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responID})
 	</insert>
 	 <select id="getBranch">
         SELECT branchName FROM branch
@@ -19,21 +19,51 @@
 	</select>
 	
 	<select id="getHqID">
-		select DISTINCT departmentName FROM department d WHERE hqID=#{hqID}
+		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID}
 	</select>
 	
 	<select id="getDepartmentText">
-		SELECT responsibility es FROM department d WHERE departmentName = #{departmentText}
+		SELECT responName,responID from responsibility r JOIN department d ON r.departmentID =d.departmentID where d.departmentName =#{departmentText}
 	</select>
 	
-	<select id="getChart" resultType="tree">
-		SELECT * FROM jsTree ORDER BY CASE WHEN text LIKE '%장' THEN 0 ELSE 1 END, text;
-	</select>
+	<select id="getChart">
+		    SELECT * FROM (
+    SELECT employeeID AS id, 
+           CASE 
+               WHEN e.positionID = 5 THEN '#' 
+               WHEN e.positionID = 4 THEN CONCAT('br', h.branchID)
+               ELSE CONCAT('de', e.departmentID)
+           END AS parent, 
+           CONCAT(name, ' ', (SELECT p.positionName FROM `position` p WHERE p.positionID = e.positionID)) AS 'text', 
+           'jstree-icon-worker' AS 'icon'
+    FROM employee e 
+    LEFT JOIN department d ON e.departmentID = d.departmentID
+    LEFT JOIN headquarters h ON d.hqID = h.hqID
+    WHERE e.status = '재직'
+) AS data
+UNION ALL
+SELECT CONCAT('de',departmentID) AS id, 
+       CONCAT('hq',hqID) AS parent, 
+       departmentName AS 'text', 
+       NULL AS 'icon'
+FROM department d 
+WHERE d.isActive = 1 AND d.departmentName NOT LIKE '-%'
+UNION ALL
+SELECT CONCAT('hq',hqID) AS id, 
+       CONCAT('br',branchID) AS parent, 
+       hqName AS 'text', 
+       NULL AS 'icon'
+FROM headquarters h 
+WHERE h.isActive = 1 AND h.hqName NOT LIKE '%-%'
+UNION ALL
+SELECT CONCAT('br',branchID) AS id, 
+       '#' AS parent, 
+       branchName AS 'text', 
+       NULL AS 'icon'
+FROM branch b;
+			</select>
 	
-	<insert id="joinTree">
-    INSERT INTO jsTree VALUES
-    (#{employeeID}, #{departmentID}, CONCAT(#{name}, ' ', #{positionID}), 'jstree-icon-worker')
-	</insert>
+
 	
 	<select id="personnelList">
 		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
@@ -86,19 +116,36 @@
 			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
 	</insert>
 	
+	<update id="update">
+		    UPDATE file
+	    SET serverFileName = #{serverFileName}
+	    WHERE idx = #{idx} AND category = #{category} AND path = #{path}
+	</update>
+	
+	<update id="updateEmployeeInfo">
+		UPDATE employee SET positionID = #{positionID}
+		,status=#{status}
+		,departmentID=#{departmentID}
+		,rankID=#{rankID}
+		,responID=#{responID}
+		WHERE employeeID =#{employeeID}
+	</update>
+	
 	<select id="datail">
-		SELECT 
-		    e.employeeID, e.name, p.positionName, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName, d.departmentName, h.hqName, e.responsibility,
+				SELECT 
+		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName,d.departmentID, h.hqName,h.hqID,res.responID, res.responName,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
 		JOIN headquarters h ON d.hqID = h.hqID 
 		JOIN branch b ON h.branchID = b.branchID 
+		JOIN responsibility res ON e.responID = res.responID
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r ON e.rankID = r.rankID
 		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
 		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
-		WHERE e.employeeID = #{employeeID}
+		WHERE e.employeeID = #{employeeID};
+		
 	</select>
 	
 	<select id="employeeHistory">
@@ -116,5 +163,27 @@
 	<select id="getRankName">
 		SELECT rankID,rankName from rank;
 	</select>
+	
+	<select id="departmentChangeLog">
+	SELECT DATE_FORMAT(dcl.changeDate, '%Y-%m-%d') AS changeDate,
+	       beforeD.departmentName AS beforedpID,
+	       afterD.departmentName AS afterdpID
+	FROM departmentChangeLog dcl
+	JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
+	JOIN department afterD ON afterD.departmentID = dcl.afterdpID
+	WHERE dcl.employeeID = 994;
+	</select>
+	
+	<insert id="historySave">
+		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{category});
+	</insert>
+	
+	<insert id="schistorySave">
+		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{sccategory});
+	</insert>
+	
+	<insert id="writeDepartmentChangeLog">
+		insert into departmentChangeLog (employeeID,beforedpID,afterdpID) values(#{employeeID},#{beforedpID},#{afterdpID});
+	</insert>
 
 </mapper>

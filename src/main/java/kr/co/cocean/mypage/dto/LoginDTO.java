@@ -17,6 +17,8 @@ public class LoginDTO {
 	private int remainingAnnualLeave;// 잔여연차	
 	private int branchID;
 	private String departmentName; // 부서명
+	
+	
 	//부서 변경로그(d)
 	private int departmentID; //부서 
 	private int rankID;//직급

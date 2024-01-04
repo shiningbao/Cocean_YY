@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,24 +41,22 @@ public class MypageController {
 	
 	@Autowired MypageService service;
 
+		
 	
 	@GetMapping(value="mypage/mypage")
-	public String mypage() {
+	public ModelAndView mypagedetail(HttpSession session) {
 		logger.info("마이 페이지 이동 요청");
-		return "mypage/mypage";
-	}
-	
-	/*
-	@GetMapping(value="mypage/mypage")
-	public ModelAndView mypage(@RequestParam int employeeID) {
-		logger.info("마이 페이지 이동 요청");
-		logger.info("employeeID" +employeeID);
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+        logger.info("userInfo: "+userInfo);
+        int userId = userInfo.getEmployeeID();
+		logger.info("userId: "+userId);
 		ModelAndView mav = new ModelAndView("mypage/mypage");
-		List<HashMap<String, Object>> list = service.detail(employeeID);
-		logger.info("detailList=="+list);
+		logger.info("list접속전" );
+		List<HashMap<String, Object>> list = service.mypagedetail(userId);
+		logger.info("list: "+list);
 		mav.addObject("list", list);
 		return mav;
-	}*/
+	}
 
 
 	
@@ -74,7 +74,11 @@ public class MypageController {
 	}*/
 	
 
+	//마이페이지 리스트 
+	/*
+	@GetMapping(value="mypage/")
 	
+	*/
 
 
 	
@@ -87,9 +91,6 @@ public class MypageController {
 	}
 	
 
-	
-	
-	
 	
 	//수정(암호화)
 	
@@ -120,6 +121,15 @@ public class MypageController {
 
 	
 	
+	
+	
+	//돌아가기버튼(이거는 버리기)
+	/*
+	  @RequestMapping(value="mypage/mypageback")
+      public String back() {
+         return "mypage/mypage";
+      }
+	*/
 	
 	
 	

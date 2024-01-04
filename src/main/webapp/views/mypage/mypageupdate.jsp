@@ -6,12 +6,39 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <style>
+
 .update {
-    border: 2px solid #020715; /* 테두리의 두께와 색상 설정 */
-    padding: 10px; /* 테두리와 내용 사이의 간격 설정 */
-    width: 300px; /* 테두리가 포함된 div 요소의 너비 설정 */
-    margin: 0 auto; /* 가운데 정렬을 위한 margin 설정 */
-  }
+ border: 2px solid #020715;
+    padding: 20px; /* Increased padding for better spacing */
+    width: 400px; /* Adjust the width as needed */
+    margin: 50px auto 50px auto; /* Adjust the top, bottom, left, and right margins as needed */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+ 
+ 
+.mypage-row label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.mypage-row input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+} 
+ 
+ 
+#info-update-btn {
+    display: block;
+    margin: 20px auto; /* Adjust the top and bottom margin as needed */
+} 
+ 
 
 </style>
 
@@ -45,28 +72,38 @@
    
  <form action="changePw" method="post" name="mypage=form">
  
+ 
+  <h2 class="pwupadte">비밀번호 수정 </h2>
  <div class="update">
- <h2 class="pwupadte">비밀번호 수정 </h2>
+
 		<div class="mypage-row">
 			<label>현재 비밀번호</label>
-			<input type="password" name="currentPw" id="currentPw" maxlength="20"/> 
+			<input type="password" name="currentPw" id="currentPw"  maxlength="20"/> 
 		</div>
 		<div class="mypage-row">
 			<label>새 비밀번호</label>
-			<input type="password" name="newPw" maxlength="20"/> 
+			<input type="password" name="newPw" id="password_1" class="pw" maxlength="20"/> 
 		</div>
 		<div class="mypage-row">
     <label>새 비밀번호 확인</label>
-    <input type="password" name="newPwConfirm" maxlength="20"/>
-</div>
-		<input type="button" onclick="location.href='./list'" value="리스트"/>
+    <input type="password" name="newPwConfirm" id="password_2" class="pw" maxlength="20"/>
+	
+	<th colspan="2" id="pwCh">
+           <font id="checkPw" size ="2"></font>          
+       </th>
+
+
+	</div>
+
 		<button type="submit" id="info-update-btn">수정</button>
-</div>
+	</div>
 
 	</form>
     
     
-    
+    	<!--  
+		<input type="button" onclick="location.href='./mypageback'" value="이전"/>
+	-->	
     
     
 </body>
@@ -76,6 +113,45 @@ var msg = "${msg}";
 if(msg != ""){
    alert(msg);
 }
+
+
+
+$('.pw').keyup(function(){
+	   let pass1 = $("#password_1").val();
+	   let pass2 = $("#password_2").val();
+	   let checkPw = $("#checkPw");
+
+	   if (pass1 !== "" || pass2 !== "") {
+	      if (pass1 === pass2) {
+	         checkPw.html("비밀번호가 일치합니다.");
+	         checkPw.css("color", "green");
+	      } else {
+	         checkPw.html("비밀번호가 불일치합니다.");
+	         checkPw.css("color", "red");
+	      }
+	   } else {
+	      checkPw.html(""); 
+	   }
+	});
+
+
+
+/*
+$('.pw').keyup(function(){
+   let pass1 =$("#password_1").val();
+   let pass2 =$("#password_2").val();
+   
+   if(pass1 != "" || pass2 !=""){
+      if(pass1 == pass2){
+         $("#checkPw").html("비밀번호가 일치합니다.");
+         $("#checkPw").attr("color","green");
+      }else{
+         $("#checkPw").html("비밀번호가 불일치합니다.");
+         $("#checkPw").attr("color","red");
+      }
+   }
+})*/
+
 
 /*
 $(document).ready(function(){
