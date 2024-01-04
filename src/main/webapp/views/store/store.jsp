@@ -67,16 +67,12 @@ top: 100px;
 }
 </style>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
-<main>
+<jsp:include page="../etc/newSide.jsp"></jsp:include>
+<div class="container-fluid">
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
+                    </div>
 
-	<div class="content">
-		<div class="hTitle">
-			<a>스토어 관리</a>
-		</div>
-
-<div class="commonContainer">	
-	<div class="commonContent">
 <div class="branchLocation">지점
 <!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">&#43;</button> -->
 </div>
@@ -298,16 +294,11 @@ top: 100px;
     <div id="productInfoRegisterPage">
  	
  	</div>
-    
-  </div>
-</div>
-
  
  	
-</main>
 </body>
 <script>
-resizeWidth();
+/* resizeWidth(); */
 
 var matchedProductList;
 var productListTable = $('.productList table');
