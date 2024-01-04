@@ -101,8 +101,10 @@
 </style>
 </head>
 <body>
+
 <c:import url="/side"/>
 		<div class="container-fluid cotentField">
+
 			 		 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
                     </div>

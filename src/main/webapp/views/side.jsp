@@ -22,11 +22,33 @@
 	href='https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>  
 </head>
 
+<style>
+	#accordionSidebar {
+		height: 100%;
+		position: fixed;
+		top: 0;
+		z-index: 2;
+		overflow-y: scroll;
+	}
+	#accordionSidebar::-webkit-scrollbar{
+		width: 0;
+	}
+	#content-wrapper{
+		width: 100%;
+		position: fixed;
+		top: 0;
+		z-index: 1;
+	}
+	.contentField{
+		padding-left: 250px;
+		margin-top: 80px;
+	}
+</style>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-    <div id="wrapper">
+
 
         <!-- 사이드바 영역 -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -177,8 +199,7 @@
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
-            <div id="content">
+
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -278,27 +299,12 @@
                 <!-- 여기까지 TopBar -->
 
                 <!-- 메인 콘텐츠 영역 -->
-                <div class="container-fluid">
+
 
      
                     </div>
-            </div>
-            <!-- 여기까지 콘텐츠 영역-->
 
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Cocean &copy; since 2023</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
 
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
     <!-- 여기까지 사이드/상단바 -->
 
     <!-- 페이지 상단 이동버튼-->
