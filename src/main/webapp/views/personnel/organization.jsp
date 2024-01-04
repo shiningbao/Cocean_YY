@@ -28,8 +28,9 @@
 </head>
 <body>
 <%-- <jsp:include page="../side.jsp"></jsp:include> --%>
-<input type="text" id="schName" value="" class="form-control mb-2">
-<button onclick="fSch()" class="btn btn-primary schbtn">탐색</button>
+<button onclick="fSch()" class="btn btn-primary schbtn">검색</button>
+<input type="text" id="schName" value="" class="form-control mb-2" style="width:70%">
+
 <div id="jstree"></div>
 
 <script>
