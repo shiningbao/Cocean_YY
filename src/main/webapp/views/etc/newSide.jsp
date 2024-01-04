@@ -21,34 +21,12 @@
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/2.1.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>  
 </head>
-<style>
- #accordionSidebar{
- 	position: fixed;
- 	z-index: 2;
- 	overflow-y : scroll;
- 	height: 100%;
- 	top: 0;
- }
-  #accordionSidebar::-webkit-scrollbar{ 
-  	width: 0; 
-  }
- #content-wrapper{
- 	top: 0;
- 	position: fixed;
- 	z-index: 1;
- 	width: 100%;
- }
- 
- .cotentField{
- 	padding-left : 252px;
- 	margin-top: 80px;
- }
-</style>
+
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-<!--     <div id="wrapper"> -->
+    <div id="wrapper">
 
         <!-- 사이드바 영역 -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -177,11 +155,11 @@
             </li>
 
             <!-- Nav Item - Tables -->
-<!--             <li class="nav-item"> -->
-<!--                 <a class="nav-link" href="#"> -->
-<!--                     <i class="fi fi-sr-gift"></i> -->
-<!--                     <span>복지몰</span></a> -->
-<!--             </li> -->
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fi fi-sr-gift"></i>
+                    <span>복지몰</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -199,7 +177,7 @@
         <div id="content-wrapper" class="d-flex flex-column">
 
             <!-- Main Content -->
-<!--             <div id="content"> -->
+            <div id="content">
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -296,14 +274,30 @@
                     </ul>
 
                 </nav>
+                <!-- 여기까지 TopBar -->
+
+                <!-- 메인 콘텐츠 영역 -->
+                <div class="container-fluid">
+
+     
+                    </div>
             </div>
+            <!-- 여기까지 콘텐츠 영역-->
 
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Cocean &copy; since 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
-
-<!--         </div> -->
+        </div>
         <!-- End of Content Wrapper -->
 
-<!--     </div> -->
+    </div>
     <!-- 여기까지 사이드/상단바 -->
 
     <!-- 페이지 상단 이동버튼-->
