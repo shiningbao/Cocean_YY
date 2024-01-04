@@ -7,7 +7,7 @@
 
 	
 	<insert id="join" parameterType="map">
-		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responsibility})
+		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responID})
 	</insert>
 	 <select id="getBranch">
         SELECT branchName FROM branch
@@ -19,15 +19,21 @@
 	</select>
 	
 	<select id="getHqID">
-		select DISTINCT departmentName FROM department d WHERE hqID=#{hqID}
+		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID}
 	</select>
 	
 	<select id="getDepartmentText">
-		SELECT responsibility es FROM department d WHERE departmentName = #{departmentText}
+		SELECT responName,responID from responsibility r JOIN department d ON r.departmentID =d.departmentID where d.departmentName =#{departmentText}
 	</select>
 	
-	<select id="getChart" resultType="tree">
-		SELECT * FROM jsTree ORDER BY CASE WHEN text LIKE '%장' THEN 0 ELSE 1 END, text;
+	<select id="getChart">
+		SELECT employeeID AS id, CONCAT('de', departmentID) AS parent, CONCAT(name, ' ',(SELECT p.positionName FROM `position` p WHERE p.positionID = e.positionID)) AS 'text', 'jstree-icon-worker' AS 'icon' FROM employee e WHERE e.status = '재직'
+		UNION ALL
+		SELECT CONCAT('de',departmentID) AS id, CONCAT('hq',hqID) AS parent, departmentName AS 'text' ,null AS 'icon' FROM department d WHERE d.isActive = 1
+		UNION ALL
+		SELECT CONCAT('hq',hqID) AS id, CONCAT('br',branchID) AS parent, hqName AS 'text' ,null AS 'icon' FROM headquarters h WHERE h.isActive =1
+		UNION ALL
+		SELECT CONCAT('br',branchID) AS id, '#' AS parent, branchName AS 'text' ,null AS 'icon' FROM branch b;	
 	</select>
 	
 	<insert id="joinTree">
@@ -87,18 +93,20 @@
 	</insert>
 	
 	<select id="datail">
-		SELECT 
-		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName, h.hqName,h.hqID, e.responsibility,
+				SELECT 
+		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName,d.departmentID, h.hqName,h.hqID,res.responID, res.responName,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
 		JOIN headquarters h ON d.hqID = h.hqID 
 		JOIN branch b ON h.branchID = b.branchID 
+		JOIN responsibility res ON e.responID = res.responID
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r ON e.rankID = r.rankID
 		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
 		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
-		WHERE e.employeeID = #{employeeID}
+		WHERE e.employeeID = #{employeeID};
+		
 	</select>
 	
 	<select id="employeeHistory">

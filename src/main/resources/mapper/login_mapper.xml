@@ -12,7 +12,7 @@ FROM department d JOIN headquarters h
 ON d.hqID = h.hqID JOIN employee e 
 ON e.departmentID = d.departmentID
 JOIN responsibility r ON r.responID = e.responID 
-where e.employeeID= 231000;
+where e.employeeID= #{param1}
 
 </select>
   

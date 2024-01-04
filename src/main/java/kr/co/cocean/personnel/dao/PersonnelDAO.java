@@ -31,9 +31,9 @@ public interface PersonnelDAO {
 
 	List<String> getBranchID(String branchID);
 
-	List<String> getHqID(String hqID);
+	List<HashMap<String, Object>> getHqID(String hqID);
 
-	List<String> getDepartmentText(String departmentText);
+	List<HashMap<String, Object>> getDepartmentText(String departmentText);
 
 	List<HashMap<String, Object>> personnelList();
 

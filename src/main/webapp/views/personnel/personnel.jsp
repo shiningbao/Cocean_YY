@@ -204,7 +204,7 @@ tbody tr {
                     <tr>
                         <th>지점</th>
                         <td>
-                            <select id="branchSelect" class="psSelect"></select>
+                            <select id="branchSelect" name="branchID" class="psSelect"></select>
                         </td>
                     </tr>
                     <tr>
@@ -224,7 +224,7 @@ tbody tr {
                     <tr>
                         <th>담당</th>
                         <td>
-                            <select id="resSelect" name="responsibility" class="psSelect">
+                            <select id="resSelect" name="responID" class="psSelect">
                                  <!-- 선택된 중분류에 따라 옵션이 동적으로 추가 -->
                              </select>
                         </td>
@@ -308,9 +308,10 @@ function getRankName() {
         }
     });
 }
+
 function onBranchSelectChange() {
     console.log('지점 선택시 본부항목 변경!!!!!!!!!!!!!!!!!');
-    var branchID = $('#branchSelect').val();
+var branchID = $('#branchSelect').val();
     console.log(branchID);
     $.ajax({
         url: 'getBranchID.do',
@@ -331,6 +332,7 @@ function onBranchSelectChange() {
                 $('#deSelect').val('1').trigger('change');
             } else {
                 $('#deSelect').val('4').trigger('change');
+                
             }
 
             console.log($('#branchSelect').val());
@@ -343,6 +345,7 @@ function onBranchSelectChange() {
 
 
 function onDeSelectChange() {
+	var branchID = $('#branchSelect').val();
     console.log('본부 선택시 부서항목 변경!!!!!!!!!!!!');
     departmentSelect.empty();
     var hqID = $('#deSelect').val();
@@ -354,14 +357,18 @@ function onDeSelectChange() {
             console.log(data);
             var departmentText = $('#departmentSelect option:selected').text();
             var firstOptionValue = $('#departmentSelect option:first').val();
-            data.forEach(function(option, index) {
-                var value = index + 1;
+            data.forEach(function(option) {
+                
                 departmentSelect.append($('<option>', {
-                    value: option,
-                    text: option
+                    value: option.departmentID,
+                    text: option.departmentName
                 }))
             });
-            $('#departmentSelect').prop('selectedIndex', 0).trigger('change');
+            $('#departmentSelect').val('1').trigger('change');
+			if(branchID==2){
+				$('#departmentSelect').val('9').trigger('change');
+			}
+            
            /*  if ($('#deSelect').val()=='1') {
             	 console.log(firstOptionValue);
             } else {
@@ -390,10 +397,10 @@ function onDepartmentSelect() {
             data: { departmentText: departmentText },
             success: function(data) {
                 console.log(data);
-                data.forEach(function(option, index) {
+                data.forEach(function(option) {
                     $('#resSelect').append($('<option>', {
-                        value: option,
-                        text: option
+                        value: option.responID,
+                        text: option.responName
                     }))
                 });
             },

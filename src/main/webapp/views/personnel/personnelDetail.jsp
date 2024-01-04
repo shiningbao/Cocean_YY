@@ -146,6 +146,39 @@ th {
     .type_list_box{
     	width:95%
     }
+    #fileInput, #fileSignatureInput {
+	display: none;
+}
+.photo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.photo img {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%; /* 이미지를 동그랗게 처리하는 CSS */
+}
+
+.photo2 img {
+	width: 55px;
+	height: 55px;
+}
+.file-icon {
+	width: 40px;
+	height: 40px;
+	transform: translate(-100%, 100%);
+	font-size: 24px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
 </style>
 </head>
 <body>
@@ -157,7 +190,7 @@ th {
 	<div class="hTitle">
 		<a>사원상세</a>
 	</div>
-		<form action="detailSave.do" method="POST" id="detailSave">
+		<form action="detailSave.do" method="POST" id="detailSave"  enctype="multipart/form-data">
 		<div class="">
 			<div class="wrap_info_content" style="margin-top: 10%;">
 				<div class="wrap_header">
@@ -174,17 +207,23 @@ th {
 					<tr>
 						<td class="profile_image" rowspan="4"><span
 							class="img_profile"> <label class="photo" for="fileInput"
-								style="width: 10%;"> <c:choose>
+								style="width: 10%;"> 
+								<label class="photo" for="fileInput">
+								<c:choose>
 										<c:when test="${person.profileImage != null}">
 											<img src="/photo/cocean/personnel/${person.profileImage}"
 												id="thumbnail_image" alt="프로필 사진">
+										<span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 										</c:when>
 										<c:otherwise>
 											<img src="/Cocean/resource/img/psProfile.jpg"
 												id="thumbnail_image" alt="프로필 사진">
+										<span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 										</c:otherwise>
 									</c:choose>
+									</label>
 							</label>
+							<input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
 						</span></td>
 						<th class="name">이름</th>
 						<th class="team">소속</th>
@@ -210,7 +249,7 @@ th {
 					</tr>
 					<tr>
 						<th class="rank">담당</th>
-						<td class="rank_txt">${person.responsibility }</td>
+						<td class="rank_txt">${person.responName }</td>
 						<th class="address">주소</th>
 						<td class="address_txt ">${person.address }</td>
 					</tr>
@@ -225,7 +264,7 @@ th {
 					<li data-tab="workHistory" class="tab">이력</li>
 					<li data-tab="history" class="tab">학력</li>
 					<li data-tab="departmentChangeLog" class="tab">부서변경로그</li>
-
+					<li data-tab="annualLeave" class="tab">연차기록</li>
 					<!-- 다른 탭 추가 -->
 				</ul>
 				<div class="tab-content" id="basicTab" style="display: none;">
@@ -233,78 +272,64 @@ th {
 						<h3 class="tab_title" style="display: none;">기본 정보</h3>
 						<div class="ehr_basic viewForm">
 						
-								<table class="multi-row-table" style="width:100%;">
-									<tbody>
-										<tr>
-											<th class="col1">입사일</th>
-											<td class="col2"><span class="wrap_date">
-													${person.joinDate} <span class="ic ic_calendar"></span>
-											</span></td>
-											<th class="col3"><span class="title_txt">직급</span></th>
-											<td class="col4"><select id="selectRankID" name="rankID"
-												class="psSelect">
-
-											</select></td>
-											<th class="col3">
-											<span class="title_txt">직책</span>
-											</th>
-											<td class="col4">
-											<select id="selectPositionID" name="positionID" class="psSelect">
-
-											</select>
-											</td>
-											<th class="col3">
-											<span class="title_txt">상태</span>
-											</th>
-											<td class="col4">
-											    <select id="selectStatus" name="status" class="psSelect">
-											        <option value="재직" ${person.status == '재직' ? 'selected' : ''}>재직</option>
-											        <option value="휴직" ${person.status == '휴직' ? 'selected' : ''}>휴직</option>
-											        <option value="퇴사" ${person.status == '퇴사' ? 'selected' : ''}>퇴사</option>
-											    </select>
-											</td>	
-											<!-- 추가 데이터를 원하시면 이어서 행을 추가하시면 됩니다. -->
-											
-										</tr>
-											<th class="col3">
-												지점
-											</th>
-											<td class="col4">
-												<select id="branchSelect" class="psSelect" name="branchID">
-												</select>
-											</td>
-											<th>
-												본부
-											</th>
-											<td>
-												<select id="deSelect" class="psSelect" name="hqID"></select>
-											</td>
-											<th>
-												부서
-											</th>
-											<td>
-												 <select id="departmentSelect" name="departmentID" class="psSelect"></select>
-											</td>
-
-											<th>
-												담당
-											</th>
-											<td>
-												  <select id="resSelect" name="responsibility" class="psSelect"></select>
-											</td>
-											<tr>
-												<th>
-												서명이미지
-													<td></td>
-												</th>
-												<th>
-												잔여연차
-													<td></td>
-												</th>
-												
-											</tr>
-									</tbody>
-								</table>
+							<table class="multi-row-table" style="width:100%;">
+							    <tbody>
+							        <tr>
+							            <th class="col1">입사일</th>
+							            <td class="col2">
+							                <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
+							            </td>
+							            <th class="col3"><span class="title_txt">직급</span></th>
+							            <td class="col4">
+							                <select id="selectRankID" name="rankID" class="psSelect"></select>
+							            </td>
+							            <th class="col3"><span class="title_txt">직책</span></th>
+							            <td class="col4">
+							                <select id="selectPositionID" name="positionID" class="psSelect"></select>
+							            </td>
+							            <th class="col3"><span class="title_txt">상태</span></th>
+							            <td class="col4">
+							                <select id="selectStatus" name="status" class="psSelect">
+							                    <option value="재직" ${person.status == '재직' ? 'selected' : ''}>재직</option>
+							                    <option value="휴직" ${person.status == '휴직' ? 'selected' : ''}>휴직</option>
+							                    <option value="퇴사" ${person.status == '퇴사' ? 'selected' : ''}>퇴사</option>
+							                </select>
+							            </td>
+							        </tr>
+							        <tr>
+							            <th>지점</th>
+							            <td>
+							                <select id="branchSelect" class="psSelect" name="branchID"></select>
+							            </td>
+							            <th>본부</th>
+							            <td>
+							                <select id="deSelect" class="psSelect" name="hqID"></select>
+							            </td>
+							            <th>부서</th>
+							            <td>
+							                <select id="departmentSelect" name="departmentID" class="psSelect"></select>
+							            </td>
+							            <th>담당</th>
+							            <td>
+							                <select id="resSelect" name="responID" class="psSelect"></select>
+							            </td>
+							        </tr>
+							        <tr>
+							            <th>서명이미지</th>
+							            <td>
+							                <label class="photo2" for="fileSignatureInput" style="height: 10px;">
+							                    <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
+							                    <span class="file-icon2"><i class="fas fa-upload"></i></span>
+							                </label>
+							                <div class="file-upload">
+							                    <input type="file" name="fileSignature" id="fileSignatureInput" title="등록" style="height:inherit;">
+							                </div>
+							            </td>
+										<th>비밀번호초기화</th>
+										<td></td>
+							        </tr>
+							    </tbody>
+							</table>
 						</div>
 					</div>
 
@@ -435,8 +460,8 @@ var rankID = '${person.rankID}';
 var positionID ='${person.positionID}';
 var branchPsID ='${person.branchID}';
 var hqPsID = '${person.hqID}';
-var dpName ='${person.departmentName}';
-var psResponsibility = '${person.responsibility}';
+var dpName ='${person.departmentID}';
+var psResponsibility = '${person.responID}';
 console.log('------------');
 
 
@@ -549,15 +574,14 @@ function onDeSelectChange() {
             console.log(data);
             var departmentText = $('#departmentSelect option:selected').text();
             var firstOptionValue = $('#departmentSelect option:first').val();
-            data.forEach(function(option, index) {
-                var value = index + 1;
+            data.forEach(function(option) {
                 var $option = $('<option>', {
-                    value: option,
-                    text: option
+                    value: option.departmentID,
+                    text: option.departmentName
                 });
 
                 // 여기에 원하는 조건을 추가하여 선택되도록 설정
-                if (option == dpName) {
+                if (option.departmentID == dpName) {
                     $option.prop('selected', true);
                     
                 }
@@ -587,11 +611,19 @@ function onDepartmentSelect() {
             data: { departmentText: departmentText },
             success: function(data) {
                 console.log(data);
-                data.forEach(function(option, index) {
-                    $('#resSelect').append($('<option>', {
-                        value: option,
-                        text: option
-                    }))
+                data.forEach(function(option) {
+                    var $option = $('<option>', {
+                        value: option.responID,
+                        text: option.responName
+                    });
+
+                    // 여기에 원하는 조건을 추가하여 선택되도록 설정
+                    if (option.responID == psResponsibility) {
+                        $option.prop('selected', true);
+                        
+                    }
+
+                    $('#resSelect').append($option);
                 });
             },
             error: function(e) {

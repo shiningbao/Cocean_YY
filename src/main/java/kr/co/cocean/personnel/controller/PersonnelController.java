@@ -59,41 +59,13 @@ public class PersonnelController {
 	
     @GetMapping(value="/personnel/getHqID.do")
 	@ResponseBody
-    public List<String> getHqID(String hqID) {
+    public List<HashMap<String, Object>> getHqID(String hqID) {
         logger.info("val =="+hqID);
-        List<String> res = service.getHqID(hqID);
-
+        List<HashMap<String, Object>>  res = service.getHqID(hqID);
+        
 		return res;
 	}
-	@PostMapping(value="/personnel/join.do")
-	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
-	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
-		ModelAndView mav = new ModelAndView();
-		logger.info("files!!! : {}",file.getSize());
-		logger.info("fileSignature!!! : {}",fileSignature.getSize());
-		logger.info("params =="+params);
-		String page= "";
-		String pw = "cocean1111";
-		
-		String password = encoder.encode(pw);
-		params.put("password", password);
-		logger.info("aaa=="+params.get("positionID"));
-		String status ="재직";
-		params.put("status",status);
-		params.put("remainingAnnualLeave", "0");
 
-		int row= service.join(params,file,fileSignature);
-		
-		if(row>0) {
-			service.joinTree(params);
-			String perNum = (String) params.get("employeeID");
-			mav.setViewName("redirect:/personnel/personnelList.go");
-		}else {
-			mav.setViewName("redirect:/personnel/personnelList.go");
-		}
-		return mav;
-	}
-	
 
     @RequestMapping(value="/personnel/getBranch.do")
     @ResponseBody
@@ -107,9 +79,9 @@ public class PersonnelController {
     
 	@RequestMapping(value="/personnel/getDepartmentText.do")
 	@ResponseBody
-	public List<String> getDepartmentText(String departmentText){
+	public List<HashMap<String, Object>> getDepartmentText(String departmentText){
 		
-		List<String> getDepartmentText = service.getDepartmentText(departmentText);
+		List<HashMap<String, Object>> getDepartmentText = service.getDepartmentText(departmentText);
 		
 		return getDepartmentText;
 	}
@@ -231,10 +203,41 @@ public class PersonnelController {
 		return list;
 	}
 	
+	@PostMapping(value="/personnel/join.do")
+	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
+	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
+		ModelAndView mav = new ModelAndView();
+		logger.info("files!!! : {}",file.getSize());
+		logger.info("fileSignature!!! : {}",fileSignature.getSize());
+		logger.info("params =="+params);
+		String page= "";
+		String pw = "cocean1111";
+		
+		String password = encoder.encode(pw);
+		params.put("password", password);
+		logger.info("aaa=="+params.get("positionID"));
+		String status ="재직";
+		params.put("status",status);
+		params.put("remainingAnnualLeave", "0");
+
+		int row= service.join(params,file,fileSignature);
+		
+		if(row>0) {
+			 service.joinTree(params);
+			String perNum = (String) params.get("employeeID");
+			mav.setViewName("redirect:/personnel/personnelList.go");
+		}else {
+			mav.setViewName("redirect:/personnel/personnelList.go");
+		}
+		return mav;
+	}
+	
+	
 
 	@PostMapping(value="/personnel/detailSave.do")
 	public ModelAndView historySave(@ModelAttribute HistoryDTO dto , @RequestParam int employeeID,
-			 @RequestParam HashMap<String, Object> params , @RequestParam String tabID) {
+			 @RequestParam HashMap<String, Object> params , @RequestParam String tabID,
+			 @RequestParam("file") MultipartFile file , @RequestParam("fileSignature") MultipartFile fileSignature) {
 	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
 	    
 	    HistoryDTO[] historyArray = dto.getHistoryArray();
@@ -289,17 +292,19 @@ public class PersonnelController {
 		              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 		  		}
 	    	  }
-				/*
-				 * if(tabID.equals("basic")) {
-				 * 
-				 * service.updateEmployee(params,employeeID);
-				 * 
-				 * }
-				 */
+				
+//				  if(tabID.equals("basic")) {
+//				  
+//				  int row =service.updateEmployeeInfo(employeeID,params,fileSignature,file);
+//				  if(row>0) { service.updatejsTree(employeeID,params); // params.departmentID로
+//				  parent UPDATE id 가 employeeID인거로
+//				  service.insertDepartLog(employeeID,"오늘날짜","변경전부서번호","변경후부서번호"); // remarks 는
+//				  없어도될 } }
+				 
 				 
 	    
   	    
-      return mav; 
+			return mav; 
       }
         
 
