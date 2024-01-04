@@ -218,7 +218,6 @@ public class PersonnelController {
 		logger.info("aaa=="+params.get("positionID"));
 		String status ="재직";
 		params.put("status",status);
-		params.put("remainingAnnualLeave", "0");
 
 		int row= service.join(params,file,fileSignature);
 		
@@ -275,47 +274,49 @@ public class PersonnelController {
 	    		// 이후에 수행할 작업을 여기에 추가
 	    		int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
 	    	}
-	    }
+	    }else if(tabID.equals("history")){
+	          for (HistoryDTO schistory : schistoryArray) {
+	        	  dto.setEmployeeID(employeeID);
+	              String startDate = schistory.getStartDate();
+	              String endDate = schistory.getEndDate();
+	              String organizationName = schistory.getOrganizationName();
+	              String remarks = schistory.getRemarks();
+	              String sccategory = schistory.getCategory();
+	              logger.info("Employee ID: " + employeeID);
+	              logger.info("Start Date: " + startDate);
+	              logger.info("End Date: " + endDate);
+	              logger.info("Organization Name: " + organizationName);
+	              logger.info("Remarks: " + remarks); 
+	              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
+	  		}
+	    }else if(tabID.equals("basic")) {
+	  	  
+			  int row = service.updateEmployee(employeeID,params);
+			  if(row>0) {
+				  service.updateEmployeeImg(employeeID,fileSignature,file);
+				  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+			  }
+	    }else if(tabID.equals("info")) {
 	    	
-	    if (tabID.equals("history")) {
-		          for (HistoryDTO schistory : schistoryArray) {
-		        	  dto.setEmployeeID(employeeID);
-		              String startDate = schistory.getStartDate();
-		              String endDate = schistory.getEndDate();
-		              String organizationName = schistory.getOrganizationName();
-		              String remarks = schistory.getRemarks();
-		              String sccategory = schistory.getCategory();
-		              logger.info("Employee ID: " + employeeID);
-		              logger.info("Start Date: " + startDate);
-		              logger.info("End Date: " + endDate);
-		              logger.info("Organization Name: " + organizationName);
-		              logger.info("Remarks: " + remarks); 
-		              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
-		  		}
-	    	  }
-				
-				  if(tabID.equals("basic")) {
-					  
-				  int row = service.updateEmployee(employeeID,params);
-				  if(row>0) {
-					  service.updateEmployeeImg(employeeID,fileSignature,file);
-					  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
-				  }
-				 
-					/* 
-					 * if(row>0) {
-					 * 
-					 * 
-					 * }
-					 */
-				  
-				  }
-				 
+	    }else {
+	    	mav.addObject("msg", "저장할 값이 없습니다.");
+	    }
+
+
 				 
 	    
   	    
 			return mav; 
       }
+	@PostMapping(value="/personnel/resetPassword.do")
+	@ResponseBody
+	public String resetPassword(@RequestParam String employeeID) {
+		String pw = "cocean1111";
+		String password = encoder.encode(pw);
+		service.resetPassword(password,employeeID);
+		return "success";
+	}
+	
         
 
 }
