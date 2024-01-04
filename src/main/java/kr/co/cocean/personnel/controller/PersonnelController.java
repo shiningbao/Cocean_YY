@@ -315,6 +315,16 @@ public class PersonnelController {
 		return "success";
 	}
 	
+	
+	@PostMapping(value="/personnel/getEmployeeInfo.do")
+	@ResponseBody
+	public ModelAndView getEmployeeInfo(@RequestParam String employeeID) {
+		logger.info("조직관리 =="+employeeID);
+		ModelAndView mav = new ModelAndView();
+		HashMap<String, Object> employeeInfo = service.getEmployeeInfo(employeeID);
+		
+		return mav;
+	}
         
 
 }

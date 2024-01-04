@@ -21,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.main.dto.FileDTO;
+import kr.co.cocean.personnel.controller.object;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
@@ -225,6 +226,10 @@ public class PersonnelService {
 	public void resetPassword(String password, String employeeID) {
 		
 		dao.resetPassword(password,employeeID);
+	}
+	public HashMap<String, Object> getEmployeeInfo(String employeeID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
