@@ -13,6 +13,12 @@ public class MainController {
 		return "side";
 	}
 	
+	@RequestMapping(value="/newSide")
+	public String newSide() {
+		
+		return "newSide";
+	}
+	
 	@RequestMapping(value="/home")
 	public String home() {
 		

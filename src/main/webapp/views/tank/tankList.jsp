@@ -57,10 +57,10 @@ label {
 }
 </style>
 </head>
+	<c:import url="/newSide"/>
 <body>
-	<c:import url="/side"/>
-<main>
-	<div class="content">
+<main id="rr">
+	<div class="row">
 	<div class="hTitle">
 		<a>코션하우스</a>
 	</div>
@@ -163,6 +163,8 @@ label {
 </body>
 <script>
 
+start();
+
 $(".p").click(function() {
 	const n= $(this).attr("data-list-pn");
 	$("#pageNum").val(n);
@@ -180,7 +182,18 @@ $(".p").click(function() {
 		})
 	}
 
-	resizeWidth();
+	//resizeWidth();
+	
+	function start(){
+		var main = $('#rr').innerHTML;
+		console.log(rr);
+		$('.container').innerHTML = main;
+		
+	}
+
+
+	
+	
 
 </script>
 </html>

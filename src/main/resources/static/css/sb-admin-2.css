@@ -18,10 +18,10 @@
   font-style: normal;
 }
 
-h1, h2, h3, h4, h5, h6, a, span, input, p {
+h1, h2, h3, h4, h5, h6, a, span, input, p, button, th, td {
   font-family: 'SOYOMapleBoldTTF';
 }
-body {
+body, .btn, lable, option {
   font-family: 'SOYOMapleBoldTTF';
 }
 
