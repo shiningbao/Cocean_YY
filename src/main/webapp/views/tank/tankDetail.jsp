@@ -57,26 +57,26 @@ button {
 	position: absolute;
 }
 
-.topBar {
-	width: 72%;
-	height: 60px;
-	left: 22%;
-	position: absolute;
-	background-color: #86B0F3;
-	display: flex;
+/* .topBar { */
+/* 	width: 72%; */
+/* 	height: 60px; */
+/* 	left: 22%; */
+/* 	position: absolute; */
+/* 	background-color: #86B0F3; */
+/* 	display: flex; */
 	
-	justify-content: space-evenly;
-}
-.topBar div{
+/* 	justify-content: space-evenly; */
+/* } */
+/* .topBar div{ */
 	
-	width: 25%;
-	height: 100%;
-	position: relative;
-	text-align: center;
-	font-size: 21px;
-	padding-top: 14px;
-	cursor: default;
-}
+/* 	width: 25%; */
+/* 	height: 100%; */
+/* 	position: relative; */
+/* 	text-align: center; */
+/* 	font-size: 21px; */
+/* 	padding-top: 14px; */
+/* 	cursor: default; */
+/* } */
 
 .barItem:hover{
 	cursor: pointer;
@@ -103,17 +103,20 @@ button {
 </head>
 <body>
 	<c:import url="/side" />
-	<div id="hTitle">
-		<p>${map.tankName}</p>
-		 <a>${map.branchName} [${map.area}]</a></br>
-		 <a>${map.tankType} [${map.capacity}]</a></br>
-		 <a>등록일 [${fn:substring(map.registrationDate,0,10)}]</a>
-	</div>
+	<div class="container-fluid contentField">
+	<div class="row">
 	<div class="topBar">
 		<div>하우스 정보</div>
 		<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
 		<div class="barItem">관리 계획</div>
 		<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
+	</div>
+	</div>
+	<div id="hTitle">
+		<p>${map.tankName}</p>
+		 <a>${map.branchName} [${map.area}]</a></br>
+		 <a>${map.tankType} [${map.capacity}]</a></br>
+		 <a>등록일 [${fn:substring(map.registrationDate,0,10)}]</a>
 	</div>
 	<div id="chart">
 		<canvas id="myChart"></canvas>
@@ -200,7 +203,7 @@ button {
         </div>
       </div>
     </div>
-    
+    </div>
 </body>
 <script>
 const offset = 1000 * 60 * 60 * 9

@@ -105,7 +105,7 @@ button {
 </head>
 <body>
 	<c:import url="/side" />
-	<main>
+	<div class="container-fluid contentField">
 <!-- 		<div id="hTitle"> -->
 <!-- 			<a>코션하우스 일지</a> -->
 <!-- 		</div> -->
@@ -160,6 +160,7 @@ button {
 
 
 	<c:import url="tankModal" />
+	</div>
 	</main>
 </body>
 <script>
