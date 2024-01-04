@@ -12,10 +12,9 @@
 </head>
 <body>
 <c:import url="/side"/>
-<main>
-	<div class="content">
-		<div class="hTitle">
-			<a>코션친구들</a>
+	<div class="container-fluid cotentField">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
 		</div>
 		<nav class="navbar navbar" id="search">
 <!-- 		<div class="checkBox">   -->
@@ -98,7 +97,8 @@
 		<button  type="button" class="btn btn-primary float-right" id="write">등록</button>
 		
 	</div>
-</main>
+
+<c:import url="/footer"/>
 </body>
 
 <script>

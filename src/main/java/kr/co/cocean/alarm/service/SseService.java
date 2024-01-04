@@ -4,26 +4,33 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import kr.co.cocean.alarm.dao.SseDAO;
+import kr.co.cocean.alarm.dao.AlarmDAO;
+import kr.co.cocean.alarm.dto.AlarmDTO;
 
 @Service
 public class SseService {
 	
-	//@Autowired SseDAO dao;
+	@Autowired AlarmDAO alramDao;
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 	
+	public static String ctx;
 	
 	public SseEmitter subscribe(long ID) {
 		
 		SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 		
 		try {
-			emitter.send(SseEmitter.event().name("connect"));
+			logger.info("sseEmitters : {}",sseEmitters);
+			emitter.send(SseEmitter.event().name("connect").data("connect success"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -41,18 +48,29 @@ public class SseService {
 		
 		long ID = employeeID;
 		
-		
 		String content = "";
 		
 		
 		switch (category) {
-		case "결재":
-			content = "<a href=\"<c:url value='/approval/draftDetail.go?idx="+idx+"&category=결재'/>\">"+form+" 결재해주세요.</a>";
-			break;
 
-		default:
-			break;
+			case "결재":
+				content = "<a href='"+ctx+"/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category=결재'>"+form+" 결재해주세요.</a>";
+				break;
+	
+			case "로그":
+				content = "<a href='"+ctx+"/animal/detail.go?animalID="+idx+"'>"+form+" 상세보기</a>";
+				break;
+				
+			default:
+				break;
+			
 		}
+		
+		AlarmDTO dto = new AlarmDTO();
+		dto.setEmployeeID(employeeID);
+		dto.setContent(content);
+		
+		alramDao.insertAlarm(dto);
 		
 		if(sseEmitters.containsKey(ID)) {
 			SseEmitter emitter = sseEmitters.get(ID);
@@ -88,6 +106,5 @@ public class SseService {
 		
 	}
 
-	
 	
 }

@@ -111,7 +111,7 @@ button {
 	</div>
 	<div class="topBar">
 		<div>하우스 정보</div>
-		<div class="barItem">하우스 기록</div>
+		<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
 		<div class="barItem">관리 계획</div>
 		<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
 	</div>
@@ -186,7 +186,7 @@ button {
 				<c:forEach items="${tankAnimal}" var="item">
 					<tr>
 						<td scope="row">${item.commonName}</td>
-						<td>${item.nickname}</td>
+						<td><a href="/Cocoean/animal/detail.go?animalID=${item.animalID}">${item.nickname}</a></td>
 						<td>${item.individual}</td>
 						<td>${item.status}</td>
 					</tr>
