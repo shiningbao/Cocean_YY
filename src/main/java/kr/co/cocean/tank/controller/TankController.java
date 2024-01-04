@@ -114,7 +114,10 @@ public class TankController {
 	}
 	
 	
-	
+	@GetMapping("tank/newSide")
+	public String newSide() {
+		return "newSide";
+	}
 	
 	
 	
