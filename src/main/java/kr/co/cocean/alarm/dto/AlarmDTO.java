@@ -2,7 +2,10 @@ package kr.co.cocean.alarm.dto;
 
 import java.sql.Date;
 
-public class SseDTO {
+import org.apache.ibatis.type.Alias;
+
+@Alias("alarm")
+public class AlarmDTO {
 	
 	private int historyID;
 	private int employeeID;

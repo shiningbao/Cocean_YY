@@ -141,7 +141,8 @@ public class AnimalService {
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
 		SseService sse = new SseService();
-		//sse.alarm(1, animalID);
+		logger.info("알람 등록 @@@@@@@@@@@@@@@@@@@@@@@@");
+		sse.alarm("로그", 1, animalID, "코션친구들");
 		
 	}
 

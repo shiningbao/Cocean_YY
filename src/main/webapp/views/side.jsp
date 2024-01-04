@@ -182,9 +182,30 @@
 	eventSource.addEventListener('alarm', function(event){
 		console.log(event.data);
 		$('#alarm').html(event.data);
-		
 	});
-
+	
+	eventSource.addEventListener('connect', function(event){
+		console.log(event.data);	
+	});
+	alarmList();
+	function alarmList(){
+		$.ajax({
+			type:'post',
+			url:'<c:url value="/alarm/getList"/>',
+			data:{},
+			success:function(data){
+				console.log(data);
+				drawAlarm(data.alarmList);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function drawAlarm(list){
+		
+	}
 	
 	
 	

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.alarm.dao.AlarmDAO">	
+	
+	<insert id="insertAlarm" parameterType="alarm">
+		INSERT INTO notificationHistory(employeeID,content) VALUES(#{employeeID},#{content})
+	</insert>	
+	
+	<select id="getList" resultType="alarm">
+		SELECT historyID, content, notificationTime FROM notificationHistory WHERE employeeID = #{param1} AND isRead = 0;
+	</select>
+
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
