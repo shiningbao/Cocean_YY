@@ -28,15 +28,26 @@
 </head>
 <body>
 <%-- <jsp:include page="../side.jsp"></jsp:include> --%>
+<div>
 <button onclick="fSch()" class="btn btn-primary schbtn">검색</button>
 <input type="text" id="schName" value="" class="form-control mb-2" style="width:70%">
-
+</div>
 <div id="jstree"></div>
 
 <script>
 function fSch() {
     console.log("껌색할께영");
     $('#jstree').jstree(true).search($("#schName").val());
+/*     var tree = $('#jstree').jstree(true);
+    var selectedNode = tree.get_node(nodeId);
+
+    if (selectedNode) {
+        // 찾은 노드를 선택하고 화면에 표시하기
+        tree.select_node(selectedNode);
+        tree.show_node(selectedNode);
+    } else {
+        console.log("해당 ID를 가진 노드를 찾을 수 없습니다.");
+    } */
 }
 
 $(function () {
@@ -65,7 +76,10 @@ $(function () {
         employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
         
         nodeText = $("#jstree").jstree(true).get_node(clickedNode).text;
+        console.log(employeeID);
         console.log(nodeText);
+        
+  
         //console.log(employeeID);
     }); 
     // 더블클릭시 이벤트
@@ -79,12 +93,20 @@ $(function () {
     		
    			sendEmployeedID(employeeID,nodeText);
     	}
+
     });
     
     function sendEmployeedID(employeeID,nodeText){
     	//console.log('값 보내기');
     	getEmployeeID(employeeID,nodeText);
     }
+    
+    function aaa(){
+    	var abb= employeeID;
+    	return abb;
+    }
+    
+    
 });
 
 </script>

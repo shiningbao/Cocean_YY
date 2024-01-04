@@ -6,35 +6,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
-<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-	rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<!-- Bootstrap JS -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
-<link rel="stylesheet"
-	href="<c:url value='/resource/css/personnel/personnel.min.css'/>">
+<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon"> -->
+<!-- <link -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" -->
+<!-- 	rel="stylesheet"> -->
+<!-- <!-- Bootstrap CSS --> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
+<!-- <!-- Bootstrap JS --> -->
+<!-- <script -->
+<!-- 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
+<%-- <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>"> --%>
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<c:url value='/resource/css/personnel/personnel.min.css'/>"> --%>
+	
  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style>
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px;
-	position: absolute;
-	top: 120px;
-}
 
-#hTitle a {
-	font-size: 22px;
-}
 
 .photo {
 	justify-content: start !important;
@@ -50,12 +41,7 @@
 .wrap_info_content {
 }
 
-/* 테이블 */
-table {
-    width: 80%%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
+
 
 th, td {
     border: 1px solid #ddd;
@@ -84,12 +70,6 @@ th {
 .subPs{
 	margin-top: 12%;
 }
-.subPs1{
-}
-.subPs2{
-	
-}
-
 
 
 .tab_menu {
@@ -128,8 +108,6 @@ th {
     /* 탭 내용 숨김 */
     .tab-content {
     display: none;
-    width: 95%;
-    border: 1px solid #ccc;
     padding: 10px;
     background-color: #fff;
     border-radius: 0 0 5px 5px;
@@ -142,18 +120,11 @@ th {
     .formbtn{
     	margin-left: 40%;
     }
-    
-    .type_list_box{
-    	width:95%
-    }
+
     #fileInput, #fileSignatureInput {
 	display: none;
 }
-.photo {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+
 
 .photo img {
 	width: 150px;
@@ -168,7 +139,7 @@ th {
 .file-icon {
 	width: 40px;
 	height: 40px;
-	transform: translate(-100%, 100%);
+	transform :translate(280%, -100%);
 	font-size: 24px;
 	color: #379cff;
 	cursor: pointer;
@@ -195,20 +166,26 @@ th {
 	justify-content: center;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+#resetPassword{
+	position: absolute;
+    top: 78%;
+}
 </style>
 </head>
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
-	<main>
-		<div class="content">
-		
-	
-	<div class="hTitle">
-		<a>사원상세</a>
+<c:import url="/side"/>
+<div class="container-fluid contentField">
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">사원상세</h1>
 	</div>
+		<div class="col-12">
+			<div class="card shadow">
+				<div class="card-body">
+
 		<form action="detailSave.do" method="POST" id="detailSave"  enctype="multipart/form-data">
 		<div class="">
-			<div class="wrap_info_content" style="margin-top: 10%;">
+			<div class="wrap_info_content" >
 				<div class="wrap_header">
 					<div class="wrap_photo"></div>
 
@@ -217,13 +194,13 @@ th {
 
 				</div>
 			</div>
+							<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
 			<table class="type_list_box">
 				<tbody>
 
 					<tr>
-						<td class="profile_image" rowspan="4"><span
-							class="img_profile"> <label class="photo" for="fileInput"
-								style="width: 10%;"> 
+						<td class="profile_image" rowspan="4" style="width: 10%"><span
+							class="img_profile"> <label class="photo" for="fileInput"> 
 								<label class="photo" for="fileInput">
 								<c:choose>
 										<c:when test="${person.profileImage != null}">
@@ -244,6 +221,7 @@ th {
 						<th class="name">이름</th>
 						<th class="team">소속</th>
 						<td class="last" colspan="3">${person.departmentName }</td>
+						
 					</tr>
 					<tr>
 						<td class="name_txt" rowspan="3">
@@ -272,6 +250,12 @@ th {
 				</tbody>
 			</table>
 		</div>
+		</div>
+	</div>
+</div>
+		<div class="col-12" style="margin-top: 20px;">
+			<div class="card shadow">
+				<div class="card-body">
 
 		<div class="tab_menu_wrap">
 			<input type="hidden" name="beforeDpID" value="${person.departmentID}">
@@ -345,7 +329,7 @@ th {
 							            </td>
 										<th>비밀번호초기화</th>
 										<td>
-											<button class="btn btn-primary" id="resetPassword">초기화 </button>
+											
 										</td>
 							        </tr>
 							    </tbody>
@@ -510,13 +494,15 @@ th {
         <button class="btn btn-outline-primary detailCancleBtn">취소</button>
         <button class="btn btn-primary detailSaveBtn" type="button">저장</button>
         </div>
-</form>
+		</form>
+		</div>
+		</div>
+		</div>
 	</div>
-	</main>
+<c:import url="/footer"/>
 </body>
 
 <script>
-resizeWidth();
 var rankID = '${person.rankID}';
 var positionID ='${person.positionID}';
 var branchPsID ='${person.branchID}';
@@ -874,17 +860,22 @@ $('.detailSaveBtn').on('click',function(){
 });
 
 $('#resetPassword').on('click',function(){
-	$.ajax({
-		url:'resetPassword.do',
-		data:{employeeID:employeeID},
-		type:'post',
-		success:function(data){
-			console.log(data);
-		},
-		error:function(e){
-			console.log(e);
-		}
-	})
+	if(confirm("비밀번호를 초기화 하시겠습니까?")){
+		$.ajax({
+			url:'resetPassword.do',
+			data:{employeeID:employeeID},
+			type:'post',
+			success:function(data){
+				console.log(data);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		})
+	}else{
+		
+	}
+
 });
 function sample6_execDaumPostcode() {
     new daum.Postcode({
