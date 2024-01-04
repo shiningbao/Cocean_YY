@@ -9,7 +9,7 @@ public class MainController {
 	@RequestMapping(value="/side")
 	public String side() {
 		
-		return "newSide";
+		return "side";
 	}
 
 	@RequestMapping(value="/footer")
