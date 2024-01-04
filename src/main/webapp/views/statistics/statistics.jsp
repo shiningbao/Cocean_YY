@@ -110,14 +110,15 @@ function drawBarGraph(data) {
   	console.log("코션친구들 막대그래프 그리기");
   	console.log(data);
   	
+  	var totalAnimal =  
   	
-  }else if(data == data.tank){
+  }else if(data[0].tankID != null){
   	
-  }else if(data == data.product){
+  }else if(data[0].category = "상품"){
   	
-  }else if(data == data.ticket){
+  }else if(data[0].category = "티켓"){
   	
-  }else if(data == data.visitors){
+  }else if(data[0].category = "관람객"){
   	
   } 
   

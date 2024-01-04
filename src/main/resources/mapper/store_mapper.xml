@@ -27,11 +27,11 @@
         	select * from productInformation  where productName =#{searchKeyword}  AND category="상품"
         </when>
     	<otherwise>
-			select  pi.productID, pi.productName,pi.category, pi.price, bp.branchID, bp.status 
+			SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status 
 			FROM productInformation pi
-            JOIN branchProduct bp ON pi.productID = bp.productID
-            JOIN branch b ON bp.branchID = b.branchID
-            WHERE pi.productName = #{searchKeyword} AND b.branchName = #{branchName}
+			JOIN branchProduct bp ON pi.productID = bp.productID
+			JOIN branch b ON bp.branchID = b.branchID
+			WHERE pi.productName LIKE CONCAT('%', #{searchKeyword}, '%') AND b.branchName = #{branchName};
     	</otherwise>
 	</choose>
 	</select>

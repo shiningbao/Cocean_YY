@@ -29,7 +29,7 @@
 <style>
 .listTable {
     overflow: auto;
-    width: 800px;
+    width: 256px;
     height: 150px; /* 디자인에 맞게 더 큰 값을 설정하세요 */
 }
 
@@ -39,14 +39,14 @@ text
 }
 .productList{
 position: absolute;
-    left: 800px;
-    top: 170px;
+    left: 770px;
+    top: 70px;
     width: 500px;
 }
 .ticketList{
 position: absolute;
-    left: 800px;
-    top: 400px;
+    left: 770px;
+    top: 422px;
 }
 #modalSearch{
 	width: 300px;
@@ -77,8 +77,8 @@ top: 100px;
 
 <div class="commonContainer">	
 	<div class="commonContent">
-<div class="branchLocation">지점 위치
-<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" >등록</button>
+<div class="branchLocation">지점
+<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">등록</button>
 </div>
 <div id="map"></div>
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
@@ -378,10 +378,14 @@ new Promise((resolve, reject) => {
 	    			console.log("------------------");
     				for (var i = 0; i < data.branchList.length; i++) {
     				    console.log(data.branchList[i].branchName);
-    				    var branchButton = $('<button class="branchButton" >' + data.branchList[i].branchName + '</button>');
+    				    var branchButton = $('<button class="branchButton">' + data.branchList[i].branchName + '</button>');
     				    branchButton.data('branchName', data.branchList[i].branchName);
     				    $('.branchLocation').append(branchButton);
+    				    
+    		       		
     				}
+    				   /*  var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal">등록</button>');
+    		       		$('.branchLocation').append(registerButton); */
     				// 상품 리스트 추가
     				console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
@@ -732,19 +736,19 @@ searchProduct(searchKeyword, currentBranchName);
         // 검색된 결과에 따라 상품 또는 티켓을 보여주는 테이블
         for (var i = 0; i < data.searchedList.length; i++) {
             var product = data.searchedList[i];
-
+			
             if (product.category == "상품") {
                 console.log("상품");
-
+				console.log(product);
                 var productListTable = $('.productList table');
                 productListTable.empty(); // 기존 내용 비우기
                 productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-                var productInfo = '<tr>' +
+                		var productInfo = '<tr>' +
                     '<td>' + product.productID + '</td>' +
                     '<td>' + product.productName + '</td>' +
                     '<td>' + product.price + '</td>' +
                     '</tr>';
-                productListTable.append(productInfo);
+                productListTable.append(productInfo);				
             } else {
                 console.log("티켓");
 
