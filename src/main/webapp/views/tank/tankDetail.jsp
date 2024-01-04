@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #chart {
-	width: 75%;
+	width: 60%;
 	height: 45%;
 	left: 33%;
 	position: absolute;
@@ -104,8 +104,7 @@ button {
 <body>
 	<c:import url="/side" />
 	<div class="container-fluid contentField">
-	
-	<div class="row">
+
 	<div class="col-md">
 		<div class="topBar">
 			<div>하우스 정보</div>
@@ -114,7 +113,7 @@ button {
 				<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
 			</div>
 		</div>
-	</div>
+
 	<div id="hTitle">
 		<p>${map.tankName}</p>
 		 <a>${map.branchName} [${map.area}]</a></br>
@@ -204,10 +203,10 @@ button {
               </div>
           </div>
         </div>
-      </div>
+     	</div>
+     	</div>
     </div>
-    <c:import url="/footer"/>
-    </div>
+<c:import url="/footer"/>
 </body>
 <script>
 const offset = 1000 * 60 * 60 * 9
