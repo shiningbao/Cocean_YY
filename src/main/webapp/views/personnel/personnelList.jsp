@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<%-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
+<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>"> --%>
 <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
 <!-- 부트스트랩 CSS/favicon -->
@@ -68,11 +68,6 @@
     width: 
 }
 
-img{
-	widht:20px;
-	height:20px;
-}
-
 .dropdown {
     position: relative;
 }
@@ -106,15 +101,14 @@ img{
 </style>
 </head>
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
-	<main>
-		<div class="content">
-			<div class="hTitle">
-				<a>사원리스트</a>
-			</div>
-
-<!-- 	<div class="thisMember">현재 사원수</div> -->
-		<button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">사원등록</button>
+	<jsp:include page="../newSide.jsp"></jsp:include>
+		<div class="container-fluid">
+			 		 <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
+                    </div>
+		    <div class="card shadow mb-4">
+                      <div class="card-body">
+                                    <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">사원등록</button>
         <div id="checkBox">
         
         <nav class="navbar navbar float-right" id="search">
@@ -186,8 +180,13 @@ img{
         </div>
       </div>
     </div>
-				</div>
-	</main>
+</div>
+                                    
+                                    
+                                </div>
+                            </div>
+<!-- 	<div class="thisMember">현재 사원수</div> -->
+		
 	
 </body>
 <script>

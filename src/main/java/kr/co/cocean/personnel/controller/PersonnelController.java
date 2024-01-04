@@ -298,8 +298,6 @@ public class PersonnelController {
 			  }
 	    }else if(tabID.equals("info")) {
 	    	
-	    }else {
-	    	mav.addObject("msg", "저장할 값이 없습니다.");
 	    }
 
 

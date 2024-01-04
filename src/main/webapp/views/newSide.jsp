@@ -101,9 +101,10 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href='<c:url value="/facility/facility.go"/>'
+                <a class="nav-link" href='<c:url value="/facility/facility.go"/>'>
                     <i class="fi fi-sr-hammer-crash"></i>
-                    <span>시설 관리</span></a>
+                    <span>시설 관리</span>
+                    </a>
             </li>
 
 
