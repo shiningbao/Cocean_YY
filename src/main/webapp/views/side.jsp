@@ -128,7 +128,7 @@
 							src="<c:url value='/resource/img/calender.svg'/>">
 						<span class="d-none d-md-inline ml-1">캘린더</span>
 					</a>
-					<a href="#" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
+					<a href="newSide" class="list-group-item d-inline-block collapsed" data-parent="#sidebar">
 						<img style="width: 27px; margin-right: 5px; margin-bottom: 5px;"
 							src="<c:url value='/resource/img/mall.svg'/>">
 						<span class="d-none d-md-inline ml-1">복지몰</span>

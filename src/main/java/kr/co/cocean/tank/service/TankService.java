@@ -92,4 +92,9 @@ public class TankService {
 		
 	}
 
+
+	public HashMap<String, Object> logForm(int tankID) {
+		return dao.logForm(tankID);
+	}
+
 }
