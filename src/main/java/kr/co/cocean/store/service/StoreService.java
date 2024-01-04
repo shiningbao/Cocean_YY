@@ -167,7 +167,7 @@ public class StoreService {
 		String oriFileName = photo.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
 		String newFileName = System.currentTimeMillis()+ext;	
-		
+		logger.info("사진 : "+photo);
 		logger.info("서버파일네임");
 		logger.info(newFileName);
 		logger.info("원래파일명");

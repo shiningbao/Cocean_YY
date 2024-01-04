@@ -76,20 +76,12 @@ public class StoreController {
 	    logger.info("본사상품 등록");
 	    logger.info("상품 정보 : "+params);
 	    logger.info("사진 : "+photo);
-	    String page="store/productInfoRegister";
-	    int result = 0;
 	    if(photo!=null) {
-	        result = service.productInfoRegister(params, photo);
-	        if(result > 0){
-	            page="store/store";
-	        }
+	        service.productInfoRegister(params, photo);
 	    }else{
-	        result = service.productTicketInfoRegister(params);
-	        if(result > 0){
-	            page="store/store";
-	        }
+	        service.productTicketInfoRegister(params);
 	    }
-	    return page;
+	    return "store/store";
 	}
 
 	

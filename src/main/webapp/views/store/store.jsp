@@ -424,107 +424,108 @@ new Promise((resolve, reject) => {
 					}
     				// 지점 탭 클릭
     				$('.branchButton').click(function () {
-					    console.log("------------------");
-					    console.log("지점 버튼 클릭");
-					    branchName = $(this).data('branchName');
-					    console.log(branchName);
-					    currentBranchName = branchName;
-		                currentProductCategory = "상품";
-		                currentTicketCategory = "티켓";
-		                $('#currentProductBranchName').val(currentBranchName);
-		                $('#currentTicketBranchName').val(currentBranchName);
-		                $('#currentProductCategory').val(currentProductCategory);
-		                $('#currentTicketCategory').val(currentTicketCategory);
-		                  // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
-		                   if (currentBranchName === "가산점") {
-		                      document.getElementById("modalProductRegister").style.display = "none";
-		                      document.getElementById("productInfoRegister").style.display = "inline";
-		                      document.getElementById("modalTicketRegister").style.display = "none";
-		                  } else {
-		                  	document.getElementById("modalProductRegister").style.display = "inline";
-	                      	document.getElementById("productInfoRegister").style.display = "none";
-	                      	document.getElementById("modalTicketRegister").style.display = "inline";
-		                  } 
-					    // 선택된 branchName에 해당하는 지점 찾기
-					    var matchedBranch = data.branchProductList.find(function (branch) {
-					        return branch.branchName === branchName;
-					    });
-					    var matchedProducts = data.branchProductList.filter(function (product) {
-					        return product.branchName === matchedBranch.branchName && product.category === "상품" 
-					        	&& product.status === "판매중";
-					    });
-					    var matchedTickets = data.branchProductList.filter(function (product) {
-					        return product.branchName === matchedBranch.branchName && product.category === "티켓" 
-					        && product.status === "판매중";
-					    });
-					    
-					    if (matchedBranch) {
-					        console.log("클릭된 지점명과 일치하는 지점명");
-					        console.log("탭 지점명 : " + branchName);
-					        var branchName = $(this).data('branchName');
-					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
-					        console.log(matchedBranch);
-					        initializeMap({
-					            branchList: [{
-					            	branchLocation: matchedBranch.branchLocation,
-					                branchLongitude: matchedBranch.branchLongitude,
-					                branchLatitude: matchedBranch.branchLatitude
-					            }]
-					        });
-							// 모달창에 현재 클릭된 지점명 넣기
-					        $('.branchName').val(branchName);
-					        
-					        // 상품리스트로 테이블 업데이트
-					        var productListTable = $('.productList table');
-					        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-							// 티켓리스트로 테이블 업데이트
-							var ticketListTable = $('.ticketList table');
-							ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
-							
-							console.log(matchedProducts);
-					        // 상품 데이터를 테이블에 추가
-					        if (matchedProducts.length > 0) {
-							    for (var j = 0; j < matchedProducts.length; j++) {
-							        var product = matchedProducts[j];
-							        var productInfo = '<tr>' +
-							        '<td>' + product.productID + '</td>' +
-							        '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=' + matchedBranch.branchID + '">' + product.productName + '</a></td>' +
-							        '<td>' + product.price + '</td>' +
-							        '</tr>';
+    console.log("------------------");
+    console.log("지점 버튼 클릭");
+    branchName = $(this).data('branchName');
+    console.log(branchName);
+    currentBranchName = branchName;
+    currentProductCategory = "상품";
+    currentTicketCategory = "티켓";
+    $('#currentProductBranchName').val(currentBranchName);
+    $('#currentTicketBranchName').val(currentBranchName);
+    $('#currentProductCategory').val(currentProductCategory);
+    $('#currentTicketCategory').val(currentTicketCategory);
+    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
+    if (currentBranchName === "가산점") {
+        document.getElementById("modalProductRegister").style.display = "none";
+        document.getElementById("productInfoRegister").style.display = "inline";
+        document.getElementById("modalTicketRegister").style.display = "none";
+    } else {
+        document.getElementById("modalProductRegister").style.display = "inline";
+        document.getElementById("productInfoRegister").style.display = "none";
+        document.getElementById("modalTicketRegister").style.display = "inline";
+    }
+    // 선택된 branchName에 해당하는 지점 찾기
+    var matchedBranch = data.branchProductList.find(function (branch) {
+        return branch.branchName === branchName;
+    });
+    var matchedProducts = data.branchProductList.filter(function (product) {
+        return product.branchName === matchedBranch.branchName && product.category === "상품" &&
+            product.status === "판매중";
+    });
+    var matchedTickets = data.branchProductList.filter(function (product) {
+        return product.branchName === matchedBranch.branchName && product.category === "티켓" &&
+            product.status === "판매중";
+    });
 
-							        productListTable.append(productInfo);
-							    }
-							} else {
-							    // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
-							    var productInfo = '<tr>' +
-							        '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
-							        '</tr>';
-							    productListTable.append(productInfo);
-							}
-					        // 티켓 데이터를 테이블에 추가
-					        if (matchedTickets.length > 0) {
-							    for (var j = 0; j < matchedTickets.length; j++) {
-							        var ticket = matchedTickets[j];
-							        var ticketInfo = '<tr>' +
-							            '<td>' + ticket.productID + '</td>' +
-							            '<td>' + ticket.productName + '</td>' +
-							            '<td>' + ticket.price + '</td>' +
-							            '</tr>';
-							        ticketListTable.append(ticketInfo);
-							    }
-							} else {
-							    // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
-							    var productInfo = '<tr>' +
-							        '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
-							        '</tr>';
-							    productListTable.append(productInfo);
-							}
-					     	
-					    }
-					        else {
-					        console.log("지점에 등록된 상품이 없습니다");
-					    }
-					});
+    if (matchedBranch) {
+        console.log("클릭된 지점명과 일치하는 지점명");
+        console.log("탭 지점명 : " + branchName);
+        var branchName = $(this).data('branchName');
+        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
+        console.log(matchedBranch);
+        console.log(matchedBranch.branchLongitude);
+        console.log(matchedBranch.branchLatitude);
+        initializeMap({
+            branchList: [{
+                branchLocation: matchedBranch.branchLocation,
+                branchLongitude: matchedBranch.branchLongitude,
+                branchLatitude: matchedBranch.branchLatitude
+            }]
+        });
+        // 모달창에 현재 클릭된 지점명 넣기
+        $('.branchName').val(branchName);
+
+        // 상품리스트로 테이블 업데이트
+        var productListTable = $('.productList table');
+        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+        // 티켓리스트로 테이블 업데이트
+        var ticketListTable = $('.ticketList table');
+        ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
+
+        // 상품 데이터를 테이블에 추가
+        if (matchedProducts.length > 0) {
+            for (var j = 0; j < matchedProducts.length; j++) {
+                var product = matchedProducts[j];
+                var productInfo = '<tr>' +
+                    '<td>' + product.productID + '</td>' +
+                    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=' + matchedBranch.branchID + '">' + product.productName + '</a></td>' +
+                    '<td>' + product.price + '</td>' +
+                    '</tr>';
+
+                productListTable.append(productInfo);
+            }
+        } else {
+            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+            var productInfo = '<tr>' +
+                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+                '</tr>';
+            productListTable.append(productInfo);
+        }
+        // 티켓 데이터를 테이블에 추가
+        if (matchedTickets.length > 0) {
+            for (var j = 0; j < matchedTickets.length; j++) {
+                var ticket = matchedTickets[j];
+                var ticketInfo = '<tr>' +
+                    '<td>' + ticket.productID + '</td>' +
+                    '<td>' + ticket.productName + '</td>' +
+                    '<td>' + ticket.price + '</td>' +
+                    '</tr>';
+                ticketListTable.append(ticketInfo);
+            }
+        } else {
+            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+            var productInfo = '<tr>' +
+                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+                '</tr>';
+            productListTable.append(productInfo);
+        }
+
+    } else {
+        console.log("지점에 등록된 상품이 없습니다");
+    }
+}); 
+
                 resolve(); // 두 번째 Ajax 호출 성공 시 resolve 호출
             },
             error: function (e) {
