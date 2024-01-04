@@ -77,4 +77,6 @@ public interface PersonnelDAO {
 
 	void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID);
 
+	void resetPassword(String password, String employeeID);
+
 }

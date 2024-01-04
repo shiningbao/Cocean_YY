@@ -182,7 +182,12 @@ tbody tr {
                             <input type="text" name="phoneNumber" class="form-control mb-2"placeholder="010-0000-0000"  pattern="\d{3}-\d{4}-\d{4}" title="전화번호 형식인 010-0000-0000으로 입력하세요."required/>
                         </td>
                     </tr>
-                    
+                     <tr>
+                        <th>연차</th>
+                        <td>
+                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="\d{2}" title="두자리숫자만 입력해주세요" required/>
+                        </td>
+                    </tr>
                     
                     <tr>
                         <th style="vertical-align: top; padding-top: 10px;">주소</th>
@@ -192,7 +197,7 @@ tbody tr {
                         </td>
                         
                     </tr>
-                   
+
                     <!-- 중략 -->
                 </table>
             </div>

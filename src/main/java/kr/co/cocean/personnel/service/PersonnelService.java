@@ -222,6 +222,10 @@ public class PersonnelService {
 		dao.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
 		
 	}
+	public void resetPassword(String password, String employeeID) {
+		
+		dao.resetPassword(password,employeeID);
+	}
 	
 	
 

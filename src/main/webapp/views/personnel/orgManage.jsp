@@ -26,13 +26,14 @@
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-	
+
 	<main>
 		<div class="content">
 			<div class="hTitle">
 				<a>조직관리</a>
 			</div>
-
+				
+					<jsp:include page="../personnel/organization.jsp"></jsp:include>
 		</div>
 	</main>
 	

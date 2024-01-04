@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <link rel="stylesheet"
 	href="<c:url value='/resource/css/personnel/personnel.min.css'/>">
-
+ <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style>
 #hTitle {
@@ -179,6 +179,22 @@ th {
 	justify-content: center;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+
+.file-icon3 {
+	width: 40px;
+	height: 40px;
+	transform: translate(650%, -130%);
+	font-size: 20px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
 </style>
 </head>
 <body>
@@ -262,6 +278,7 @@ th {
 			<div>
 				<ul class="tab_menu">
 					<li data-tab="basic" class="tab">기본</li>
+					<li data-tab="info" class="tab">신상</li>
 					<li data-tab="workHistory" class="tab">이력</li>
 					<li data-tab="history" class="tab">학력</li>
 					<li data-tab="departmentChangeLog" class="tab">부서변경로그</li>
@@ -327,7 +344,9 @@ th {
 							                </div>
 							            </td>
 										<th>비밀번호초기화</th>
-										<td></td>
+										<td>
+											<button class="btn btn-primary" id="resetPassword">초기화 </button>
+										</td>
 							        </tr>
 							    </tbody>
 							</table>
@@ -437,6 +456,49 @@ th {
         </c:when>
     </c:choose>
 	</div>
+	
+		<div class="tab-content" id="annualLeaveTab" style="display: none;">
+		<table style="width:100%">
+			<tr>
+				<th>년도</th>
+				<th>잔여연차</th>
+				<th>사용연차</th>
+				
+			</tr>
+			<tr>
+				<td>2023</td>
+				<td>${person.remainingAnnualLeave }</td>
+				<td></td>
+			</tr>
+		</table>
+
+	</div>
+	
+		</div>
+	
+		<div class="tab-content" id="infoTab" style="display: none;">
+		<table style="width:100%">
+			<tr>
+				<th>이름</th>
+				<th>휴대번호</th>
+				<th>주소</th>
+				
+			</tr>
+			<tr>
+				<td> 
+					<input type="text" name="name" pattern="[가-힣]*" title="한글만 입력하세요." class="form-control mb-2" value="${person.name }" required/>
+				</td>
+				<td>
+					 <input type="text" name="phoneNumber" class="form-control mb-2"placeholder="010-0000-0000"  pattern="\d{3}-\d{4}-\d{4}" title="전화번호 형식인 010-0000-0000으로 입력하세요." value="${person.phoneNumber }"required/>
+				</td>
+				<td>
+					<input type="text" name="address" id="address" class="form-control mb-2" value="${person.address }" required/>
+					<span class="file-icon3"><i class="fas fa-map-marker-alt" onclick="sample6_execDaumPostcode()"></i></span>
+				</td>
+			</tr>
+		</table>
+
+	</div>
 
 	<div class="tool_bar">
         <span class="btn_wrap">
@@ -461,6 +523,7 @@ var branchPsID ='${person.branchID}';
 var hqPsID = '${person.hqID}';
 var dpName ='${person.departmentID}';
 var psResponsibility = '${person.responID}';
+var employeeID = '${person.employeeID}';
 console.log('------------');
 
 
@@ -809,6 +872,20 @@ $('.detailSaveBtn').on('click',function(){
    
     
 });
+
+$('#resetPassword').on('click',function(){
+	$.ajax({
+		url:'resetPassword.do',
+		data:{employeeID:employeeID},
+		type:'post',
+		success:function(data){
+			console.log(data);
+		},
+		error:function(e){
+			console.log(e);
+		}
+	})
+});
 function sample6_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -856,7 +933,10 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
-
+var msg = "${msg}";
+if(msg != ""){
+	alert(msg);
+}
 
 
 </script>
