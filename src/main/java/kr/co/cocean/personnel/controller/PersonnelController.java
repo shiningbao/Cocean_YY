@@ -223,7 +223,6 @@ public class PersonnelController {
 		int row= service.join(params,file,fileSignature);
 		
 		if(row>0) {
-			 service.joinTree(params);
 			String perNum = (String) params.get("employeeID");
 			mav.setViewName("redirect:/personnel/personnelList.go");
 		}else {
@@ -246,6 +245,8 @@ public class PersonnelController {
 	    logger.info("params!!=="+params); 
 	    logger.info("history"+dto.getHistoryArray());
 	    logger.info("history"+dto.getStartDate());
+	    String beforedpID =(String) params.get("beforeDpID");
+	    String afterdpID = (String) params.get("departmentID");
 	    for (HistoryDTO historyDTO : schistoryArray) {
 			historyDTO.setCategory("학력");
 		}
@@ -293,13 +294,22 @@ public class PersonnelController {
 		  		}
 	    	  }
 				
-//				  if(tabID.equals("basic")) {
-//				  
-//				  int row =service.updateEmployeeInfo(employeeID,params,fileSignature,file);
-//				  if(row>0) { service.updatejsTree(employeeID,params); // params.departmentID로
-//				  parent UPDATE id 가 employeeID인거로
-//				  service.insertDepartLog(employeeID,"오늘날짜","변경전부서번호","변경후부서번호"); // remarks 는
-//				  없어도될 } }
+				  if(tabID.equals("basic")) {
+					  
+				  int row = service.updateEmployee(employeeID,params);
+				  if(row>0) {
+					  service.updateEmployeeImg(employeeID,fileSignature,file);
+					  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+				  }
+				 
+					/* 
+					 * if(row>0) {
+					 * 
+					 * 
+					 * }
+					 */
+				  
+				  }
 				 
 				 
 	    

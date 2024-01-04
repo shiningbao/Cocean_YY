@@ -64,7 +64,7 @@ public class PersonnelService {
 		
 		try {
 			byte[] bytes = fileSignature.getBytes();
-			Path path = Paths.get(root+"personnel/"+newFileName);
+			Path path = Paths.get(root+"signature/"+newFileName);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -84,7 +84,59 @@ public class PersonnelService {
 		
 		try {
 			byte[] bytes = file.getBytes();
-			Path path = Paths.get(root+"personnel/"+newFileName);
+			Path path = Paths.get(root+"profile/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+
+	public void updateEmployeeImg(int employeeID, MultipartFile fileSignature, MultipartFile file) {
+		if(file.getSize()!=0) {
+			updateContext(file,employeeID);
+		}
+		if(fileSignature.getSize()!=0) {
+			
+			updateSgniture(fileSignature,employeeID);
+		}
+		
+	}
+	private void updateSgniture(MultipartFile fileSignature, int employeeID) {
+    	FileDTO dto = new FileDTO();
+    	String oriFileName = fileSignature.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("signature");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.update(dto);
+		
+		try {
+			byte[] bytes = fileSignature.getBytes();
+			Path path = Paths.get(root+"signature/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void updateContext(MultipartFile file, int employeeID) {
+		FileDTO dto = new FileDTO();
+    	String oriFileName = file.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("profile");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.update(dto);
+		
+		try {
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(root+"profile/"+newFileName);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -94,7 +146,16 @@ public class PersonnelService {
         return dao.getBranch();
     }
 
-	
+	public int updateEmployee(int employeeID, HashMap<String, Object> params) {
+		
+		String positionID =(String) params.get("positionID");
+		String status =(String) params.get("status");
+		String departmentID =(String) params.get("departmentID");
+		String rankID =(String) params.get("rankID");
+		String responID =(String) params.get("responID");
+
+		return dao.updateEmployeeInfo(employeeID,positionID,status,departmentID,rankID,responID);
+	}
 	
 	
 	public List<String> getBranchID(String branchID) {
@@ -111,32 +172,7 @@ public class PersonnelService {
 		return dao.getChart();
 	}
 
-	
-	public void joinTree(HashMap<String, Object> params) {
-		String positionID = String.valueOf(params.get("positionID"));
-		String branchID = String.valueOf(params.get("branchID"));
-		if(branchID.equals("1") && positionID.equals("4") ) {
-			params.put("departmentID", "branch1");
-		}
-		if(branchID.equals("2") && positionID.equals("4") ) {
-			params.put("departmentID", "branch2");
-		}
-		if (positionID.equals("1")) {
-			params.put("positionID", "팀원");
-		} else if (positionID.equals("2")) {
-			params.put("positionID", "팀장");
-		} else if (positionID.equals("3")) {
-			params.put("positionID", "본부장");
-		} else if (positionID.equals("4")) {
-			params.put("positionID", "관장");
-		} else if (positionID.equals("5")) {
-			params.put("positionID", "대표이사");
-			params.put("departmentID", "#");
-		}
-		dao.joinTree(params);
-		logger.info("Tree구조확인 params" + params);
-	}
-	 
+
 	public List<HashMap<String, Object>> personnelList() {
 		return dao.personnelList();
 	}
@@ -181,6 +217,14 @@ public class PersonnelService {
 			String sccategory) {
 		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	}
+	public void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID) {
+		
+		dao.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+		
+	}
+	
+	
+
 
 	
 

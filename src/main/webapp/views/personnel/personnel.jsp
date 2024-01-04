@@ -133,7 +133,7 @@ tbody tr {
 		                <img src="/Cocean/resource/img/psProfile.jpg" id="thumbnail_image" alt="프로필 사진">
 		                <span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 		            </label>
-		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
+		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;" required>
 		            
 		        </div>
 		        <div class="wrap_info" style="text-align: center;">
@@ -240,7 +240,7 @@ tbody tr {
 					    <th style="vertical-align: top; padding-top:10px; width:80px;">서명이미지</th>
 					    	<td>
 					    	<span class="desc1" style="font-size=12px;">※ 서명이미지는 자동으로 55x55 사이즈로 적용됩니다.</span>
-					            <label class="photo2" for="fileSignatureInput" style="height: 10px;">
+					            <label class="photo2" for="fileSignatureInput" style="height: 10px;" required>
 					            <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
 					                <span class="file-icon2"><i class="fas fa-upload"></i></span>
 					            </label>
@@ -251,7 +251,7 @@ tbody tr {
 					</tr>
                     <tr>
                         <th colspan="2">
-                            <input type="submit" value="등록" class="btn btn-primary regibtn"/>
+                            <input type="submit" value="등록" class="btn btn-primary regibtn" id="submitBtn"//>
                         </th>
                     </tr>
                 </table>
@@ -451,6 +451,16 @@ $(document).ready(function() {
     departmentSelect.empty();
     resSelect.empty();
     $('#deSelect').empty();
+    
+    $('#submitBtn').click(function(event) {
+        var fileInput = $('#fileInput');
+        var fileSignatureInput = $('#fileSignatureInput');
+
+        if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
+            event.preventDefault();
+            alert('이미지를 선택해주세요.');
+        }
+    });
 });
 
 $('#fileInput').on('change', function(e) {
