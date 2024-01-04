@@ -78,7 +78,7 @@ top: 100px;
 <div class="commonContainer">	
 	<div class="commonContent">
 <div class="branchLocation">지점
-<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">등록</button>
+<!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">&#43;</button> -->
 </div>
 <div id="map"></div>
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
@@ -384,8 +384,8 @@ new Promise((resolve, reject) => {
     				    
     		       		
     				}
-    				   /*  var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal">등록</button>');
-    		       		$('.branchLocation').append(registerButton); */
+    				   var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="margin-left: 6px;">&#43;</button>');
+    		       		$('.branchLocation').append(registerButton);
     				// 상품 리스트 추가
     				console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
@@ -847,6 +847,7 @@ searchProduct(searchKeyword, currentBranchName);
   	  var currentProductName = document.getElementById('currentProductName').value;
   	  var isConfirmed = confirm("등록하시겠습니까?");
       branchProductRegister(currentBranchName, currentProductName);
+      
       /* if (isConfirmed) {
       	 swal("등록되었습니다.", "", "success");
           branchProductRegister(currentBranchName, currentProductName);
