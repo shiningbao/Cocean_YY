@@ -59,11 +59,13 @@ label {
 </head>
 <body>
 	<c:import url="/side"/>
+	
 	<div class="container-fluid contentField">
-	<div class="hTitle">
-		<a>코션하우스</a>
-	</div>
-        <div id="checkBox">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션하우스</h1>
+		</div>
+
+		<div id="checkBox">
         <div id="box1">
 
         <div class="form-check form-check-inline">
@@ -155,8 +157,8 @@ label {
 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
 	</c:if>
 </section>
-</div>
 <c:import url="/footer"/>
+</div>
 </body>
 <script>
 

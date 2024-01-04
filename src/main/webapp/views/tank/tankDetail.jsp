@@ -11,8 +11,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #chart {
-	width: 100%;
-	height: 43%;
+	width: 75%;
+	height: 45%;
 	left: 33%;
 	position: absolute;
 	top: 22%;
@@ -57,26 +57,26 @@ button {
 	position: absolute;
 }
 
-/* .topBar { */
-/* 	width: 72%; */
-/* 	height: 60px; */
-/* 	left: 22%; */
-/* 	position: absolute; */
-/* 	background-color: #86B0F3; */
-/* 	display: flex; */
+ .topBar { 
+    width: 85%;
+    height: 60px;
+    left: 130px;
+ 	position: absolute; 
+ 	background-color: #86B0F3; 
+ 	display: flex; 
 	
-/* 	justify-content: space-evenly; */
-/* } */
-/* .topBar div{ */
+ 	justify-content: space-evenly; 
+ } 
+ .topBar div{ 
 	
-/* 	width: 25%; */
-/* 	height: 100%; */
-/* 	position: relative; */
-/* 	text-align: center; */
-/* 	font-size: 21px; */
-/* 	padding-top: 14px; */
-/* 	cursor: default; */
-/* } */
+ 	width: 100%; 
+ 	height: 100%; 
+ 	position: relative; 
+ 	text-align: center; 
+ 	font-size: 21px; 
+ 	padding-top: 14px; 
+ 	cursor: default; 
+ } 
 
 .barItem:hover{
 	cursor: pointer;
@@ -104,13 +104,16 @@ button {
 <body>
 	<c:import url="/side" />
 	<div class="container-fluid contentField">
+	
 	<div class="row">
-	<div class="topBar">
-		<div>하우스 정보</div>
-		<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
-		<div class="barItem">관리 계획</div>
-		<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
-	</div>
+	<div class="col-md">
+		<div class="topBar">
+			<div>하우스 정보</div>
+				<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
+				<div class="barItem">관리 계획</div>
+				<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
+			</div>
+		</div>
 	</div>
 	<div id="hTitle">
 		<p>${map.tankName}</p>
@@ -203,6 +206,7 @@ button {
         </div>
       </div>
     </div>
+    <c:import url="/footer"/>
     </div>
 </body>
 <script>
