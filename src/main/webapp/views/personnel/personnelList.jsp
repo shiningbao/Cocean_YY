@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
 <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
 
 <!-- 부트스트랩 CSS/favicon -->
@@ -25,26 +26,10 @@
 	background-color: #86B0F3;
 }
 
-#personnel_table {
-	width: 72%;
-	height: 80%;
-	text-align: center;
-	top: 255px;
-	left: 400px;
-	position: absolute;
-}
 
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px; 
-	position: absolute;
-	top: 120px;
-}
 
-#hTitle a {
-	font-size: 22px;
-}
+
+
 
 
 @media screen and (max-width: 1457px) {
@@ -58,20 +43,20 @@
 		margin-bottom: 5px;
 	}
 }
-#personnelRegist{
+/* #personnelRegist{
     top: 26%;
     width:5%%;
     position: absolute;
     left: 90%
-}
+} */
 #psSchBtn{
 	margin-bottom: 10px !important;
 }
-#search{
+/* #search{
 	    position: absolute;
 	    top:20%;
     left: 73%;
-}
+} */
 
 
 #dropdownMenuButton{
@@ -117,29 +102,22 @@ img{
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-/* .thisMember{
-	height: 10%;
-	width: 70%;
-	position: absolute;
-	top: 21%;
-	left: 25%;
-	z-index: -1;
-	box-shadow: 0 0 10px 2px #86B0F3; /* 그림자 설정 */
-	border: none; /* 테두리 제거 */
-	background: none;
-} */
+
 </style>
 </head>
 <body>
 	<jsp:include page="../side.jsp"></jsp:include>
-	<div id="hTitle">
-		<a>사원리스트</a>
-	</div>
+	<main>
+		<div class="content">
+			<div class="hTitle">
+				<a>사원리스트</a>
+			</div>
+
 <!-- 	<div class="thisMember">현재 사원수</div> -->
-		<button type="button" id="personnelRegist" class="btn btn-primary" data-toggle="modal" data-target="#regModal">사원등록</button>
+		<button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">사원등록</button>
         <div id="checkBox">
         
-        <nav class="navbar navbar" id="search">
+        <nav class="navbar navbar float-right" id="search">
             <form class="form-inline">
            		<select id="emName" class="psSelect2">
            			<option value="employeeID">사번</option>
@@ -165,7 +143,7 @@ img{
 			        <th scope="col">상태</th>
 			        <th scope="col">
 			        	<div class="dropdown">
-			                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			                <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="bottom: 3%;position: absolute;left: 6%;">
 			                	지점
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -197,7 +175,7 @@ img{
         <div class="modal-content">
           <div class="modal-header">
             <!-- 모달창 제목 -->
-            <h5 class="modal-title">사원등록</h5>
+            <h5 class="modal-title ">사원등록</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -208,10 +186,12 @@ img{
         </div>
       </div>
     </div>
+				</div>
+	</main>
 	
 </body>
 <script>
-
+resizeWidth();
     var tableHTML = '';
 
     // 페이지 로드 시 AJAX를 사용하여 서버에서 지점 목록을 가져옵니다.

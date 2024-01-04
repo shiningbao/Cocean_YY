@@ -27,15 +27,27 @@ ul,li {list-style:none;}
 .tabnav li a.active{background:#fff; color:#7ea21e; }
 
 
-.outaddress{
-position: absolute;
+/*
+ position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100px;
-  height: 100px;
+  width: 200px; 
+  height: 200px; 
   overflow: auto;
-} 
+  */
+
+
+.outaddress{
+ position: absolute;
+  top: 40%; /* 예시로 10%로 조정. 필요에 따라 조절하세요. */
+  left: 60%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 50px;
+ 
+}
+
 
 .inaddress{
 position: absolute;
@@ -48,10 +60,17 @@ position: absolute;
 
 
 
+
 </style>
 </head>
 
 <body>
+
+
+
+ 
+
+
 
 
 <jsp:include page="../side.jsp"></jsp:include>
@@ -71,12 +90,36 @@ position: absolute;
    <input type="text" name="name" placeholder="이름을 입력해주세요."/>
    <button id="search">검색</button>
     -->
+    <!--  
+    <nav class="navbar navbar" id="search">
+    <form class="form-inline">
     <input type="text" name="name" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
 	<input type="button" id="reserch" value="검색" style="margin: 0px 5px;"/>
-    <input type="button" id="outreturn" value="외부 리스트로 돌아가기" style="margin: 0px 5px;"/>
-    
+	 </form>
+	 </nav>
+	 -->
+	 <!--  
+	     <nav class="navbar navbar" id="search">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch" type="submit">검색</button>
+            </form>
+          </nav>
+	 -->
+	 
+	 <div class="container text-center">
+    <nav class="navbar navbar" id="search">
+        <form class="form-inline mx-auto">
+            <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
+        </form>
+	<input type="button" id="outreturn" value="외부 리스트" style="margin: 0px 5px;"/>
     <button onclick="del()">삭제</button>
-    <input id="outsidejoin" type="button" value="주소록 추가"/>
+    <input id="outsidejoin" type="button" value="주소록 추가"/>   
+    </nav>
+</div>
+	 
+    
    <table class="outaddress">
       <thead>
       <tr>
@@ -99,7 +142,7 @@ position: absolute;
       <div id="tab02">
        <input type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
 	<input type="button" id="inreserch" value="검색" style="margin: 0px 5px;"/>
-    <input type="button" id="inreturn" value="내부 리스트로 돌아가기" style="margin: 0px 5px;"/>
+    <input type="button" id="inreturn" value="내부 리스트" style="margin: 0px 5px;"/>
     
     <table class="address">
       <thead>
@@ -115,12 +158,6 @@ position: absolute;
       <tbody id="inlist">      
       </tbody>      
    </table>
-    
-    
-    
-
-     
-     
       </div>
     </div>
   </div>

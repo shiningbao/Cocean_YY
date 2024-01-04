@@ -234,58 +234,70 @@ public class PersonnelController {
 
 	@PostMapping(value="/personnel/detailSave.do")
 	public ModelAndView historySave(@ModelAttribute HistoryDTO dto , @RequestParam int employeeID,
-			 @RequestParam HashMap<String, Object> params) {
+			 @RequestParam HashMap<String, Object> params , @RequestParam String tabID) {
 	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
 	    
 	    HistoryDTO[] historyArray = dto.getHistoryArray();
 	    HistoryDTO[] schistoryArray = dto.getSchistoryArray();
+	    logger.info("tabId@@@@@@@@@@::"+tabID);
 	    logger.info("params!!=="+params); 
 	    logger.info("history"+dto.getHistoryArray());
 	    logger.info("history"+dto.getStartDate());
-	    String category = "";
-	    String sccategory = "";
-	    logger.info("category!!"+category);
-	    logger.info("sccategory!!"+sccategory);
-	    if ((historyArray[0].getCategory().equals("이력"))) {
-	    	  for (HistoryDTO history : historyArray) {
-	              // history 객체로부터 값 추출
-	    		  
-	    		  dto.setEmployeeID(employeeID);
-	              String startDate = history.getStartDate();
-	              String endDate = history.getEndDate();
-	              String organizationName = history.getOrganizationName();
-	              String remarks = history.getRemarks();
-	              category = history.getCategory();
-	              // 추출한 값 로깅 또는 다른 작업 수행
-	              logger.info("Employee ID: " + employeeID);
-	              logger.info("Start Date: " + startDate);
-	              logger.info("End Date: " + endDate);
-	              logger.info("Organization Name: " + organizationName);
-	              logger.info("Remarks: " + remarks);
-
-	              // 이후에 수행할 작업을 여기에 추가
-	              int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
-	          }
+	    for (HistoryDTO historyDTO : schistoryArray) {
+			historyDTO.setCategory("학력");
+		}
+	    for (HistoryDTO historyDTO : historyArray) {
+			historyDTO.setCategory("이력");
+		}
+	    logger.info("@@@@==" +historyArray[0].getCategory()); 
+	    if(tabID.equals("workHistory")) {
+	    	
+	    	for (HistoryDTO history : historyArray) {
+	    		// history 객체로부터 값 추출
+	    		
+	    		dto.setEmployeeID(employeeID);
+	    		String startDate = history.getStartDate();
+	    		String endDate = history.getEndDate();
+	    		String organizationName = history.getOrganizationName();
+	    		String remarks = history.getRemarks();
+	    		String category = history.getCategory();
+	    		// 추출한 값 로깅 또는 다른 작업 수행
+	    		logger.info("Employee ID: " + employeeID);
+	    		logger.info("Start Date: " + startDate);
+	    		logger.info("End Date: " + endDate);
+	    		logger.info("Organization Name: " + organizationName);
+	    		logger.info("Remarks: " + remarks);
+	    		
+	    		// 이후에 수행할 작업을 여기에 추가
+	    		int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
+	    	}
 	    }
 	    	
-	    if ((schistoryArray[0].getCategory().equals("학력"))) {
+	    if (tabID.equals("history")) {
 		          for (HistoryDTO schistory : schistoryArray) {
 		        	  dto.setEmployeeID(employeeID);
 		              String startDate = schistory.getStartDate();
 		              String endDate = schistory.getEndDate();
 		              String organizationName = schistory.getOrganizationName();
 		              String remarks = schistory.getRemarks();
-		              sccategory = schistory.getCategory();
+		              String sccategory = schistory.getCategory();
 		              logger.info("Employee ID: " + employeeID);
 		              logger.info("Start Date: " + startDate);
 		              logger.info("End Date: " + endDate);
 		              logger.info("Organization Name: " + organizationName);
-		              logger.info("Remarks: " + remarks);
-		              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,category);
+		              logger.info("Remarks: " + remarks); 
+		              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 		  		}
 	    	  }
-	        
-          
+				/*
+				 * if(tabID.equals("basic")) {
+				 * 
+				 * service.updateEmployee(params,employeeID);
+				 * 
+				 * }
+				 */
+				 
+	    
   	    
       return mav; 
       }

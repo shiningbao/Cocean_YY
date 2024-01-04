@@ -246,8 +246,8 @@ public class PersonnelService {
 		return dao.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
 	}
 	public int schistorySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
-			String category) {
-		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,category);
+			String sccategory) {
+		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	}
 
 	

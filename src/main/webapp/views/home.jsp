@@ -10,21 +10,13 @@
 <body>
 <c:import url="/side"/>
 <main>
-본문
+	본문
 </main>
 
 </body>
 <script>
 	resizeWidth();
-	window.addEventListener('resize',resizeWidth);
-	function resizeWidth(){
-		var winWidth = window.innerWidth;
-		//console.log(winWidth);
-		var sideWidth = $('nav').outerWidth();
-		//console.log(sideWidth);
-		var contentWidth = winWidth-sideWidth;
-		$('.commonContainer').css({'width':contentWidth, 'margin-left':sideWidth});
-	}
+
 
 </script>
 </html>
