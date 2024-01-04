@@ -77,7 +77,7 @@
 	</update>
 	
 	<select id="tankAnimal" resultType="map">
-		SELECT am.nickname , am.individual , am.status, bct.commonName  
+		SELECT am.nickname , am.individual , am.status, bct.commonName ,am.animalID 
 			FROM animalManagement am, biologicalClassificationTable bct  
 				WHERE am.tankID = #{param1} AND am.speciesID = bct.speciesID 
 	</select>
@@ -89,12 +89,17 @@
 	<insert id="recordData" parameterType="map">
 		INSERT INTO tankRecord (tankRecordID, tankID, recordDate,recordTime,recordMercury
 		,recordWaterLevel,recordSalinity,recordPh,recordDo, recordNitrates, recordNitrites, recordAmmonia, recordPhosphates)
-		VALUES (null,#{tankID},curdate(),now(),#{num0},#{num1},#{num2},#{num3},#{num4},#{num5},#{num6},#{num7},#{num8}) 
+		VALUES (null,#{tankID},curdate(),now(),#{recordMercury},#{recordWaterLevel},#{recordSalinity},#{recordPh},#{recordDo},#{recordNitrates},#{recordNitrites},#{recordAmmonia},#{recordPhosphates}) 
 	</insert>
 	
 	<select id="getEm" resultType="String">
 		SELECT e.name FROM employee e 
 		WHERE employeeID = (SELECT ic.employeeID FROM inCharge ic WHERE ic.category = 'tank' AND ic.idx = #{param1})
+	</select>
+	
+	<select id="logForm" resultType="map">
+		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr 
+		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1
 	</select>
 	
 	

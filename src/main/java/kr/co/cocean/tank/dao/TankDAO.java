@@ -38,6 +38,8 @@ public interface TankDAO {
 
 	String getEm(int tankID);
 
+	HashMap<String, Object> logForm(int tankID);
+
 //	Long getTotalCount(Pager pager);
 
 }
