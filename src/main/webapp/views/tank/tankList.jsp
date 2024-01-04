@@ -59,14 +59,13 @@ label {
 </head>
 <body>
 	<c:import url="/side"/>
-<main>
-	<div class="content">
-	<div class="hTitle">
-		<a>코션하우스</a>
-	</div>
 	
-	
-        <div id="checkBox">
+	<div class="container-fluid contentField">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션하우스</h1>
+		</div>
+
+		<div id="checkBox">
         <div id="box1">
 
         <div class="form-check form-check-inline">
@@ -158,10 +157,12 @@ label {
 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
 	</c:if>
 </section>
+<c:import url="/footer"/>
 </div>
-</main>
 </body>
 <script>
+
+
 
 $(".p").click(function() {
 	const n= $(this).attr("data-list-pn");
@@ -181,6 +182,12 @@ $(".p").click(function() {
 	}
 
 	resizeWidth();
+	
+
+
+
+	
+	
 
 </script>
 </html>

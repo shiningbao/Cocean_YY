@@ -9,17 +9,11 @@
 <!-- jsTree theme -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
 
 <style>
-	
-.jstree-default .jstree-themeicon-custom{
-background-image: url('<c:url value="/resource/img/icon1.jpg"/>') !important;
-background-size: 16px 16px; /* 이미지 크기를 기본 jstree 아이콘과 동일하게 조정하세요 /
-/ 그 외에 필요한 스타일링을 추가하세요 */
-} 
 
 .schbtn{
 	float: right;
@@ -34,8 +28,9 @@ background-size: 16px 16px; /* 이미지 크기를 기본 jstree 아이콘과 �
 </head>
 <body>
 <%-- <jsp:include page="../side.jsp"></jsp:include> --%>
-<input type="text" id="schName" value="" class="form-control mb-2">
-<button onclick="fSch()" class="btn btn-primary schbtn">탐색</button>
+<button onclick="fSch()" class="btn btn-primary schbtn">검색</button>
+<input type="text" id="schName" value="" class="form-control mb-2" style="width:70%">
+
 <div id="jstree"></div>
 
 <script>

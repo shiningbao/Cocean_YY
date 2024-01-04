@@ -20,8 +20,8 @@ import kr.co.cocean.tank.service.TankService;
 public class RecordGenerator {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
-//	@Autowired
-//	TankService service;
+	@Autowired
+	TankService service;
 	
 //	@Scheduled(fixedRate = 3600000) // 2시간(7,200,000 밀리초)마다 실행/일단 지금은 1시간으로 테스트 중
 //	public void recordGenerator() {
@@ -43,7 +43,7 @@ public class RecordGenerator {
 //				service.recordData(map);
 //			// 이때 수치 비교 
 //		}
-		
+//		
 //	}
 
 }

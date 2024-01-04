@@ -101,11 +101,13 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
-		<div class="container-fluid">
-			 		 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
-                    </div>
+
+<c:import url="/side"/>
+		<div class="container-fluid contentField">
+
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
+		</div>
 		    <div class="card shadow mb-4">
                       <div class="card-body">
                                     <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">사원등록</button>
@@ -187,10 +189,9 @@
                             </div>
 <!-- 	<div class="thisMember">현재 사원수</div> -->
 		
-	
+<c:import url="/footer"/>	
 </body>
 <script>
-resizeWidth();
     var tableHTML = '';
 
     // 페이지 로드 시 AJAX를 사용하여 서버에서 지점 목록을 가져옵니다.
