@@ -16,11 +16,6 @@
 <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
 
 <style>
-
-	.animalDetail{
-		width: 90%;
-		margin: 0 auto;
-	}
 	
 	.topBar {
 		width: 100%;
@@ -70,9 +65,10 @@
 			
 			<h2 class="animalTilte"></h2>
 			
-			<div class="drawContent"></div>
 		</div>
+		<div class="drawContent"></div>
 	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
 
