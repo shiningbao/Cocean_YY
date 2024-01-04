@@ -85,7 +85,7 @@ public class PersonnelController {
 		
 		return getDepartmentText;
 	}
-	@RequestMapping(value="/personnel/getChart.go")
+	@RequestMapping(value="/personnel/organization")
 	public String goChart() {
 		
 		return "personnel/organization";

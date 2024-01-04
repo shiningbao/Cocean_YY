@@ -6,20 +6,19 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- jQuery -->
+<!-- <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
-<!-- Bootstrap CSS -->
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 
-<!-- Bootstrap JS -->
 
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
 <!-- Moment JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<!--cs 파일관리  -->
-<link href='<c:url value="/resource/css/schedule/main.css"/>' rel='stylesheet' />
+<%-- <!--cs 파일관리  -->
+<link href='<c:url value="/resource/css/schedule/main.css"/>' rel='stylesheet' /> --%>
 <!--js 파일관리  -->
 <script src='<c:url value="/resource/js/schedule/main.js"/>'></script>
 <!-- 풀캘린더 라이브러리 -->
@@ -81,7 +80,7 @@ body {
     float:right;
 }
 
-img{
+.img2{
 	widht:20px;
 	height:20px;
 }
@@ -126,19 +125,10 @@ img{
 }
 
 .side-bar-right {
-  width:12%;
-  position: fixed;
-  right: 0px; /* 조정할 수 있는 위치 */
-  top: 150px; /* 조정할 수 있는 위치 */
   z-index: 999;
 }
 
-.cal-css-myCallender {
-  /* 필요한 스타일 추가 */
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  padding: 10px;
-}
+
 .cal-font{
 	font-size: 23px;
 }
@@ -274,15 +264,12 @@ img{
 </head>
 
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
-		<main>
-		<div class="content">
+<c:import url="/side"/>
+	<div class="container-fluid contentField">
 		
-			<div class="hTitle">
-				<a>캘린더</a>
-			</div>
-
-
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">캘린더</h1>
+		</div>
 
 			
 	
@@ -478,56 +465,68 @@ img{
 			</div>
 		</div>
 	</div>
-
-
-	<div class="side-bar-right">	
-		<div class="cal-css-myCallender">
-		
-		<p class="cal-font">캘린더</p>
-				<label>
-					<input type="checkbox" value="내 일정(기본)" id="myCallender" class="myCallender" checked/>
-					내 일정(기본)
-					<div class="myCalColor"></div>
-				</label>
-			
-			<div class="cal-css">
-			<p class="cal-font">예약 캘린더</p>
-				<label>
-					<input type="checkbox" value="예약 일정(전체)"  id="rsvCallender" class="rsvCallender" checked/>
-					예약 일정(전체)
-					<div class="fcCalColor"></div>
-				</label>
-			</div>
-
-		<div class="cal-Inter">
-			
-		
-			<p class="cal-font">
-				 관심 캘린더 
-				 <button class="interestCalendar Hide">
-					<img src="<c:url value='/resource/img/carrot-side2.png'/>" alt="버튼 이미지">
-				</button>
-			</p>
-
-			<div class="itCallenderList">
+<div class="row">
+			<div class="col-10">
+				<div class="card shadow">
+					<div class="card-body">
+						<div id="calendar">
 						
+						</div>
+					</div>
+				</div>
 			</div>
-			
-			<div class="addCal">
-				<a href="#" class="addInterestCallender" data-toggle="modal" data-target="#chartModal">관심 캘린더 추가</a>
+<div class="col-2">
+<div class="card shadow">
+		<div class="card-body">
+
+				<div class="side-bar-right">
+					<div class="cal-css-myCallender">
+
+						<p class="cal-font">캘린더</p>
+						<label> <input type="checkbox" value="내 일정(기본)"
+							id="myCallender" class="myCallender" checked /> 내 일정(기본)
+							<div class="myCalColor"></div>
+						</label>
+
+						<div class="cal-css">
+							<p class="cal-font">예약 캘린더</p>
+							<label> <input type="checkbox" value="예약 일정(전체)"
+								id="rsvCallender" class="rsvCallender" checked /> 예약 일정(전체)
+								<div class="fcCalColor"></div>
+							</label>
+						</div>
+
+						<div class="cal-Inter">
+
+
+							<p class="cal-font">
+								관심 캘린더
+								<button class="interestCalendar Hide">
+									<img src="<c:url value='/resource/img/carrot-side2.png'/>"
+									class="img2" alt="버튼 이미지">
+								</button>
+							</p>
+
+							<div class="itCallenderList"></div>
+
+							<div class="addCal">
+								<a href="#" class="addInterestCallender" data-toggle="modal"
+								class="img2"	data-target="#chartModal">관심 캘린더 추가</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-	</div>
-	<div id="calendar"></div>
-	</div>
-</main>
+</div>
+</div>
+<c:import url="/footer"/>
 </body>
 
 				
 
 <script>
-resizeWidth();
 	
 	var loginEmployeeID = ${userInfo.employeeID};
 	var img= $('.myCallenderbtn img');
@@ -912,7 +911,7 @@ var facilityList;
 	        		    label.append(div).append(input);
 
 	        		    var button = $('<button class="interestDelCalendar Hide" data-calendar-id="' + item.calendarID + '">')
-	        		        .append('<img src="/Cocean/resource/img/carrot-x.png" alt="버튼 이미지">');
+	        		        .append('<img src="/Cocean/resource/img/carrot-x.png" class ="img2"alt="버튼 이미지">');
 	        		    
 	        		    label.append(button); // 라벨에 삭제 버튼 추가
 
