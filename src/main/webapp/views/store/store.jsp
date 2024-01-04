@@ -118,11 +118,10 @@ top: 100px;
     </div>
     
 <div class="productList">
-	<p>상품 리스트</p>
-	<input type="text" class="searchProduct" placeholder="검색어 입력">
-	<button id="productSearch" class="btn btn-primary">검색</button>
+	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
+	<button id="productSearch" class="btn btn-primary">검색</button></p>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" class="button" onclick="location.href='productInfoRegister.go'" style="display: inline;">본사상품 등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" class="button" style="display: inline;">본사상품 등록</button>
 	<div class="listTable">
 	<table>
 	</table>
@@ -205,10 +204,9 @@ top: 100px;
       </div>
       </div>
     </div>
-  </div>
-</div>
-
- <div class="ticketList">
+    
+    
+    <div class="ticketList">
 	<p>티켓 리스트</p>
 	<input type="text" class="searchTicket" placeholder="검색어 입력">
 	<button id="ticketSearch" class="btn btn-primary">검색</button>
@@ -297,6 +295,15 @@ top: 100px;
       </div>
     </div>
  	</div>
+    <div id="productInfoRegisterPage">
+ 	
+ 	</div>
+    
+  </div>
+</div>
+
+ 
+ 	
 </main>
 </body>
 <script>
@@ -304,9 +311,9 @@ resizeWidth();
 
 var matchedProductList;
 var productListTable = $('.productList table');
-productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
 var ticketListTable = $('.ticketList table');
-ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
+ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th><th>사진</th></tr>');
 // 현재 보여지고 있는 지점명
 var currentBranchName;
 var currentProductCategory;
@@ -457,8 +464,6 @@ new Promise((resolve, reject) => {
 					        var branchName = $(this).data('branchName');
 					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
 					        console.log(matchedBranch);
-					        console.log(matchedBranch.branchLongitude);
-					        console.log(matchedBranch.branchLatitude);
 					        initializeMap({
 					            branchList: [{
 					            	branchLocation: matchedBranch.branchLocation,
@@ -476,6 +481,7 @@ new Promise((resolve, reject) => {
 							var ticketListTable = $('.ticketList table');
 							ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
 							
+							console.log(matchedProducts);
 					        // 상품 데이터를 테이블에 추가
 					        if (matchedProducts.length > 0) {
 							    for (var j = 0; j < matchedProducts.length; j++) {
@@ -884,5 +890,19 @@ searchProduct(searchKeyword, currentBranchName);
     	});
     }
    	
+   	// 본사상품 등록 페이지 불러오기
+    $('#productInfoRegister').on('click', function() {
+   	$.ajax({
+    url: "productInfoRegister.go",
+    type: "GET",
+    success: function(data) {
+        $("#productInfoRegisterPage").html(data);
+    },
+    error: function(e) {
+        console.log(e);
+    	}
+	});
+  });
+
 </script>
 </html>

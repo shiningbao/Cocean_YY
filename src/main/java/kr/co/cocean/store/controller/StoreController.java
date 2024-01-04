@@ -101,7 +101,13 @@ public class StoreController {
 			return service.storeProductDetail(productID, branchID);
 		}else {
 		return service.storeProductDetail(productID);
+		}
 	}
+	
+	@GetMapping(value="productInfoRegister.go")
+	@ResponseBody
+	public String productInfoRegiste() {
+		return "productInfoRegister.jsp";
 	}
 	
 	@GetMapping("/store/branchProductDelete.do")

@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="branchProductList" resultType="branchProduct">
-		SELECT bp.productIndex, bp.branchID, bp.productID, bp.status, pi.productName, pi.category, 
+	 <!-- SELECT bp.productIndex, bp.branchID, bp.productID, bp.status, pi.productName, pi.category, 
     		pi.price, b.branchName, b.branchLocation, b.branchLatitude, b.branchLongitude
 		FROM 
 		    branchProduct bp
@@ -18,7 +18,22 @@
 		INNER JOIN 
 		    branch b ON bp.branchID = b.branchID
 		ORDER BY 
-    		bp.productId ASC
+    		bp.productId ASC -->
+		    	SELECT bp.productIndex, bp.branchID, bp.productID, bp.status, 
+		    pi.productName, pi.category, pi.price, 
+		    b.branchName, b.branchLocation, b.branchLatitude, b.branchLongitude,
+		    f.serverFileName
+		FROM 
+		    branchProduct bp
+		INNER JOIN 
+		    productInformation pi ON bp.productID = pi.productID
+		INNER JOIN 
+		    branch b ON bp.branchID = b.branchID
+		LEFT JOIN 
+		    file f ON pi.productID = f.idx
+		    WHERE f.category = "상품"
+		ORDER BY 
+		    bp.productID ASC
 	</select>
 	
 	<select id="searchProduct" resultType="branchProduct">
