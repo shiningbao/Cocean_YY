@@ -104,24 +104,22 @@ public class TankController {
 		return "redirect:/tank/detail.go?tankID="+tankID+"&emName="+emName;
 	}
 	
-	@RequestMapping("tank/random")
-	public void recordGenerator() {
-		List<Integer> tankCount = service.tankCount();
-		logger.info("tankList: "+tankCount.toString());
-		Random random = new Random();
-		for (int i = 0; i < tankCount.size(); i++) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
-			map.put("tankID", tankCount.get(i));
-				for (int j = 0; j < 9; j++) {
-					int randomNumber = random.nextInt(101);
-					map.put("num"+j, randomNumber);
-				}
-				logger.info("map"+map);
-				service.recordData(map);
-			// 이때 insert 실행
-		}
-		
+	@GetMapping("tank/houseLog.go")
+	public ModelAndView houseLog(@RequestParam int tankID, HttpSession session) {
+		ModelAndView mav = new ModelAndView("tank/houseLog");
+		HashMap<String, Object> map = service.logForm(tankID);
+		mav.addObject("map",map);
+		logger.info("map: "+map);
+		return mav;
 	}
+	
+	
+	
+	
+	
+	
+	
+
 	
 }
 
