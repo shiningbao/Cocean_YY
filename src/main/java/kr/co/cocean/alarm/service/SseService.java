@@ -52,17 +52,18 @@ public class SseService {
 		
 		
 		switch (category) {
-		case "결재대기":
-			content = "<a href='"+ctx+"/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category=결재'>"+form+" 결재해주세요.</a>";
-			break;
-		
+
+			case "결재":
+				content = "<a href='"+ctx+"/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category=결재'>"+form+" 결재해주세요.</a>";
+				break;
+	
+			case "로그":
+				content = "<a href='"+ctx+"/animal/detail.go?animalID="+idx+"'>"+form+" 상세보기</a>";
+				break;
+				
+			default:
+				break;
 			
-		case "로그":
-			content = "<a href='"+ctx+"/animal/detail.go?animalID="+idx+"'>"+form+" 상세보기</a>";
-			break;
-			
-		default:
-			break;
 		}
 		
 		AlarmDTO dto = new AlarmDTO();

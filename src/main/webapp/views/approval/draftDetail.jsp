@@ -319,12 +319,17 @@ button{
 </div>
 </div>
 <div id="bottom">
-<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-<c:if test="${category eq '합의'}">
+
+<c:if test="${hTitle ne 'waiting'}">
+<input type="button" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
+</c:if>
+<c:if test="${category eq '합의' && hTitle eq 'waiting'}">
+	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
     <input type="button" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
     <input type="button" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
-<c:if test="${category ne '합의'}">
+<c:if test="${category ne '합의' && hTitle eq 'waiting'}">
+	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
     <input type="button" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
     <input type="button" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
@@ -496,10 +501,10 @@ function approvalSignature(item){
     }
    
     if (item.approvalStatus !== "대기" && item.approvalStatus !== "미대기") {
-    	if(item.approvalStatus == "승인" || item.approvalStatus == "합의"){
+    	if(item.approvalStatus == "결재" || item.approvalStatus == "합의"){
 	    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'><img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'>" +item.name + "</td>").insertAfter(scLastTd);
         $("<td style='width: 38%;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
-    	}else{
+    	}else if(item.approvalStatus =="반려" || item.approvalStatus =="거부"){
     		$("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" + item.name + "</td>").insertAfter(scLastTd);
     	        $("<td style='width: 38%; color:red;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
     	}

@@ -140,10 +140,11 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
+
 		SseService sse = new SseService();
 		logger.info("알람 등록 @@@@@@@@@@@@@@@@@@@@@@@@");
 		sse.alarm("로그", 1, animalID, "코션친구들");
-		
+
 	}
 
 	public HashMap<String, Object> employeeInfo(int employeeID) {
