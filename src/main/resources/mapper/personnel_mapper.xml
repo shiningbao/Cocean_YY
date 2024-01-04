@@ -27,19 +27,43 @@
 	</select>
 	
 	<select id="getChart">
-		SELECT employeeID AS id, CONCAT('de', departmentID) AS parent, CONCAT(name, ' ',(SELECT p.positionName FROM `position` p WHERE p.positionID = e.positionID)) AS 'text', 'jstree-icon-worker' AS 'icon' FROM employee e WHERE e.status = '재직'
-		UNION ALL
-		SELECT CONCAT('de',departmentID) AS id, CONCAT('hq',hqID) AS parent, departmentName AS 'text' ,null AS 'icon' FROM department d WHERE d.isActive = 1
-		UNION ALL
-		SELECT CONCAT('hq',hqID) AS id, CONCAT('br',branchID) AS parent, hqName AS 'text' ,null AS 'icon' FROM headquarters h WHERE h.isActive =1
-		UNION ALL
-		SELECT CONCAT('br',branchID) AS id, '#' AS parent, branchName AS 'text' ,null AS 'icon' FROM branch b;	
-	</select>
+		    SELECT * FROM (
+    SELECT employeeID AS id, 
+           CASE 
+               WHEN e.positionID = 5 THEN '#' 
+               WHEN e.positionID = 4 THEN CONCAT('br', h.branchID)
+               ELSE CONCAT('de', e.departmentID)
+           END AS parent, 
+           CONCAT(name, ' ', (SELECT p.positionName FROM `position` p WHERE p.positionID = e.positionID)) AS 'text', 
+           'jstree-icon-worker' AS 'icon'
+    FROM employee e 
+    LEFT JOIN department d ON e.departmentID = d.departmentID
+    LEFT JOIN headquarters h ON d.hqID = h.hqID
+    WHERE e.status = '재직'
+) AS data
+UNION ALL
+SELECT CONCAT('de',departmentID) AS id, 
+       CONCAT('hq',hqID) AS parent, 
+       departmentName AS 'text', 
+       NULL AS 'icon'
+FROM department d 
+WHERE d.isActive = 1 AND d.departmentName NOT LIKE '-%'
+UNION ALL
+SELECT CONCAT('hq',hqID) AS id, 
+       CONCAT('br',branchID) AS parent, 
+       hqName AS 'text', 
+       NULL AS 'icon'
+FROM headquarters h 
+WHERE h.isActive = 1 AND h.hqName NOT LIKE '%-%'
+UNION ALL
+SELECT CONCAT('br',branchID) AS id, 
+       '#' AS parent, 
+       branchName AS 'text', 
+       NULL AS 'icon'
+FROM branch b;
+			</select>
 	
-	<insert id="joinTree">
-    INSERT INTO jsTree VALUES
-    (#{employeeID}, #{departmentID}, CONCAT(#{name}, ' ', #{positionID}), 'jstree-icon-worker')
-	</insert>
+
 	
 	<select id="personnelList">
 		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
@@ -92,6 +116,21 @@
 			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
 	</insert>
 	
+	<update id="update">
+		    UPDATE file
+	    SET serverFileName = #{serverFileName}
+	    WHERE idx = #{idx} AND category = #{category} AND path = #{path}
+	</update>
+	
+	<update id="updateEmployeeInfo">
+		UPDATE employee SET positionID = #{positionID}
+		,status=#{status}
+		,departmentID=#{departmentID}
+		,rankID=#{rankID}
+		,responID=#{responID}
+		WHERE employeeID =#{employeeID}
+	</update>
+	
 	<select id="datail">
 				SELECT 
 		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName,d.departmentID, h.hqName,h.hqID,res.responID, res.responName,
@@ -126,14 +165,13 @@
 	</select>
 	
 	<select id="departmentChangeLog">
-		SELECT dcl.changeDate,
-       dcl.remarks,
-       beforeD.departmentName AS beforedpID,
-       afterD.departmentName AS afterdpID
-		FROM departmentChangeLog dcl
-		JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
-		JOIN department afterD ON afterD.departmentID = dcl.afterdpID
-		where dcl.employeeID = #{employeeID}
+	SELECT DATE_FORMAT(dcl.changeDate, '%Y-%m-%d') AS changeDate,
+	       beforeD.departmentName AS beforedpID,
+	       afterD.departmentName AS afterdpID
+	FROM departmentChangeLog dcl
+	JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
+	JOIN department afterD ON afterD.departmentID = dcl.afterdpID
+	WHERE dcl.employeeID = 994;
 	</select>
 	
 	<insert id="historySave">
@@ -142,6 +180,10 @@
 	
 	<insert id="schistorySave">
 		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{sccategory});
+	</insert>
+	
+	<insert id="writeDepartmentChangeLog">
+		insert into departmentChangeLog (employeeID,beforedpID,afterdpID) values(#{employeeID},#{beforedpID},#{afterdpID});
 	</insert>
 
 </mapper>
