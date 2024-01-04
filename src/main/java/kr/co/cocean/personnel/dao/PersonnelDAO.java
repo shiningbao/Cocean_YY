@@ -69,4 +69,12 @@ public interface PersonnelDAO {
 	int schistorySave(int employeeID, String startDate, String endDate, String organizationName, String remarks,
 			String sccategory);
 
+	void update(FileDTO dto);
+
+
+	int updateEmployeeInfo(int employeeID, String positionID, String status, String departmentID, String rankID,
+			String responID);
+
+	void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID);
+
 }

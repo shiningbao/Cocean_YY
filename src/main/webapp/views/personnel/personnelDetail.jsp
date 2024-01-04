@@ -211,7 +211,7 @@ th {
 								<label class="photo" for="fileInput">
 								<c:choose>
 										<c:when test="${person.profileImage != null}">
-											<img src="/photo/cocean/personnel/${person.profileImage}"
+											<img src="/photo/cocean/profile/${person.profileImage}"
 												id="thumbnail_image" alt="프로필 사진">
 										<span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 										</c:when>
@@ -258,6 +258,7 @@ th {
 		</div>
 
 		<div class="tab_menu_wrap">
+			<input type="hidden" name="beforeDpID" value="${person.departmentID}">
 			<div>
 				<ul class="tab_menu">
 					<li data-tab="basic" class="tab">기본</li>
@@ -318,7 +319,7 @@ th {
 							            <th>서명이미지</th>
 							            <td>
 							                <label class="photo2" for="fileSignatureInput" style="height: 10px;">
-							                    <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
+							                    <img src="/photo/cocean/signature/${person.signatureImage}" id="signatureImg" alt="서명 이미지">
 							                    <span class="file-icon2"><i class="fas fa-upload"></i></span>
 							                </label>
 							                <div class="file-upload">
@@ -419,14 +420,12 @@ th {
 		<table style="width:100%">
 			<tr>
 				<th>변경일</th>
-				<th>사유</th>
 				<th>변경전부서</th>
 				<th>변경후부서</th>
 			</tr>
 			<c:forEach var="dplog" items="${departmentChangeLog}">
 			<tr>
 				<td>${dplog.changeDate}</td>
-				<td>${dplog.remarks}</td>
 				<td>${dplog.beforedpID}</td>
 				<td>${dplog.afterdpID}</td>
 			</tr>
@@ -635,16 +634,17 @@ function onDepartmentSelect() {
 $(document).ready(function() {
 	var employeeID = '${person.employeeID}';
 	console.log(employeeID);
+
     // 기본 탭을 선택한 상태로 초기화
     $('.tab').removeClass('active');
     $('.tab-content').removeClass('active');
-
+	$('li[data-tab="basic"]').addClass('active');
+    var tabId = 'basic'; // 기본으로 표시할 탭의 ID
+    $('input[name="tabID"]').val(tabId);
+    $("#" + tabId + "Tab").show();
     // 기본 탭 활성화
-    $('#basic').addClass('active'); // 아이디를 기준으로 선택
-
+// 아이디를 기준으로 선택
     // 기본 탭 콘텐츠 보이기
-    $('#basicTab').show();
-	
     // 탭 클릭 이벤트
     $(".tab").click(function() {
         $('.tab').removeClass('active');
