@@ -273,12 +273,15 @@
                 </nav>
                 <!-- 여기까지 TopBar -->
                 <!-- 메인 콘텐츠 영역 -->
-                <div class="container-fluid">
-				
-		
-     
-                    </div>
-            </div>
+				<div class="container-fluid">
+					
+					<div class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">코션하우스</h1>
+					</div>
+					
+					
+				</div>
+			</div>
             <!-- 여기까지 콘텐츠 영역-->
 
             <!-- Footer -->
