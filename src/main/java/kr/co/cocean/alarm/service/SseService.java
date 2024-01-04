@@ -46,8 +46,8 @@ public class SseService {
 		
 		
 		switch (category) {
-		case "결재대기":
-			content = "<a herf=\"<c:url value='/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category=결재'/>\">"+form+" 결재해주세요.</a>";
+		case "결재":
+			content = "<a href=\"<c:url value='/approval/draftDetail.go?idx="+idx+"&category=결재'/>\">"+form+" 결재해주세요.</a>";
 			break;
 
 		default:

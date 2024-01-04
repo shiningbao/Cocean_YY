@@ -94,6 +94,10 @@ public interface ApprovalDAO {
 
 	void rejectAgree(Map<String, String> param);
 
+	void publicApp(int idx);
+
+	ApprovalDTO getForm(int idx);
+
 	/*
 	 * void update(ApprovalDTO dto);
 	 * 

@@ -109,10 +109,15 @@
         </choose>)
 	    </foreach>
 	</insert>
+
+	<insert id="publicApp">
+		INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
+	    SELECT #{idx},employeeID from employee where status='재직', '열람','0','0','열람'
+	</insert>
 	
 	<insert id="lineEmptyTs">
 	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    VALUES (#{idx}, #{employeeID}, '-', '0', #{lastOrder}, '미대기')
+	    VALUES (#{idx}, #{writerID}, '-', '0', #{lastOrder}, '미대기')
 	</insert>
 	
 	<insert id="approvalTs">
@@ -219,7 +224,7 @@
 	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='미대기' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category='참조' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="comList" resultType="approval">
@@ -233,6 +238,10 @@
 	
 	<select id="getSign" resultType="approval">
 		SELECT serverFileName from file WHERE idx=#{employeeID} and path="signature"
+	</select>
+	
+	<select id="getForm" resultType="approval">
+	SELECT df.formTitle FROM draft d JOIN draftForm df ON d.titleID=df.titleID WHERE idx=#{idx};
 	</select>
 	
 	<!-- <update id="update">

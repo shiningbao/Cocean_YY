@@ -82,7 +82,7 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/draftDetail.go")
-	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, int employeeID, String category, String hTitle) {
+	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, String category, String hTitle) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
@@ -90,8 +90,7 @@ public class ApprovalController {
 			ApprovalDTO list = service.draftDetail(idx);
 			ApprovalDTO vac = service.vacDetail(idx);
 			ApprovalDTO lv = service.lvDetail(idx);
-			logger.info("상신자:"+employeeID);
-			ApprovalDTO sign = service.getSign(idx,employeeID);
+			ApprovalDTO sign = service.getSign(idx,loginId);
 			ArrayList<ApprovalDTO> lineList = service.lineList(idx);
 			ArrayList<ApprovalDTO> agrRef = service.agrRef(idx);
 			ArrayList<ApprovalDTO> fileList = service.fileList(idx);
@@ -189,6 +188,7 @@ public class ApprovalController {
 	        param.put("writerID", String.valueOf(employeeID));
 
 	        logger.info("params: {}", param);
+	        logger.info("files:"+files);
  
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
@@ -207,11 +207,12 @@ public class ApprovalController {
 	                lastLineInfo.setApprovalEmp(approvalEmp);
 	                lastLineInfo.setOrder(order);
 	                lastLineInfo.setCategory(category);
-
+	                
+	                
 	                lastLineInfoList.add(lastLineInfo);  
 	            }
 	            	logger.info("line:"+lastLineInfoList);
-	            
+	            	
 	                service.write(files, param, lastLineInfoList);
 	     
 	        	} catch (Exception e) {
