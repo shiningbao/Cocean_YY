@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
@@ -57,10 +58,9 @@ public class ApprovalService {
 		return dao.draftInfo(employeeID);
 	}
 	
-	
 	ApprovalDTO dto = new ApprovalDTO();
 	public void write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
-		int employeeID = Integer.parseInt(param.get("writerID"));
+		int writerID = Integer.parseInt(param.get("writerID"));
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String usageTimeStr = param.get("usageTime");
@@ -78,7 +78,7 @@ public class ApprovalService {
 		String titleID = param.get("titleID");
 		String lastOrder = param.get("lastOrder");
 		logger.info(title);
-		dto.setEmployeeID(employeeID);
+		dto.setEmployeeID(writerID);
 		dto.setPublicStatus(publicStatus);
 		dto.setTempSave(tempSave);
 		dto.setDocumentNo(title);
@@ -90,9 +90,10 @@ public class ApprovalService {
 		dto.setUsageTime(usageTime);
 		
 		logger.info("params:{}",param);
-	
 		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
+		
+		
 		
 		
 		if(files!=null) {
@@ -119,12 +120,19 @@ public class ApprovalService {
 		}else { // 임시저장
 			
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
-					dao.lineEmptyTs(idx,lastOrder,employeeID); // approval테이블에 insert
+					dao.lineEmptyTs(idx,lastOrder,writerID); // approval테이블에 insert
 				}else{
 				dao.approvalTs(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 				}
-
 		}
+		 for (LineDTO lineInfo : lastLineInfoList) { // 알람관련
+	            String category = lineInfo.getCategory();
+	            String employeeID = lineInfo.getApprovalEmp();
+	            dto = dao.getForm(idx);
+	            String form = dto.getFormTitle();
+	            SseService sseService = new SseService(); 
+	            sseService.alarm(category,Integer.parseInt(employeeID), idx, form);
+	        }
 		
 	}
 	

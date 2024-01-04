@@ -96,6 +96,8 @@ public interface ApprovalDAO {
 
 	void publicApp(int idx);
 
+	ApprovalDTO getForm(int idx);
+
 	/*
 	 * void update(ApprovalDTO dto);
 	 * 
