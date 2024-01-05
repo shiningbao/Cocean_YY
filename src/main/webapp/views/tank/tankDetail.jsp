@@ -11,19 +11,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #chart {
-	width: 60%;
-	height: 45%;
-	left: 33%;
-	position: absolute;
-	top: 22%;
+	width: 100%;
+	
 }
 
 #hTitle {
-	width: 300px;
-	height: 50px;
-	left: 350px;
-	position: absolute;
-	top: 200px;
+	width: 100%;	
 }
 
 #hTitle p {
@@ -31,12 +24,9 @@
 }
 
 #tank_table {
-	width: 72%;
-	height: 20%;
+	
+	width: 100%;
 	text-align: center;
-	position: absolute;
-	top: 70%;
-	left: 22%;
 }
 
 #tank_table th {
@@ -51,17 +41,11 @@ button {
 	width: 100px;
 }
 
-.btnGroup {
-	left: 80%;
-	top: 95%;
-	position: absolute;
-}
 
  .topBar { 
-    width: 85%;
+    width: 100%;
     height: 60px;
     left: 130px;
- 	position: absolute; 
  	background-color: #86B0F3; 
  	display: flex; 
 	
@@ -105,26 +89,32 @@ button {
 	<c:import url="/side" />
 	<div class="container-fluid contentField">
 
+<div class="container">
+<div class="row">
 	<div class="col-md">
 		<div class="topBar">
-			<div>하우스 정보</div>
+			<div><i class="fi fi-sr-check" style="margin-right: 10px;"></i>하우스 정보</div>
 				<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
 				<div class="barItem">관리 계획</div>
-				<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
 			</div>
 		</div>
+		</div>
 
-	<div id="hTitle">
-		<p>${map.tankName}</p>
-		 <a>${map.branchName} [${map.area}]</a></br>
-		 <a>${map.tankType} [${map.capacity}]</a></br>
-		 <a>등록일 [${fn:substring(map.registrationDate,0,10)}]</a>
+<div class="row" style="display: flex;padding-top: 10%;flex-direction: column;align-content: space-around;align-items: center;">
+	<div id="hTitle" class="card shadow mb-4" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
+		<p>${map.tankName}
+		 ${map.branchName} [${map.area}]
+		 ${map.tankType} [${map.capacity}]
+		 등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
+		 <button class="btn btn-primary" style="width: 10%;" data-toggle="modal" data-target="#animo">코션친구들</button>
 	</div>
-	<div id="chart">
+	<div id="chart" class="card shadow mb-5">
 		<canvas id="myChart"></canvas>
 	</div>
+	</div>
 	
-	<div id="tank_table">
+	<div class="row">
+	<div id="tank_table" class="card shadow mb-4">
 		<table class="table">
 				<tr>
 					<th>담당자</th>
@@ -162,7 +152,9 @@ button {
 				</tr>
 		</table>
 	</div>
-	<div class="btnGroup">
+	</div>
+	</div>
+	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end;">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
 	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>
@@ -205,8 +197,8 @@ button {
         </div>
      	</div>
      	</div>
-    </div>
 <c:import url="/footer"/>
+    </div>
 </body>
 <script>
 const offset = 1000 * 60 * 60 * 9
