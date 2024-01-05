@@ -13,7 +13,7 @@
 		GROUP BY tankID 
 		HAVING
 		e.name like CONCAT('%',#{search},'%')
-		ORDER BY tankID ASC LIMIT 0,10
+		ORDER BY tankID ASC LIMIT 0,20
 	</select>
 	
 <!-- 	<select id="getTotalCount" parameterType="Pager" resultType="Long"> -->
