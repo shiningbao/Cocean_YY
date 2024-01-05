@@ -16,11 +16,6 @@
 <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
 
 <style>
-
-	.animalDetail{
-		width: 90%;
-		margin: 0 auto;
-	}
 	
 	.topBar {
 		width: 100%;
@@ -55,12 +50,12 @@
 </head>
 <body>
 	<c:import url="/side"/>
-	<main>
-		<div class="content">
-		
-			<div class="hTitle">
-				<a>코션친구들</a>
-			</div>
+	<div class="container-fluid contentField">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
+		</div>
+	
+		<div class="card shadow mb-4">
 
 			<div class="topBar">
 				<div class="barItem" id="base">친구들 정보</div>
@@ -70,10 +65,10 @@
 			
 			<h2 class="animalTilte"></h2>
 			
-			<div class="drawContent"></div>
-
-			</div>
-	</main>
+		</div>
+		<div class="drawContent"></div>
+	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
 
@@ -84,9 +79,6 @@ if(msg != ""){
 		button: '확인'
 	});
 }
-
-
-resizeWidth();
 
 
 var animalID = '${animalID}';

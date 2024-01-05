@@ -22,18 +22,19 @@
 		<h1 class="h3 mb-0 text-gray-800">조직관리</h1>
 	</div>
 	<div class="row">
-		<div class="col-4">
+		<div class="col-3">
 			<div class="card shadow">
 				<div class="card-body">
+					조직도
 					<c:import url="/personnel/organization"/>
 				</div>
 			</div>
 		</div>	
 		
-		<div class="col-8">
+		<div class="col-9">
 			<div class="card shadow">
-				<div calss="card-body">
-					dd
+				<div class="card-body">
+					
 				</div>
 			</div>
 		</div>
@@ -48,5 +49,22 @@
 </body>
 
 <script>
+var employeeID;
+var nodeText
+function getEmployeeID(employeeID,nodeText){
+	
+	$.ajax({
+		url:'getEmployeeInfo.do',
+		type:'post',
+		data:{employeeID:employeeID},
+		success:function(data){
+			console.log(data);
+		},
+		error:function(e){
+			console.log(e);
+		}
+	});
+}
+
 </script>
 </html>
