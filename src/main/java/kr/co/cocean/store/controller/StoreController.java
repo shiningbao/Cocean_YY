@@ -66,7 +66,7 @@ public class StoreController {
 	}
 	
 	@GetMapping(value="/store/productInfoRegister.go")
-	public String productInfoRegister() {
+	public String productInfoRegisterLoad() {
 		logger.info("상품 등록 페이지 이동");
 		return "store/productInfoRegister";
 	}
@@ -76,20 +76,12 @@ public class StoreController {
 	    logger.info("본사상품 등록");
 	    logger.info("상품 정보 : "+params);
 	    logger.info("사진 : "+photo);
-	    String page="store/productInfoRegister";
-	    int result = 0;
 	    if(photo!=null) {
-	        result = service.productInfoRegister(params, photo);
-	        if(result > 0){
-	            page="store/store";
-	        }
+	        service.productInfoRegister(params, photo);
 	    }else{
-	        result = service.productTicketInfoRegister(params);
-	        if(result > 0){
-	            page="store/store";
-	        }
+	        service.productTicketInfoRegister(params);
 	    }
-	    return page;
+	    return "store/store";
 	}
 
 	
@@ -101,7 +93,14 @@ public class StoreController {
 			return service.storeProductDetail(productID, branchID);
 		}else {
 		return service.storeProductDetail(productID);
+		}
 	}
+	
+	@GetMapping(value="productInfoRegister.go")
+	@ResponseBody
+	public String productInfoRegister() {
+		logger.info("상품 등록 페이지 불러오기");
+		return "productInfoRegister.jsp";
 	}
 	
 	@GetMapping("/store/branchProductDelete.do")

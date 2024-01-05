@@ -13,10 +13,13 @@
         border-collapse: collapse;
         padding: 5px 10px;
     }
+    form {
+    	left: 500px;
+    	top : 200px;
+    }
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
 <form action="productInfoRegister.do" method="post" enctype="multipart/form-data" onsubmit="return submitForm(this);">
     <table>
         <tr>
