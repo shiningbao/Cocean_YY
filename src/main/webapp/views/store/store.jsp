@@ -17,19 +17,19 @@
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
 	
-<!-- 부트스트랩 자바스크립트 -->
-<script src="/resource/js/bootstrap.min.js"></script>
-<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
+
 
 <!-- 부트스트랩 CSS/favicon -->
+<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
+<script src="/resource/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="/resource/css/bootstrap.min.css">
 <link rel="stylesheet" href="/resource/css/modal.css">
-<link rel="stylesheet" href="/resource/css/common.css">
+<link rel="stylesheet" href="/resource/css/common.css"> -->
 </head>
 <style>
 .listTable {
     overflow: auto;
-    width: 256px;
+    width: 487px;
     height: 150px; /* 디자인에 맞게 더 큰 값을 설정하세요 */
 }
 
@@ -117,7 +117,9 @@ top: 100px;
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" class="button" style="display: inline;">본사상품 등록</button>
+	<!-- <button id="productInfoRegister" class="btn btn-primary" class="button" style="display: inline;">본사상품 등록</button> -->
+	<button id="productInfoRegister" class="btn btn-primary" style="display: inline;">본사상품 등록</button>
+	
 	<div class="listTable">
 	<table>
 	</table>
@@ -202,7 +204,7 @@ top: 100px;
     </div>
     
     
-    <div class="ticketList">
+    <!-- <div class="ticketList">
 	<p>티켓 리스트</p>
 	<input type="text" class="searchTicket" placeholder="검색어 입력">
 	<button id="ticketSearch" class="btn btn-primary">검색</button>
@@ -211,12 +213,12 @@ top: 100px;
 	<table>
 	</table>
 	</div>
-	<!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#ticketModal">등록</button> -->
-	<!-- <button type="button" class="button" id="ticketRegisterConfirm">등록</button> -->
+	<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#ticketModal">등록</button>
+	<button type="button" class="button" id="ticketRegisterConfirm">등록</button>
 </div>
 
 
-<!-- 첫번째 모달창 -->
+첫번째 모달창
 <div class="modal fade" id="firstTicketModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -239,8 +241,8 @@ top: 100px;
               </div>
               <div class="form-group">
                 <label>티켓명</label>
-                <!-- <button id="firstProductModalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#secondProductModal">검색</button> -->
-                 <!-- 두번째 모달 창 열기 버튼 -->
+                <button id="firstProductModalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#secondProductModal">검색</button>
+                 두번째 모달 창 열기 버튼
         		 <button type="button" id="firstTicketSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondTicketModal">검색</button>
                 	 <input type="text" name="currentProductName" readonly required class="form-control" id="currentTicketName">
               </div>
@@ -259,7 +261,7 @@ top: 100px;
   </div>
 </div>
 
-<!-- 두번째 모달 창 -->
+두번째 모달 창
 <div class="modal fade" id="secondTicketModal" tabindex="-1" role="dialog" style="margin-left: 400px;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -289,7 +291,7 @@ top: 100px;
 	      </div>
       </div>
       </div>
-    </div>
+    </div> -->
  	</div>
     <div id="productInfoRegisterPage">
  	
@@ -386,21 +388,26 @@ new Promise((resolve, reject) => {
     		       		$('.branchLocation').append(registerButton);
     				// 상품 리스트 추가
     				console.log("------------------");
+    				console.log(data);
     				for (var i = 0; i < data.branchProductList.length; i++) {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
-								data.branchProductList[i].category === "상품" && data.branchProductList[i].status === "판매중"){
+								data.branchProductList[i].category != "관람객" && data.branchProductList[i].status === "판매중"){
 							var product = data.branchProductList[i];
-						    var productInfo = '<tr>' +
-						    '<td>' + product.productID + '</td>' +
-						    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=1">' + product.productName + '</a></td>' +
-						    '<td>' + product.price + '</td>' +
-						    '</tr>';
+							var productInfo = '<tr>' +
+							    '<td>' + product.productID + '</td>' +
+							    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=1">' + product.productName + '</a></td>' +
+							    '<td>' + product.price + '</td>' +
+							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '</tr>';
+
+							   
+
 
 	                     productListTable.append(productInfo);
 						}
 					}
     				// 티켓 리스트 추가
-    				console.log("------------------");
+    				/* console.log("------------------");
     				for (var i = 0; i < data.branchProductList.length; i++) {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
 								data.branchProductList[i].category === "티켓" && data.branchProductList[i].status === "판매중"){
@@ -412,110 +419,112 @@ new Promise((resolve, reject) => {
 				            '</tr>';
                          ticketListTable.append(ticketInfo);
 						}
-					}
+					} */
+					
     				// 지점 탭 클릭
     				$('.branchButton').click(function () {
-    console.log("------------------");
-    console.log("지점 버튼 클릭");
-    branchName = $(this).data('branchName');
-    console.log(branchName);
-    currentBranchName = branchName;
-    currentProductCategory = "상품";
-    currentTicketCategory = "티켓";
-    $('#currentProductBranchName').val(currentBranchName);
-    $('#currentTicketBranchName').val(currentBranchName);
-    $('#currentProductCategory').val(currentProductCategory);
-    $('#currentTicketCategory').val(currentTicketCategory);
-    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
-    if (currentBranchName === "가산점") {
-        document.getElementById("modalProductRegister").style.display = "none";
-        document.getElementById("productInfoRegister").style.display = "inline";
-        document.getElementById("modalTicketRegister").style.display = "none";
-    } else {
-        document.getElementById("modalProductRegister").style.display = "inline";
-        document.getElementById("productInfoRegister").style.display = "none";
-        document.getElementById("modalTicketRegister").style.display = "inline";
-    }
-    // 선택된 branchName에 해당하는 지점 찾기
-    var matchedBranch = data.branchProductList.find(function (branch) {
-        return branch.branchName === branchName;
-    });
-    var matchedProducts = data.branchProductList.filter(function (product) {
-        return product.branchName === matchedBranch.branchName && product.category === "상품" &&
-            product.status === "판매중";
-    });
-    var matchedTickets = data.branchProductList.filter(function (product) {
-        return product.branchName === matchedBranch.branchName && product.category === "티켓" &&
-            product.status === "판매중";
-    });
-
-    if (matchedBranch) {
-        console.log("클릭된 지점명과 일치하는 지점명");
-        console.log("탭 지점명 : " + branchName);
-        var branchName = $(this).data('branchName');
-        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
-        console.log(matchedBranch);
-        console.log(matchedBranch.branchLongitude);
-        console.log(matchedBranch.branchLatitude);
-        initializeMap({
-            branchList: [{
-                branchLocation: matchedBranch.branchLocation,
-                branchLongitude: matchedBranch.branchLongitude,
-                branchLatitude: matchedBranch.branchLatitude
-            }]
-        });
-        // 모달창에 현재 클릭된 지점명 넣기
-        $('.branchName').val(branchName);
-
-        // 상품리스트로 테이블 업데이트
-        var productListTable = $('.productList table');
-        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-        // 티켓리스트로 테이블 업데이트
-        var ticketListTable = $('.ticketList table');
-        ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
-
-        // 상품 데이터를 테이블에 추가
-        if (matchedProducts.length > 0) {
-            for (var j = 0; j < matchedProducts.length; j++) {
-                var product = matchedProducts[j];
-                var productInfo = '<tr>' +
-                    '<td>' + product.productID + '</td>' +
-                    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=' + matchedBranch.branchID + '">' + product.productName + '</a></td>' +
-                    '<td>' + product.price + '</td>' +
-                    '</tr>';
-
-                productListTable.append(productInfo);
-            }
-        } else {
-            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
-            var productInfo = '<tr>' +
-                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
-                '</tr>';
-            productListTable.append(productInfo);
-        }
-        // 티켓 데이터를 테이블에 추가
-        if (matchedTickets.length > 0) {
-            for (var j = 0; j < matchedTickets.length; j++) {
-                var ticket = matchedTickets[j];
-                var ticketInfo = '<tr>' +
-                    '<td>' + ticket.productID + '</td>' +
-                    '<td>' + ticket.productName + '</td>' +
-                    '<td>' + ticket.price + '</td>' +
-                    '</tr>';
-                ticketListTable.append(ticketInfo);
-            }
-        } else {
-            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
-            var productInfo = '<tr>' +
-                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
-                '</tr>';
-            productListTable.append(productInfo);
-        }
-
-    } else {
-        console.log("지점에 등록된 상품이 없습니다");
-    }
-}); 
+					    console.log("------------------");
+					    console.log("지점 버튼 클릭");
+					    branchName = $(this).data('branchName');
+					    console.log(branchName);
+					    currentBranchName = branchName;
+					   /*  currentProductCategory = "상품";
+					    currentTicketCategory = "티켓"; */
+					    /* $('#currentProductBranchName').val(currentBranchName);
+					    $('#currentTicketBranchName').val(currentBranchName);
+					    $('#currentProductCategory').val(currentProductCategory);
+					    $('#currentTicketCategory').val(currentTicketCategory); */
+					    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
+					    if (currentBranchName === "가산점") {
+					        document.getElementById("modalProductRegister").style.display = "none";
+					        document.getElementById("productInfoRegister").style.display = "inline";
+					        /* document.getElementById("modalTicketRegister").style.display = "none"; */
+					    } else {
+					        document.getElementById("modalProductRegister").style.display = "inline";
+					        document.getElementById("productInfoRegister").style.display = "none";
+					        /* document.getElementById("modalTicketRegister").style.display = "inline"; */
+					    }
+					    console.log(data);
+					    // 선택된 branchName에 해당하는 지점 찾기
+					    var matchedBranch = data.branchProductList.find(function (branch) {
+					        return branch.branchName === branchName;
+					    });
+					    var matchedProducts = data.branchProductList.filter(function (product) {
+					        return product.branchName === matchedBranch.branchName && product.category != "관람객" &&
+					            product.status === "판매중";
+					    });
+					   /*  var matchedTickets = data.branchProductList.filter(function (product) {
+					        return product.branchName === matchedBranch.branchName && product.category === "티켓" &&
+					            product.status === "판매중";
+					    }); */
+					
+					    if (matchedBranch) {
+					        console.log("클릭된 지점명과 일치하는 지점명");
+					        console.log("탭 지점명 : " + branchName);
+					        var branchName = $(this).data('branchName');
+					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
+					        console.log(matchedBranch);
+					        console.log(matchedBranch.branchLongitude);
+					        console.log(matchedBranch.branchLatitude);
+					        initializeMap({
+					            branchList: [{
+					                branchLocation: matchedBranch.branchLocation,
+					                branchLongitude: matchedBranch.branchLongitude,
+					                branchLatitude: matchedBranch.branchLatitude
+					            }]
+					        });
+					        // 모달창에 현재 클릭된 지점명 넣기
+					        $('.branchName').val(branchName);
+					
+					        // 상품리스트로 테이블 업데이트
+					        var productListTable = $('.productList table');
+					        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+					        // 티켓리스트로 테이블 업데이트
+					        var ticketListTable = $('.ticketList table');
+					        ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
+					
+					        // 상품 데이터를 테이블에 추가
+					        if (matchedProducts.length > 0) {
+					            for (var j = 0; j < matchedProducts.length; j++) {
+					                var product = matchedProducts[j];
+					                var productInfo = '<tr>' +
+					                    '<td>' + product.productID + '</td>' +
+					                    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=' + matchedBranch.branchID + '">' + product.productName + '</a></td>' +
+					                    '<td>' + product.price + '</td>' +
+					                    '</tr>';
+					
+					                productListTable.append(productInfo);
+					            }
+					        } else {
+					            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+					            var productInfo = '<tr>' +
+					                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+					                '</tr>';
+					            productListTable.append(productInfo);
+					        }
+					        // 티켓 데이터를 테이블에 추가
+					        if (matchedTickets.length > 0) {
+					            for (var j = 0; j < matchedTickets.length; j++) {
+					                var ticket = matchedTickets[j];
+					                var ticketInfo = '<tr>' +
+					                    '<td>' + ticket.productID + '</td>' +
+					                    '<td>' + ticket.productName + '</td>' +
+					                    '<td>' + ticket.price + '</td>' +
+					                    '</tr>';
+					                ticketListTable.append(ticketInfo);
+					            }
+					        } else {
+					            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+					            var productInfo = '<tr>' +
+					                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+					                '</tr>';
+					            productListTable.append(productInfo);
+					        }
+					
+					    } else {
+					        console.log("지점에 등록된 상품이 없습니다");
+					    }
+					}); 
 
                 resolve(); // 두 번째 Ajax 호출 성공 시 resolve 호출
             },
@@ -538,11 +547,11 @@ searchProduct(searchKeyword, currentBranchName);
 });
 
 // 티켓 검색 버튼 클릭
-$('#ticketSearch').click(function () {
+/* $('#ticketSearch').click(function () {
 searchKeyword = $('.searchTicket').val();
 console.log(searchKeyword);
 searchProduct(searchKeyword, currentBranchName);
-});
+}); */
 
 // 모달검색 버튼 클릭
  $('.secondProductModalSearch').click(function () {
@@ -730,24 +739,31 @@ searchProduct(searchKeyword, currentBranchName);
             searchedModalProduct.append(productInfo);
         }
     } else if (data.searchedList[0].status != "본사상품") {
-
+    	console.log("상상품");
+    	console.log(data.searchedList);
+    	
+    	/*
+    	 상품 검색 like 여러개 보여줘야함
+    	
+    	*/
         // 검색된 결과에 따라 상품 또는 티켓을 보여주는 테이블
         for (var i = 0; i < data.searchedList.length; i++) {
             var product = data.searchedList[i];
 			
-            if (product.category == "상품") {
+            if (product.category != "관람객") {
                 console.log("상품");
 				console.log(product);
                 var productListTable = $('.productList table');
                 productListTable.empty(); // 기존 내용 비우기
-                productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
+                productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
                 		var productInfo = '<tr>' +
                     '<td>' + product.productID + '</td>' +
                     '<td>' + product.productName + '</td>' +
                     '<td>' + product.price + '</td>' +
                     '</tr>';
                 productListTable.append(productInfo);				
-            } else {
+            } 
+            /* else {
                 console.log("티켓");
 
                 var ticketListTable = $('.ticketList table');
@@ -760,7 +776,7 @@ searchProduct(searchKeyword, currentBranchName);
                     '<td>' + ticket.price + '</td>' +
                     '</tr>';
                 ticketListTable.append(ticketInfo);
-            }
+            } */
         }
     }
 }
@@ -884,6 +900,7 @@ searchProduct(searchKeyword, currentBranchName);
    	
    	// 본사상품 등록 페이지 불러오기
     $('#productInfoRegister').on('click', function() {
+    	console.log("럭,러가");
    	$.ajax({
     url: "productInfoRegister.go",
     type: "GET",

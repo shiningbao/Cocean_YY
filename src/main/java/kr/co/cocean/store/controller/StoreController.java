@@ -66,7 +66,7 @@ public class StoreController {
 	}
 	
 	@GetMapping(value="/store/productInfoRegister.go")
-	public String productInfoRegister() {
+	public String productInfoRegisterLoad() {
 		logger.info("상품 등록 페이지 이동");
 		return "store/productInfoRegister";
 	}
@@ -98,7 +98,8 @@ public class StoreController {
 	
 	@GetMapping(value="productInfoRegister.go")
 	@ResponseBody
-	public String productInfoRegiste() {
+	public String productInfoRegister() {
+		logger.info("상품 등록 페이지 불러오기");
 		return "productInfoRegister.jsp";
 	}
 	

@@ -93,9 +93,11 @@ public class StoreService {
 	
 	public Map<String, Object> storeList(Model model) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		ArrayList<StoreProductDTO> list = dao.branchProductList();
+		ArrayList<StoreProductDTO> branchProductList = dao.branchProductList();
+//		ArrayList<StoreProductDTO> branchTicketList = dao.branchTicketList();
 		ArrayList<StoreDTO> branchList = dao.branchList();
-		map.put("branchProductList", list);
+		map.put("branchProductList", branchProductList);
+//		map.put("branchTicketList", branchTicketList);
 		map.put("branchList", branchList);
 		return map;
 	}
