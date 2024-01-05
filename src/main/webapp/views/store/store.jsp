@@ -40,16 +40,11 @@ border: 1px solid gray;
 text
 }
 .productList{
-position: absolute;
     left: 770px;
     top: 70px;
     width: 500px;
 }
-.ticketList{
-position: absolute;
-    left: 770px;
-    top: 422px;
-}
+
 #modalSearch{
 	width: 300px;
 }
@@ -71,14 +66,21 @@ top: 100px;
 <body>
 <c:import url="/side" />
 <div class="container-fluid contentField">
+<div class="row">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
                     </div>
-
+</div>
+<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap;">
+<div class="row">
 <div class="branchLocation">지점
 <!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">&#43;</button> -->
 </div>
-<div id="map"></div>
+</div>
+<div class="row" style="width: 100%; display: flex; justify-content: space-between;">
+
+<div id="map" class="card shadow mb-4"></div>
+
 <!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
 <!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#modal">등록</button> -->
 
@@ -115,7 +117,7 @@ top: 100px;
       </div>
     </div>
     
-<div class="productList">
+<div class="productList" >
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
@@ -127,6 +129,8 @@ top: 100px;
 	</table>
 	</div>
 	<!-- <button type="button" class="button" onclick="location.href='storeProductRegister.do'">등록</button> -->
+</div>
+</div>
 </div>
 
 <!-- 첫번째 모달창 -->
@@ -294,12 +298,12 @@ top: 100px;
       </div>
       </div>
     </div> -->
- 	</div>
     <div id="productInfoRegisterPage">
  	
  	</div>
- 
+ <c:import url="/footer"/>
  	
+ 	</div>
 </body>
 <script>
 /* resizeWidth(); */
