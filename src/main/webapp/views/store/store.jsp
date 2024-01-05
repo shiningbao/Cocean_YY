@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +69,7 @@ top: 100px;
 }
 </style>
 <body>
-<jsp:include page="../etc/newSide.jsp"></jsp:include>
+<c:import url="/side" />
 <div class="container-fluid contentField">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
