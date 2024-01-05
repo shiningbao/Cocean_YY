@@ -5,7 +5,7 @@
 
 <div class="row">
 	<div class="col-md-6">
-		<div id="animalImgDiv">
+		<div class="card shadow pt-4 p-2">
 			<div class="row">
 				<div class="imgChange col-md-1 mb-2" onclick="imgChange(-1)">
 					<img class="img-fluid" alt="carrot-side2.png"
@@ -20,17 +20,17 @@
 					<img class="img-fluid" alt="carrot-side.png"
 						src='<c:url value="/resource/img/carrot-side.png"/>'>
 				</div>
-				<div class="col-md-4 p-1 text-center">
+				<div class="col-md-4 mb-2 pl-4">
 					<div class="animalImg">
 						<img class="img-fluid img-thumbnail" alt="#" src="#">
 					</div>
 				</div>
-				<div class="col-md-4 p-1">
+				<div class="col-md-4 mb-2">
 					<div class="animalImg text-center">
 						<img class="img-fluid img-thumbnail" alt="#" src="#">
 					</div>
 				</div>
-				<div class="col-md-4 p-1">
+				<div class="col-md-4 mb-2 pr-4">
 					<div class="animalImg text-center">
 						<img class="img-fluid img-thumbnail" alt="#" src="#">
 					</div>
@@ -38,7 +38,7 @@
 			</div>
 		</div>	
 	</div>
-	<div class="col-md-6">
+	<div class="card shadow col-md-6">
 		<table class="animalTable table table-bordered">
 			<tr>
 				<th class="text-center" scope="col">코션친구들 코드</th>
