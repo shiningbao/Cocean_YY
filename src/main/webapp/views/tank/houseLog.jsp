@@ -45,7 +45,7 @@
 			<div class="barItem" data-toggle="modal" data-target="#animo">코션친구들</div>
 		</div>
 	
-<c:import url="/footer" />
+<c:import url="/footer"/>
 	</div>
 </body>
 <script>
