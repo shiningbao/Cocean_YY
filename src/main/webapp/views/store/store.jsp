@@ -68,7 +68,7 @@ top: 100px;
 </style>
 <body>
 <jsp:include page="../etc/newSide.jsp"></jsp:include>
-<div class="container-fluid">
+<div class="container-fluid contentField">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
                     </div>
@@ -118,7 +118,7 @@ top: 100px;
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
 	<!-- <button id="productInfoRegister" class="btn btn-primary" class="button" style="display: inline;">본사상품 등록</button> -->
-	<button id="productInfoRegister" class="btn btn-primary" style="display: inline;">본사상품 등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline;">본사상품 등록</button>
 	
 	<div class="listTable">
 	<table>
@@ -739,49 +739,32 @@ searchProduct(searchKeyword, currentBranchName);
             searchedModalProduct.append(productInfo);
         }
     } else if (data.searchedList[0].status != "본사상품") {
-    	console.log("상상품");
-    	console.log(data.searchedList);
     	
-    	/*
-    	 상품 검색 like 여러개 보여줘야함
-    	
-    	*/
         // 검색된 결과에 따라 상품 또는 티켓을 보여주는 테이블
-        for (var i = 0; i < data.searchedList.length; i++) {
-            var product = data.searchedList[i];
-			
-            if (product.category != "관람객") {
-                console.log("상품");
-				console.log(product);
-                var productListTable = $('.productList table');
-                productListTable.empty(); // 기존 내용 비우기
-                productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
-                		var productInfo = '<tr>' +
-                    '<td>' + product.productID + '</td>' +
-                    '<td>' + product.productName + '</td>' +
-                    '<td>' + product.price + '</td>' +
-                    '</tr>';
-                productListTable.append(productInfo);				
-            } 
-            /* else {
-                console.log("티켓");
-
-                var ticketListTable = $('.ticketList table');
-                ticketListTable.empty(); // 기존 내용 비우기
-                ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
-                var ticket = data.searchedList[i];
-                var ticketInfo = '<tr>' +
-                    '<td>' + ticket.productID + '</td>' +
-                    '<td>' + ticket.productName + '</td>' +
-                    '<td>' + ticket.price + '</td>' +
-                    '</tr>';
-                ticketListTable.append(ticketInfo);
-            } */
-        }
+        var productListTable = $('.productList table');
+		productListTable.empty();
+		productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
+		
+		for (var i = 0; i < data.searchedList.length; i++) {
+		    var product = data.searchedList[i];
+		
+		    if (product.category != "관람객") {
+		        console.log("상품");
+		        console.log(product);
+		
+		        var productInfo = '<tr>' +
+				    '<td>' + product.productID + '</td>' +
+				    '<td>'+ product.productName + '</td>' +
+				    '<td>' + product.price + '</td>' +
+				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '</tr>';
+		
+		        productListTable.append(productInfo);
+		    }
+		}
     }
 }
 
-    
  	// 카카오 우편번호 api
     function roadAddr() {
         new daum.Postcode({
@@ -899,19 +882,19 @@ searchProduct(searchKeyword, currentBranchName);
     }
    	
    	// 본사상품 등록 페이지 불러오기
-    $('#productInfoRegister').on('click', function() {
-    	console.log("럭,러가");
-   	$.ajax({
-    url: "productInfoRegister.go",
-    type: "GET",
-    success: function(data) {
-        $("#productInfoRegisterPage").html(data);
-    },
-    error: function(e) {
-        console.log(e);
-    	}
-	});
-  });
+    function productInfoRegister(){
+     	$.ajax({
+      url: "productInfoRegister.go",
+      type: "GET",
+      success: function(data) {
+          $("#productInfoRegisterPage").html(data);
+      },
+      error: function(e) {
+          console.log(e);
+      	}
+  	});
+   }
+    	
 
 </script>
 </html>
