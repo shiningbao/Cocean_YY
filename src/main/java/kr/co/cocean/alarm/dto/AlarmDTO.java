@@ -1,7 +1,5 @@
 package kr.co.cocean.alarm.dto;
 
-import java.sql.Date;
-
 import org.apache.ibatis.type.Alias;
 
 @Alias("alarm")
@@ -10,8 +8,10 @@ public class AlarmDTO {
 	private int historyID;
 	private int employeeID;
 	private Boolean isRead;
-	private Date notificationTime;
+	private String notificationTime;
 	private String content;
+	private String url;
+	private String form;
 	
 	
 	public int getHistoryID() {
@@ -32,10 +32,10 @@ public class AlarmDTO {
 	public void setIsRead(Boolean isRead) {
 		this.isRead = isRead;
 	}
-	public Date getNotificationTime() {
+	public String getNotificationTime() {
 		return notificationTime;
 	}
-	public void setNotificationTime(Date notificationTime) {
+	public void setNotificationTime(String notificationTime) {
 		this.notificationTime = notificationTime;
 	}
 	public String getContent() {
@@ -44,6 +44,19 @@ public class AlarmDTO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	public String getForm() {
+		return form;
+	}
+	public void setForm(String form) {
+		this.form = form;
+	}
+	
 	
 
 	
