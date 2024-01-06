@@ -171,6 +171,23 @@ th {
 	position: absolute;
     top: 78%;
 }
+
+.psSelect {
+	/* form-control 클래스 스타일 */
+	margin-bottom: 12px;
+	height: 38px;
+	display: block;
+	width: 100%;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 </style>
 </head>
 <body>
@@ -220,8 +237,12 @@ th {
 						</span></td>
 						<th class="name">이름</th>
 						<th class="team">소속</th>
-						<td class="last" colspan="3">${person.departmentName }</td>
-						
+
+						<td class="last" colspan="">${person.departmentName }</td>
+						<th>입사일</th>
+						<td class="" colspan="1">
+							  <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
+						</td>
 					</tr>
 					<tr>
 						<td class="name_txt" rowspan="3">
@@ -277,9 +298,9 @@ th {
 							<table class="multi-row-table" style="width:100%;">
 							    <tbody>
 							        <tr>
-							            <th class="col1">입사일</th>
-							            <td class="col2">
-							                <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
+										<th class="col3">지점</th>
+							            <td class="col4">
+							                <select id="branchSelect" class="psSelect" name="branchID"></select>
 							            </td>
 							            <th class="col3"><span class="title_txt">직급</span></th>
 							            <td class="col4">
@@ -299,10 +320,7 @@ th {
 							            </td>
 							        </tr>
 							        <tr>
-							            <th>지점</th>
-							            <td>
-							                <select id="branchSelect" class="psSelect" name="branchID"></select>
-							            </td>
+
 							            <th>본부</th>
 							            <td>
 							                <select id="deSelect" class="psSelect" name="hqID"></select>
@@ -315,9 +333,7 @@ th {
 							            <td>
 							                <select id="resSelect" name="responID" class="psSelect"></select>
 							            </td>
-							        </tr>
-							        <tr>
-							            <th>서명이미지</th>
+							             <th>서명이미지</th>
 							            <td>
 							                <label class="photo2" for="fileSignatureInput" style="height: 10px;">
 							                    <img src="/photo/cocean/signature/${person.signatureImage}" id="signatureImg" alt="서명 이미지">
@@ -327,11 +343,10 @@ th {
 							                    <input type="file" name="fileSignature" id="fileSignatureInput" title="등록" style="height:inherit;">
 							                </div>
 							            </td>
-										<th>비밀번호초기화</th>
-										<td>
-											
-										</td>
 							        </tr>
+
+							           
+
 							    </tbody>
 							</table>
 						</div>
@@ -584,10 +599,9 @@ function onBranchSelectChange() {
             console.log(data);
             $('#deSelect').empty();
             data.forEach(function(option, index) {
-                var value = branchID == 2 ? index + 4 : index + 1;
                 var $option = $('<option>', {
-                    value: value,
-                    text: option
+                    value: option.hqID,
+                    text: option.hqName
                 });
 
                 // 여기에 원하는 조건을 추가하여 선택되도록 설정
@@ -738,8 +752,8 @@ $(document).ready(function() {
             console.log(data);
             data.forEach(function(option, index) {
                 var $option = $('<option>', {
-                    value: index+1,
-                    text: option
+                    value: option.branchID,
+                    text: option.branchName
                 });
 
                 // 여기에 원하는 조건을 추가하여 선택되도록 설정
@@ -850,7 +864,7 @@ $('.detailSaveBtn').on('click',function(){
 	console.log('click');
 	if(confirm("저장 하시겠습니까?")){
 		$('#detailSave').submit();	
-		/* location.href = '/Cocean/personnel/detail.go?employeeID='+${person.employeeID}; */
+		/* location.href = location.href; */
 	}else{
 		
 	}

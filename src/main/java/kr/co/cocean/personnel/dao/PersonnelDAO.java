@@ -13,7 +13,7 @@ import org.springframework.util.MultiValueMap;
 import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
-import kr.co.cocean.personnel.dto.TreeDTO;
+import kr.co.cocean.personnel.dto.departmentDTO;
 
 @Mapper
 public interface PersonnelDAO {
@@ -21,15 +21,15 @@ public interface PersonnelDAO {
 
 	int join(HashMap<String, Object> params);
 	
-    List<String> getBranch();
+    List<HashMap<String, Object>> getBranch();
 
 
 
-	List<TreeDTO> getChart();
+	List<departmentDTO> getChart();
 
 	void joinTree(HashMap<String, Object> params);
 
-	List<String> getBranchID(String branchID);
+	List<HashMap<String, Object>> getBranchID(String branchID);
 
 	List<HashMap<String, Object>> getHqID(String hqID);
 
@@ -78,5 +78,41 @@ public interface PersonnelDAO {
 	void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID);
 
 	void resetPassword(String password, String employeeID);
+
+	HashMap<String, Object> getdepartmentInfo(String departmentID);
+
+	HashMap<String, Object> gethqInfo(String hqID);
+
+	Integer updateRank(String rankID, String rankName, Boolean isActive);
+
+	void updatePosition(String positionID, String positionName, Boolean isActive);
+
+	void addPostion(String positionID, String positionName, Boolean isActive);
+
+	Boolean checkDuplicateAddpositionID(String addpositionID);
+
+	void addRank(String rankID, String rankName, Boolean isActive);
+
+	Boolean checkDuplicateAddRankID(String addRankID);
+
+	List<HashMap<String, Object>> getRankNameActive();
+
+	List<HashMap<String, Object>> getPositionNameActive();
+
+	int addDepartment(String hqID, String departmentName, Boolean isActive);
+
+	List<HashMap<String, Object>> getBranchOrgID(String branchID);
+
+	void addhq(String branchID, String hqName, Boolean isActive);
+
+	void updateInfo(int employeeID, String address, String name, String phoneNumber);
+
+	void editHq(String hqName, String hqID, Boolean isActive);
+
+	void editDp(String departmentName, String departmentID, Boolean isActive);
+
+	int getDepartmentMembers(String departmentID);
+
+	void addResponsibiliy(int departmentID, String responName);
 
 }

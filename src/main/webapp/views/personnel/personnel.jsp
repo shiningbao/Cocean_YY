@@ -256,7 +256,7 @@ tbody tr {
 					</tr>
                     <tr>
                         <th colspan="2">
-                            <input type="submit" value="등록" class="btn btn-primary regibtn" id="submitBtn"//>
+                            <input type="submit" value="등록" class="btn btn-primary regibtn" id="submitBtn"/>
                         </th>
                     </tr>
                 </table>
@@ -275,7 +275,7 @@ var branchSelect = $('#branchSelect');
 
 function getPositionName() {
     $.ajax({
-        url: 'getPositionName.do',
+        url: 'getPositionNameActive.do',
         method: 'POST',
         data: {},
         success: function(data) {
@@ -295,7 +295,7 @@ function getPositionName() {
 }
 function getRankName() {
     $.ajax({
-        url: 'getRankName.do',
+        url: 'getRankNameActive.do',
         method: 'POST',
         data: {},
         success: function(data) {
@@ -325,11 +325,10 @@ var branchID = $('#branchSelect').val();
         success: function(data) {
             console.log(data);
             $('#deSelect').empty();
-            data.forEach(function(option, index) {
-                var value = branchID == 2 ? index + 4 : index + 1;
+            data.forEach(function(option) {
                 $('#deSelect').append($('<option>', {
-                    value: value,
-                    text: option
+                    value: option.hqID,
+                    text: option.hqName
                 }))
             });
 			
@@ -441,10 +440,10 @@ $(document).ready(function() {
         url: 'getBranch.do',
         success: function(data) {
             console.log(data);
-            data.forEach(function(option, index) {
+            data.forEach(function(option) {
                 $('#branchSelect').append($('<option>', {
-                    value: index + 1,
-                    text: option
+                    value: option.branchID,
+                    text: option.branchName
                 }))
             });
             $('#branchSelect').val('1').trigger('change');

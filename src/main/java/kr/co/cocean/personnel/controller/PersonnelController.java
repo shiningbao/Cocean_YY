@@ -50,9 +50,17 @@ public class PersonnelController {
 	
     @GetMapping(value="/personnel/getBranchID.do")
 	@ResponseBody
-    public List<String> getBranchID(String branchID) {
+    public List<HashMap<String, Object>> getBranchID(String branchID) {
         logger.info("지점번호 =="+branchID);
-        List<String> teams = service.getBranchID(branchID);
+        List<HashMap<String, Object>> teams = service.getBranchID(branchID);
+
+		return teams;
+	}
+    @GetMapping(value="/personnel/getBranchOrgID.do")
+	@ResponseBody
+    public List<HashMap<String, Object>> getBranchOrgID(String branchID) {
+        logger.info("지점번호 =="+branchID);
+        List<HashMap<String, Object>> teams = service.getBranchOrgID(branchID);
 
 		return teams;
 	}
@@ -69,9 +77,9 @@ public class PersonnelController {
 
     @RequestMapping(value="/personnel/getBranch.do")
     @ResponseBody
-    public List<String> getBranch(){
+    public List<HashMap<String, Object>> getBranch(){
         
-        List<String> getbranch = service.getBranch();
+    	List<HashMap<String, Object>> getbranch = service.getBranch();
         
         return getbranch;
     }
@@ -98,7 +106,7 @@ public class PersonnelController {
 		
 		return new ResponseEntity(service.getChart(),HttpStatus.OK); 
 	}
-	
+	 
 	@RequestMapping(value="/personnel/getEmployeeID.do")
 	@ResponseBody
 	public ModelAndView getEmployeeID(String employeeID) {
@@ -163,9 +171,9 @@ public class PersonnelController {
 		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
 		logger.info("aaa==="+selectedOption);
 			 list= service.searchPerson(searchValue,selectedOption);
+		 
 		
-		
-		return list;
+		return list; 
 	}
 	
 	@PostMapping(value="/personnel/checkDuplicateEmployeeID.do")
@@ -175,6 +183,23 @@ public class PersonnelController {
 		logger.info("result!!! =="+result);
 		return result;
 	}
+	
+	@PostMapping(value="/personnel/checkDuplicateAddpositionID.do")
+	@ResponseBody
+	public Boolean checkDuplicateAddpositionID(String addpositionID) {
+		Boolean result = service.checkDuplicateAddpositionID(addpositionID);
+		logger.info("result!!! =="+result);
+		return result; 
+	}
+
+	@PostMapping(value="/personnel/checkDuplicateAddRankID.do")
+	@ResponseBody
+	public Boolean checkDuplicateAddRankID(String addRankID) {
+		Boolean result = service.checkDuplicateAddRankID(addRankID);
+		logger.info("result!!! =="+result);
+		return result;
+	}
+	
 	
 	@RequestMapping(value="/personnel/orgManage.go")
 	public String orgManage() {
@@ -195,11 +220,27 @@ public class PersonnelController {
 		return list;
 	}
 	
-	@PostMapping(value="/personnel/getRankName.do")
+	@PostMapping(value="/personnel/getPositionNameActive.do")
 	@ResponseBody
+	public List<HashMap<String, Object>> getPositionNameActive(){
+		
+		List<HashMap<String, Object>> list = service.getPositionNameActive();
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/getRankName.do")
+	@ResponseBody 
 	public List<HashMap<String, Object>> getRankName(){
 		
 		List<HashMap<String, Object>> list = service.getRankName();
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/getRankNameActive.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getRankNameActive(){
+		
+		List<HashMap<String, Object>> list = service.getRankNameActive();
 		return list;
 	}
 	
@@ -290,14 +331,19 @@ public class PersonnelController {
 	              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	  		}
 	    }else if(tabID.equals("basic")) {
-	  	  
+	  	  	  logger.info("basic접근");
 			  int row = service.updateEmployee(employeeID,params);
+			  service.updateEmployeeImg(employeeID,fileSignature,file);
 			  if(row>0) {
-				  service.updateEmployeeImg(employeeID,fileSignature,file);
-				  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+				  logger.info("변경전 부서"+beforedpID+ "변경 후 부서"+afterdpID);
+				  if(!beforedpID.equals(afterdpID)) {
+					  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+				  } 
+				 
 			  }
 	    }else if(tabID.equals("info")) {
 	    	
+	    	service.updateinfo(employeeID,params);
 	    }
 
 
@@ -318,13 +364,138 @@ public class PersonnelController {
 	
 	@PostMapping(value="/personnel/getEmployeeInfo.do")
 	@ResponseBody
-	public ModelAndView getEmployeeInfo(@RequestParam String employeeID) {
+	public HashMap<String, Object> getEmployeeInfo(@RequestParam String employeeID,@RequestParam String nodeText) {
 		logger.info("조직관리 =="+employeeID);
-		ModelAndView mav = new ModelAndView();
-		HashMap<String, Object> employeeInfo = service.getEmployeeInfo(employeeID);
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		if(employeeID.matches("\\d+")&&(employeeID.startsWith("br"))) {
+			boolean nodata = false;
+			result.put("nodata", nodata);
+		}else if(employeeID.startsWith("de")) {
+			String departmentID =employeeID.substring(2);
+			HashMap<String, Object> dpInfo = service.getdepartmentInfo(departmentID);
+			int thisDepartmentMembers = service.getDepartmentMembers(departmentID);
+			result.put("thisDepartmentMembers", thisDepartmentMembers);
+			result.put("dpInfo", dpInfo);
+		}else if(employeeID.startsWith("hq")) {
+			String hqID =employeeID.substring(2);
+			HashMap<String, Object> hqInfo = service.gethqInfo(hqID);
+			result.put("hqInfo", hqInfo);
+		}
 		
-		return mav;
+		
+		return result;
 	}
-        
+	@PostMapping(value = "/personnel/updateRank.do")
+	@ResponseBody
+	public HashMap<String, Object> editRankInfo(@RequestParam String rankID,
+	                                       @RequestParam String rankName,
+	                                       @RequestParam Boolean isActive) {   
+	    logger.info("직급 수정 요청 - rankID: " + rankID + ", rankName: " + rankName + ", isActive: " + isActive);
+
+	    HashMap<String, Object> response = new HashMap<String, Object>();
+	    
+	     Integer row = service.updateRank(rankID,rankName,isActive);
+
+	     response.put("message", "수정이 완료되었습니다."); 
+	    return response; 
+	}
+	
+	@PostMapping(value = "/personnel/updatePosition.do")
+	@ResponseBody
+	public HashMap<String, Object> updatePosition(@RequestParam String positionID,
+	                                       @RequestParam String positionName,
+	                                       @RequestParam Boolean isActive) {   
+	    logger.info("직급 수정 요청 - positionID: " + positionID + ", rankName: " + positionName + ", isActive: " + isActive);
+
+	    HashMap<String, Object> response = new HashMap<String, Object>();
+	     
+	    service.updatePosition(positionID,positionName,isActive);
+
+	     response.put("message", "수정이 완료되었습니다."); 
+	    return response; 
+	}
+	@PostMapping(value = "/personnel/addPostion.do")
+	@ResponseBody
+	public HashMap<String, Object> addPostion(@RequestParam String positionID,
+            @RequestParam String positionName,
+            @RequestParam Boolean isActive) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.addPostion(positionID,positionName,isActive);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
+	@PostMapping(value = "/personnel/addRank.do")
+	@ResponseBody
+	public HashMap<String, Object> addRank(@RequestParam String rankID,
+            @RequestParam String rankName,
+            @RequestParam Boolean isActive) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.addRank(rankID,rankName,isActive);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
+	@PostMapping(value = "/personnel/addDepartment.do")
+	@ResponseBody
+	public HashMap<String, Object> addDepartment(@RequestParam String hqID,
+            @RequestParam String departmentName,
+            @RequestParam Boolean isActive,
+            @RequestParam(value="responsibility[]") List<String> responsibility) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		 
+		int departmentID =service.addDepartment(hqID,departmentName,isActive);
+		for (String responName : responsibility) {
+			service.addResponsibiliy(departmentID,responName);
+		}
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}  
+	@PostMapping(value = "/personnel/addhq.do") 
+	@ResponseBody
+	public HashMap<String, Object> addhq(@RequestParam String branchID,
+            @RequestParam String hqName,
+            @RequestParam Boolean isActive) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.addhq(branchID,hqName,isActive);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
+	
+	@PostMapping(value = "/personnel/editHq.do")
+	@ResponseBody
+	public HashMap<String, Object> editHq( @RequestParam String hqID,
+            @RequestParam String hqName,
+            @RequestParam Boolean isActive) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.editHq(hqID,hqName,isActive);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
+	
+	@PostMapping(value = "/personnel/editDp.do")
+	@ResponseBody
+	public HashMap<String, Object> editDp( @RequestParam String departmentID,
+            @RequestParam String departmentName,
+            @RequestParam Boolean isActive) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.editDp(departmentID,departmentName,isActive);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
 
 }

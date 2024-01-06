@@ -21,11 +21,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.main.dto.FileDTO;
-import kr.co.cocean.personnel.controller.object;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
-import kr.co.cocean.personnel.dto.TreeDTO;
+import kr.co.cocean.personnel.dto.departmentDTO;
 
 @Service
 public class PersonnelService {
@@ -143,7 +142,7 @@ public class PersonnelService {
 			e.printStackTrace();
 		}
 	}
-	public List<String> getBranch() {
+	public List<HashMap<String, Object>> getBranch() {
         return dao.getBranch();
     }
 
@@ -159,7 +158,7 @@ public class PersonnelService {
 	}
 	
 	
-	public List<String> getBranchID(String branchID) {
+	public List<HashMap<String, Object>> getBranchID(String branchID) {
 		// TODO Auto-generated method stub
 		return dao.getBranchID(branchID);
 	}
@@ -169,7 +168,7 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> getDepartmentText(String departmentText) {
 		return dao.getDepartmentText(departmentText);
 	}
-	public List<TreeDTO> getChart() {
+	public List<departmentDTO> getChart() {
 		return dao.getChart();
 	}
 
@@ -227,9 +226,79 @@ public class PersonnelService {
 		
 		dao.resetPassword(password,employeeID);
 	}
-	public HashMap<String, Object> getEmployeeInfo(String employeeID) {
+	public HashMap<String, Object> getdepartmentInfo(String departmentID) {
+		return dao.getdepartmentInfo(departmentID);
+	}
+	public HashMap<String, Object> gethqInfo(String hqID) {
+		return dao.gethqInfo(hqID);
+	}
+	public Integer updateRank(String rankID, String rankName, Boolean isActive) {
+		return dao.updateRank(rankID,rankName,isActive);
+	}
+	public void updatePosition(String positionID, String positionName, Boolean isActive) {
+		
+		dao.updatePosition(positionID,positionName,isActive);
+		
+	}
+	public void addPostion(String positionID, String positionName, Boolean isActive) {
+			
+		dao.addPostion(positionID,positionName,isActive);
+	}
+	public Boolean checkDuplicateAddpositionID(String addpositionID) {
 		// TODO Auto-generated method stub
-		return null;
+		return dao.checkDuplicateAddpositionID(addpositionID);
+	}
+	public void addRank(String rankID, String rankName, Boolean isActive) {
+		
+		dao.addRank(rankID,rankName,isActive);
+		
+	}
+	public Boolean checkDuplicateAddRankID(String addRankID) {
+		// TODO Auto-generated method stub
+		return dao.checkDuplicateAddRankID(addRankID);
+	}
+	public List<HashMap<String, Object>> getRankNameActive() {
+		return dao.getRankNameActive();
+	}
+	public List<HashMap<String, Object>> getPositionNameActive() {
+		// TODO Auto-generated method stub
+		return dao.getPositionNameActive();
+	}
+	public int addDepartment(String hqID, String departmentName, Boolean isActive) {
+		// TODO Auto-generated method stub
+		
+		return dao.addDepartment(hqID,departmentName,isActive);
+		
+	}
+	public List<HashMap<String, Object>> getBranchOrgID(String branchID) {
+		return dao.getBranchOrgID(branchID);
+	}
+	public void addhq(String branchID, String hqName, Boolean isActive) {
+		
+		dao.addhq(branchID,hqName,isActive);
+	}
+	public void updateinfo(int employeeID, HashMap<String, Object> params) {
+		
+		String name =(String) params.get("name");
+		String phoneNumber =(String) params.get("phoneNumber");
+		String address =(String) params.get("address");
+		dao.updateInfo(employeeID, address, name, phoneNumber);
+	}
+	public void editHq(String hqName, String hqID, Boolean isActive) {
+		// TODO Auto-generated method stub
+		dao.editHq(hqID,hqName,isActive);
+		
+	}
+	public void editDp(String departmentName, String departmentID, Boolean isActive) {
+		dao.editDp(departmentID,departmentName,isActive);
+	}
+	public int getDepartmentMembers(String departmentID) {
+		return dao.getDepartmentMembers(departmentID);
+	}
+	public void addResponsibiliy(int departmentID, String responName) {
+
+		
+		dao.addResponsibiliy(departmentID,responName);
 	}
 	
 	
