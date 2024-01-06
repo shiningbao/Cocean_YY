@@ -198,105 +198,102 @@
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
+			
 
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+<nav	class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+	<!-- Sidebar Toggle (Topbar) -->
+	<button id="sidebarToggleTop"
+		class="btn btn-link d-md-none rounded-circle mr-3">
+		<i class="fa fa-bars"></i>
+	</button>
 
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
+	<!-- Topbar Navbar -->
+	<ul class="navbar-nav ml-auto">
+
+		<!-- 상단바 알림 -->
+		<li class="nav-item dropdown no-arrow mx-1">
+			<a  class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false">
+				<i class="fas fa-bell fa-fw"></i> 
+				<!-- 알림 뱃지- Alerts -->
+				<span class="badge badge-danger badge-counter">3+</span>
+			</a> 
+		
+			<!-- 알림 드롭다운 -->
+			<div	class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+				<h6 class="dropdown-header">알림</h6>
+				
+				<a class="dropdown-item d-flex align-items-center" href="#">
+					<div class="mr-3">
+						<div class="icon-circle bg-success">
+							<i class="fas fa-donate text-white"></i>
+						</div>
+					</div>
+					<div>
+						<div class="small text-gray-500">알림 발생 날짜</div>
+						<div>알림 내용</div>
+					</div>
+				</a>
+				
+				<a class="dropdown-item d-flex align-items-center" href="#">
+					<div class="mr-3">
+						<div class="icon-circle bg-warning">
+							<i class="fas fa-exclamation-triangle text-white"></i>
+						</div>
+					</div>
+					<div>
+						<div class="small text-gray-500">알림 발생 날짜</div>
+						<div>알림 내용</div>
+					</div>
+				</a>
+				
+				<a class="dropdown-item text-center small text-gray-500" href="#">
+					모두 읽기
+				</a>
+			</div>
+		</li>
+
+		<!-- 알림/유저 아이콘 선-->
+
+		<div class="topbar-divider d-none d-sm-block"></div>
+
+		<!-- Nav Item - User Information -->
+		<li class="nav-item dropdown no-arrow"><a
+			class="nav-link dropdown-toggle" href="#" id="userDropdown"
+			role="button" data-toggle="dropdown" aria-haspopup="true"
+			aria-expanded="false"> <span
+				class="mr-2 d-none d-lg-inline text-gray-600 small">사용자</span> <img
+				class="img-profile rounded-circle"
+				src="<c:url value='/resource/img/undraw_profile.svg'/>" />
 
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
 
+		</a> <!-- Dropdown - User Information -->
+			<div
+				class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+				aria-labelledby="userDropdown">
+				<a class="dropdown-item" href="<c:url value='/mypage/mypage'/>">
+					<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> 내정보
+				</a> <a class="dropdown-item" href="<c:url value='/mypage/work'/>">
+					<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> 주소록
+				</a> <a class="dropdown-item" href="<c:url value='/mypage/address'/>">
+					<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> 근태기록
+				</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#" data-toggle="modal"
+					data-target="#logoutModal"> <i
+					class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+					로그아웃
+				</a>
+			</div>
+		</li>
 
+	</ul>
 
-                        <!-- 상단바 알림 -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- 알림 뱃지- Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- 알림 드롭다운 -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    알림
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">알림 발생 날짜</div>
-                                        알림 내용
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">알림 발생 날짜</div>
-                                        알림 내용
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">모두 읽기</a>
-                            </div>
-                        </li>
-
-                        <!-- 알림/유저 아이콘 선-->
-                        
-                        <div class="topbar-divider d-none d-sm-block"></div>
-
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">사용자</span>
-                                <img class="img-profile rounded-circle"
-                                    src="<c:url value='/resource/img/undraw_profile.svg'/>"/>
-                                    
-                                    
-                                    
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="<c:url value='/mypage/mypage'/>">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    내정보
-                                </a>
-                                <a class="dropdown-item" href="<c:url value='/mypage/work'/>">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    주소록
-                                </a>
-                                <a class="dropdown-item" href="<c:url value='/mypage/address'/>">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    근태기록
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    로그아웃
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- 여기까지 TopBar -->
+</nav>
+		<!-- 여기까지 TopBar -->
 
                 <!-- 메인 콘텐츠 영역 -->
 
@@ -336,5 +333,41 @@
 <script src="<c:url value='/resource/vendor/jquery-easing/jquery.easing.min.js'/>"></script>
 <script src="<c:url value='/resource/js/sb-admin-2.min.js'/>"></script>
 </body>
+
+<script>
+	// 알람창
+
+	var employeeID = '${userInfo.employeeID}';
+	var eventSource = new EventSource(
+			'<c:url value="/sse/subscibe/'+employeeID+'"/>');
+
+	eventSource.addEventListener('alarm', function(event) {
+		console.log(event.data);
+		$('#alarm').html(event.data);
+	});
+
+	eventSource.addEventListener('connect', function(event) {
+		console.log(event.data);
+	});
+	alarmList();
+	function alarmList() {
+		$.ajax({
+			type : 'post',
+			url : '<c:url value="/alarm/getList"/>',
+			data : {},
+			success : function(data) {
+				console.log(data);
+				drawAlarm(data.alarmList);
+			},
+			error : function(e) {
+				console.log(e);
+			}
+		});
+	}
+
+	function drawAlarm(list) {
+
+	}
+</script>
 
 </html>
