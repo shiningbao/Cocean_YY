@@ -17,25 +17,25 @@
 
 <style>
 	
-	.topBar {
-		width: 100%;
-		height: 60px;
+/* 	.topBar { */
+/* 		width: 100%; */
+/* 		height: 60px; */
 
-		background-color: #86B0F3;
-		display: flex;
+/* 		background-color: #86B0F3; */
+/* 		display: flex; */
 		
-		justify-content: space-evenly;
-	}
-	.topBar div{
+/* 		justify-content: space-evenly; */
+/* 	} */
+/* 	.topBar div{ */
 		
-		width: 33%;
-		height: 100%;
-		position: relative;
-		text-align: center;
-		font-size: 21px;
-		padding-top: 14px;
-		cursor: default;
-	}
+/* 		width: 33%; */
+/* 		height: 100%; */
+/* 		position: relative; */
+/* 		text-align: center; */
+/* 		font-size: 21px; */
+/* 		padding-top: 14px; */
+/* 		cursor: default; */
+/* 	} */
 	.barItem:hover{
 		cursor: pointer;
 		background-color: #2F80ED;

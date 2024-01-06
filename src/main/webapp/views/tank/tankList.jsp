@@ -11,37 +11,31 @@
 #tank_head {
 	background-color: #86B0F3;
 }
-
-
-
 #checkBox {
-
+	justify-content: space-around;
 	font-size: 13px;
+	display: flex;
 }
-
 
 label {
 	padding-right: 25px;
-	padding-left: 10px;
 }
 
 #search {
-
-	left: 77%;
-	top: 45%;
+	float: right;
 	width: 450px;
+	
 }
 
-#search input {
-	z-index: 99999;
-}
+/* #search input { */
+/* 	z-index: 99999; */
+/* } */
 
 #tankSubmit {
 	
-	position: absolute;
-	left: 87%;
+	float: right;
 	width: 100px;
-	top: 850px;
+	
 }
 
 @media screen and (max-width: 1457px) {
@@ -61,13 +55,13 @@ label {
 	<c:import url="/side"/>
 	
 	<div class="container-fluid contentField">
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<div class="d-sm-flex align-items-center justify-content-between mb-6" style="padding-top: 15px;">
 			<h1 class="h3 mb-0 text-gray-800">코션하우스</h1>
 		</div>
-
-		<div id="checkBox">
-        <div id="box1">
-
+	
+	<div class="row">
+	<div class="col-md">
+		<div id="checkBox" style="margin-top: 20px;">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" checked name="selectAll"  value="selectAll" id="option1" onclick="selectAll(this)">
             <label class="form-check-label" for="option1">전체&nbsp;&nbsp;</label>
@@ -86,8 +80,8 @@ label {
             <input class="form-check-input" type="checkbox" checked value="이상" name="tankStatus" id="option4">
             <label class="form-check-label" for="option4">이상&nbsp;&nbsp;</label>
         </div>
-    </div>
-    <div id="box2">
+    
+    
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" checked value="1" name="tankType" id="option5">
             <label class="form-check-label" for="option5">해수&nbsp;&nbsp;</label>
@@ -105,7 +99,7 @@ label {
             <input class="form-check-input" type="checkbox" checked value="4" name="tankType" id="option8">
             <label class="form-check-label" for="option8">육상&nbsp;&nbsp;</label>
         </div>
-    </div>
+    
 
         
         <nav class="navbar navbar" id="search">
@@ -115,10 +109,14 @@ label {
             </form>
           </nav>
     </div>
-    
+          
+    </div>
+    </div>
 
+
+<div class="card shadow mb-4" style="margin-top:15px;">
 	<div id="tank_table">
-		<table class="table table-hover">
+		<table class="table table-hover" >
 			<thead id="tank_head">
 				<tr>
 					<th scope="col">수조 번호</th>
@@ -143,20 +141,23 @@ label {
 				</c:forEach>
 			</tbody>
 		</table>
-	</div>
-	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary">등록</button>
-	
-	<section id="paging">
-	<button class="p" data-list-pn="${pager.startNum-1}" type="button">이전</button>
+	</div>	
 
-	<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
-		<span class="p" data-list-pn="${i}" >${i}</span>
-	</c:forEach>
+</div>
+<div class="row" style="display: flex; flex-direction: row-reverse;">
+	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right;">등록</button>
+</div>
+<!-- 	<section id="paging"> -->
+<%-- 	<button class="p" data-list-pn="${pager.startNum-1}" type="button">이전</button> --%>
 
-	<c:if test="${!pager.lastCheck}">
-		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button>
-	</c:if>
-</section>
+<%-- 	<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i"> --%>
+<%-- 		<span class="p" data-list-pn="${i}" >${i}</span> --%>
+<%-- 	</c:forEach> --%>
+
+<%-- 	<c:if test="${!pager.lastCheck}"> --%>
+<%-- 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button> --%>
+<%-- 	</c:if> --%>
+<!-- </section> -->
 <c:import url="/footer"/>
 </div>
 </body>

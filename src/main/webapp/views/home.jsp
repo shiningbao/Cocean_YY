@@ -15,7 +15,7 @@
 
 </body>
 <script>
-	resizeWidth();
+
 
 
 </script>

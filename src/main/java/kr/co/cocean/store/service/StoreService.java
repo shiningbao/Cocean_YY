@@ -93,9 +93,11 @@ public class StoreService {
 	
 	public Map<String, Object> storeList(Model model) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		ArrayList<StoreProductDTO> list = dao.branchProductList();
+		ArrayList<StoreProductDTO> branchProductList = dao.branchProductList();
+//		ArrayList<StoreProductDTO> branchTicketList = dao.branchTicketList();
 		ArrayList<StoreDTO> branchList = dao.branchList();
-		map.put("branchProductList", list);
+		map.put("branchProductList", branchProductList);
+//		map.put("branchTicketList", branchTicketList);
 		map.put("branchList", branchList);
 		return map;
 	}
@@ -167,7 +169,7 @@ public class StoreService {
 		String oriFileName = photo.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
 		String newFileName = System.currentTimeMillis()+ext;	
-		
+		logger.info("사진 : "+photo);
 		logger.info("서버파일네임");
 		logger.info(newFileName);
 		logger.info("원래파일명");
