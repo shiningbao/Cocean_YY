@@ -112,7 +112,7 @@ public class PersonnelController {
 	public ModelAndView getEmployeeID(String employeeID) {
 		logger.info("employeeID==========="+employeeID);
 		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
-		return mav;
+		return mav; 
 	}
 	
 	@RequestMapping(value="/personnel/personnelList.go")
@@ -131,7 +131,7 @@ public class PersonnelController {
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
 		return mav;
-	}
+	} 
 	
 	@GetMapping(value="/personnel/detail.go")
 	public ModelAndView detail(@RequestParam int employeeID) {

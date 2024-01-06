@@ -31,7 +31,7 @@
 	</select>
 	
 	<select id="getChart">
-				    SELECT * FROM (
+   SELECT * FROM (
 		    SELECT employeeID AS id, 
 		           CASE 
 		               WHEN e.positionID = 5 THEN '#' 
@@ -49,21 +49,21 @@
 		SELECT CONCAT('de',departmentID) AS id, 
 		       CONCAT('hq',hqID) AS parent, 
 		       departmentName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'null' AS 'icon'
 		FROM department d 
 		WHERE d.isActive = 1 AND d.departmentName NOT LIKE '-%'
 		UNION ALL
 		SELECT CONCAT('hq',hqID) AS id, 
 		       CONCAT('br',branchID) AS parent, 
 		       hqName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'null' AS 'icon'
 		FROM headquarters h 
 		WHERE h.isActive = 1 AND h.hqName NOT LIKE '%-%'
 		UNION ALL
 		SELECT CONCAT('br',branchID) AS id, 
 		       '#' AS parent, 
 		       branchName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'null' AS 'icon'
 		FROM branch b;
 			</select>
 	
