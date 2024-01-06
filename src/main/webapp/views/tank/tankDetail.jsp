@@ -120,35 +120,35 @@ button {
 					<th>담당자</th>
 					<th>바닥재</th>
 					<th>여과기</th>
-					<th>기준 수온</th>
-					<th>기준 수위</th>
-					<th>기준 염도</th>
+					<th>기준 수온/최근 수치</th>
+					<th>기준 수위/최근 수치</th>
+					<th>기준 염도/최근 수치</th>
 					
 				</tr>
 				<tr>
 					<td>${map.emName}</td>
 					<td>${map.flooring}</td>
 					<td>${map.filter}</td>
-					<td>${map.mercury}</td>
-					<td>${map.waterLevel}</td>
-					<td>${map.salinity}</td>
+					<td>${map.mercury}/${recent.recordMercury}</td>
+					<td>${map.waterLevel}/${recent.recordWaterLevel}</td>
+					<td>${map.salinity}/${recent.recordSalinity}</td>
 					
 				</tr>
 				<tr>
-					<th>기준 ph</th>
-					<th>기준 DO</th>
-					<th>기준 질산염</th>
-					<th>기준 아질산염</th>
-					<th>기준 암모니아</th>
-					<th>기준 인산염</th>
+					<th>기준 pH/최근 수치</th>
+					<th>기준 DO/최근 수치</th>
+					<th>기준 질산염/최근 수치</th>
+					<th>기준 아질산염/최근 수치</th>
+					<th>기준 암모니아/최근 수치</th>
+					<th>기준 인산염/최근 수치</th>
 				</tr>
 				<tr>
-					<td>${map.pH}</td>
-					<td>${map.dO}</td>
-					<td>${map.nitrates}</td>
-					<td>${map.nitrites}</td>
-					<td>${map.ammonia}</td>
-					<td>${map.phosphates}</td>
+					<td>${map.pH}/${recent.recordPh}</td>
+					<td>${map.dO}/${recent.recordDo}</td>
+					<td>${map.nitrates}/${recent.recordNitrates}</td>
+					<td>${map.nitrites}/${recent.recordNitrites}</td>
+					<td>${map.ammonia}/${recent.recordAmmonia}</td>
+					<td>${map.phosphates}/${recent.recordPhosphates}</td>
 				</tr>
 		</table>
 	</div>

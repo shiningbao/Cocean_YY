@@ -102,5 +102,10 @@
 		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1
 	</select>
 	
+	<select id="recentRecord" resultType="map">
+		SELECT * FROM tankRecord tr WHERE recordDate = CURDATE() AND tankID = #{param} ORDER BY recordTime DESC LIMIT 1 
+	</select>
+	
+	
 	
 </mapper>

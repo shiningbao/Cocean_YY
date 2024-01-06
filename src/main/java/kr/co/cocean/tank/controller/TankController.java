@@ -70,6 +70,8 @@ public class TankController {
 		ModelAndView mav = new ModelAndView("tank/tankDetail");
 		HashMap<String, Object> map = service.tankDetail(tankID);
 		List<Map<String, Object>> tankAnimal = service.tankAnimal(tankID);
+		HashMap<String, Object> recentRecord = service.recentRecord(tankID);
+		mav.addObject("recent",recentRecord);
 		mav.addObject("tankAnimal",tankAnimal);			
 		mav.addObject("map",map);
 		return mav;

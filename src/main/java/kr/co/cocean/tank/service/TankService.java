@@ -97,4 +97,9 @@ public class TankService {
 		return dao.logForm(tankID);
 	}
 
+
+	public HashMap<String, Object> recentRecord(int tankID) {
+		return dao.recentRecord(tankID);
+	}
+
 }
