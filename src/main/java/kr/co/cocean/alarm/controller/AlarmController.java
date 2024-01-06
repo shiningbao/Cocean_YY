@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,4 +32,27 @@ public class AlarmController {
 		
 		return service.getList(employeeID);
 	}
+	
+	@GetMapping(value = "/alarm/del/{employeeID}/{historyID}")
+	@ResponseBody
+	public HashMap<String, Object> del(@PathVariable int employeeID, @PathVariable int historyID){
+		return service.del(employeeID,historyID);
+	}
+	
+	@GetMapping(value = "/alarm/allDel/{employeeID}")
+	@ResponseBody
+	public HashMap<String, Object> allDel(@PathVariable int employeeID){
+		
+		return service.allDel(employeeID);
+	}
+
+
+
+
+
+
+
+
+
+
 }

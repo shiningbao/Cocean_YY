@@ -133,7 +133,11 @@
 	<delete id="animalDel">
 		DELETE FROM animalManagement WHERE animalID=#{param1}
 	</delete>
-	
+
+
+	<insert id="testalarm">
+		INSERT INTO notificationHistory(employeeID,url,content) values(#{param1},#{param2},#{param3});
+	</insert>
 </mapper>
 
 
