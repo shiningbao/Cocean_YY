@@ -98,6 +98,27 @@ public interface ApprovalDAO {
 
 	ApprovalDTO getForm(int idx);
 
+	void updateRAL(double updateRAL, Map<String, String> param);
+
+	void updateDraft(Map<String, String> param, String formatedNow);
+
+	void updateApproval(List<LineDTO> lastLineInfoList, Map<String, String> param);
+
+	void updateLineEmpty(Map<String, String> param);
+
+	void updateWorkDraft(Map<String, String> param);
+
+	void updateAttendenceDraft(Map<String, String> param);
+
+	void updateLeaveDraft(Map<String, String> param);
+
+	void updateReincrement(Map<String, String> param);
+
+	int cfFile(Map<String, String> param);
+
+	void updateFile(int idx, String oriFileName, String newFileName);
+
+
 	/*
 	 * void update(ApprovalDTO dto);
 	 * 

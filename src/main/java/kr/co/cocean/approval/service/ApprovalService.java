@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,6 @@ public class ApprovalService {
 	@Autowired ApprovalDAO dao;
 
 	public ArrayList<formDTO> list() {
-		
 		return dao.list();
 	}
 
@@ -58,22 +59,11 @@ public class ApprovalService {
 		return dao.draftInfo(employeeID);
 	}
 	
-	ApprovalDTO dto = new ApprovalDTO();
-	public void write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+	public int write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+		ApprovalDTO dto = new ApprovalDTO();
 		int writerID = Integer.parseInt(param.get("writerID"));
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
 		int tempSave = Integer.parseInt(param.get("tempSave"));
-		String usageTimeStr = param.get("usageTime");
-		
-		double usageTime = 0.0;
-
-		if (usageTimeStr != null && !usageTimeStr.isEmpty()) {
-		    try {
-		        usageTime = Double.parseDouble(usageTimeStr);
-		    } catch (NumberFormatException e) {
-		        e.printStackTrace();
-		    }
-		}
 		String title = param.get("title");
 		String titleID = param.get("titleID");
 		String lastOrder = param.get("lastOrder");
@@ -87,14 +77,14 @@ public class ApprovalService {
 		dto.setEndDate(param.get("endDate"));
 		dto.setTextArea(param.get("textArea"));
 		dto.setVacationCategory(param.get("vacationCategory"));
-		dto.setUsageTime(usageTime);
+		if(param.get("total")!=null&&!param.get("total").isEmpty()) {
+		dto.setUsageTime(Double.parseDouble(param.get("total")));
+		}
 		
 		logger.info("params:{}",param);
+
 		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
-		
-		
-		
 		
 		if(files!=null) {
 		for (MultipartFile file : files) {
@@ -117,7 +107,7 @@ public class ApprovalService {
 			if(param.get("publicStatus").equals("1")) {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
 			}
-		}else { // 임시저장
+		}else { // 첫 임시저장
 			
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
 					dao.lineEmptyTs(idx,lastOrder,writerID); // approval테이블에 insert
@@ -133,8 +123,59 @@ public class ApprovalService {
 	            SseService sseService = new SseService(); 
 	            sseService.alarm(category,Integer.parseInt(employeeID), idx, form);
 	        }
+		 return idx;
 		
 	}
+	
+	
+	public void update(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+		LocalDateTime now = LocalDateTime.now();
+		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		int idx=Integer.parseInt(param.get("idx"));
+		dao.updateDraft(param,formatedNow);
+			if(files!=null) {
+				int confirm = dao.cfFile(param);
+				if(confirm>0) {
+				for (MultipartFile file : files) {
+					String oriFileName = file.getOriginalFilename();
+					String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+					String newFileName = System.currentTimeMillis()+ext;	
+					
+					try {
+						byte[] bytes;
+						bytes = file.getBytes();
+						Path path = Paths.get(root+"draft/"+newFileName);
+						Files.write(path, bytes);
+						dao.updateFile(idx,oriFileName,newFileName);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}
+		}
+
+		if(lastLineInfoList.isEmpty()) {
+			dao.updateLineEmpty(param);
+		}else {
+			dao.updateApproval(lastLineInfoList,param);
+		}
+		if(param.get("titleID").equals("1")) {
+			dao.updateWorkDraft(param);
+			}else if(param.get("titleID").equals("2")) {
+				dao.updateAttendenceDraft(param);
+			}else if(param.get("titleID").equals("3")){
+				dao.updateLeaveDraft(param);
+			}else {
+				dao.updateReincrement(param);
+			}
+		
+	}
+
+	
+	
+	
+	
 	
 	// file 테이블에 insert 
 	public void upload(MultipartFile uploadFile, int idx) {
@@ -287,6 +328,11 @@ public class ApprovalService {
 		
 	}
 
+	public void updateRAL(double updateRAL, Map<String, String> param) {
+		dao.updateRAL(updateRAL,param);
+	}
+
+	
 
 	/*
 	 * public ArrayList<HashMap<String, Object>> employeeList() { return

@@ -166,6 +166,7 @@ function drawLine(employeeInfo, currentEmployeeID) {
 	            }
 	            content += '<label class="name">' + item.name + '</label>' + '<label class="cancel">' + '\u00A0' + '\u00A0' + '\u00A0' + 'x' + '</label>' + '<br/>';
 	            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
+	            content += '<input type="hidden" class="positionName" value="' + item.positionName + '"/>';
 	            content += '</div>';
 
 	            $('#line').append(content);
@@ -197,13 +198,15 @@ function saveApprovalLine(lineData) {
         var rank = $(this).find('.rank').text();
         var name = $(this).find('.name').text();
         var employeeID = $(this).find('.employeeID').val();
+        var positionName = $(this).find('.positionName').val();
         lineData.push({
             category: category,
             hqName: hqName,
             departmentName: departmentName,
             rank: rank,
             name: name,
-            employeeID: employeeID
+            employeeID: employeeID,
+            positionName: positionName
         });
     });
     // console.log(lineData);

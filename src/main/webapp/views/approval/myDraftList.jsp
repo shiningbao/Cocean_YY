@@ -78,13 +78,13 @@
 			<td> 
 				<c:choose>
 	                <c:when test="${my.title == null}">
-	                    <a href="draftDetail.go?idx=${my.idx}">${my.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${employeeID}">${my.formTitle}</a>
 	                </c:when>
 	                <c:when test="${my.title == ''}">
-	                    <a href="draftDetail.go?idx=${my.idx}">${my.formTitle}</a>
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${employeeID}">${my.formTitle}</a>
 	                </c:when>
 	                <c:otherwise>
-	                    <a href="draftDetail.go?idx=${my.idx}">${my.title}</a>
+	                    <a href="draftDetail.go?idx=${my.idx}&employeeID=${employeeID}">${my.title}</a>
 	                </c:otherwise>
 	            	</c:choose>
             </td>

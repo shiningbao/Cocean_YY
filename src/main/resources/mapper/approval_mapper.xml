@@ -47,17 +47,26 @@
     	INSERT INTO workDraft (title,content,idx) VALUES (#{title},#{content},#{idx})
 	</insert>
 	
+	<update id="updateWorkDraft">
+    	UPDATE workDraft SET title=#{title},content=#{content} WHERE idx=#{idx}
+	</update>
+	
 	<insert id="writeFile">
     	INSERT INTO file (category,idx,path,serverFileName,oriFileName) VALUES ('결재',#{idx},'draft',#{newFileName},#{oriFileName})
 	</insert>
 	
+	<update id="updateFile">
+    	UPDATE file SET serverFileName=#{newFileName},oriFileName=#{oriFileName} WHERE idx=#{idx}
+	</update>
+	
 	<select id="employeeInfo" resultType="approval">
-		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID}
+	SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID JOIN `position` p ON e.positionID = p.positionID WHERE e.employeeID=#{employeeID};
+
 	</select>
 	
 	<select id="waitingList" resultType="approval">
-		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
 		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate desc
 	</select>
 	
@@ -79,7 +88,7 @@
 	</select>
 	
 	<select id="signList" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category="결재"
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID JOIN position p ON e.positionID=p.positionID where idx=#{idx} and category="결재";
 	</select>
 	
 	<select id="agrRef" resultType="approval">
@@ -95,10 +104,10 @@
 	</insert>
 	
 	<insert id="approvalWrite" parameterType="map">
-	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
+	    INSERT INTO approval (idx, employeeID, category, approvalDate, approvalOrder, lastOrder, approvalStatus)
 	    VALUES
 	    <foreach collection="lastLineInfoList" item="line" separator=",">
-	        (#{idx}, #{line.approvalEmp}, #{line.category},
+	        (#{idx}, #{line.approvalEmp}, #{line.category}, '0000-00-00',
 	        <choose>
 	            <when test="line.order != null">#{line.order}</when>
 	            <otherwise>'0'</otherwise>
@@ -111,13 +120,13 @@
 	</insert>
 
 	<insert id="publicApp">
-		INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    SELECT #{idx},employeeID from employee where status='재직', '열람','0','0','열람'
+		INSERT INTO approval (idx, category, approvalOrder, lastOrder, approvalStatus, employeeID)
+	    SELECT #{idx},'열람',0,0,'열람',employeeID from employee WHERE status='재직'
 	</insert>
 	
 	<insert id="lineEmptyTs">
 	    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder, approvalStatus)
-	    VALUES (#{idx}, #{writerID}, '-', '0', #{lastOrder}, '미대기')
+	    VALUES (#{idx}, #{employeeID}, '-', '0', #{lastOrder}, '미대기')
 	</insert>
 	
 	<insert id="approvalTs">
@@ -173,6 +182,24 @@
 		UPDATE approval SET approvalStatus='거부', opinion=#{opinionWrite} WHERE idx=#{idx} and employeeID=#{loginId}
 	</update>
 	
+	<update id="updateDraft">
+		UPDATE draft SET publicStatus=#{param1.publicStatus},draftDate=#{param2} WHERE idx=#{param1.idx}
+	</update>
+	
+	<update id="updateApproval">
+		UPDATE approval SET  
+			<foreach collection="lastLineInfoList" item="line" separator=",">
+		        employeeID=#{line.approvalEmp}, category=#{line.category},
+		        <choose>
+		            <when test="line.order != null">approvalOrder=#{line.order}</when>
+		            <otherwise>'0'</otherwise>
+		        </choose>, lastOrder=#{param2.lastOrder}
+	    	</foreach> WHERE idx=#{param2.idx}
+	</update>
+	
+	<update id="updateLineEmpty">
+	    UPDATE approval SET category='-', approvalOrder='0', lastOrder=#{lastOrder}, approvalStatus='미대기' WHERE idx=#{idx}
+	</update>
 	
 	<select id="getOrder" resultType="approval">
 		SELECT approvalOrder,employeeID FROM approval WHERE idx=#{idx} and employeeID=#{loginId}
@@ -180,13 +207,88 @@
 	
 	<insert id="writeLeaveDraft" parameterType="approval">
         INSERT INTO leaveDraft(idx, leaveStartDate, leaveEndDate, leaveReason, category)
-        VALUES(#{idx}, #{startDate, jdbcType=DATE}, #{endDate, jdbcType=DATE}, #{textArea}, '휴직원')
+        VALUES(#{idx}, 
+        <choose>
+            <when test="startDate != 'undefined' and startDate != ''">
+                #{startDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="endDate != 'undefined' and endDate != ''">
+                #{endDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose> #{textArea}, '휴직원')
 	</insert>
+	
+	<update id="updateLeaveDraft">
+        UPDATE leaveDraft SET 
+        leaveStartDate=
+        <choose>
+            <when test="startDate != 'undefined' and startDate != ''">
+                #{startDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose>
+        leaveEndDate=
+        <choose>
+            <when test="endDate != 'undefined' and endDate != ''">
+                #{endDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose> leaveReason=#{textArea} WHERE idx=#{idx}
+	</update>
 	
 	<insert id="writeReincrement" parameterType="approval">
         INSERT INTO leaveDraft(idx, leaveStartDate, leaveEndDate, leaveReason, category)
-        VALUES(#{idx}, #{startDate, jdbcType=DATE}, #{endDate, jdbcType=DATE}, #{textArea}, '복직원')
+        VALUES(#{idx}, 
+        <choose>
+            <when test="startDate != 'undefined' and startDate != ''">
+                #{startDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="endDate != 'undefined' and endDate != ''">
+                #{endDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose> #{textArea}, '복직원')
 	</insert>
+	
+	<update id="updateReincrement">
+        UPDATE leaveDraft SET leaveStartDate= 
+        <choose>
+            <when test="startDate != 'undefined' and startDate != ''">
+                #{startDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose>
+         leaveEndDate=
+        <choose>
+            <when test="endDate != 'undefined' and endDate != ''">
+                #{endDate, jdbcType=DATE},
+            </when>
+            <otherwise>
+                '0000-00-00',
+            </otherwise>
+        </choose> leaveReason=#{textArea} WHERE idx=#{idx}
+	</update>
 	
 	<insert id="writeattendenceDraft" parameterType="approval">
     INSERT INTO attendanceDraft(idx, category, vacationStartDate, vacationEndDate, usageTime, vacationReason)
@@ -213,7 +315,47 @@
         #{textArea}
     )
 </insert>
-	
+
+<update id="updateAttendenceDraft">
+    UPDATE attendanceDraft SET category=
+      <choose>
+        <when test="vacationCategory == 'undefined'">
+            '오후반차'
+        </when>
+        <otherwise>
+            #{vacationCategory}
+        </otherwise>
+    </choose>
+    ,vacationStartDate=
+    <choose>
+        <when test="startDate != null and startDate != ''">
+            #{startDate, jdbcType=DATE}
+        </when>
+        <otherwise>
+            '0000-00-00'
+        </otherwise>
+    </choose>
+    , vacationEndDate=
+     <choose>
+         <when test="endDate != null and endDate != ''">
+             #{endDate, jdbcType=DATE}
+         </when>
+         <otherwise>
+             '0000-00-00'
+         </otherwise>
+     </choose>
+     , usageTime=
+     <choose>
+         <when test="total !=''">
+             #{total}
+         </when>
+         <otherwise>
+             '0'
+         </otherwise>
+     </choose>
+ 	, vacationReason=#{textArea} WHERE idx=#{idx}
+</update>
+
 	<select id="saveList" resultType="approval">
 		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate desc
 	</select>
@@ -224,12 +366,12 @@
 	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category='참조' AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="comList" resultType="approval">
-		SELECT a.approvalDate, a.approvalStatus, e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND d.draftStatus ='완료'
+		SELECT a.approvalDate, a.approvalStatus, e.employeeID, a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,d.draftDate FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID}
 	</select>
 	
 	<select id="departmentList" resultType="approval">
@@ -244,6 +386,15 @@
 	SELECT df.formTitle FROM draft d JOIN draftForm df ON d.titleID=df.titleID WHERE idx=#{idx};
 	</select>
 	
+	<update id="updateRAL">
+		UPDATE employee SET remainingAnnualLeave=#{updateRAL} WHERE employeeID=(SELECT employeeID FROM draft d WHERE idx=#{param2.idx})
+	</update>
+	
+	<select id="cfFile" resultType="int">
+		SELECT idx FROM file WHERE idx=#{param}
+	</select>
+
+
 	<!-- <update id="update">
 		UPDATE draft SET draftDate=#{draftDate}, publicStatus=#{publicStatus} WHERE idx=#{idx}
 	</update>

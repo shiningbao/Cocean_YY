@@ -213,16 +213,6 @@ button{
 		</table>
 		
 		<table id="approvalSignature">
-			<tr>
-		        <td rowspan="3" style="width: 20px; ">상신</td>
-		        <td style="width: 80px; font-size:13px; padding : 0;">${list.rankName}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 80px; font-size:10px; vertical-align: bottom;">${list.name}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 80px;"></td>
-		    </tr>
 		</table>
 	
 	</div>
@@ -413,7 +403,7 @@ button{
 				<td>${lL.category}</td>
 				<td>${lL.hqName}/${lL.departmentName}</td>
 				<td>${lL.rankName}</td>
-				<td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"><label class="delete">x</label></td>
+				<td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"><label class="deletee">x</label></td>
 			</tr>	
 			</c:forEach>	
 		</table>
@@ -431,7 +421,6 @@ button{
 
 
 <script>
-	editor.setHTMLCode($('div.contentt').html());
 	var loginId = $('input[name="loginId"]').val()
 	var idx = $('input[name="idx"]').val()
 	
@@ -446,7 +435,7 @@ button{
         	 signList.forEach(function(item,idx){
         		 approvalSignature(item);
         	 });
-        	 var order = data.order.approvalOrder;
+        	 var order = signList.approvalOrder;
         	 $('#order').val(order);
              
          },
@@ -458,7 +447,23 @@ button{
 
 
 function approvalSignature(item){
-	
+	 var signTable = $("#approvalSignature");
+	console.log(item.category);
+	if(item.category == "결재"){
+		var content=
+	        "<table class='signApp'>"+
+				"<tr>"+
+			        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + item.employeeID + "'></td>"+
+			        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+item.positionName+"\u00A0"+item.name+"</td>"+
+			    "</tr>"+
+			    "<tr>"+
+			        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+"싸인"+"</td>"+
+			    "</tr>"+
+			    "<tr>"+
+			        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+"날짜"+"</td>"+
+			    "</tr>"+
+			"</table>"
+	}
 	var frLastTd=$('#approvalSignature tr:first td:last');
     var scLastTd=$('#approvalSignature tr:odd td:last');
     var lastTd=$('#approvalSignature td:last');
@@ -507,31 +512,6 @@ function approvalSignature(item){
         // console.log($('select[name="startTime"]').val());
         usageTime();
     });
-	
-	function usageTime(){
-		var start = $('input[name="start"]').val();
-        var startTime = $('select[name="startTime"]').val();
-        var end = $('input[name="end"]').val();
-        var endTime = $('select[name="endTime"]').val();
-		$.ajax({
-	        url: "/Cocean/approval/calculateUsageTime",
-	        method: "POST",
-	        data:{
-	        	start:start,
-	        	startTime:startTime,
-	        	end:end,
-	        	endTime:endTime
-	        },
-        	success:function(usageTime){
-        		// console.log(usageTime);
-        		$('#usageTime').text(usageTime.usageTime);
-        	},
-        	error:function(e){
-        		console.log(e);
-        	}
-	    	});
-	}
-	 
 	 
 	function remainedEmpID() {
 	    remLine = [];
@@ -587,6 +567,7 @@ function approvalSignature(item){
 		var title = $('input[name="title"]').val(); // 업무기안서
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
+		console.log(lastOrder);
 		var lastLine = [];
 	    var formData = new FormData();
 	    
@@ -714,7 +695,7 @@ function approvalSignature(item){
 		        cache: false,
 		        success: function (data) {
 		            console.log(data);
-		            location.href = './formList.go';
+		            // location.href = './formList.go';
 		         
 		        },
 		        error: function (e) {
@@ -729,12 +710,6 @@ function approvalSignature(item){
      function getApprovalLine(lineData){
  		// console.log(lineData);
  		 for (var i = 0; i < lineData.length; i++) {
-            /*   console.log("category:", lineData[i].category);
-              console.log("hqName:", lineData[i].hqName);
-              console.log("dpName:"+lineData[i].departmentName);
-              console.log("rank:", lineData[i].rank);
-              console.log("name:", lineData[i].name);
-              console.log("employeeID:", lineData[i].employeeID); */
               
               addLineToTable(lineData[i]);
           }
@@ -810,7 +785,24 @@ function approvalSignature(item){
 		    SendAddedLineData(lineData);
 		    
 		}
-	  
+     
+     $(document).on('click', '.deletee', function() {
+		    var element = $(this);
+		    var row = element.closest('tr')
+		    var cell = element.closest('td');
+		    var table = row.closest('table');
+		    if (table.attr('id') === 'approvalLine') {
+		        row.remove();
+		        updateRowNumbers('#approvalLine');
+		        var delEmpID = row.find('.employeeID').val();
+		        // console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
+		        // 찾은 INPUT에 가까운 TD 지우기
+		      	$('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
+		    } else {
+		        cell.remove();
+		    }
+		});	
+			
 	 
 	 function SendAddedLineData(lineData){
 	    	getAddedLineData(lineData);

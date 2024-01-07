@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -87,6 +89,12 @@
               <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
             </form>
           </nav>
+	<% 
+   Date myDate = new Date();
+   SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+   String formattedDate = dateFormat.format(myDate);
+	%>	
+	
 	
 	<div id="saveTable">
 	<table class="table table-hover">
@@ -109,13 +117,13 @@
 			<td> 
 				<c:choose>
 	                <c:when test="${save.title == null}">
-	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}">${save.formTitle}</a>
+	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}&date=<%= formattedDate %>">${save.formTitle}</a>
 	                </c:when>
 	                <c:when test="${save.title == ''}">
-	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}">${save.formTitle}</a>
+	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}&date=<%= formattedDate %>">${save.formTitle}</a>
 	                </c:when>
 	                <c:otherwise>
-	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}">${save.title}</a>
+	                    <a href="tempSaveForm.go?idx=${save.idx}&employeeID=${save.employeeID}&date=<%= formattedDate %>">${save.title}</a>
 	                </c:otherwise>
 	            	</c:choose>
             </td>

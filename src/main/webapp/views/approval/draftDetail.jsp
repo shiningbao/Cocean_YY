@@ -30,6 +30,10 @@ button{
 	
 }
 
+.di-td-1{
+	width:86px;
+}
+
 #approvalLine, #approvalLine th, #approvalLine td {
   border: none;
 }
@@ -159,6 +163,9 @@ button{
 					<input type="hidden" id="approvalAction" name="action" value="">
 					<input type="hidden" id="lastOrder" name="lastOrder" value="">
 					<input type="hidden" id="order" name="order" value="">
+					<input type="hidden" value="${vac.remainingAnnualLeave}" name="ral" value="">
+					<input type="hidden" value="${vac.usageTime}" name="usageTime" value="">
+					<input type="hidden" value="${vac.category}" name="vacationCategory" value="">
                 </form>
 				</div>
 			</div>
@@ -190,35 +197,26 @@ button{
 <div id="contentLine">
 <div id="contentContainer">
 <div id="formTitle">${list.formTitle}</div>
+<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
+<div id="agrSignature"><!-- 합의 서명 그려지는부분 --></div>	
+<br/>
 <div id="detailInfoTop" style="display: flex;">
-		<table id="detailInfo">
-			<tr>
-			    <th>상신자</th>
-			    <td>${list.name}</td>
-			</tr>
-			<tr>
-			    <th>소속부서</th>
-			    <td>${list.hqName}/${list.departmentName}</td>
-			</tr>
-			<tr>
-			    <th>상신일</th>
-			    <td>${list.draftDate}</td>
-			</tr>
-		</table>
-		
-		<table id="approvalSignature">
-			 <tr>
-		        <td rowspan="3" style="width: 10%; ">상신</td>
-		        <td style="width: 50%; font-size:13px; padding : 0;">${list.rankName}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 50%; font-size:10px;"> <img src="/photo/cocean/signature/${sign.serverFileName}" width="40" height="40" class="signatureImg">${list.name}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 50%;">${list.draftDate}</td>
-		    </tr>
-		</table>
-	</div>
+	<table id="detailInfo">
+		<tr>
+		    <th>상신자</th>
+		    <td>${list.name}</td>
+		     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="40" height="40" class="signatureImg"></td>
+		</tr>
+		<tr>
+		    <th>소속부서</th>
+		    <td>${list.hqName}/${list.departmentName}</td>
+		</tr>
+		<tr>
+		    <th>상신일</th>
+		    <td>${list.draftDate}</td>
+		</tr>
+	</table>
+</div>
 
 
 
@@ -271,18 +269,20 @@ button{
 		<th>휴가 종류</th>
 		<td colspan="2">${vac.category}</td>
 	</tr>
+	<c:if test="${hTitle eq 'waiting'}">
 	<tr>
 		<th>잔여 연차</th>
-		<td>${vac.remainingAnnualLeave}</td>
+		<td>${vac.remainingAnnualLeave}일</td>
 	</tr>
+	</c:if>
 	<tr>
 	    <th>사용 날짜</th>
-	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly>~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly>
+	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly></c:if>
 							  
 	</tr>
 	<tr>
 		<th>총 사용일</th>
-		<td>${vac.usageTime}</td>
+		<td>${vac.usageTime}일</td>
 	</tr>
 	<tr>
 		<th>사유</th>

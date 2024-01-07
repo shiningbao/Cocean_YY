@@ -107,7 +107,7 @@
 						<a href='<c:url value="/approval/waitingList.go"/>' class="list-group-item" data-parent="#sidebar">결재대기함</a>
 						<a href='<c:url value="/approval/refList.go"/>' class="list-group-item" data-parent="#sidebar">참조/열람함</a>
 						<a href='<c:url value="/approval/myDraftList.go"/>' class="list-group-item" data-parent="#sidebar">나의기안함</a>
-						<a href='<c:url value="/approval/completeList.go"/>' class="list-group-item" data-parent="#sidebar">완료함</a>
+						<a href='<c:url value="/approval/myApprovalList.go"/>' class="list-group-item" data-parent="#sidebar">나의결재함</a>
 						<a href='<c:url value="/approval/department.go"/>' class="list-group-item" data-parent="#sidebar">부서함</a>
 						<a href='<c:url value="/approval/tempSaveList.go"/>' class="list-group-item" data-parent="#sidebar">임시저장함</a>
 					</div>

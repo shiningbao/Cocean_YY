@@ -43,7 +43,7 @@
 <main>
 	<div class="content">
 		<div class="hTitle">
-			<a>완료함</a>
+			<a>나의결재함</a>
 		</div>
 
 	<!-- <form action="searchList.do" method="POST">
@@ -69,16 +69,24 @@
 	<table class="table table-hover">
 		<thead id="comTableHead">
 		<tr>
+			<th scope="col">기안일</th>
 			<th scope="col">완료일</th>
+			<th scope="col">양식</th>
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
-			<th scope="col">상태</th>
+			<th scope="col">기안자</th>
+			<th scope="col">진행 상태</th>
 		</tr>
 		
 		<tbody id=comList>
 		<c:forEach items="${com}" var="com">
+		<c:if test="${com.approvalStatus ne '미대기' && com.approvalStatus ne '대기'}">
 		<tr>
-			<td scope="row">${com.approvalDate}</td>
+		<td scope="row">${com.draftDate}</td>
+		<c:if test="${com.draftStatus eq '완료'}">
+			<td>${com.approvalDate}</td>
+			</c:if>
+			<td>${com.formTitle}</td>
 			<td>${com.category}</td>
 			<td> 
 				<c:choose>
@@ -93,8 +101,10 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-			<td>${com.approvalStatus}</td>
+            <td>${com.name }</td>
+			<td>${com.draftStatus}</td>
 		</tr>	
+		</c:if>
 		</c:forEach>
 		</tbody>
 	</table>
