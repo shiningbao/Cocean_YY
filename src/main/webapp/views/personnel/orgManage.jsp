@@ -692,32 +692,7 @@ function get1EmployeeID(employeeID, nodeText) {
                 $(".infoClass").empty();
                 $(".infoClass").append(content);
             }
-            $(".edithq").on("click", function () {
-            	console.log(this);
-                var hqName = $(this).text();// 클릭한 직급명 가져오기
-                var hqID = $(this).data('hqid');
-                var edithqisActive = $(this).data('isactive');
-                console.log('hqID:', hqID);
-                console.log('hqName:', hqName);
-                console.log('Is Active:', edithqisActive);
-                $('#edithqID').val(hqID); // #edithqmodal 바깥의 ID가 아닌, 모달 내부의 ID 사용
-                $('#edithqName').val(hqName);
-                $('#edithqisActive').prop('checked', edithqisActive);
-                
-                $('#edithqModal').modal('show'); // 모달 띄우기
-            });
-            
-            $(".editdp").on("click", function () {
-            	console.log(this);
-                var departmentName = $(this).text(); // 클릭한 직급명 가져오기
-                var departmentID = $(this).data('departmentid');
-                var editdpisActive = $(this).data('isactive');
-               	$('#departmentID').val(departmentID);
-                $('#departmentName').val(departmentName);
-                $('#editdpisActive').prop('checked', editdpisActive);
-                
-                $('#editdpModal').modal('show'); // 모달 띄우기
-            });
+
 
 
         },
@@ -726,6 +701,34 @@ function get1EmployeeID(employeeID, nodeText) {
         }
     });
 }
+$(document).on('click','.edithq',function(){
+	console.log(this);
+    var hqName = $(this).text();// 클릭한 직급명 가져오기
+    var hqID = $(this).data('hqid');
+    var edithqisActive = $(this).data('isactive');
+    console.log('hqID:', hqID);
+    console.log('hqName:', hqName);
+    console.log('Is Active:', edithqisActive);
+    $('#edithqID').val(hqID); // #edithqmodal 바깥의 ID가 아닌, 모달 내부의 ID 사용
+    $('#edithqName').val(hqName);
+    $('#edithqisActive').prop('checked', edithqisActive);
+    
+    $('#edithqModal').modal('show'); // 모달 띄우기
+});
+
+$(document).on('click','.editdp',function(){
+	console.log(this);
+    var departmentName = $(this).text(); // 클릭한 직급명 가져오기
+    var departmentID = $(this).data('departmentid');
+    var editdpisActive = $(this).data('isactive');
+   	$('#departmentID').val(departmentID);
+    $('#departmentName').val(departmentName);
+    $('#editdpisActive').prop('checked', editdpisActive);
+    
+    $('#editdpModal').modal('show'); // 모달 띄우기
+	
+});
+
 function drawDp() {
     var content = '';
     if (selectedDepartmentInfo != null) {

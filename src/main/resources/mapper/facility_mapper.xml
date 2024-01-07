@@ -4,8 +4,25 @@
 >
 <mapper namespace="kr.co.cocean.facility.dao.FacilityDAO">	
 	
+<select id="getCategory">
+	SELECT DISTINCT category FROM facility;
+</select>
 
+<select id="getfacilityName">
+SELECT facilityName FROM facility WHERE category = #{category}
+</select>
 
+<select id="getfacilityInfo">
+	SELECT facilityName,facilityInfo ,isUse FROM facility f WHERE facilityName =#{facilityName}
 
+</select>
+
+<select id="getPersonnelLeader">
+SELECT e.name ,e.phoneNumber,p.positionName  from employee e JOIN `position` p  ON p.positionID  =e.positionID JOIN responsibility res ON res.responID =e.responID  WHERE e.positionID  =2 AND e.departmentID =5;
+</select>
+
+<delete id="delFacility">
+	DELETE from facility WHERE facilityName = #{deltxt}
+</delete>
 
 </mapper>
