@@ -25,6 +25,7 @@ import kr.co.cocean.personnel.dao.PersonnelDAO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
+import kr.co.cocean.personnel.dto.departmentDTO;
 
 @Service
 public class PersonnelService {
@@ -64,7 +65,7 @@ public class PersonnelService {
 		
 		try {
 			byte[] bytes = fileSignature.getBytes();
-			Path path = Paths.get(root+"personnel/"+newFileName);
+			Path path = Paths.get(root+"signature/"+newFileName);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -84,20 +85,81 @@ public class PersonnelService {
 		
 		try {
 			byte[] bytes = file.getBytes();
-			Path path = Paths.get(root+"personnel/"+newFileName);
+			Path path = Paths.get(root+"profile/"+newFileName);
 			Files.write(path, bytes);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	public List<String> getBranch() {
+	
+
+	public void updateEmployeeImg(int employeeID, MultipartFile fileSignature, MultipartFile file) {
+		if(file.getSize()!=0) {
+			updateContext(file,employeeID);
+		}
+		if(fileSignature.getSize()!=0) {
+			
+			updateSgniture(fileSignature,employeeID);
+		}
+		
+	}
+	private void updateSgniture(MultipartFile fileSignature, int employeeID) {
+    	FileDTO dto = new FileDTO();
+    	String oriFileName = fileSignature.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("signature");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.update(dto);
+		
+		try {
+			byte[] bytes = fileSignature.getBytes();
+			Path path = Paths.get(root+"signature/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private void updateContext(MultipartFile file, int employeeID) {
+		FileDTO dto = new FileDTO();
+    	String oriFileName = file.getOriginalFilename();
+		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+ext;	
+		dto.setCategory("사원관리");
+		dto.setIdx(employeeID);
+		dto.setPath("profile");
+		dto.setServerFileName(newFileName);
+		dto.setOriFileName(oriFileName);
+		dao.update(dto);
+		
+		try {
+			byte[] bytes = file.getBytes();
+			Path path = Paths.get(root+"profile/"+newFileName);
+			Files.write(path, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public List<HashMap<String, Object>> getBranch() {
         return dao.getBranch();
     }
 
+	public int updateEmployee(int employeeID, HashMap<String, Object> params) {
+		
+		String positionID =(String) params.get("positionID");
+		String status =(String) params.get("status");
+		String departmentID =(String) params.get("departmentID");
+		String rankID =(String) params.get("rankID");
+		String responID =(String) params.get("responID");
+
+		return dao.updateEmployeeInfo(employeeID,positionID,status,departmentID,rankID,responID);
+	}
 	
 	
-	
-	public List<String> getBranchID(String branchID) {
+	public List<HashMap<String, Object>> getBranchID(String branchID) {
 		// TODO Auto-generated method stub
 		return dao.getBranchID(branchID);
 	}
@@ -111,32 +173,7 @@ public class PersonnelService {
 		return dao.getChart();
 	}
 
-	
-	public void joinTree(HashMap<String, Object> params) {
-		String positionID = String.valueOf(params.get("positionID"));
-		String branchID = String.valueOf(params.get("branchID"));
-		if(branchID.equals("1") && positionID.equals("4") ) {
-			params.put("departmentID", "branch1");
-		}
-		if(branchID.equals("2") && positionID.equals("4") ) {
-			params.put("departmentID", "branch2");
-		}
-		if (positionID.equals("1")) {
-			params.put("positionID", "팀원");
-		} else if (positionID.equals("2")) {
-			params.put("positionID", "팀장");
-		} else if (positionID.equals("3")) {
-			params.put("positionID", "본부장");
-		} else if (positionID.equals("4")) {
-			params.put("positionID", "관장");
-		} else if (positionID.equals("5")) {
-			params.put("positionID", "대표이사");
-			params.put("departmentID", "#");
-		}
-		dao.joinTree(params);
-		logger.info("Tree구조확인 params" + params);
-	}
-	 
+
 	public List<HashMap<String, Object>> personnelList() {
 		return dao.personnelList();
 	}
@@ -181,6 +218,92 @@ public class PersonnelService {
 			String sccategory) {
 		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	}
+	public void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID) {
+		
+		dao.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
+		
+	}
+	public void resetPassword(String password, String employeeID) {
+		
+		dao.resetPassword(password,employeeID);
+	}
+	public HashMap<String, Object> getdepartmentInfo(String departmentID) {
+		return dao.getdepartmentInfo(departmentID);
+	}
+	public HashMap<String, Object> gethqInfo(String hqID) {
+		return dao.gethqInfo(hqID);
+	}
+	public Integer updateRank(String rankID, String rankName, Boolean isActive) {
+		return dao.updateRank(rankID,rankName,isActive);
+	}
+	public void updatePosition(String positionID, String positionName, Boolean isActive) {
+		
+		dao.updatePosition(positionID,positionName,isActive);
+		
+	}
+	public void addPostion(String positionID, String positionName, Boolean isActive) {
+			
+		dao.addPostion(positionID,positionName,isActive);
+	}
+	public Boolean checkDuplicateAddpositionID(String addpositionID) {
+		// TODO Auto-generated method stub
+		return dao.checkDuplicateAddpositionID(addpositionID);
+	}
+	public void addRank(String rankID, String rankName, Boolean isActive) {
+		
+		dao.addRank(rankID,rankName,isActive);
+		
+	}
+	public Boolean checkDuplicateAddRankID(String addRankID) {
+		// TODO Auto-generated method stub
+		return dao.checkDuplicateAddRankID(addRankID);
+	}
+	public List<HashMap<String, Object>> getRankNameActive() {
+		return dao.getRankNameActive();
+	}
+	public List<HashMap<String, Object>> getPositionNameActive() {
+		// TODO Auto-generated method stub
+		return dao.getPositionNameActive();
+	}
+	public int addDepartment(departmentDTO dto) {
+		// TODO Auto-generated method stub
+		
+		return dao.addDepartment(dto);
+		
+	}
+	public List<HashMap<String, Object>> getBranchOrgID(String branchID) {
+		return dao.getBranchOrgID(branchID);
+	}
+	public void addhq(String branchID, String hqName, Boolean isActive) {
+		
+		dao.addhq(branchID,hqName,isActive);
+	}
+	public void updateinfo(int employeeID, HashMap<String, Object> params) {
+		
+		String name =(String) params.get("name");
+		String phoneNumber =(String) params.get("phoneNumber");
+		String address =(String) params.get("address");
+		dao.updateInfo(employeeID, address, name, phoneNumber);
+	}
+	public void editHq(String hqName, String hqID, Boolean isActive) {
+		// TODO Auto-generated method stub
+		dao.editHq(hqID,hqName,isActive);
+		
+	}
+	public void editDp(String departmentName, String departmentID, Boolean isActive) {
+		dao.editDp(departmentID,departmentName,isActive);
+	}
+	public int getDepartmentMembers(String departmentID) {
+		return dao.getDepartmentMembers(departmentID);
+	}
+	public void addResponsibiliy(String departmentID, String responName) {
+
+		
+		dao.addResponsibiliy(departmentID,responName);
+	}
+	
+	
+
 
 	
 

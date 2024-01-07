@@ -2,6 +2,7 @@ package kr.co.cocean.mypage.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -26,7 +27,9 @@ public class LoginController {
 	
 	//접속
 	@GetMapping(value="/")
-	public String login() {
+	public String login(HttpServletRequest req, HttpSession session) {
+		String url = req.getRequestURI();
+		session.setAttribute("path", url);
 		return "mypage/login";
 	}
 	

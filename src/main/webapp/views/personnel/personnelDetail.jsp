@@ -6,35 +6,26 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
-<link rel="icon" href="resource/img/favi.png" type="image/x-icon">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-	rel="stylesheet">
-<!-- Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<!-- Bootstrap JS -->
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
-<link rel="stylesheet"
-	href="<c:url value='/resource/css/personnel/personnel.min.css'/>">
-
+<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon"> -->
+<!-- <link -->
+<!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" -->
+<!-- 	rel="stylesheet"> -->
+<!-- <!-- Bootstrap CSS --> -->
+<!-- <link rel="stylesheet" -->
+<!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
+<!-- <!-- Bootstrap JS --> -->
+<!-- <script -->
+<!-- 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
+<%-- <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>"> --%>
+<!-- <link rel="stylesheet" -->
+<%-- 	href="<c:url value='/resource/css/personnel/personnel.min.css'/>"> --%>
+	
+ <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style>
-#hTitle {
-	width: 120px;
-	height: 50px;
-	left: 400px;
-	position: absolute;
-	top: 120px;
-}
 
-#hTitle a {
-	font-size: 22px;
-}
 
 .photo {
 	justify-content: start !important;
@@ -50,12 +41,7 @@
 .wrap_info_content {
 }
 
-/* 테이블 */
-table {
-    width: 80%%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
+
 
 th, td {
     border: 1px solid #ddd;
@@ -84,12 +70,6 @@ th {
 .subPs{
 	margin-top: 12%;
 }
-.subPs1{
-}
-.subPs2{
-	
-}
-
 
 
 .tab_menu {
@@ -128,8 +108,6 @@ th {
     /* 탭 내용 숨김 */
     .tab-content {
     display: none;
-    width: 95%;
-    border: 1px solid #ccc;
     padding: 10px;
     background-color: #fff;
     border-radius: 0 0 5px 5px;
@@ -142,18 +120,11 @@ th {
     .formbtn{
     	margin-left: 40%;
     }
-    
-    .type_list_box{
-    	width:95%
-    }
+
     #fileInput, #fileSignatureInput {
 	display: none;
 }
-.photo {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
+
 
 .photo img {
 	width: 150px;
@@ -168,7 +139,7 @@ th {
 .file-icon {
 	width: 40px;
 	height: 40px;
-	transform: translate(-100%, 100%);
+	transform :translate(280%, -100%);
 	font-size: 24px;
 	color: #379cff;
 	cursor: pointer;
@@ -179,20 +150,59 @@ th {
 	justify-content: center;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
+
+
+.file-icon3 {
+	width: 40px;
+	height: 40px;
+	transform: translate(650%, -130%);
+	font-size: 20px;
+	color: #379cff;
+	cursor: pointer;
+	border-radius: 50%;
+	background-color: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#resetPassword{
+	position: absolute;
+    top: 78%;
+}
+
+.psSelect {
+	/* form-control 클래스 스타일 */
+	margin-bottom: 12px;
+	height: 38px;
+	display: block;
+	width: 100%;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 </style>
 </head>
 <body>
-	<jsp:include page="../side.jsp"></jsp:include>
-	<main>
-		<div class="content">
-		
-	
-	<div class="hTitle">
-		<a>사원상세</a>
+<c:import url="/side"/>
+<div class="container-fluid contentField">
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">사원상세</h1>
 	</div>
+		<div class="col-12">
+			<div class="card shadow">
+				<div class="card-body">
+
 		<form action="detailSave.do" method="POST" id="detailSave"  enctype="multipart/form-data">
 		<div class="">
-			<div class="wrap_info_content" style="margin-top: 10%;">
+			<div class="wrap_info_content" >
 				<div class="wrap_header">
 					<div class="wrap_photo"></div>
 
@@ -201,17 +211,17 @@ th {
 
 				</div>
 			</div>
+							<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
 			<table class="type_list_box">
 				<tbody>
 
 					<tr>
-						<td class="profile_image" rowspan="4"><span
-							class="img_profile"> <label class="photo" for="fileInput"
-								style="width: 10%;"> 
+						<td class="profile_image" rowspan="4" style="width: 10%"><span
+							class="img_profile"> <label class="photo" for="fileInput"> 
 								<label class="photo" for="fileInput">
 								<c:choose>
 										<c:when test="${person.profileImage != null}">
-											<img src="/photo/cocean/personnel/${person.profileImage}"
+											<img src="/photo/cocean/profile/${person.profileImage}"
 												id="thumbnail_image" alt="프로필 사진">
 										<span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 										</c:when>
@@ -227,7 +237,12 @@ th {
 						</span></td>
 						<th class="name">이름</th>
 						<th class="team">소속</th>
-						<td class="last" colspan="3">${person.departmentName }</td>
+
+						<td class="last" colspan="">${person.departmentName }</td>
+						<th>입사일</th>
+						<td class="" colspan="1">
+							  <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
+						</td>
 					</tr>
 					<tr>
 						<td class="name_txt" rowspan="3">
@@ -256,11 +271,19 @@ th {
 				</tbody>
 			</table>
 		</div>
+		</div>
+	</div>
+</div>
+		<div class="col-12" style="margin-top: 20px;">
+			<div class="card shadow">
+				<div class="card-body">
 
 		<div class="tab_menu_wrap">
+			<input type="hidden" name="beforeDpID" value="${person.departmentID}">
 			<div>
 				<ul class="tab_menu">
 					<li data-tab="basic" class="tab">기본</li>
+					<li data-tab="info" class="tab">신상</li>
 					<li data-tab="workHistory" class="tab">이력</li>
 					<li data-tab="history" class="tab">학력</li>
 					<li data-tab="departmentChangeLog" class="tab">부서변경로그</li>
@@ -275,9 +298,9 @@ th {
 							<table class="multi-row-table" style="width:100%;">
 							    <tbody>
 							        <tr>
-							            <th class="col1">입사일</th>
-							            <td class="col2">
-							                <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
+										<th class="col3">지점</th>
+							            <td class="col4">
+							                <select id="branchSelect" class="psSelect" name="branchID"></select>
 							            </td>
 							            <th class="col3"><span class="title_txt">직급</span></th>
 							            <td class="col4">
@@ -297,10 +320,7 @@ th {
 							            </td>
 							        </tr>
 							        <tr>
-							            <th>지점</th>
-							            <td>
-							                <select id="branchSelect" class="psSelect" name="branchID"></select>
-							            </td>
+
 							            <th>본부</th>
 							            <td>
 							                <select id="deSelect" class="psSelect" name="hqID"></select>
@@ -313,21 +333,20 @@ th {
 							            <td>
 							                <select id="resSelect" name="responID" class="psSelect"></select>
 							            </td>
-							        </tr>
-							        <tr>
-							            <th>서명이미지</th>
+							             <th>서명이미지</th>
 							            <td>
 							                <label class="photo2" for="fileSignatureInput" style="height: 10px;">
-							                    <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
+							                    <img src="/photo/cocean/signature/${person.signatureImage}" id="signatureImg" alt="서명 이미지">
 							                    <span class="file-icon2"><i class="fas fa-upload"></i></span>
 							                </label>
 							                <div class="file-upload">
 							                    <input type="file" name="fileSignature" id="fileSignatureInput" title="등록" style="height:inherit;">
 							                </div>
 							            </td>
-										<th>비밀번호초기화</th>
-										<td></td>
 							        </tr>
+
+							           
+
 							    </tbody>
 							</table>
 						</div>
@@ -419,14 +438,12 @@ th {
 		<table style="width:100%">
 			<tr>
 				<th>변경일</th>
-				<th>사유</th>
 				<th>변경전부서</th>
 				<th>변경후부서</th>
 			</tr>
 			<c:forEach var="dplog" items="${departmentChangeLog}">
 			<tr>
 				<td>${dplog.changeDate}</td>
-				<td>${dplog.remarks}</td>
 				<td>${dplog.beforedpID}</td>
 				<td>${dplog.afterdpID}</td>
 			</tr>
@@ -437,6 +454,49 @@ th {
             <p>부서 변경 로그가 없습니다.</p>
         </c:when>
     </c:choose>
+	</div>
+	
+		<div class="tab-content" id="annualLeaveTab" style="display: none;">
+		<table style="width:100%">
+			<tr>
+				<th>년도</th>
+				<th>잔여연차</th>
+				<th>사용연차</th>
+				
+			</tr>
+			<tr>
+				<td>2023</td>
+				<td>${person.remainingAnnualLeave }</td>
+				<td></td>
+			</tr>
+		</table>
+
+	</div>
+	
+		</div>
+	
+		<div class="tab-content" id="infoTab" style="display: none;">
+		<table style="width:100%">
+			<tr>
+				<th>이름</th>
+				<th>휴대번호</th>
+				<th>주소</th>
+				
+			</tr>
+			<tr>
+				<td> 
+					<input type="text" name="name" pattern="[가-힣]*" title="한글만 입력하세요." class="form-control mb-2" value="${person.name }" required/>
+				</td>
+				<td>
+					 <input type="text" name="phoneNumber" class="form-control mb-2"placeholder="010-0000-0000"  pattern="\d{3}-\d{4}-\d{4}" title="전화번호 형식인 010-0000-0000으로 입력하세요." value="${person.phoneNumber }"required/>
+				</td>
+				<td>
+					<input type="text" name="address" id="address" class="form-control mb-2" value="${person.address }" required/>
+					<span class="file-icon3"><i class="fas fa-map-marker-alt" onclick="sample6_execDaumPostcode()"></i></span>
+				</td>
+			</tr>
+		</table>
+
 	</div>
 
 	<div class="tool_bar">
@@ -449,19 +509,22 @@ th {
         <button class="btn btn-outline-primary detailCancleBtn">취소</button>
         <button class="btn btn-primary detailSaveBtn" type="button">저장</button>
         </div>
-</form>
+		</form>
+		</div>
+		</div>
+		</div>
 	</div>
-	</main>
+<c:import url="/footer"/>
 </body>
 
 <script>
-resizeWidth();
 var rankID = '${person.rankID}';
 var positionID ='${person.positionID}';
 var branchPsID ='${person.branchID}';
 var hqPsID = '${person.hqID}';
 var dpName ='${person.departmentID}';
 var psResponsibility = '${person.responID}';
+var employeeID = '${person.employeeID}';
 console.log('------------');
 
 
@@ -536,10 +599,9 @@ function onBranchSelectChange() {
             console.log(data);
             $('#deSelect').empty();
             data.forEach(function(option, index) {
-                var value = branchID == 2 ? index + 4 : index + 1;
                 var $option = $('<option>', {
-                    value: value,
-                    text: option
+                    value: option.hqID,
+                    text: option.hqName
                 });
 
                 // 여기에 원하는 조건을 추가하여 선택되도록 설정
@@ -635,16 +697,17 @@ function onDepartmentSelect() {
 $(document).ready(function() {
 	var employeeID = '${person.employeeID}';
 	console.log(employeeID);
+
     // 기본 탭을 선택한 상태로 초기화
     $('.tab').removeClass('active');
     $('.tab-content').removeClass('active');
-
+	$('li[data-tab="basic"]').addClass('active');
+    var tabId = 'basic'; // 기본으로 표시할 탭의 ID
+    $('input[name="tabID"]').val(tabId);
+    $("#" + tabId + "Tab").show();
     // 기본 탭 활성화
-    $('#basic').addClass('active'); // 아이디를 기준으로 선택
-
+// 아이디를 기준으로 선택
     // 기본 탭 콘텐츠 보이기
-    $('#basicTab').show();
-	
     // 탭 클릭 이벤트
     $(".tab").click(function() {
         $('.tab').removeClass('active');
@@ -689,8 +752,8 @@ $(document).ready(function() {
             console.log(data);
             data.forEach(function(option, index) {
                 var $option = $('<option>', {
-                    value: index+1,
-                    text: option
+                    value: option.branchID,
+                    text: option.branchName
                 });
 
                 // 여기에 원하는 조건을 추가하여 선택되도록 설정
@@ -801,13 +864,32 @@ $('.detailSaveBtn').on('click',function(){
 	console.log('click');
 	if(confirm("저장 하시겠습니까?")){
 		$('#detailSave').submit();	
-		/* location.href = '/Cocean/personnel/detail.go?employeeID='+${person.employeeID}; */
+		/* location.href = location.href; */
 	}else{
 		
 	}
 	
    
     
+});
+
+$('#resetPassword').on('click',function(){
+	if(confirm("비밀번호를 초기화 하시겠습니까?")){
+		$.ajax({
+			url:'resetPassword.do',
+			data:{employeeID:employeeID},
+			type:'post',
+			success:function(data){
+				console.log(data);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		})
+	}else{
+		
+	}
+
 });
 function sample6_execDaumPostcode() {
     new daum.Postcode({
@@ -856,7 +938,10 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
-
+var msg = "${msg}";
+if(msg != ""){
+	alert(msg);
+}
 
 
 </script>

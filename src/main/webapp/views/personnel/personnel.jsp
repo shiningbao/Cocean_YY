@@ -133,7 +133,7 @@ tbody tr {
 		                <img src="/Cocean/resource/img/psProfile.jpg" id="thumbnail_image" alt="프로필 사진">
 		                <span class="file-icon"><i class="fas fa-pencil-alt"></i></span>
 		            </label>
-		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
+		            <input type="file" name="file" id="fileInput" title="등록" style="height:inherit;" required>
 		            
 		        </div>
 		        <div class="wrap_info" style="text-align: center;">
@@ -182,7 +182,12 @@ tbody tr {
                             <input type="text" name="phoneNumber" class="form-control mb-2"placeholder="010-0000-0000"  pattern="\d{3}-\d{4}-\d{4}" title="전화번호 형식인 010-0000-0000으로 입력하세요."required/>
                         </td>
                     </tr>
-                    
+                     <tr>
+                        <th>연차</th>
+                        <td>
+                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="\d{2}" title="두자리숫자만 입력해주세요" required/>
+                        </td>
+                    </tr>
                     
                     <tr>
                         <th style="vertical-align: top; padding-top: 10px;">주소</th>
@@ -192,7 +197,7 @@ tbody tr {
                         </td>
                         
                     </tr>
-                   
+
                     <!-- 중략 -->
                 </table>
             </div>
@@ -240,7 +245,7 @@ tbody tr {
 					    <th style="vertical-align: top; padding-top:10px; width:80px;">서명이미지</th>
 					    	<td>
 					    	<span class="desc1" style="font-size=12px;">※ 서명이미지는 자동으로 55x55 사이즈로 적용됩니다.</span>
-					            <label class="photo2" for="fileSignatureInput" style="height: 10px;">
+					            <label class="photo2" for="fileSignatureInput" style="height: 10px;" required>
 					            <img src="<c:url value='/resource/img/no_image.png'/>" id="signatureImg" alt="서명 이미지">
 					                <span class="file-icon2"><i class="fas fa-upload"></i></span>
 					            </label>
@@ -251,7 +256,7 @@ tbody tr {
 					</tr>
                     <tr>
                         <th colspan="2">
-                            <input type="submit" value="등록" class="btn btn-primary regibtn"/>
+                            <input type="submit" value="등록" class="btn btn-primary regibtn" id="submitBtn"/>
                         </th>
                     </tr>
                 </table>
@@ -270,7 +275,7 @@ var branchSelect = $('#branchSelect');
 
 function getPositionName() {
     $.ajax({
-        url: 'getPositionName.do',
+        url: 'getPositionNameActive.do',
         method: 'POST',
         data: {},
         success: function(data) {
@@ -290,7 +295,7 @@ function getPositionName() {
 }
 function getRankName() {
     $.ajax({
-        url: 'getRankName.do',
+        url: 'getRankNameActive.do',
         method: 'POST',
         data: {},
         success: function(data) {
@@ -320,11 +325,10 @@ var branchID = $('#branchSelect').val();
         success: function(data) {
             console.log(data);
             $('#deSelect').empty();
-            data.forEach(function(option, index) {
-                var value = branchID == 2 ? index + 4 : index + 1;
+            data.forEach(function(option) {
                 $('#deSelect').append($('<option>', {
-                    value: value,
-                    text: option
+                    value: option.hqID,
+                    text: option.hqName
                 }))
             });
 			
@@ -436,10 +440,10 @@ $(document).ready(function() {
         url: 'getBranch.do',
         success: function(data) {
             console.log(data);
-            data.forEach(function(option, index) {
+            data.forEach(function(option) {
                 $('#branchSelect').append($('<option>', {
-                    value: index + 1,
-                    text: option
+                    value: option.branchID,
+                    text: option.branchName
                 }))
             });
             $('#branchSelect').val('1').trigger('change');
@@ -451,6 +455,16 @@ $(document).ready(function() {
     departmentSelect.empty();
     resSelect.empty();
     $('#deSelect').empty();
+    
+    $('#submitBtn').click(function(event) {
+        var fileInput = $('#fileInput');
+        var fileSignatureInput = $('#fileSignatureInput');
+
+        if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
+            event.preventDefault();
+            alert('이미지를 선택해주세요.');
+        }
+    });
 });
 
 $('#fileInput').on('change', function(e) {

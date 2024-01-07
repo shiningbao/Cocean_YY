@@ -6,12 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.AlarmService;
 import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.aquarium.dao.AnimalDAO;
 import kr.co.cocean.aquarium.dto.AnimalDTO;
@@ -140,8 +137,11 @@ public class AnimalService {
 		int animalID = param.getIdx();
 		String status = param.getStatus();
 		dao.statusChange(animalID, status);
-
-
+		
+		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
+		SseService sse = new SseService();
+		sse.alarm(1, "코션친구들 로그 작성 됨", "/animal/detail.go?animalID=1");
+		
 		
 	}
 

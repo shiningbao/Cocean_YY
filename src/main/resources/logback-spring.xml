@@ -19,7 +19,7 @@
 	<!-- SQL LOG 옵션 설정 (쿼리문과 걸린시간, 결과를 보도록 한다.)-->	
 	<!-- off 는 쓰지 않겠다는 뜻 -->
 	<!-- DB connection 열고 닫음을 로그로 표시 -->
-	<logger name="jdbc.connection" level="OFF"/>
+	<logger name="jdbc.connection" level="INFO"/>
 	<!-- 순수 쿼리만 로그로 남김 -->
 	<logger name="jdbc.sqlonly" level="OFF"/>
 

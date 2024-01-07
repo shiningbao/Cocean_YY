@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.alarm.dao.AlarmDAO">	
+
+	<select id="getList" resultType="alarm">
+		SELECT historyID, url, content, TO_CHAR(notificationTime, 'yyyy-mm-dd hh24:mi') notificationTime
+		FROM notificationHistory WHERE employeeID = #{param1} AND isRead = 0
+	</select>
+	
+	<delete id="del">
+		DELETE FROM notificationHistory WHERE historyID = #{param1}
+	</delete>
+	
+	<delete id="allDel">
+		DELETE FROM notificationHistory WHERE employeeID = #{param1}
+	</delete>	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

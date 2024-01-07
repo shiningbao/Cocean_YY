@@ -4,26 +4,33 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import kr.co.cocean.alarm.dao.SseDAO;
+import kr.co.cocean.alarm.dao.AlarmDAO;
+import kr.co.cocean.alarm.dto.AlarmDTO;
 
 @Service
 public class SseService {
 	
-	//@Autowired SseDAO dao;
+	@Autowired AlarmDAO alarmDao;
+	
+	Logger logger = LoggerFactory.getLogger(getClass());
+	
+	public static String ctx;
 	
 	public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
-	
 	
 	public SseEmitter subscribe(long ID) {
 		
 		SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 		
 		try {
-			emitter.send(SseEmitter.event().name("connect"));
+			logger.info("sseEmitters : {}",sseEmitters);
+			emitter.send(SseEmitter.event().name("connect").data("connect success"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -37,10 +44,10 @@ public class SseService {
 		return emitter;
 	}
 	
-	public void alarm(String category, int employeeID, int idx, String form) {
-		
+	public void alarm(int employeeID, String content, String url) {
 		long ID = employeeID;
 		
+
 		
 		String content = "";
 		
@@ -53,11 +60,18 @@ public class SseService {
 		default:
 			break;
 		}
+
+		String msg="<a href=\"";
+		msg += ctx+url;
+		msg += "\">";
+		msg += content;
+		msg += "</a>";
+
 		
 		if(sseEmitters.containsKey(ID)) {
 			SseEmitter emitter = sseEmitters.get(ID);
 			try {
-				emitter.send(SseEmitter.event().name("alarm").data(content));
+				emitter.send(SseEmitter.event().name("alarm").data(msg));
 			} catch (IOException e) {
 				e.printStackTrace();
 				sseEmitters.remove(ID);
@@ -88,6 +102,5 @@ public class SseService {
 		
 	}
 
-	
 	
 }

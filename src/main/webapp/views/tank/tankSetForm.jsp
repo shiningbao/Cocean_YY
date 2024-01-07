@@ -73,7 +73,9 @@
 		<h3>${map.tankName}</h3>
 		<p>	${map.branchName} / 배치구역: ${map.area} / 담당자: ${map.emName}</p>
 	</div>
+	
 	<form action="tankSet.do" method="post" id="tankForm" onsubmit="return submitForm(this);">
+	<div class="container">
 	<table class="formTable">
 	
 	<tr>
@@ -179,6 +181,7 @@
 			</tr>
 
 		</table>
+		</div>
 	<div class="btnGroup">
 	<button type="button" class="btn btn-secondary" onclick="location.href='detail.go?tankID=${map.tankID}&emName=${emName}'">취소</button>
 	<button type="submit" class="btn btn-primary" id="confirmStart">저장</button>

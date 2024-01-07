@@ -1,5 +1,6 @@
 package kr.co.cocean.tank.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class RecordGenerator {
 //	@Scheduled(fixedRate = 3600000) // 2시간(7,200,000 밀리초)마다 실행/일단 지금은 1시간으로 테스트 중
 //	public void recordGenerator() {
 //		logger.info("스케줄러 작동");
+//		String[] atr = {"recordMercury","recordWaterLevel","recordSalinity","recordPh",
+//					"recordDo","recordNitrates","recordNitrites","recordAmmonia","recordPhosphates"};
 //		List<Integer> tankCount = service.tankCount();
 //		logger.info("tankList: "+tankCount.toString());
 //		Random random = new Random();
@@ -33,7 +36,8 @@ public class RecordGenerator {
 //			map.put("tankID", tankCount.get(i));
 //				for (int j = 0; j < 9; j++) {
 //					int randomNumber = random.nextInt(101);
-//					map.put("num"+j, randomNumber);
+//					map.put(atr[j], randomNumber);
+//
 //				}
 //				logger.info("map"+map);
 //				service.recordData(map);
