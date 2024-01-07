@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
+import kr.co.cocean.personnel.dto.departmentDTO;
 import kr.co.cocean.personnel.service.PersonnelService;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
@@ -126,7 +127,7 @@ public class PersonnelController {
 			 }
 			 if(hashMap.get("departmentName").equals("-제주")) {
 				 hashMap.put("departmentName", "-");
-			 }
+			 } 
 		}
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
@@ -135,7 +136,7 @@ public class PersonnelController {
 	
 	@GetMapping(value="/personnel/detail.go")
 	public ModelAndView detail(@RequestParam int employeeID) {
-		logger.info("employeeID" +employeeID);
+		logger.info("employeeID" +employeeID); 
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
 		HashMap<String, Object> list = service.detail(employeeID);
 		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
@@ -148,7 +149,7 @@ public class PersonnelController {
 		mav.addObject("workHistory", workHistory);
 		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
-	}
+	} 
 	
 	@GetMapping(value="/personnel/getSelectOptionBranch.do")
 	@ResponseBody
@@ -442,20 +443,25 @@ public class PersonnelController {
 		}
 	@PostMapping(value = "/personnel/addDepartment.do")
 	@ResponseBody
-	public HashMap<String, Object> addDepartment(@RequestParam String hqID,
-            @RequestParam String departmentName,
-            @RequestParam Boolean isActive,
+	public HashMap<String, Object> addDepartment(
+			@RequestParam String hqID, 	@RequestParam String departmentName,	
+			@RequestParam Boolean isActive,
             @RequestParam(value="responsibility[]") List<String> responsibility) {   
 		
 		HashMap<String, Object> response = new HashMap<String, Object>();
-		 
-		int departmentID =service.addDepartment(hqID,departmentName,isActive);
+		departmentDTO dto = new departmentDTO();
+		dto.setHqID(hqID);
+		dto.setDepartmentName(departmentName); 
+		dto.setIsActive(isActive); 
+		service.addDepartment(dto);
+		logger.info("dto아이디확인=="+dto.getDepartmentID());
+		String departmentID = dto.getDepartmentID(); 
 		for (String responName : responsibility) {
 			service.addResponsibiliy(departmentID,responName);
 		}
 		response.put("message", "생성이 완료되었습니다."); 
 		return response; 
-		}  
+		}   
 	@PostMapping(value = "/personnel/addhq.do") 
 	@ResponseBody
 	public HashMap<String, Object> addhq(@RequestParam String branchID,

@@ -24,6 +24,7 @@ import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
+import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 
 @Service
@@ -168,7 +169,7 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> getDepartmentText(String departmentText) {
 		return dao.getDepartmentText(departmentText);
 	}
-	public List<departmentDTO> getChart() {
+	public List<TreeDTO> getChart() {
 		return dao.getChart();
 	}
 
@@ -264,10 +265,10 @@ public class PersonnelService {
 		// TODO Auto-generated method stub
 		return dao.getPositionNameActive();
 	}
-	public int addDepartment(String hqID, String departmentName, Boolean isActive) {
+	public int addDepartment(departmentDTO dto) {
 		// TODO Auto-generated method stub
 		
-		return dao.addDepartment(hqID,departmentName,isActive);
+		return dao.addDepartment(dto);
 		
 	}
 	public List<HashMap<String, Object>> getBranchOrgID(String branchID) {
@@ -295,7 +296,7 @@ public class PersonnelService {
 	public int getDepartmentMembers(String departmentID) {
 		return dao.getDepartmentMembers(departmentID);
 	}
-	public void addResponsibiliy(int departmentID, String responName) {
+	public void addResponsibiliy(String departmentID, String responName) {
 
 		
 		dao.addResponsibiliy(departmentID,responName);

@@ -13,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
+import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 
 @Mapper
@@ -25,7 +26,7 @@ public interface PersonnelDAO {
 
 
 
-	List<departmentDTO> getChart();
+	List<TreeDTO> getChart();
 
 	void joinTree(HashMap<String, Object> params);
 
@@ -99,7 +100,7 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> getPositionNameActive();
 
-	int addDepartment(String hqID, String departmentName, Boolean isActive);
+	int addDepartment(departmentDTO dto);
 
 	List<HashMap<String, Object>> getBranchOrgID(String branchID);
 
@@ -113,6 +114,6 @@ public interface PersonnelDAO {
 
 	int getDepartmentMembers(String departmentID);
 
-	void addResponsibiliy(int departmentID, String responName);
+	void addResponsibiliy(String departmentID, String responName);
 
 }
