@@ -1,11 +1,16 @@
 package kr.co.cocean.personnel.dto;
 
-import java.sql.Date;
+
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-@Alias("tree")
 public class TreeDTO {
 	private String id;
 	private String parent;
@@ -35,6 +40,8 @@ public class TreeDTO {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+	
+	
 	
 	
 }

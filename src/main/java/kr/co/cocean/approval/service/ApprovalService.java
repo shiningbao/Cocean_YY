@@ -131,7 +131,7 @@ public class ApprovalService {
 	            dto = dao.getForm(idx);
 	            String form = dto.getFormTitle();
 	            SseService sseService = new SseService(); 
-	            sseService.alarm(category,Integer.parseInt(employeeID), idx, form);
+	           // sseService.alarm(category,Integer.parseInt(employeeID), idx, form);
 	        }
 		
 	}
