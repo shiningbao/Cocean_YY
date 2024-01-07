@@ -11,17 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #chart {
-	width: 100%;
+	width: 79%;
 	
 }
 
 #hTitle {
-	width: 100%;	
+	width: 20%;	
 }
 
-#hTitle p {
-	font-size: 22px;
-}
 
 #tank_table {
 	
@@ -93,20 +90,22 @@ button {
 <div class="row">
 	<div class="col-md">
 		<div class="topBar">
-			<div><i class="fi fi-sr-check" style="margin-right: 10px;"></i>하우스 정보</div>
+			<div style="color: #ffffff;">하우스 정보</div>
 				<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
 				<div class="barItem">관리 계획</div>
 			</div>
 		</div>
 		</div>
 
-<div class="row" style="display: flex;padding-top: 10%;flex-direction: column;align-content: space-around;align-items: center;">
-	<div id="hTitle" class="card shadow mb-4" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
-		<p>${map.tankName}
-		 ${map.branchName} [${map.area}]
-		 ${map.tankType} [${map.capacity}]
-		 등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
-		 <button class="btn btn-primary" style="width: 10%;" data-toggle="modal" data-target="#animo">코션친구들</button>
+<div class="row" style="display: flex;padding-top: 5%;flex-direction: row;align-content: space-around;align-items: center;">
+	<div id="hTitle" class="mb-auto" style="display: flex; flex-direction: colum; justify-content: space-around; align-items: center;">
+		 <div class="card border-secondary mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h5 style="text-align: center;">${map.tankName}</br>[${map.branchName}]</h5></div>
+  <div class="card-body">
+    <p class="card-text">배치구역 [${map.area}]</br>${map.tankType} [${map.capacity}]</br>등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
+		 <button class="btn btn-primary" style="width: 100%;" data-toggle="modal" data-target="#animo">코션친구들</button>
+  </div>
+</div>
 	</div>
 	<div id="chart" class="card shadow mb-5">
 		<canvas id="myChart"></canvas>
@@ -154,8 +153,8 @@ button {
 	</div>
 	</div>
 	</div>
-	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end;">
-	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
+	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end; margin-right: 8%;">
+	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'" style="margin-right: 5px;">이전</button>
 	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>
 

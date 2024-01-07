@@ -46,8 +46,8 @@
 						<div class="barItem"
 							onclick="location.href='detail.go?tankID=${map.tankID}'">하우스
 							정보</div>
-						<div>
-							<i class="fi fi-sr-check" style="margin-right: 10px;"></i>하우스 기록
+						<div style="color: #ffffff;">
+							하우스 기록
 						</div>
 						<div class="barItem">관리 계획</div>
 					</div>

@@ -107,7 +107,7 @@
 				</select>
 			</div>
 			
-						<div class="input-group mb-4">
+						<div class="input-group mb-0">
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="filterType">여과기 타입</label>
 				</div>
@@ -197,7 +197,7 @@
 			  </div>
 			</div>	
 			
-						<div class="input-group mb-4">
+						<div class="input-group mb-0">
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">인산염</span>
 			  </div>

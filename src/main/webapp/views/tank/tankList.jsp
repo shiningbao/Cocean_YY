@@ -145,7 +145,7 @@ label {
 
 </div>
 <div class="row" style="display: flex; flex-direction: row-reverse;">
-	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right;">등록</button>
+	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right; margin-right:13px;">등록</button>
 </div>
 <!-- 	<section id="paging"> -->
 <%-- 	<button class="p" data-list-pn="${pager.startNum-1}" type="button">이전</button> --%>
