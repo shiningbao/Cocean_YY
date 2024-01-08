@@ -13,9 +13,11 @@
         border-collapse: collapse;
         padding: 5px 10px;
     }
+    table{
+    	width: 100px;
+    }
     form {
-    	left: 500px;
-    	top : 200px;
+    	width: 200px;
     }
 </style>
 </head>

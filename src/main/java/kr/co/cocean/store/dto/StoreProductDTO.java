@@ -17,7 +17,14 @@ public class StoreProductDTO {
 	private int productIndex;
 	private int idx;
 	private String serverFileName;
+	private int totalProductNumber;
 	
+	public int getTotalProductNumber() {
+		return totalProductNumber;
+	}
+	public void setTotalProductNumber(int totalProductNumber) {
+		this.totalProductNumber = totalProductNumber;
+	}
 	public int getBranchID() {
 		return branchID;
 	}

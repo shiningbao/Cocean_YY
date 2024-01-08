@@ -16,6 +16,8 @@ public interface StoreDAO {
 	
 	ArrayList<StoreProductDTO> branchProductList();
 	
+	ArrayList<StoreProductDTO> totalProductNumber();
+	
 	ArrayList<StoreProductDTO> branchTicketList();
 
 	ArrayList<StoreProductDTO> searchProduct( String searchKeyword,String branchName);
@@ -45,6 +47,7 @@ public interface StoreDAO {
 	int productFileRegister(String category, int productID, String path, String newFileName, String oriFileName);
 
 	void branchProductDelete(int productID, int branchID);
+
 
 	
 
