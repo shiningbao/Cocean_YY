@@ -71,7 +71,9 @@ fa-building' AS 'icon'
 		FROM branch b;
 			</select>
 	
-
+	<select id="totalCount" parameterType="map" resultType="Integer">
+		SELECT ROUND(COUNT(*)/10) FROM employee e;
+	</select>
 	
 	<select id="personnelList">
 		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
@@ -81,7 +83,7 @@ fa-building' AS 'icon'
 		JOIN branch b  ON h.branchID = b.branchID 
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r  ON e.rankID = r.rankID
-		ORDER BY e.employeeID ASC
+		ORDER BY e.employeeID ASC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="getSelectOptionBranch">
@@ -267,7 +269,10 @@ fa-building' AS 'icon'
 	</update>
 	
 	<select id="getDepartmentMembers">
-		SELECT count(employeeID) FROM employee e JOIN department d ON e.departmentID = d.departmentID WHERE d.departmentID =#{departmentID};
+		SELECT CONCAT(e.name ," ",p.positionName) AS name   FROM employee e 
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN `position` p ON p.positionID  = e.positionID 
+		WHERE d.departmentID =#{departmentID};
 	</select>
 
 	<insert id="addResponsibiliy">

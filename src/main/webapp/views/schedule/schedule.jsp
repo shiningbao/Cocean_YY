@@ -266,6 +266,56 @@ body {
     border:none !important;
     /* 추가적인 스타일 속성을 필요에 따라 적용하세요 */
 }
+
+
+.calDetail-body {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 각 섹션에 대한 스타일 */
+.detail {
+    margin-bottom: 15px;
+}
+
+.detail h5 {
+    font-size: 16px;
+    color: #333;
+}
+
+/* 내용에 대한 스타일 */
+.detail div {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 제목에 대한 스타일 */
+.calDetail-title {
+    font-weight: bold;
+    color: #444;
+}
+
+/* 버튼 영역 스타일 */
+.calDetail-buttons {
+    text-align: right;
+}
+
+.calDetail-buttons button {
+    padding: 8px 16px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.calDetail-buttons button:hover {
+    background-color: #0056b3;
+}
 /* #calendar .fc-daygrid-body {
   width: 100%;
 } */
@@ -307,7 +357,7 @@ body {
 			<div class="modal-content">
 				<div class="modal-header">
 					<!-- 모달창 제목 -->
-					<h5 class="modal-title">일정 상세</h5>
+					<h4 class="modal-title">일정 상세</h4>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -632,7 +682,7 @@ document.addEventListener('DOMContentLoaded', function() {
     	    }
     	  },
      eventClick: function(info) {
-		
+    	 $('#calDetailModal .modal-footer').empty(); // 기존 내용을 지우고
     	// 일정 클릭 시 발생할 이벤트
     	//클릭한 일정 Id
     	var id = info.event.id;
@@ -653,8 +703,8 @@ document.addEventListener('DOMContentLoaded', function() {
        	var endDate = new Date(info.event._instance.range.end);
 
 
-		const koreanStartDate = moment(startDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm A');
-		const koreanEndDate = moment(endDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm A');
+		const koreanStartDate = moment(startDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm');
+		const koreanEndDate = moment(endDate).subtract(9, 'hours').format('YYYY-MM-DD HH:mm');
 		console.log(koreanStartDate);
 		console.log(koreanEndDate); // 2023-12-01 12:00 AM 형식의 종료 날짜
 		
@@ -701,7 +751,8 @@ document.addEventListener('DOMContentLoaded', function() {
             var deleteButton = '<button id="deleteButton" class="btn btn-primary">삭제</button>';
             
             // 버튼 추가
-             $('#calDetailModal .modal-footer').empty(); // 기존 내용을 지우고
+            
+             
             $('#calDetailModal .modal-footer').append(editButton + deleteButton); // 새 버튼 추가
             
             // Edit 버튼 클릭 시 이벤트 처리
@@ -1231,11 +1282,10 @@ var optimalHour = Math.floor(currentHour); // 현재 시간
 var optimalMinute = currentMinute >= 30 ? '30' : '00'; // 현재 분을 30분 간격으로 맞춤
 
 // 선택할 select 요소와 옵션을 찾아 설정
-var startSelect = $('.timeSelect[name="startTime"]');
-var endSelect = $('.timeSelect[name="endTime"]');
-var optimalValue = ('0' + optimalHour).slice(-2) + ':' + optimalMinute;
-startSelect.val(optimalValue);
-endSelect.val(optimalValue);
+$('.timeSelect').each(function() {
+    var optimalValue = ('0' + optimalHour).slice(-2) + ':' + optimalMinute;
+    $(this).val(optimalValue);
+});
 
 $('#startCal').val(new Date().toISOString().substring(0, 10).toString());
 $('#endCal').val(new Date().toISOString().substring(0, 10).toString());

@@ -180,6 +180,8 @@ table {
 							</div>
 						
 					</div>
+					<div class="card-body psinfoClass">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -616,7 +618,6 @@ function drawloadDp(){
     $(".infoClass").empty();
     $(".infoClass").append(content);
 }
-var thisDepartmentMembers;
 function get1EmployeeID(employeeID, nodeText) {
     $.ajax({
         url: 'getEmployeeInfo.do',
@@ -632,70 +633,44 @@ function get1EmployeeID(employeeID, nodeText) {
             var dpInfo = data.dpInfo;
             var hqInfo = data.hqInfo;
             var nodata = data.nodata;
-			thisDepartmentMembers = data.thisDepartmentMembers;
+            var dmdata = data.thisDepartmentMembers;
             $('.tab').removeClass('active');
             $('.tab-content').removeClass('active');
             $('li[data-tab="depart"]').addClass('active');
             $('#departTab').addClass('active');
 
             if (data.dpInfo) {
-            	var content =
-            	    '<div class="headerInfo">' +
-            	    '<span>' + data.dpInfo.departmentName + '</span>' +
-            	    '</div>' +
-            	    '<div class="contentInfo">' +
-            	    '<table>' +
-            	    '<thead class="table-header">' +
-            	    '<tr>' +
-            	    '<th>부서번호</th>' +
-            	    '<th>부서명</th>' +
-            	    '<th>활성화/비활성화</th>' +
-            	    '<th>상위본부</th>' +
-            	    '</tr>' +
-            	    '</thead>' +
-            	    '<tbody>' +
-            	    '<tr>' +
-            	    '<td>' + data.dpInfo.departmentID + '</td>' +
-            	    '<td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' + data.dpInfo.departmentName + '</td>' +
-            	    '<td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td>' +
-            	    '<td>' + data.dpInfo.hqName + '</td>' +
-            	    '</tr>' +
-            	    '</tbody>' +
-            	    '</table>' +
-            	    '</div>';
+                var content =
+                    '<div class="infoClass">' +
+                    '<table style="width:30%">' +
+                    '<tr><th>부서번호</th><td>' + data.dpInfo.departmentID + '</td></tr>' +
+                    '<tr><th>부서명</th><td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' + data.dpInfo.departmentName + '</td></tr>' +
+                    '<tr><th>활성화/비활성화</th><td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
+                    '<tr><th>상위본부</th><td>' + data.dpInfo.hqName + '</td></tr>' +
+                    '</table>' +
+                    '</div>';
+//                     var psContent = '<div>';
+//                     for (var i = 0; i < dmdata.length; i++) {
+//                         if (dmdata[i].thisDepartmentMembers && dmdata[i].thisDepartmentMembers.name) {
+//                             psContent += '<span>' + dmdata[i].thisDepartmentMembers.name + '</span>';
+//                         }
+//                     }
+//                     psContent += '</div>';
+                    
                 selectedDepartmentInfo = content;
-                $(".infoClass").empty();
-                $(".infoClass").append(content);
+                $(".infoClass").empty().append(content);
             } else if (data.hqInfo) {
                 var contentHq =
-                    '<div class="headerInfo">' +
-                    '<span>' + data.hqInfo.hqName + '</span>' +
-                    '</div>' +
-                    '<div class="contentInfo">' +
-                    '<table>' +
-                    '<tr>' +
-                    '<th>본부번호</th>' +
-                    '<td>' + data.hqInfo.hqID + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>본부명</th>' +
-                    '<td class="edithq" data-toggle="edithqModal" data-target="#edithqModal" data-hqname="' + data.hqInfo.hqName + '"  data-hqid="' + data.hqInfo.hqID + '" data-isactive="' + data.hqInfo.isActive + '">' + data.hqInfo.hqName + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>활성화/비활성화</th>' +
-                    '<td>' + (data.hqInfo.isActive == 1 ? '활성화' : '비활성화') + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>상위지점</th>' +
-                    '<td>' + data.hqInfo.branchName + '</td>' +
-                    '</tr>' +
+                    '<div class="infoClass">' +
+                    '<table style="width:30%">' +
+                    '<tr><th>본부번호</th><td>' + data.hqInfo.hqID + '</td></tr>' +
+                    '<tr><th>본부명</th><td class="edithq" data-toggle="edithqModal" data-target="#edithqModal" data-hqname="' + data.hqInfo.hqName + '"  data-hqid="' + data.hqInfo.hqID + '" data-isactive="' + data.hqInfo.isActive + '">' + data.hqInfo.hqName + '</td></tr>' +
+                    '<tr><th>활성화/비활성화</th><td>' + (data.hqInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
+                    '<tr><th>상위지점</th><td>' + data.hqInfo.branchName + '</td></tr>' +
                     '</table>' +
                     '</div>';
                 selectedDepartmentInfo = contentHq;
-                $(".infoClass").empty();
-                $(".infoClass").append(contentHq);
-                
-
+                $(".infoClass").empty().append(contentHq);
             } else if (!data || $.isEmptyObject(data)) {
                 console.log('aaaaaaaaa');
                 var content = '<div style="color:darkgrey">' +

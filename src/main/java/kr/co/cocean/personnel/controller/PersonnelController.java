@@ -33,6 +33,8 @@ import kr.co.cocean.personnel.dto.departmentDTO;
 import kr.co.cocean.personnel.service.PersonnelService;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
+import kr.co.cocean.tank.dto.Pager;
+import kr.co.cocean.tank.dto.TankDTO;
 
 @Controller
 public class PersonnelController {
@@ -117,10 +119,10 @@ public class PersonnelController {
 	}
 	
 	@RequestMapping(value="/personnel/personnelList.go")
-	public ModelAndView personnelList() {
+	public ModelAndView personnelList(TankDTO tankDTO,Pager pager) {
 		
 		ModelAndView mav = new ModelAndView("personnel/personnelList");
-		 List<HashMap<String, Object>> list = service.personnelList();
+		 List<HashMap<String, Object>> list = service.personnelList(pager);
 		 for (HashMap<String, Object> hashMap : list) {
 			 if(hashMap.get("departmentName").equals("-가산")) {
 				 hashMap.put("departmentName", "-");
@@ -129,6 +131,7 @@ public class PersonnelController {
 				 hashMap.put("departmentName", "-");
 			 } 
 		}
+		 mav.addObject("pager", pager);
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
 		return mav;
@@ -374,8 +377,11 @@ public class PersonnelController {
 		}else if(employeeID.startsWith("de")) {
 			String departmentID =employeeID.substring(2);
 			HashMap<String, Object> dpInfo = service.getdepartmentInfo(departmentID);
-			int thisDepartmentMembers = service.getDepartmentMembers(departmentID);
-			result.put("thisDepartmentMembers", thisDepartmentMembers);
+			/*
+			 * List<HashMap<String, Object>> thisDepartmentMembers =
+			 * service.getDepartmentMembers(departmentID);
+			 * result.put("thisDepartmentMembers", thisDepartmentMembers);
+			 */
 			result.put("dpInfo", dpInfo);
 		}else if(employeeID.startsWith("hq")) {
 			String hqID =employeeID.substring(2);
