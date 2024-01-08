@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<mapper namespace="kr.co.cocean.board.dao.BoardDAO">	
+
+	<select id="boardList" parameterType="board">
+		SELECT b.boardID, b.employeeID, b.title
+			,TO_CHAR(b.creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
+			,IFNULL((SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID), '익명') AS name
+		FROM board b WHERE isHidden = 0 AND isPinned = 0 AND category = #{param1}
+		ORDER BY b.boardID DESC
+	</select>
+	
+	<select id="boardList_pin" parameterType="board">
+		SELECT b.boardID, b.employeeID, b.title
+			,TO_CHAR(b.creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
+			,(SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID) AS name
+		FROM board b WHERE isHidden = 0 AND isPinned = 1 AND category = #{param1}
+		ORDER BY b.boardID DESC
+	</select>
+	
+	<insert id="boardWrite" parameterType="board">
+		INSERT INTO board
+			(employeeID,category,title,content,isPinned) VALUES(
+			#{employeeID},#{category},#{title},#{content},#{isPinned})
+	</insert>
+	
+	<select id="boardDetail" resultType="board">
+		SELECT 
+			b.boardID, b.title, b.content, b.isPinned, b.isHidden
+			,(SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID) AS name
+			,TO_CHAR(creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
+		FROM board b WHERE boardID = #{param1}
+	</select>
+	
+	<select id="prevNext" resultType="map">
+		SELECT
+			(SELECT MIN(boardID) FROM board b WHERE category = #{param2} AND boardID <![CDATA[>]]> #{param1}) AS next
+			,(SELECT MAX(boardID) FROM board b WHERE category = #{param2} AND boardID <![CDATA[<]]> #{param1}) AS prev
+		
+	</select>
+	
+	
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

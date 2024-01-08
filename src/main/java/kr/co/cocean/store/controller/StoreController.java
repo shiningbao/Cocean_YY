@@ -103,13 +103,13 @@ public class StoreController {
 		return "productInfoRegister.jsp";
 	}
 	
-	@GetMapping("/store/branchProductDelete.do")
-	public String branchProductDelete(@RequestParam int productID, @RequestParam int branchID) {
+	@PostMapping("/store/branchProductDelete.do")
+	@ResponseBody
+	public void branchProductDelete(@RequestParam int productID, @RequestParam int branchID) {
 		logger.info("지점 상품 삭제");
 		logger.info("productID : "+productID);
 		logger.info("branchID : "+branchID);
 		service.branchProductDelete(productID, branchID);
-		return "store/store";
 	}
 	
 	@GetMapping(value="/store/modalProductList.do")
@@ -117,13 +117,6 @@ public class StoreController {
 	public Map<String, Object> modalProductList(@RequestParam String currentBranchName){
 		logger.info("모달 상품 리스트");
 		return service.modalProductList(currentBranchName);
-	}
-	
-	@GetMapping(value="/store/modalTicketList.do")
-	@ResponseBody
-	public Map<String, Object> modalTicketList(@RequestParam String currentBranchName){
-		logger.info("모달 티켓 리스트");
-		return service.modalTicketList(currentBranchName);
 	}
 	
 	@PostMapping(value="/store/branchProductRegister.do")

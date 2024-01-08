@@ -52,6 +52,7 @@ public class SseService {
 		msg += "\">";
 		msg += content;
 		msg += "</a>";
+
 		
 		if(sseEmitters.containsKey(ID)) {
 			SseEmitter emitter = sseEmitters.get(ID);

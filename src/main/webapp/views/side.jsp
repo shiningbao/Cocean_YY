@@ -8,8 +8,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cocean</title> 
-    
-     <!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+
+<!--      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+
 
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -170,7 +171,6 @@
                         <a class="collapse-item" href='<c:url value="/approval/waitingList.go"/>'>결재대기함</a>
                         <a class="collapse-item" href='<c:url value="/approval/refList.go"/>'>참조/열람함</a>
                         <a class="collapse-item" href='<c:url value="/approval/myDraftList.go"/>'>나의 기안함</a>
-                        <a class="collapse-item" href='<c:url value="/approval/completeList.go"/>'>완료함</a>
                         <a class="collapse-item" href='<c:url value="/approval/department.go"/>'>부서함</a>
                         <a class="collapse-item" href='<c:url value="/approval/tempSaveList.go"/>' >임시저장함</a>
                     </div>
@@ -185,10 +185,10 @@
                 </a>
                 <div id="board" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="#">공지사항</a>
-                        <a class="collapse-item" href="#">익명게시판</a>
-                        <a class="collapse-item" href="#">부서게시판</a>
-                        <a class="collapse-item" href="#">프로그램 일정</a>
+                        <a class="collapse-item" href='<c:url value="/board/notice/list"/>' >공지사항</a>
+                        <a class="collapse-item" href='<c:url value="/board/anony/list"/>' >익명게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/department/list"/>' >부서게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/program/list"/>' >프로그램 일정</a>
                     </div>
                 </div>
             </li>
@@ -338,7 +338,7 @@
 	// 알람창
 
 	var employeeID = '${userInfo.employeeID}';
-	var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
+	//var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
 
 	eventSource.addEventListener('connect', function(event) {
 		console.log(event.data);
