@@ -26,8 +26,19 @@ public class TankService {
 	
 	// 전체 수조 리스트
 	public List<TankDTO> tankList(Pager pager) {
-//		Long totalCount = dao.getTotalCount(pager);
-		List<TankDTO> list = dao.tankList(pager);
+		
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		
+		Integer total = dao.totalCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("totalCount: "+pager.getTotalCount());
+		List<TankDTO> list = dao.tankList(params);
 		return list;
 	}
 

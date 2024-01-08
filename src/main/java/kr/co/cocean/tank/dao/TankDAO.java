@@ -14,7 +14,7 @@ import kr.co.cocean.tank.dto.TankRecordDTO;
 @Mapper
 public interface TankDAO {
 
-	List<TankDTO> tankList(Pager pager);
+	List<TankDTO> tankList(HashMap<String, Object> params);
 
 	List<Map<String, Object>> getBranch();
 
@@ -44,6 +44,8 @@ public interface TankDAO {
 
 	List<Map<String, Object>> recordList(String tankID, String curDate);
 
-//	Long getTotalCount(Pager pager);
+	Integer totalCount(HashMap<String, Object> params);
+
+	
 
 }
