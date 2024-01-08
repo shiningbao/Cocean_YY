@@ -21,16 +21,16 @@
 </head>
 <body>
 	<c:import url="/side"/>
-	<main>
-		<div class="content">
+	<div class="container-fluid contentField">
+
 	
-			<div class="hTitle">
-				<a>코션친구들 등록</a>
-			</div>
-	<div class="animalContent">
-		<div class="row">
-			<div class="col-md-6 m-auto">
-				<form action="write.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션친구들 등록</h1>
+		</div>
+
+		<div>
+			<form action="write.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
+				<div class="card shadow col-md-6 m-auto p-2">
 					<table class="table">
 						<colgroup>
 							<col style="width:30%">
@@ -100,20 +100,21 @@
 							<th class="text-center align-middle" scope="col">사진</th>
 							<td><input type="file" class="form-control" name="files" multiple="multiple" required/></td>
 						</tr>
+						<tr>
+							<td colspan="2">
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+									<button type="button" class="btn btn-secondary mr-2" onclick="animaList()">이전</button>
+									<button type="submit" class="btn btn-primary mr-2">등록</button>
+								</div>
+							</td>
+						</tr>
 					</table>
-					
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-secondary mr-2" onclick="animaList()">이전</button>
-						<button type="submit" class="btn btn-primary mr-2">등록</button>
-					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
-		<c:import url="/animal/classifi"/>
+	</div>
+	<c:import url="/animal/classifi"/>
 
-	</div>
-	</div>
-	</main>
 </body>
 <script>
 
@@ -129,8 +130,6 @@ function drawClassifi(sp,ta,cl,sc,co){
 
 // date 기본값 지정 : 오늘 날짜
 $('input[type="date"]').val(new Date().toISOString().substring(0, 10));
-
-resizeWidth();
 
 
 function getClassifi(){
