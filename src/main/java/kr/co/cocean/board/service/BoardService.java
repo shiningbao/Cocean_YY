@@ -38,7 +38,19 @@ public class BoardService {
 		mav.addObject("bt", bt);
 		mav.addObject("detail", dao.boardDetail(boardID));
 		mav.addObject("prevNext", dao.prevNext(boardID,category));
+		mav.addObject("commentList", dao.commentList(boardID));
 		return mav;
+	}
+
+	public BoardDTO commentWrite(BoardDTO param) {
+		BoardDTO dto = null;
+		dao.commentWrite(param);
+		if(param.getCommentID() != 0) {
+			logger.info(""+param.getCommentID());
+			dto = dao.commentDetail(param.getCommentID());
+		}
+		
+		return dto;
 	}
 	
 	

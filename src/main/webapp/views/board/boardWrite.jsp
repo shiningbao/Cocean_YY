@@ -20,16 +20,18 @@
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">${bt}</h1>
 		</div>
-		<p>글쓰기</p>
-		<p>제목</p>
-		<form action="write.do" method="post">
-		<input type="text" name="title"/>
-		<p>상단 고정</p>
-		<input type="checkbox" name="isPinned" value="1"/>
-		<input type="hidden" name="content" value=""/>
-		</form>
-		<div id="summernote"></div>
-		<button type="button" onclick="save()">작성</button>
+		<div class="card shadow p-3">
+			<h4>글작성</h4>
+			<p>제목</p>
+			<form action="write.do" method="post">
+			<input type="text" name="title"/>
+			<p>상단 고정</p>
+			<input type="checkbox" name="isPinned" value="1"/>
+			<input type="hidden" name="content" value=""/>
+			</form>
+			<div id="summernote"></div>
+			<button type="button" onclick="save()">작성</button>
+		</div>
 	</div>
 </body>
 <script>

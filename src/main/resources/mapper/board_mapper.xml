@@ -28,7 +28,7 @@
 	
 	<select id="boardDetail" resultType="board">
 		SELECT 
-			b.boardID, b.title, b.content, b.isPinned, b.isHidden
+			b.boardID, b.title, b.content, b.isPinned, b.isHidden, b.employeeID
 			,(SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID) AS name
 			,TO_CHAR(creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
 		FROM board b WHERE boardID = #{param1}
@@ -38,9 +38,25 @@
 		SELECT
 			(SELECT MIN(boardID) FROM board b WHERE category = #{param2} AND boardID <![CDATA[>]]> #{param1}) AS next
 			,(SELECT MAX(boardID) FROM board b WHERE category = #{param2} AND boardID <![CDATA[<]]> #{param1}) AS prev
-		
 	</select>
 	
+	<select id="commentList" resultType="board">
+		SELECT c.commentID, c.content, c.employeeID
+			,(SELECT e.name FROM employee e WHERE e.employeeID = c.employeeID) AS name
+			,TO_CHAR(creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
+			FROM comment c WHERE c.isHidden = 0 AND c.boardID = #{param1}
+	</select>
+	
+	<insert id="commentWrite" parameterType="board" useGeneratedKeys="true" keyColumn="commentID" keyProperty="commentID">
+		INSERT INTO comment(employeeID,content,boardID) VALUES(#{employeeID},#{content},#{boardID})
+	</insert>
+	
+	<select id="commentDetail" resultType="board">
+		SELECT c.commentID, c.content, c.employeeID
+			,(SELECT e.name FROM employee e WHERE e.employeeID = c.employeeID) AS name
+			,TO_CHAR(creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
+			FROM comment c WHERE c.commentID = #{param1}
+	</select>
 	
 		
 </mapper>

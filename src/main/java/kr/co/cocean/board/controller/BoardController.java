@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -143,5 +144,35 @@ public class BoardController {
 		
 		return service.boardDetail(boardID,category,bt);
 	}
+	
+	@PostMapping(value = "/board/{boardTitle}/commentWrite")
+	@ResponseBody
+	public HashMap<String, Object> commentWrite(@PathVariable String boardTitle, @ModelAttribute BoardDTO param) {
+		
+		switch (boardTitle) {
+	//		case "notice":
+	//			break;
+			case "anony":
+				param.setEmployeeID(999999);
+				break;
+			case "department":
+	//			category = "DE"+userInfo.getDepartmentID();
+				break;
+	//		case "program":
+	//			break;
+		}
+
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("newcomment", service.commentWrite(param));
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

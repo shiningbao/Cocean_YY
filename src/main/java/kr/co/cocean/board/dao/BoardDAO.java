@@ -20,4 +20,10 @@ public interface BoardDAO {
 
 	HashMap<String, String> prevNext(int boardID, String category);
 
+	ArrayList<BoardDTO> commentList(int boardID);
+
+	void commentWrite(BoardDTO param);
+
+	BoardDTO commentDetail(int commentID);
+
 }
