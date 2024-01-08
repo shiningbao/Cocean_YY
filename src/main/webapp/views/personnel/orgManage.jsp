@@ -6,7 +6,7 @@
 
 <head>
 <meta charset="UTF-8">
-
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <style>
 th, td {
@@ -77,8 +77,14 @@ th {
 .tab-content.active {
 	display: block;
 }
-table{
-	width: 100%;
+table {
+  border: 1px #a39485 solid;
+  font-size: .9em;
+  box-shadow: 0 2px 5px rgba(0,0,0,.25);
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 5px;
+  overflow: hidden;
 }
 .editRank:hover  ,.editPosition:hover ,.edithq:hover ,.editdp:hover{
     /* 호버 시 적용될 스타일 */
@@ -103,10 +109,16 @@ table{
 	border-radius: 0.25rem;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 .additional-buttons{
 	    position: absolute;
     top: 13%;
     left: 23.5%;
+}
+.table-header {
+    background-color: lightgray;
+    font-weight: bold;
+    /* 다른 스타일 속성 추가 */
 }
 </style>
 </head>
@@ -627,30 +639,30 @@ function get1EmployeeID(employeeID, nodeText) {
             $('#departTab').addClass('active');
 
             if (data.dpInfo) {
-                var content =
-                    '<div class="headerInfo">' +
-                    '<span>' + data.dpInfo.departmentName + '</span>' +
-                    '</div>' +
-                    '<div class="contentInfo">' +
-                    '<table>' +
-                    '<tr>' +
-                    '<th>부서번호</th>' +
-                    '<td>' + data.dpInfo.departmentID + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>부서명</th>' +
-                    '<td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' + data.dpInfo.departmentName + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>활성화/비활성화</th>' +
-                    '<td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td>' +
-                    '</tr>' +
-                    '<tr>' +
-                    '<th>상위본부</th>' +
-                    '<td> ' + data.dpInfo.hqName + '</td>' +
-                    '</tr>' +
-                    '</table>' +
-                    '</div>';
+            	var content =
+            	    '<div class="headerInfo">' +
+            	    '<span>' + data.dpInfo.departmentName + '</span>' +
+            	    '</div>' +
+            	    '<div class="contentInfo">' +
+            	    '<table>' +
+            	    '<thead class="table-header">' +
+            	    '<tr>' +
+            	    '<th>부서번호</th>' +
+            	    '<th>부서명</th>' +
+            	    '<th>활성화/비활성화</th>' +
+            	    '<th>상위본부</th>' +
+            	    '</tr>' +
+            	    '</thead>' +
+            	    '<tbody>' +
+            	    '<tr>' +
+            	    '<td>' + data.dpInfo.departmentID + '</td>' +
+            	    '<td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' + data.dpInfo.departmentName + '</td>' +
+            	    '<td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td>' +
+            	    '<td>' + data.dpInfo.hqName + '</td>' +
+            	    '</tr>' +
+            	    '</tbody>' +
+            	    '</table>' +
+            	    '</div>';
                 selectedDepartmentInfo = content;
                 $(".infoClass").empty();
                 $(".infoClass").append(content);
