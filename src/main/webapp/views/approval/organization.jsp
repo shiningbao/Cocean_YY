@@ -8,34 +8,9 @@
 <meta charset="UTF-8">
 <!-- jsTree theme -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <style>
-	
-.jstree-default .jstree-themeicon-custom{
-	background-image: url('<c:url value="/resource/img/icon1.jpg"/>') !important;
-	background-size: 16px 16px; /* 이미지 크기를 기본 jstree 아이콘과 동일하게 조정하세요 /
-/ 그 외에 필요한 스타일링을 추가하세요 */
-} 
-
-#schName{
-	width: 200px;
-}
-
-#jstree-container {
-    display: inline-block;
-    /* 인라인 블록 요소로 배치 */
-    vertical-align: top;
-    /* 상단 정렬 */
-   }
-
-#line-container {
-    display: inline-block;
-    /* 인라인 블록 요소로 배치 */
-    vertical-align: top;
-    /* 상단 정렬 */
-    margin-left: 10px;
-    /* 왼쪽 여백 추가 (원하는 여백 크기로 조정) */
-}
 
 #line{
 	width:290px; 
@@ -43,31 +18,39 @@
       
 }
 
+.schbtn{
+	float: right;
+}
+
+
 .cancel{
 	cursor:pointer;
 }
 
-/* .jstree-default .jstree-node, .jstree-default .jstree-icon{
-	background-image: url('<c:url value="/resource/img/icon2.jpg"/>') !important;
-	background-size: 16px 16px;
-} 
-*/
 </style>
 </head>
 <body>
 <%-- <jsp:include page="../side.jsp"></jsp:include> --%>
-<div id="jstree-container">
-        <input type="text" id="schName" value="">
-        <button onclick="fSch()">검색</button>
-        <div id="jstree"></div>
-    </div>
-    <div id="line-container">
+
+<button onclick="fSch()" class="btn btn-primary schbtn">검색</button>
+<input type="text" id="schName" value="" class="form-control mb-2" placeholder="이름/부서/본부/지점명" style="width:70%">
+
+
+<div id="jstree" ></div>
+<!--     <div id="line-container">
         <div id="line">
-        <!-- 추가한 결재라인 그려지는곳 -->
+        추가한 결재라인 그려지는곳
         </div>
-        <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
-    </div>
+       
+    </div> -->
+
 <script>
+
+function fSch() {
+    console.log("껌색할께영");
+    $('#jstree').jstree(true).search($("#schName").val());
+}
+
 var loginId="${sessionScope.userInfo.employeeID}";
 $(function () {
     // jstree 생성
@@ -87,13 +70,16 @@ $(function () {
 	});
     
    
-    
+    var employeeID;
+    var icon;
+    var nodeText;
+
     
     // jstree 클릭 이벤트 처리
     $("#jstree").on('click', '.jstree-anchor', function (e) {
         var clickedNode = $(e.target).closest('li');
         employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
-        
+        nodeText = $("#jstree").jstree(true).get_node(clickedNode).text;
         //console.log(employeeID);
     });
     // 더블클릭시 이벤트(사원추가)
@@ -106,34 +92,35 @@ $(function () {
     	// console.log(icon);
     	if(icon!=true){	
     		 $.ajax({
-    	        	url:"/Cocean/approval/getEmployeeID.do",
-    	        	data:{employeeID:employeeID},
-    	        	success:function(data){
-    	        		console.log(data);
-    	        		drawLine(data.employeeInfo,employeeID);
+ 	        	url:"/Cocean/approval/getEmployeeID.do",
+ 	        	data:{employeeID:employeeID},
+ 	        	success:function(data){
+ 	        		console.log(data);
+ 	        		drawLine(data.employeeInfo,employeeID);
 
-    	        	},
-    	        	error:function(e){
-    	        		console.log(e);
-    	        	}
-    	        });
-    		 
-   			sendEmployeedID(employeeID);
+ 	        	},
+ 	        	error:function(e){
+ 	        		console.log(e);
+ 	        	}
+ 	        });
+    		sendEmployeedID(employeeID,nodeText);
     	}
     });
+
+    function sendEmployeedID(employeeID,nodeText){
+    	//console.log('값 보내기');
+    	getEmployeeID(employeeID,nodeText);
+    }
+
+    function aaa(){
+    	var abb= employeeID;
+    	return abb;
+    }
+
 });
 
 var employeeID;
 
-function fSch() {
-    console.log("껌색할께영");
-    $('#jstree').jstree(true).search($("#schName").val());
-}
-
-function sendEmployeedID(employeeID){
-	// console.log('값 보내기');
-	getEmployeeID(employeeID);
-}
 
 function getAddedLineData(lineData){
 	// console.log(lineData);
@@ -148,7 +135,7 @@ function getRemainedEmpID(remLine){
 }
 
 // 조직도에서 사원 선택해서 옆에 그리는 부분
-function drawLine(employeeInfo, currentEmployeeID) {
+function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	if (currentEmployeeID == loginId) {
 	    alert('지정할 수 없습니다.');
 	} else {

@@ -66,13 +66,19 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/waitingList.go")
-	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr, String keyword) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
+			if(keyword==null) {
 			ArrayList<ApprovalDTO> list = service.waitingList(employeeID);
 			mav.addObject("list", list);
+			
+			}else {
+				ArrayList<ApprovalDTO> sList = service.waitingSearch(keyword,employeeID);
+				mav.addObject("sList", sList);
+			}
 			mav.setViewName("approval/waitingList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -214,11 +220,11 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-	                int idx=service.write(files, param, lastLineInfoList);
-	                result.put("idx",idx);
+	                // int idx=service.write(files, param, lastLineInfoList);
+	                // result.put("idx",idx);
 	            	}else { // 임시저장
 	            		logger.info(param.get("idx"));
-	            		service.update(files,param,lastLineInfoList);
+	            		// service.update(files,param,lastLineInfoList);
 	            	}
 	     
 	        	} catch (Exception e) {

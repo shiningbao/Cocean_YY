@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -134,9 +134,10 @@ button{
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
+<c:import url="/side"/>
 
-<div id="container">
+<div class="container-fluid contentField">
+
 <div class="modal fade" id="opinionWrite" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -191,8 +192,10 @@ button{
 			</div>
 		</div>
 	</div>
-<div class="topTitle">
-<h2>결재</h2>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="topTitle">
+	<h1 class="h3 mb-0 text-gray-800">결재</h1>
+	</div>
 </div>
 <div id="contentLine">
 <div id="contentContainer">
@@ -321,21 +324,22 @@ button{
 <div id="bottom">
 
 <c:if test="${hTitle ne 'waiting'}">
-<input type="button" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
+<input type="button" class="btn btn-secondary" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
 </c:if>
 <c:if test="${category eq '합의' && hTitle eq 'waiting'}">
-	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-    <input type="button" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
-    <input type="button" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
+	<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+    <input type="button" class="btn btn-primary" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
+    <input type="button" class="btn btn-primary" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
 <c:if test="${category ne '합의' && hTitle eq 'waiting'}">
-	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-    <input type="button" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
-    <input type="button" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
+	<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+    <input type="button" class="btn btn-primary" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
+    <input type="button" class="btn btn-primary" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
 </div>
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
+	<div class="card shadow">
+	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -358,6 +362,7 @@ button{
 		</table>
 	</div>
 	</div>
+	</div>
 </div>	
 
 
@@ -365,7 +370,8 @@ button{
 
 
 
-
+<c:import url="/footer"/>	
+</body>
 <script>
 
 $('input[value="결재"]').click(function () {
@@ -512,5 +518,5 @@ function approvalSignature(item){
 }
 
  </script>
-</body>
+
 </html>

@@ -8,12 +8,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="<c:url value='/resource/richtexteditor/rte_theme_default.css'/>">
-<!-- <link rel="stylesheet" href="<c:url value='/resource/richtexteditor/runtime/richtexteditor_content.css'/>"> -->
-<!-- <link rel="stylesheet" href="<c:url value='/resource/css/approval/jquery.timepicker.css'/>"> -->
+<script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
+<script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
+<link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
 <style>
 table,th,td{
 		border : 1px solid black;
@@ -65,6 +64,10 @@ button{
 	font-size : 10px;
 	
 }
+.di-td-1{
+	width:86px;
+}
+
 
 #approvalLine, #approvalLine th, #approvalLine td {
   border: none;
@@ -85,7 +88,7 @@ button{
 }
 
 .modal-content{
-	width:135%;
+	width:133% !important;
 	height:100%;
 	overflow-y: auto;
 }
@@ -138,37 +141,26 @@ button{
     left: 18%;
 }
 
-.timeSelect {
-    /* form-control 클래스 스타일 */
-    height:32px;
-    display: block;
-    width: 45%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
 .dateSelect {
 	display:flex;
 	height:40px;
 }
 
+.input-file-button{
+    padding: 3px 10px;
+    background-color: #2e59d9;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 83px;
+}
+
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
+<c:import url="/side"/>
+<div class="container-fluid contentField">
 
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/plugins/all_plugins.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/resource/richtexteditor/rte.js'/>"></script>
-<!-- <script type="text/javascript" src="<c:url value='/resource/js/approval/jquery.timepicker.min.js'/>"></script> -->
-<div class="container">
 <div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -182,16 +174,30 @@ button{
 					</button>
 				</div>
 				<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6" style="border-right:1px solid #EDEDED">
 					<div id="employeeList">
 					<jsp:include page="../approval/organization.jsp"></jsp:include>
 					</div>
+				</div>
+				
+				<div class="col-md-6">
+				<div id="line">
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="modal-footer">
+				 <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<div class="topTitle">
-<h2>기안 작성</h2>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="topTitle">
+	<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
+	</div>
 </div>
 <div id="contentLine">
 <div id="formTitle">${list.formTitle}</div>
@@ -201,6 +207,7 @@ button{
 			<tr>
 			    <th>상신자</th>
 			    <td>${list.name}</td>
+			    <td rowspan="3" class="di-td-1"></td>
 			</tr>
 			<tr>
 			    <th>소속부서</th>
@@ -208,12 +215,13 @@ button{
 			</tr>
 			<tr>
 			    <th>상신일</th>
-			    <td>${list.draftDate}</td>
+			    <td>${date}</td>
 			</tr>
 		</table>
 		
-		<table id="approvalSignature">
-		</table>
+		<div id="approvalSignature">
+			
+		</div>
 	
 	</div>
 <input type="hidden" value="${list.employeeID}" name="loginId">
@@ -257,8 +265,7 @@ button{
 		</tr>
 		<tr>
 			<td colspan="2">
-				<div id="rich_editor"></div>
-				<div class="contentt">${list.content}</div>
+				<div id="summernote">${list.content}</div>
 			<!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
 			<input type="hidden" name="content" value=""/>
 		</td>
@@ -293,8 +300,7 @@ button{
 			<td colspan="2">
 			<select id="vacationCategory" name="vacationCategory">
         <option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
-        <option value="조퇴" ${'조퇴' eq vac.category ? 'selected="selected"' : ''}>조퇴</option>
-        <option value="지각" ${'지각' eq vac.category ? 'selected="selected"' : ''}>지각</option>
+        <option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
         <option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
         <option value="공가" ${'공가' eq vac.category ? 'selected="selected"' : ''}>공가</option>
         <option value="경조사" ${'경조사' eq vac.category ? 'selected="selected"' : ''}>경조사</option>
@@ -303,24 +309,19 @@ button{
 	</tr>
 	<tr>
 	    <th>잔여 연차</th>
-	    <td contentEditable="false" style="background-color:lightgray;">${draftInfo.remainingAnnualLeave}</td>
+	   <td id="remain" contentEditable="false" style="background-color:lightgray;">${vac.remainingAnnualLeave}일</td>
 	</tr>
 	<tr>
 	    <th>사용 날짜</th>
-	    <td> <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}">
-							    <select class="timeSelect" name="startTime">
-									  <option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-									</select>
-							    
-							    <p>&nbsp;~&nbsp;</p>
-							    <input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
-							    <select class="timeSelect" name="endTime">
-									<option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-								</select></div></td>
+	   <td> 
+	    	<div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
+	    	<div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
+	    	</div>
+	    </td>
 	</tr>
 	<tr>
 		<th>총 사용일</th>
-		<td id="usageTime" style="background-color:lightgray;"></td>
+		<td id="total" style="background-color:lightgray;"></td>
 	</tr>
 	<tr>
 		<th>사유</th>
@@ -363,7 +364,10 @@ button{
 
 
 <br/>
-<input type="file" name="files" multiple="multiple"/>
+<label class="input-file-button" for="input-file">
+ 파일첨부
+</label>
+<input type="file" id="input-file" style="display:none;"/>
 <br/>
 
 
@@ -381,13 +385,14 @@ button{
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
-<input type="button" id="tempSave" value="임시저장" onclick="saveCf(true)"/>
-<input type="button" id="write" value="등록" onclick="saveCf(false)"/>
-<input type="button" value="취소" onclick="location.href='tempSaveList.go'"/>
+<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='tempSaveList.go'"/>
+<input type="button" class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
+<input type="button" class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
 </div>
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
+<div class="card shadow">
+	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -3px; right: 35px;">+</a>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -399,14 +404,15 @@ button{
 			</tr>
 			<c:forEach items="${lineList}" var="lL">
 			<tr>
-				<td>${lL.approvalOrder}</td>
-				<td>${lL.category}</td>
+				<th class='order'>${lL.approvalOrder}</th>
+				<td class='category'>${lL.category}</td>
 				<td>${lL.hqName}/${lL.departmentName}</td>
 				<td>${lL.rankName}</td>
-				<td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"><label class="deletee">x</label></td>
+				<td>${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><label class="deletee">x</label></td>
 			</tr>	
 			</c:forEach>	
 		</table>
+	</div>
 	</div>
 	</div>
 
@@ -421,6 +427,14 @@ button{
 
 
 <script>
+
+$('#summernote').summernote({
+	height: 200, width: 825,
+	maxHeight: 200,
+	minHeight: 200,
+	focus: true
+});
+
 	var loginId = $('input[name="loginId"]').val()
 	var idx = $('input[name="idx"]').val()
 	
@@ -432,9 +446,15 @@ button{
          data:{'loginId':loginId, 'idx':idx},
          success: function (data) {
         	 var signList = data.signList;
-        	 signList.forEach(function(item,idx){
-        		 approvalSignature(item);
-        	 });
+        	 console.log(signList.length);
+        	  if (signList.length > 0) {
+                  var firstItem = signList[0];
+                  approvalSignature(firstItem);
+                  for (var i = 1; i < signList.length; i++) {
+                      var addItem = signList[i];
+                      signAdd(addItem);
+                  }
+        	  }
         	 var order = signList.approvalOrder;
         	 $('#order').val(order);
              
@@ -446,31 +466,36 @@ button{
  });
 
 
-function approvalSignature(item){
+function approvalSignature(firstItem){
 	 var signTable = $("#approvalSignature");
-	console.log(item.category);
-	if(item.category == "결재"){
+	console.log(firstItem.category);
+	if(firstItem.category == "결재"){
 		var content=
 	        "<table class='signApp'>"+
 				"<tr>"+
-			        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + item.employeeID + "'></td>"+
-			        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+item.positionName+"\u00A0"+item.name+"</td>"+
+			        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
+			        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+firstItem.positionName+"\u00A0"+firstItem.name+"</td>"+
 			    "</tr>"+
 			    "<tr>"+
-			        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+"싸인"+"</td>"+
+			        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
 			    "</tr>"+
 			    "<tr>"+
-			        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + item.employeeID + "'>"+"날짜"+"</td>"+
+			        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
 			    "</tr>"+
 			"</table>"
 	}
-	var frLastTd=$('#approvalSignature tr:first td:last');
-    var scLastTd=$('#approvalSignature tr:odd td:last');
-    var lastTd=$('#approvalSignature td:last');
-    
-    $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + item.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" +item.rankName+ "</td>").insertAfter(frLastTd);
-    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'>" +item.name + "</td>").insertAfter(scLastTd);
-    $("<td style='width: 38%;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'></td>").insertAfter(lastTd);
+	signTable.append(content);
+}
+
+function signAdd(addItem) {
+    var signTable = $("#approvalSignature");
+    var frLastTd = $('#approvalSignature tr:first td:last');
+    var scLastTd = $('#approvalSignature tr:odd td:last');
+    var lastTd = $('#approvalSignature td:last');
+
+    $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>"+addItem.positionName+"\u00A0"+addItem.name+"</td>").insertAfter(frLastTd);
+    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(scLastTd);
+    $("<td style='width: 38%;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(lastTd);
 }
 	
 	
@@ -492,32 +517,64 @@ function approvalSignature(item){
 	
 	
 	// 휴가신청서 시간 부분
-	 $('input[name="start"]').on('change', function() {
-	        var start=$(this).val();
-	        usageTime();
-	    });
-	 $('input[name="end"]').on('change', function() {
-	        var end=$(this).val();
-	        usageTime();
-	    });
-	 
-	$('select[name="startTime"]').on('change', function() {
-        var startTime=$(this).val();
-        usageTime();
-        // console.log(startTime);
+	
+	 $('#startFac, #endFac').on('change', function () {
+        calculateDays();
     });
 	 
-	$('select[name="endTime"]').on('change', function() {
-        var endTime=$(this).val();
-        // console.log($('select[name="startTime"]').val());
-        usageTime();
-    });
-	 
+function calculateDays() {
+    var startDay = $('#startFac').val();
+    var endDay = $('#endFac').val();
+    console.log(startDay);
+
+    if (startDay && endDay) {
+        var startDayTime = new Date(startDay).getTime();
+        var endDayTime = new Date(endDay).getTime();
+        var timeCal = endDayTime - startDayTime;
+        var daysCal = Math.ceil(timeCal / (1000 * 3600 * 24));
+
+        
+        var remainingDays = parseInt($('#remain').text());
+        if (daysCal + 1 > remainingDays) {
+            $('#total').text('잔여 연차를 초과하였습니다.').css('color', 'red');
+        }else{
+        	$('#total').text(daysCal+1 + '일').css('color', 'black');
+        }
+    }
+}
+
+ $('select[name="vacationCategory"]').on('change', function() {
+    var selectedOption = $(this).val();
+    console.log("선택옵션: " + selectedOption);
+
+    if (selectedOption === "반차") {
+        $('#endFac').prev('p').hide();
+        $('#endFac').hide();
+        $('#total').closest('tr').hide();
+        $('.ampm').show();
+        $('#startFac').css('width','85%');
+        $('#remain').closest('tr').show();
+    } else if(selectedOption === "연차"){
+        $('#endFac').prev('p').show();
+        $('#endFac').show();
+        $('.ampm').hide();
+        $('#total').closest('tr').show();
+        $('#remain').closest('tr').show();
+        $('#total').closest('tr').show();
+    }else if(selectedOption === "병가" || "공가" || "경조사"){
+		 $('#remain').closest('tr').hide();
+         $('#total').closest('tr').hide();
+         $('#endFac').prev('p').show();
+         $('#endFac').show();
+         $('.ampm').hide();
+    }
+});
+	
 	function remainedEmpID() {
 	    remLine = [];
 
-	    if ($("#approvalLine tbody tr .employeeID").length > 0) {
-	        $("#approvalLine tbody tr .employeeID").each(function () {
+	    if ($('input[class="employeeID"]').val() > 0) {
+	    	$('input[class="employeeID"]').each(function () {
 	            remLine.push($(this).val());
 	        });
 	    } else if ($("#refTable .employeeID").length > 0) {
@@ -525,8 +582,9 @@ function approvalSignature(item){
 	            remLine.push($(this).val());
 	        });
 	    } else {
-	        // console.log("없음");
+	        console.log("없음");
 	    }
+	        console.log($('input[class="employeeID"]').val());
 	    console.log("remLine:", remLine);
 	    getRemainedEmpID(remLine);
 	}
@@ -535,54 +593,34 @@ function approvalSignature(item){
 		// console.log(employeeID);
 	}
 	
-	const handleResizeHeight = () => {
-	    textarea.current.style.height = 'auto'; //height 초기화
-	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
-	};
-
-	var config = {}
-	config.editorResizeMode = "none";
-	var editor = new RichTextEditor("#rich_editor", config);
-	
-	function saveCf(isTemp) {
-	    if (isTemp) {
-	    	save(isTemp);
-	        alert('저장되었습니다.');
-	    } else {
-	        if (confirm("등록하시겠습니까?")) {
-	            save(isTemp);
-	        }
-	    }
-	}
-	
-	
 	var order;
 	$("#approvalLine tbody tr").each(function (index) {
 	    order = index + 1;
 	});
 	
 	//기안 등록
-	function save(isTemp) {
-	   
-		var title = $('input[name="title"]').val(); // 업무기안서
+	function save(idx) {
+		if(confirm("등록하시겠습니까?")){
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
 		console.log(lastOrder);
 		var lastLine = [];
 	    var formData = new FormData();
+		var title = $('input[name="title"]').val();
+    	var content = $("#summernote").summernote('code');
 	    
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
-	    if ("${form.formTitle}" === "업무기안서") {
-	    	var content = editor.getHTMLCode(); // 업무기안서
+	    if ("${list.formTitle}" === "업무기안서") {
 	        formData.append('content', content);
-	    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
+	        formData.append('title',title);
+	    } else if ("${list.formTitle}" === "휴직원" || "${list.formTitle}" === "복직원") {
 	    	var textArea = $('#textarea').val();
 	        formData.append('startDate', startDate);
 	        formData.append('endDate', endDate);
 	        formData.append('textArea', textArea);
-	    } else if("${form.formTitle}"==="휴가신청서"){
+	    } else if("${list.formTitle}"==="휴가신청서"){
 	    	var start = $('input[name="start"]').val();
 	        var startTime = $('select[name="startTime"]').val();
 	        var end = $('input[name="end"]').val();
@@ -652,13 +690,9 @@ function approvalSignature(item){
 	        formData.append('files', files[i]);
 	    }
 	    
-	    if (isTemp) {// 임시저장부분
-	    	var idx = $('input[name="idx"]').val();
-	        formData.append('tempSave', 1); // 1이면 임시저장
-	        formData.append('idx',idx);
-	    } else {
+	    
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
-	        if ("${form.formTitle}" === "업무기안서"){
+	        if ("${list.formTitle}" === "업무기안서"){
 	        if (!content.trim() && !title.trim()) {
 		        alert("제목과 내용을 입력해주세요!");
 		    } else if (!title.trim()) {
@@ -671,19 +705,26 @@ function approvalSignature(item){
 		        alert("결재라인을 지정해주세요.");
 		        return;
 		    }
-	    }
+	  
 	    	
-	    if(!isTemp){
-	    if("${form.formTitle}" === "휴가신청서"){
-        	if (start === '' || end ==='') {
-                alert("날짜를 선택해주세요!");
-                return;
-            } else if (startTime === '00:00' || endTime === '00:00') {
-                alert("시간을 선택해주세요!");
-                return;
-            }
-        }
-	    }
+
+		    if("${list.formTitle}" === "휴가신청서"){
+		    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
+		    		if(start ===''){
+		        		alert("날짜를 선택해주세요!");
+		        		return;
+		        	}
+	        		
+	        }else{
+	        	if (start === '' || end ==='') {
+	                alert("날짜를 전부 선택해주세요!");
+	                return;
+	            }else if($('#total').text()=='잔여 연차를 초과하였습니다.'){
+	            	alert("잔여 연차를 확인해주세요!");
+	            	return;
+	            }
+	        }
+		    }
 	    
 	    
 	        $.ajax({
@@ -702,7 +743,8 @@ function approvalSignature(item){
 		            console.error(e);
 		        }
 		    	});
-
+		}
+		return;
 	}
 	
 
@@ -720,6 +762,7 @@ function approvalSignature(item){
 		    // var agrTable = $("#agreeTable");
 		    var refTable = $("#refTable");
 		    var signTable = $("#approvalSignature");
+		    var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
 		        var row = $("<tr>");
 		        row.append("<th scope='row' class='order'>" + (appTable.find("tr").length + 1) + "</th>");
@@ -738,17 +781,59 @@ function approvalSignature(item){
 		        appTable.append(row);
 		        updateRowNumbers();
 		        // console.log(lineData.employeeID);
-				
+
 		        // signatureTable   
-		        if(lineData.category =="결재"){
-		        var frLastTd=$('#approvalSignature tr:first td:last');
-		        var scLastTd=$('#approvalSignature tr:odd td:last');
-		        var lastTd=$('#approvalSignature td:last');
-		        
-		        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.rank + "</td>").insertAfter(frLastTd);
-		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.name + "</td>").insertAfter(scLastTd);
-		        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
-		        }
+		        if(lineData.category =="결재"&&row.find(".order").html() == 2){
+			        var content=
+			        "<table class='signApp'>"+
+						"<tr>"+
+					        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					    "</tr>"+
+					    "<tr>"+
+					        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					    "</tr>"+
+					    "<tr>"+
+					        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					    "</tr>"+
+					"</table>"
+					signTable.append(content);
+					
+		        }else if(lineData.category =="결재"&&row.find(".order").html() != 2){
+			        var frLastTd=$('.signApp:last tr:first td:last');
+			        var scLastTd=$('.signApp:last tr:odd td:last');
+			        var lastTd=$('.signApp:last td:last');
+			        
+			        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>").insertAfter(scLastTd);
+			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+		        	}else if (lineData.category == "합의"&&appTable.find(".category:contains('합의')").length==1) {
+		        		  var content =
+		        			  "<table class='agrSign'>"+
+								"<tr>"+
+							        "<td rowspan='3' style='width: 20px;'>"+"합의"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+							        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+							    "</tr>"+
+							    "<tr>"+
+							        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>"+
+							    "</tr>"+
+							    "<tr>"+
+							        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"날짜"+"</td>"+
+							    "</tr>"+
+							"</table>"
+							agrSign.append(content);
+		        	
+		                } else if(appTable.find(".category:contains('합의')").length>1){
+		                	 var frLastTd=$('.agrSign:last tr:first td:last');
+		 			        var scLastTd=$('.agrSign:last tr:odd td:last');
+		 			        var lastTd=$('.agrSign:last td:last');
+		 			        
+		 			        $("<td rowspan='3' style='width: 20px;'>합의<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+		 			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>").insertAfter(scLastTd);
+		 			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'>"+"날짜"+"</td>").insertAfter(lastTd);
+		                  
+		                }
+		        	
 		    }else if(lineData.category == "참조"){
 		        row = $("<tr>");
 
@@ -765,6 +850,7 @@ function approvalSignature(item){
 		        refTable.append(row);
 		        // console.log(lineData.employeeID);
 		    }
+		    
 		    $(document).on('click', '.delete', function() {
 			    var element = $(this);
 			    var row = element.closest('tr')
@@ -777,6 +863,9 @@ function approvalSignature(item){
 			        // console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
 			        // 찾은 INPUT에 가까운 TD 지우기
 			      	$('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
+			      	$('#agrSignature .empID[value="' + delEmpID + '"]').parent().remove();
+			        
+			        
 			    } else {
 			        cell.remove();
 			    }

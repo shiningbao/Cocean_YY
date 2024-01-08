@@ -1,3 +1,5 @@
+writeDraftForm
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -7,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -99,7 +101,7 @@ button{
 }
 
 .modal-content{
-	width:135%;
+	width:133% !important;
 	height:100%;
 	overflow-y: auto;
 }
@@ -153,21 +155,6 @@ button{
     left: 18%;
 }
 
-.timeSelect {
-    /* form-control 클래스 스타일 */
-    height:32px;
-    display: block;
-    width: 45%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
 
 .dateSelect {
 	display:flex;
@@ -195,8 +182,9 @@ button{
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-<div class="container">
+<c:import url="/side"/>
+<div class="container-fluid contentField">
+
 <div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -210,16 +198,30 @@ button{
 					</button>
 				</div>
 				<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6" style="border-right:1px solid #EDEDED">
 					<div id="employeeList">
 					<jsp:include page="../approval/organization.jsp"></jsp:include>
 					</div>
+				</div>
+				
+				<div class="col-md-6">
+				<div id="line">
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="modal-footer">
+				 <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<div class="topTitle">
-<h2>기안 작성</h2>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="topTitle">
+	<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
+	</div>
 </div>
 <div id="contentLine">
 <div id="formTitle">${form.formTitle}</div>
@@ -353,16 +355,17 @@ button{
 <input type="hidden" name="tempSave" value="0"/>
 <div id="render">
 <div id="btnRemove">
-<input type="button" value="취소" onclick="location.href='formList.go'"/>
-<input style="float:right" type="button" id="write" value="등록" onclick="save(${data.idx})"/>
-<input style="float:right" type="button" id="tempSave" value="임시저장" onclick="tempSave(${data.idx})"/>
+<input type="button" class="btn btn-secondary"  value="취소" onclick="location.href='formList.go'"/>
+<input style="float:right" class="btn btn-primary" type="button" id="write" value="등록" onclick="save(${data.idx})"/>
+<input style="float:right" class="btn btn-primary" type="button" id="tempSave" value="임시저장" onclick="tempSave(${data.idx})"/>
 </div>
 </div>
 </div>
 
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
+<div class="card shadow">
+	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -3px; right: 35px;">+</a>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -375,17 +378,18 @@ button{
 		</table>
 	</div>
 	</div>
-
+	</div>
 </div>
+
+
 
 <!-- </form> -->
 
 
 
 
-
-
-
+<c:import url="/footer"/>	
+</body>
 <script>
 
 
@@ -521,8 +525,8 @@ function calculateDays() {
 	    getRemainedEmpID(remLine);
 	}
 	
-	function getEmployeeID(employeeID){
-		// console.log(employeeID);
+	function getEmployeeID(employeeID,nodeText){
+		console.log(employeeID);
 	}
 
 
@@ -743,7 +747,7 @@ function calculateDays() {
 		    formData.append('lastOrder',lastOrder);
 		    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
 		    if ("${form.formTitle}" === "업무기안서") {
-		    	var content = $("#summernote").summernote('code') // 업무기안서
+		    	var content = $("#summernote").summernote('code');// 업무기안서
 		        formData.append('content', content);
 		    	formData.append('title',title);
 		    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
@@ -917,7 +921,7 @@ function calculateDays() {
 		        // console.log(lineData.employeeID);
 
 		        // signatureTable   
-		        if(lineData.category =="결재"){
+		        if(lineData.category =="결재"&&row.find(".order").html() == 2){
 			        var content=
 			        "<table class='signApp'>"+
 						"<tr>"+
@@ -925,10 +929,10 @@ function calculateDays() {
 					        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
 					    "</tr>"+
 					    "<tr>"+
-					        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>"+
+					        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 					    "</tr>"+
 					    "<tr>"+
-					        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"날짜"+"</td>"+
+					        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 					    "</tr>"+
 					"</table>"
 					signTable.append(content);
@@ -939,8 +943,8 @@ function calculateDays() {
 			        var lastTd=$('.signApp:last td:last');
 			        
 			        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
-			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>").insertAfter(scLastTd);
-			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'>"+"날짜"+"</td>").insertAfter(lastTd);
+			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>").insertAfter(scLastTd);
+			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
 		        	}else if (lineData.category == "합의"&&appTable.find(".category:contains('합의')").length==1) {
 		        		  var content =
 		        			  "<table class='agrSign'>"+
@@ -1025,5 +1029,5 @@ function calculateDays() {
 		 // 결재라인 추가한거 취소
 		
 </script>
-</body>
+
 </html>

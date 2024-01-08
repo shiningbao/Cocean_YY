@@ -118,6 +118,8 @@ public interface ApprovalDAO {
 
 	void updateFile(int idx, String oriFileName, String newFileName);
 
+	ArrayList<ApprovalDTO> waitingSearch(String keyword, int employeeID);
+
 
 	/*
 	 * void update(ApprovalDTO dto);

@@ -394,6 +394,10 @@
 		SELECT idx FROM file WHERE idx=#{param}
 	</select>
 
+	<select id="waitingSearch" resultType="approval">
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' AND (title LIKE '%#{keyword}%' OR name LIKE '%f%')ORDER BY d.draftDate desc
+	</select>
 
 	<!-- <update id="update">
 		UPDATE draft SET draftDate=#{draftDate}, publicStatus=#{publicStatus} WHERE idx=#{idx}

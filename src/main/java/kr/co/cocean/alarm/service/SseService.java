@@ -47,20 +47,6 @@ public class SseService {
 	public void alarm(int employeeID, String content, String url) {
 		long ID = employeeID;
 		
-
-		
-		String content = "";
-		
-		
-		switch (category) {
-		case "결재":
-			content = "<a href=\"<c:url value='/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category="+category+"&hTitle=waiting'/>\">"+form+" 결재해주세요.</a>";
-			break;
-
-		default:
-			break;
-		}
-
 		String msg="<a href=\"";
 		msg += ctx+url;
 		msg += "\">";

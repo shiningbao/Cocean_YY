@@ -332,6 +332,10 @@ public class ApprovalService {
 		dao.updateRAL(updateRAL,param);
 	}
 
+	public ArrayList<ApprovalDTO> waitingSearch(String keyword, int employeeID) {
+		return dao.waitingSearch(keyword,employeeID);
+	}
+
 	
 
 	/*
