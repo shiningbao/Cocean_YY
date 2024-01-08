@@ -23,6 +23,9 @@
     	text-align: center;
     	border: 2px solid #dedede;
     }
+    input[type='text']{
+    color:black;
+    }
     
 
 
@@ -55,7 +58,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="branch">지점</label>
 				</div>
-				<select class="custom-select" id="branch" name="branchID" required>
+				<select class="custom-select" id="branch" name="branchID" required style="color: black;">
 				<option value="" selected disabled>지점 선택</option>
 				<c:forEach items="${branchList}" var="item">
 				<option value="${item.branchID}">${item.branchName}</option>
@@ -84,7 +87,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="categoryID">하우스 타입</label>
 				</div>
-				<select class="custom-select" id="category" name="categoryID" required>
+				<select class="custom-select" id="category" name="categoryID" required onchange="defaultType()" style="color: black;">
 				<option value="" selected disabled>타입 선택</option>
 				<option value="1">해수</option>
 				<option value="2">담수</option>
@@ -97,7 +100,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="flooringNo">바닥재 타입</label>
 				</div>
-				<select class="custom-select" id="flooring" name="flooringNo" required>
+				<select class="custom-select" id="flooring" name="flooringNo" required style="color: black;">
 						<option value="" selected disabled>타입 선택</option>
 						<option value="탱크">탱크</option>
 						<option value="모래">모래</option>
@@ -111,7 +114,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="filterType">여과기 타입</label>
 				</div>
-				<select class="custom-select" id="filter" name="filterType" required>
+				<select class="custom-select" id="filter" name="filterType" required style="color: black;">
 				<option value="" selected disabled>타입 선택</option>
 						<option value="측면 여과기">측면 여과기</option>
 						<option value="저면 여과기">저면 여과기</option>
@@ -127,7 +130,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">수온</span>
 			  </div>
-			  <input type="text" class="form-control"  required name="mercury" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control"  required name="mercury" id="mercury" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">°C</span>
 			  </div>
@@ -137,7 +140,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">수위</span>
 			  </div>
-			  <input type="text" class="form-control" required name="waterLevel" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="waterLevel" id="waterLevel" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">%</span>
 			  </div>
@@ -147,7 +150,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">염분</span>
 			  </div>
-			  <input type="text" class="form-control" required name="salinity" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="salinity" id="salinity" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">‰</span>
 			  </div>
@@ -157,21 +160,21 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">pH</span>
 			  </div>
-			  <input type="text" class="form-control" required name="pH" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="pH"  id="pH" maxlength="7" placeholder="기준치 입력">
 			</div>
 			
 			<div class="input-group mb-4">
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">DO</span>
 			  </div>
-			  <input type="text" class="form-control" required name="dO" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="dO" id="dO" maxlength="7" placeholder="기준치 입력">
 			</div>
 			
 			<div class="input-group mb-4">
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">질산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="nitrates" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="nitrates" id="nitrates" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -181,7 +184,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">아질산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="nitrites" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="nitrites" id="nitrites" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -191,7 +194,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">암모니아</span>
 			  </div>
-			  <input type="text" class="form-control" required name="ammonia" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="ammonia" id="ammonia" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -201,7 +204,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">인산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="phosphates" maxlength="7" placeholder="기준치 입력">
+			  <input type="text" class="form-control" required name="phosphates" id="phosphates" maxlength="7" placeholder="기준치 입력">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -241,6 +244,57 @@ function submitForm(form){
 		}
 	});
 	return false;
+}
+
+function defaultType(){
+	var type = $('#category').val();
+	switch(type){
+	case "1":
+		$('#mercury').val(26);
+		$('#waterLevel').val(80);
+		$('#salinity').val(35);
+		$('#pH').val(8);
+		$('#dO').val(5);
+		$('#nitrates').val(2);
+		$('#nitrites').val(3);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "2":
+		$('#mercury').val(27);
+		$('#waterLevel').val(80);
+		$('#salinity').val(3);
+		$('#pH').val(7);
+		$('#dO').val(6);
+		$('#nitrates').val(8);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "3":
+		$('#mercury').val(25);
+		$('#waterLevel').val(20);
+		$('#salinity').val(0);
+		$('#pH').val(0);
+		$('#dO').val(0);
+		$('#nitrates').val(0);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "4":
+		$('#mercury').val(25);
+		$('#waterLevel').val(0);
+		$('#salinity').val(0);
+		$('#pH').val(0);
+		$('#dO').val(0);
+		$('#nitrates').val(0);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	}
+	
 }
 
 </script>

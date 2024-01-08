@@ -337,8 +337,22 @@
 </body>
 
 <script>
-	// 알람창
+	$('#sidebarToggle').on('click',function(){
+		var width = $('#accordionSidebar').width();
+		console.log(width);
+		if(width <= 150){
+			$('.contentField').css({'padding-left':'130px'});
+		}else{
+			$('.contentField').css({'padding-left':'250px'});
+		}
+		
+	});
 
+
+
+
+
+	// 알람창
 	var employeeID = '${userInfo.employeeID}';
 	//var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
 
