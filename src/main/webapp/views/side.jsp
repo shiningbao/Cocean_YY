@@ -170,7 +170,6 @@
                         <a class="collapse-item" href='<c:url value="/approval/waitingList.go"/>'>결재대기함</a>
                         <a class="collapse-item" href='<c:url value="/approval/refList.go"/>'>참조/열람함</a>
                         <a class="collapse-item" href='<c:url value="/approval/myDraftList.go"/>'>나의 기안함</a>
-                        <a class="collapse-item" href='<c:url value="/approval/completeList.go"/>'>완료함</a>
                         <a class="collapse-item" href='<c:url value="/approval/department.go"/>'>부서함</a>
                         <a class="collapse-item" href='<c:url value="/approval/tempSaveList.go"/>' >임시저장함</a>
                     </div>
