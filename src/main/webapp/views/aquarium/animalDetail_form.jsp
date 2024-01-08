@@ -215,7 +215,7 @@ function logplanUpdateGo(e,id){
 	swal({
 		title: title,
 		icon:'info',
-		buttion:['취소','확인']
+		buttons:['취소','확인']
 	}).then((isOkey) => {
 		if(isOkey){
 			$(e).parent().find('button').css({'display':'none'});

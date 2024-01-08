@@ -30,11 +30,11 @@
 
 		<div>
 			<form action="write.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
-				<div class="card shadow col-md-6 m-auto p-2">
+				<div class="card shadow col-md-12 m-auto p-2">
 					<table class="table">
 						<colgroup>
-							<col style="width:30%">
-							<col style="width:70%">
+							<col style="width:25%">
+							<col style="width:75%">
 						</colgroup>
 						<tr>
 							<th class="text-center align-middle" scope="col">분류</th>

@@ -5,38 +5,48 @@
 <mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
 	<!-- 통계 데이터 가져오기 -->
 	<select id="animalHistory" resultType="AnimalHistoryDTO">
-		SELECT DATE_FORMAT(entryDate , '%Y-%m') AS entryMonth, am.entryDate, am.animalID, am.branchID, am.classificationCode, am.status, b.branchName 
+		SELECT am.branchID, b.branchName,
+		COUNT(CASE WHEN am.status != '폐사' THEN 1 END) AS totalNumber,
+	    COUNT(CASE WHEN am.status = '정상' THEN 1 END) AS normalNumber,
+	    COUNT(CASE WHEN am.status = '질병' THEN 1 END) AS illedNumber,
+	    COUNT(CASE WHEN am.status = '폐사' THEN 1 END) AS deadNumber
 		FROM animalManagement am
-		INNER JOIN branch b ON b.branchID = am.branchID;
-	</select>	
+		JOIN branch b ON b.branchID = am.branchID
+		GROUP BY am.branchID, b.branchName
+	</select>
 	
 	<select id="tankHistory" resultType="TankHistoryDTO">
-		SELECT tc.categoryID, tc.tankType, tm.tankID, tm.branchID, tm.registrationDate, tm.tankStatus, b.branchName
+		SELECT b.branchName, b.branchID,
+	    COUNT(tm.tankStatus) AS totalNumber,
+	    COUNT(CASE WHEN tm.tankStatus = '정상' THEN 1 END) AS normalNumber,
+	    COUNT(CASE WHEN tm.tankStatus = '이상' THEN 1 END) AS abnormalNumber,
+	    COUNT(CASE WHEN tm.categoryID = 1 THEN 1 END) AS seaWaterTankNumber,
+	    COUNT(CASE WHEN tm.categoryID = 2 THEN 1 END) AS freshWaterTankNumber,
+	    COUNT(CASE WHEN tm.categoryID = 3 THEN 1 END) AS semiAquaticTankNumber,
+	    COUNT(CASE WHEN tm.categoryID = 4 THEN 1 END) AS landTankNumber
 		FROM tankManagement tm
-		INNER JOIN tankCategory tc ON tm.categoryID = tc.categoryID
 		INNER JOIN branch b ON b.branchID = tm.branchID
+		GROUP BY b.branchName, b.branchID
 	</select>
+	
 
 	<select id="productHistory" resultType="sales">
+		<!-- SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+        bp.status, ph.salesRegDate, ph.salesNumber, b.branchName
+		FROM productInformation pi
+		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
+		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
+		INNER JOIN branch b ON b.branchID = bp.branchID
+		WHERE pi.category = "상품" -->
 		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
         bp.status, ph.salesRegDate, ph.salesNumber, b.branchName
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
 		INNER JOIN branch b ON b.branchID = bp.branchID
-		WHERE pi.category = "상품"
+		WHERE pi.category != "관람객"
 	</select>
 
-	<select id="ticketHistory" resultType="sales">
-		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
-		bp.status, th.salesRegDate, th.salesNumber, b.branchName 
-		FROM productInformation pi
-		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
-		LEFT JOIN ticketHistory th ON bp.productIndex = th.productIndex
-		INNER JOIN branch b ON b.branchID = bp.branchID
-		WHERE pi.category = "티켓"
-	</select>
-	
 	<select id="visitorsHistory" resultType="sales">
 		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
 		bp.status, vh.entryDate, vh.visitorsNumber, b.branchName

@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.board.dto.BoardDTO;
 import kr.co.cocean.board.service.BoardService;
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Controller
 public class BoardController {
@@ -30,7 +32,7 @@ public class BoardController {
 	@Autowired BoardService service;
 	
 	@GetMapping(value = "/board/{boardTitle}/list")
-	public String boardList(@PathVariable String boardTitle, Model model, HttpSession session) {
+	public String boardList(@PathVariable String boardTitle,@RequestParam int page, @RequestParam String search, Model model, HttpSession session) {
 		
 		String category = boardTitle;
 		String bt = "";	
@@ -52,9 +54,13 @@ public class BoardController {
 		}
 		
 		logger.info("category : {}",category);
-		
+		Pager pager = new Pager();
+		int perPage = 10;
+		pager.setPageNum(page);
+		pager.setTotalCount(service.getTotalCount(category, perPage));
+		model.addAttribute("pager", pager);
 		model.addAttribute("bt", bt);
-		model.addAttribute("list", service.boardList(category));
+		model.addAttribute("list", service.boardList(category,perPage,pager.getPageNum()));
 		model.addAttribute("list_pin", service.boardList_pin(category));
 		
 		return "board/boardList";
@@ -143,5 +149,35 @@ public class BoardController {
 		
 		return service.boardDetail(boardID,category,bt);
 	}
+	
+	@PostMapping(value = "/board/{boardTitle}/commentWrite")
+	@ResponseBody
+	public HashMap<String, Object> commentWrite(@PathVariable String boardTitle, @ModelAttribute BoardDTO param) {
+		
+		switch (boardTitle) {
+	//		case "notice":
+	//			break;
+			case "anony":
+				param.setEmployeeID(999999);
+				break;
+			case "department":
+	//			category = "DE"+userInfo.getDepartmentID();
+				break;
+	//		case "program":
+	//			break;
+		}
+
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result.put("newcomment", service.commentWrite(param));
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

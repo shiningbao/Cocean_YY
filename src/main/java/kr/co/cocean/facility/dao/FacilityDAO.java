@@ -22,8 +22,11 @@ public interface FacilityDAO {
 	HashMap<String, Object> getPersonnelLeader();
 
 
-	void updateFacilityName(String facilityName);
+	void updateFacilityName(String facilityName, String facilityInfo, String facilityID);
 
 
 	void delFacility(String deltxt);
+
+ 
+	void addFacility(String category, String facilityName, String facilityInfo);
 }

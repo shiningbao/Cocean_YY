@@ -9,11 +9,11 @@
 </select>
 
 <select id="getfacilityName">
-SELECT facilityName FROM facility WHERE category = #{category}
+SELECT facilityName,facilityID FROM facility WHERE category = #{category}
 </select>
 
 <select id="getfacilityInfo">
-	SELECT facilityName,facilityInfo ,isUse FROM facility f WHERE facilityName =#{facilityName}
+	SELECT facilityID,facilityName,facilityInfo ,isUse FROM facility f WHERE facilityName =#{facilityName}
 
 </select>
 
@@ -25,4 +25,12 @@ SELECT e.name ,e.phoneNumber,p.positionName  from employee e JOIN `position` p  
 	DELETE from facility WHERE facilityName = #{deltxt}
 </delete>
 
+<update id="updateFacilityName">
+	UPDATE facility SET facilityName = #{facilityName}, facilityInfo = #{facilityInfo} WHERE facilityID = #{facilityID}
+</update>
+
+<insert id="addFacility">
+	INSERT INTO facility (facilityName,facilityInfo,isUse,category) values (#{facilityName},#{facilityInfo},'0',#{category});
+	
+</insert>
 </mapper>
