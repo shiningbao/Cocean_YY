@@ -152,8 +152,8 @@ function monthchange(){
 
 function logplanStart(){
 	$('#summernote').summernote({
-		height: 200, width: 700,
-		maxHeight: 200,
+		height: 200,
+		maxHeight: 500,
 		minHeight: 200,
 		focus: true,
 		toolbar:['picture']
@@ -215,7 +215,7 @@ function logplanUpdateGo(e,id){
 	swal({
 		title: title,
 		icon:'info',
-		buttion:['취소','확인']
+		buttons:['취소','확인']
 	}).then((isOkey) => {
 		if(isOkey){
 			$(e).parent().find('button').css({'display':'none'});
@@ -226,7 +226,7 @@ function logplanUpdateGo(e,id){
 			$('#log_'+id).html(con);
 			var $summer = $('#'+id);
 			$summer.summernote({
-				height: 180, width: 700,
+				height: 180,
 				minHeight: 150,
 				maxHeight:500,
 				focus: true,

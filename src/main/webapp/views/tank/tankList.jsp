@@ -103,8 +103,10 @@ label {
 
         
         <nav class="navbar navbar" id="search">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="담당자명을 입력하세요." aria-label="Search">
+            <form class="form-inline" action="list.go" method="get" id="frm">
+              <input class="form-control mr-sm-2" type="search" name="search" placeholder="담당자명을 입력하세요." aria-label="Search">
+              <input type="hidden" name="startNum" value="1" id="startNum">
+              <input type="hidden" name="pageNum" value="" id="pageNum">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
             </form>
           </nav>
@@ -144,20 +146,38 @@ label {
 	</div>	
 
 </div>
-<div class="row" style="display: flex; flex-direction: row-reverse;">
-	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right;">등록</button>
+
+<!-- 페이징 처리 -->
+<div>
+  <ul class="pagination" id="paging">
+  <c:if test="${pager.pageNum > 1}">
+    <li class="page-item">
+  <div class="p" data-list-pn="${pager.pageNum-1}">
+      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
+    </div>
+    </li>
+    </c:if>
+    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
+    	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
+      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
+    	</li>
+		</c:forEach>
+	
+	<c:if test="${pager.pageNum < pager.totalCount}">
+	<li class="page-item">
+	<div class="p" data-list-pn="${pager.pageNum+1}">
+      <a class="page-link" >&raquo;</a>
+      </div>
+    </li>
+    </c:if>
+	  </ul>
 </div>
-<!-- 	<section id="paging"> -->
-<%-- 	<button class="p" data-list-pn="${pager.startNum-1}" type="button">이전</button> --%>
 
-<%-- 	<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i"> --%>
-<%-- 		<span class="p" data-list-pn="${i}" >${i}</span> --%>
-<%-- 	</c:forEach> --%>
 
-<%-- 	<c:if test="${!pager.lastCheck}"> --%>
-<%-- 		<button class="p" data-list-pn="${pager.lastNum+1}" type="button">다음</button> --%>
-<%-- 	</c:if> --%>
-<!-- </section> -->
+
+
+	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right; margin-right:13px;">등록</button>
+
 <c:import url="/footer"/>
 </div>
 </body>
@@ -183,6 +203,20 @@ $(".p").click(function() {
 	}
 
 	resizeWidth();
+	
+	
+// 페이징 처리 클릭 이벤트
+$('.p').click(function(){
+	
+	const no = $(this).attr("data-list-pn");
+	alert(no);
+	$("#pageNum").val(no);
+	$('#frm').submit();
+})
+	
+
+    
+
 	
 
 

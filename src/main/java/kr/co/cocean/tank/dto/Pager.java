@@ -9,36 +9,37 @@ public class Pager {
 
 	private String search;
 	private Integer startNum;
-	private Integer lastNum;
-	private boolean lastCheck;
+	private Integer pageNum;
+	private Integer totalCount;
 	
 	
-	
-	
-
-
-	public Integer getStartNum() {
-		if(this.startNum == null || this.startNum < 1) {
-			this.startNum = 1;
+	public Integer getPageNum() {
+		if(this.pageNum==null || this.pageNum<1) {
+			this.pageNum=1;
 		}
+		return pageNum;
+	}
+	public void setPageNum(Integer pageNum) {
+
+		this.pageNum = pageNum;
+	}
+	public Integer getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Integer totalCount) {
+		this.totalCount = totalCount;
+	}
+	public Integer getStartNum() {
 		return startNum;
 		
 	}
 	public void setStartNum(Integer startNum) {
+		if(this.startNum == null || this.startNum < 1) {
+			this.startNum = 1;
+		}
 		this.startNum = startNum;
 	}
-	public Integer getLastNum() {
-		return lastNum;
-	}
-	public void setLastNum(Integer lastNum) {
-		this.lastNum = lastNum;
-	}
-	public boolean isLastCheck() {
-		return lastCheck;
-	}
-	public void setLastCheck(boolean lastCheck) {
-		this.lastCheck = lastCheck;
-	}
+
 	public String getSearch() {
 			if(this.search == null) {
 				this.search = "";
@@ -48,6 +49,7 @@ public class Pager {
 	public void setSearch(String search) {
 		this.search = search;
 	}
+
 
 
 	

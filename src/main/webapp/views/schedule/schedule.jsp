@@ -252,6 +252,20 @@ body {
 .detail{
 	display: flex;
 }
+.modal-content{
+	width: 700px !important;
+}
+
+.fc-customPrev-button,
+.fc-button,
+.fc-button-primary {
+    /* 원하는 스타일을 적용하세요 */
+    /* 예시로 배경색과 글자색을 변경합니다 */
+    background-color: #4e73df !important;
+    color: white !important;
+    border:none !important;
+    /* 추가적인 스타일 속성을 필요에 따라 적용하세요 */
+}
 /* #calendar .fc-daygrid-body {
   width: 100%;
 } */
@@ -355,7 +369,7 @@ body {
 							</div>
 							<div class="dateSelect">
 								
-							    <input type="date" name="start" id="startFac" value="2023-12-24" class="form-control mb-2">
+							    <input type="date" name="start" id="startFac" value="2023-12-24" class="form-control mb-2" required>
 							    <select class="timeSelect" name="startTime">
 									  <!-- 00:00부터 24:00까지 시간을 30분 간격으로 표시합니다. -->
 									  <option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option>
@@ -381,7 +395,7 @@ body {
 							
 						<div class="form-group">
 							<label>목적</label>
-							<textarea type="text"  name ="description"class="form-control mb-2" requiredoninvalid="this.setCustomValidity('목적을 입력해주세요.')"oninput="this.setCustomValidity('')" maxlength="500"placeholder="목적을 입력해주세요." style="height: 180px;"></textarea>
+							<textarea type="text"  name ="description"class="form-control mb-2" requiredoninvalid="this.setCustomValidity('목적을 입력해주세요.')"oninput="this.setCustomValidity('')" maxlength="500"placeholder="목적을 입력해주세요." style="height: 180px;" required></textarea>
 						</div>
 						<div class="modal-footer">
 							
@@ -415,7 +429,7 @@ body {
 						공개여부 <input type="checkbox" name="publicCategory">
 						</div>
 							<div class="section">
-								제목 <input type="text" name="title" placeholder="제목을 입력해주세요."  class="form-control mb-2">
+								제목 <input type="text" name="title" placeholder="제목을 입력해주세요."  class="form-control mb-2" required>
 								
 							</div>
 							<div class="section">
@@ -427,14 +441,14 @@ body {
 							
 							<div class="dateSelect">
 							
-							    <input type="date" name="start" id="startCal" value="2023-12-24" class="form-control mb-2">
+							    <input type="date" name="start" id="startCal" value="2023-12-24" class="form-control mb-2" required>
 							    <select class="timeSelect" name="startTime">
 									  <!-- 00:00부터 24:00까지 시간을 30분 간격으로 표시합니다. -->
 									  <option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option>
 									</select>
 							    
 							    <p class="ing">~</p>
-							    <input type="date" name="end" id="endCal" value="2023-12-24" class="form-control mb-2">
+							    <input type="date" name="end" id="endCal" value="2023-12-24" class="form-control mb-2" required>
 							    <select class="timeSelect" name="endTime">
 									<option value="00:00">00:00</option><option value="00:30">00:30</option><option value="01:00">01:00</option><option value="01:30">01:30</option><option value="02:00">02:00</option> <option value="02:30">02:30</option><option value="03:00">03:00</option><option value="03:30">03:30</option><option value="04:00">04:00</option><option value="04:30">04:30</option><option value="05:00">05:00</option><option value="05:30">05:30</option><option value="06:00">06:00</option><option value="06:30">06:30</option> <option value="07:00">07:00</option><option value="07:30">07:30</option><option value="08:00">08:00</option><option value="08:30">08:30</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option><option value="18:30">18:30</option><option value="19:00">19:00</option><option value="19:30">19:30</option><option value="20:00">20:00</option><option value="20:30">20:30</option><option value="21:00">21:00</option><option value="21:30">21:30</option><option value="22:00">22:00</option><option value="22:30">22:30</option><option value="23:00">23:00</option><option value="23:30">23:30</option>
 								</select>
@@ -442,11 +456,11 @@ body {
 							</div>
 
 							<div class="section">내용
-								<textarea name="description" class="form-control mb-2" placeholder="내용을 입력해주세요."></textarea>
+								<textarea name="description" class="form-control mb-2" placeholder="내용을 입력해주세요." required></textarea>
 							</div> 
 							
 							<div class="section" >비고
-								<input type="text" name="remarks" class="form-control mb-2">
+								<input type="text" name="remarks" class="form-control mb-2" required>
 							</div>
 							
 							
@@ -991,13 +1005,22 @@ var facilityList;
  }); 
 
 	$('#calSubmit').click(function(){
-		if(confirm('일정을 등록하시겠습니까?')){
-		$('#calForm').append('<input type="hidden" name="requestType" value="scheduleWrite">');
-		calForm.submit();
-		/* location.href='schedule.go'; */ 
-		}else{
-			
-		}
+		 var titleValue = $('#calForm input[name="title"]').val();
+		    var startValue = $('#calForm input[name="start"]').val();
+		    var endValue = $('#calForm input[name="end"]').val();
+		    var descriptionValue = $('#calForm textarea[name="description"]').val();
+		    var remarksValue = $('#calForm input[name="remarks"]').val();
+
+		    // 값이 비어있는지 확인하여 유효성을 검사합니다.
+		    if (titleValue === '' || startValue === '' || endValue === '' || descriptionValue === '' || remarksValue === '') {
+		        alert('필수 입력 항목을 모두 작성해주세요.');
+		    } else {
+		        if (confirm('일정을 등록하시겠습니까?')) {
+		            // 유효성 검사를 통과한 경우 hidden input을 추가하고 폼을 제출합니다.
+		            $('#calForm').append('<input type="hidden" name="requestType" value="scheduleWrite">');
+		            $('#calForm').submit();
+		        }
+		    }
 	})
 var room2Flag = false;
 var room3Flag = false;
@@ -1065,7 +1088,7 @@ var clickedText = ''; // 클릭된 텍스트 저장할 변수
 var isDivAdded = false;
 $('.form-group').on('click', '.reserve-btn', function() {
     clickedText = $(this).parent().text().replace('예약', '').trim();
-    var closeBtn = '<button type="button" class="close-btn Hide-x"><img src="/Cocean/resource/img/carrot-x.png" alt="버튼 이미지"></button>';
+    var closeBtn = '<button type="button" class="close-btn Hide-x"><img src="/Cocean/resource/img/carrot-x.png" alt="버튼 이미지" style="width:20px"></button>';
     	 if (!isDivAdded) { // 추가된 div가 없는 경우
     	        $('.facilityAdd').empty(); // 기존 데이터 삭제
     	        $('.facilityAdd').append(clickedText);
@@ -1086,8 +1109,19 @@ $('.form-group').on('click', '.close-btn', function() {
     $('.facilityAdd').empty(); // 데이터 삭제
 });
 $('#facilitySubmit').on('click',function(){
-	$('#facilitySubmit').append('<input type="hidden" name="requestType" value="facility">');
-	$('#facilityForm').submit();
+	
+	  var startValue = $('#facilityForm input[name="start"]').val();
+	    var endValue = $('#facilityForm input[name="end"]').val();
+	    var descriptionValue = $('#facilityForm textarea[name="description"]').val();
+	    var facilityAddText = $.trim($('.facilityAdd').text()); // facilityAdd 클래스의 텍스트를 가져옵니다.
+
+	    if (startValue === '' || endValue === '' || descriptionValue === '' || facilityAddText === '') {
+	        alert('모든 필수 입력란을 입력해주세요.');
+	    } else {
+	        // 필요한 처리
+	        $('#facilitySubmit').append('<input type="hidden" name="requestType" value="facility">');	
+	        $('#facilityForm').submit();
+	    }
 })
 
 

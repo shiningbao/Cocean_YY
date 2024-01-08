@@ -6,16 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon"> -->
 <!-- <link -->
 <!-- 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" -->
 <!-- 	rel="stylesheet"> -->
-<!-- <!-- Bootstrap CSS --> -->
+<!-- <!-- Bootstrap CSS --> 
 <!-- <link rel="stylesheet" -->
 <!-- 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
-<!-- <!-- Bootstrap JS --> -->
+<!-- <!-- Bootstrap JS -->
 <!-- <script -->
 <!-- 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script> -->
 <%-- <link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>"> --%>

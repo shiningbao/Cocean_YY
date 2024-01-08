@@ -29,15 +29,22 @@
 <link rel="stylesheet" href="/resource/css/common.css"> -->
 </head>
 <style>
+.contentField {
+    padding-left: 250px;
+    margin-top: 80px;
+}
 .listTable {
     overflow: auto;
-    width: 487px;
-    height: 150px; /* 디자인에 맞게 더 큰 값을 설정하세요 */
+    width: 630px;
+    height: 377px;
 }
 
 table, th, td{
 border: 1px solid gray;
-text
+text-align: center;
+}
+tbody{
+text-align: center;
 }
 .productList{
     left: 770px;
@@ -48,10 +55,6 @@ text
 #modalSearch{
 	width: 300px;
 }
-.commonContent{
-top: 100px;
-	left: 400px;
-}
 #branchLocation{
 	width: 50%;
 	height: 50%;
@@ -59,30 +62,47 @@ top: 100px;
 	left: 400px;
 }
 #map{
-	width:500px;
-	height:500px;
+	width:450px;
+	height:450px;
 }
+#secondProductModal{
+	height: 650px;
+	overflow: auto;
+}
+#totalProductNumber{
+	text-align: right;
+    margin-right: 34px
+}
+img {
+    transition: all 0.2s linear;
+}
+
+img:hover {
+    transform: scale(3);
+    border: 1px solid #000;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+}
+#deleteBtn{
+	margin-left: 250px;
+}
+
 </style>
 <body>
-<c:import url="/side" />
+<c:import url="/side"/>
 <div class="container-fluid contentField">
 <div class="row">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
-                    </div>
+    </div>
 </div>
-<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap;">
+<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 <div class="row">
 <div class="branchLocation">지점
-<!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="left:500px;">&#43;</button> -->
 </div>
 </div>
 <div class="row" style="width: 100%; display: flex; justify-content: space-between;">
 
 <div id="map" class="card shadow mb-4"></div>
-
-<!-- <button type="button" class="button" id="branchRegisterConfirm">등록</button> -->
-<!-- <button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#modal">등록</button> -->
 
 <!-- 지점등록 모달 -->	
 <!-- 버튼 클릭 시 열리는 모달창 -->
@@ -97,7 +117,7 @@ top: 100px;
             </button>
           </div>
           <div class="modal-body">
-            <form action=""> <!-- 입력폼 -->
+            <form action="">
               <div class="form-group">
                 <label>지점명</label>
                 <input type="text" id="branchName" class="form-control" required>
@@ -115,21 +135,33 @@ top: 100px;
           </div>
         </div>
       </div>
+      
     </div>
     
 <div class="productList" >
+	<div class="row">
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
-	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none;">등록</button>
-	<!-- <button id="productInfoRegister" class="btn btn-primary" class="button" style="display: inline;">본사상품 등록</button> -->
-	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline;">본사상품 등록</button>
-	
-	<div class="listTable">
+	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;">등록</button>
+	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px">본사상품 등록</button>
+	</div>
+	<div class="row" id="deleteBtn">
+	<button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()">삭제</button>
+	<div id="totalProductNumber">
+	상품 개수 :
+	</div>
+	</div>
+	<div class="row">
+	<div id="productTable" class="listTable col-10">
 	<table>
 	</table>
 	</div>
-	<!-- <button type="button" class="button" onclick="location.href='storeProductRegister.do'">등록</button> -->
+	<div id="productInfoRegisterPage" class="col-2">
+ 	
+ 	</div>
 </div>
+ 
+ 	</div>
 </div>
 </div>
 
@@ -148,7 +180,7 @@ top: 100px;
             <form action="" method="get">
               <div class="form-group">
                 <label>지점명</label> 
-                <input type="text" name="currentBranchName" readonly class="form-control" id="currentProductBranchName">
+                <input type="text" name="currentBranchName" readonly class="form-control" id="currentBranchName">
               </div>
               <div class="form-group">
                 <label>카테고리</label>
@@ -156,11 +188,9 @@ top: 100px;
               </div>
               <div class="form-group">
                 <label>상품명</label>
-                <!-- <button id="firstProductModalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#secondProductModal">검색</button> -->
                  <!-- 두번째 모달 창 열기 버튼 -->
         		 <button type="button" id="firstProductSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondProductModal">검색</button>
                 	 <input type="text" name="currentProductName" readonly required class="form-control" id="currentProductName">
-                	 
               </div>
               <div class="form-group">
                 <label>가격</label>
@@ -168,7 +198,7 @@ top: 100px;
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" id="branchProductRegister">등록</button>
+                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
@@ -180,7 +210,7 @@ top: 100px;
 <!-- 두번째 모달 창 -->
 <div class="modal fade" id="secondProductModal" tabindex="-1" role="dialog" style="margin-left: 400px;">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" id="secondProductModal">
       <div class="modal-header">
         <h5 class="modal-title">상품검색</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -199,6 +229,7 @@ top: 100px;
 	                           <th>상품번호</th>
 	                           <th>상품명</th>
 	                           <th>가격</th>
+	                           <th>사진</th>
 	                       </tr>
 	                   </thead>
 	                   <tbody></tbody>
@@ -210,113 +241,18 @@ top: 100px;
     </div>
     
     
-    <!-- <div class="ticketList">
-	<p>티켓 리스트</p>
-	<input type="text" class="searchTicket" placeholder="검색어 입력">
-	<button id="ticketSearch" class="btn btn-primary">검색</button>
-	<button id="modalTicketRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstTicketModal" style="display: none;">등록</button>
-	<div class="listTable">
-	<table>
-	</table>
-	</div>
-	<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#ticketModal">등록</button>
-	<button type="button" class="button" id="ticketRegisterConfirm">등록</button>
-</div>
-
-
-첫번째 모달창
-<div class="modal fade" id="firstTicketModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">티켓등록</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-body">
-            <form action="" method="get">
-              <div class="form-group">
-                <label>지점명</label> 
-                <input type="text" name="currentBranchName" readonly class="form-control" id="currentTicketBranchName">
-              </div>
-              <div class="form-group">
-                <label>카테고리</label>
-                <input type="text" readonly class="form-control" id="currentTicketCategory">
-              </div>
-              <div class="form-group">
-                <label>티켓명</label>
-                <button id="firstProductModalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#secondProductModal">검색</button>
-                 두번째 모달 창 열기 버튼
-        		 <button type="button" id="firstTicketSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondTicketModal">검색</button>
-                	 <input type="text" name="currentProductName" readonly required class="form-control" id="currentTicketName">
-              </div>
-              <div class="form-group">
-                <label>가격</label>
-                 <input type="text"  class="form-control" class="price" id="currentTicketPrice" readonly></input>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" id="branchTicketRegister">등록</button>
-              </div>
-            </form>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-두번째 모달 창
-<div class="modal fade" id="secondTicketModal" tabindex="-1" role="dialog" style="margin-left: 400px;">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">티켓검색</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div>
-	        <input type="text" id="secondTicketModalSearch" class="form-control">
-	        <button class="secondTicketModalSearch" class="btn btn-primary">검색</button>
-	        </div>
-	        <div class="searchedModalTicket" >
-	               <table class="table">
-	                   <thead>
-	                       <tr>
-	                           <th>티켓번호</th>
-	                           <th>티켓명</th>
-	                           <th>가격</th>
-	                       </tr>
-	                   </thead>
-	                   <tbody></tbody>
-	               </table>
-	           </div>
-	      </div>
-      </div>
-      </div>
-    </div> -->
-    <div id="productInfoRegisterPage">
- 	
- 	</div>
- <c:import url="/footer"/>
+   
+ 	<c:import url="/footer"/>
  	
  	</div>
 </body>
 <script>
-/* resizeWidth(); */
-
 var matchedProductList;
 var productListTable = $('.productList table');
-productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
-var ticketListTable = $('.ticketList table');
-ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th><th>사진</th></tr>');
+productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
 // 현재 보여지고 있는 지점명
 var currentBranchName;
 var currentProductCategory;
-var currentTicketCategory;
 var currentProductName;
 var currentProductPrice;
 
@@ -365,10 +301,8 @@ new Promise((resolve, reject) => {
                         currentBranchName = branch.branchName;
                         currentProductCategory = "상품";
                         currentTicketCategory = "티켓";
-                        $('#currentProductBranchName').val(currentBranchName);
-                        $('#currentTicketBranchName').val(currentBranchName);
+                        $('#currentBranchName').val(currentBranchName);
                         $('#currentProductCategory').val(currentProductCategory);
-                        $('#currentTicketCategory').val(currentTicketCategory);
                         console.log("api x 값 / "+ apiResult.documents[0].x);
                         console.log("api y 값 / "+ apiResult.documents[0].y);
                         console.log("지점 x 값 / "+branch.branchLongitude);
@@ -388,10 +322,14 @@ new Promise((resolve, reject) => {
     				    branchButton.data('branchName', data.branchList[i].branchName);
     				    $('.branchLocation').append(branchButton);
     				    
-    		       		
     				}
+    				   // 지점 버튼들 오른쪽에 + 버튼(지점 추가)
     				   var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="margin-left: 6px;">&#43;</button>');
-    		       		$('.branchLocation').append(registerButton);
+    		       	   $('.branchLocation').append(registerButton);
+    		       		
+   		       		  // 총 상품 개수 추가
+   		       		  $('#totalProductNumber').append(data.totalProductNumber[0].totalProductNumber);
+   		       		  
     				// 상품 리스트 추가
     				console.log("------------------");
     				console.log(data);
@@ -399,70 +337,45 @@ new Promise((resolve, reject) => {
 						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
 								data.branchProductList[i].category != "관람객" && data.branchProductList[i].status === "판매중"){
 							var product = data.branchProductList[i];
-							var productInfo = '<tr>' +
+							    var productInfo = '<tr>' +
+							    '<td><input type="checkbox" onclick="return false"></td>' + 
 							    '<td>' + product.productID + '</td>' +
-							    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=1">' + product.productName + '</a></td>' +
+							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
 							    '</tr>';
-
-							   
 
 
 	                     productListTable.append(productInfo);
 						}
 					}
-    				// 티켓 리스트 추가
-    				/* console.log("------------------");
-    				for (var i = 0; i < data.branchProductList.length; i++) {
-						if(data.branchProductList[i].branchName == matchedBranch.branchName &&
-								data.branchProductList[i].category === "티켓" && data.branchProductList[i].status === "판매중"){
-							var ticket = data.branchProductList[i];
-							var ticketInfo = '<tr>' +
-				            '<td>' + ticket.productID + '</td>' +
-				            '<td>' + ticket.productName + '</td>' +
-				            '<td>' + ticket.price + '</td>' +
-				            '</tr>';
-                         ticketListTable.append(ticketInfo);
-						}
-					} */
 					
     				// 지점 탭 클릭
     				$('.branchButton').click(function () {
 					    console.log("------------------");
 					    console.log("지점 버튼 클릭");
 					    branchName = $(this).data('branchName');
-					    console.log(branchName);
+					    $('#currentBranchName').val(branchName);
 					    currentBranchName = branchName;
-					   /*  currentProductCategory = "상품";
-					    currentTicketCategory = "티켓"; */
-					    /* $('#currentProductBranchName').val(currentBranchName);
-					    $('#currentTicketBranchName').val(currentBranchName);
-					    $('#currentProductCategory').val(currentProductCategory);
-					    $('#currentTicketCategory').val(currentTicketCategory); */
 					    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
 					    if (currentBranchName === "가산점") {
 					        document.getElementById("modalProductRegister").style.display = "none";
 					        document.getElementById("productInfoRegister").style.display = "inline";
-					        /* document.getElementById("modalTicketRegister").style.display = "none"; */
 					    } else {
 					        document.getElementById("modalProductRegister").style.display = "inline";
 					        document.getElementById("productInfoRegister").style.display = "none";
-					        /* document.getElementById("modalTicketRegister").style.display = "inline"; */
 					    }
-					    console.log(data);
 					    // 선택된 branchName에 해당하는 지점 찾기
 					    var matchedBranch = data.branchProductList.find(function (branch) {
 					        return branch.branchName === branchName;
+					    });
+					    var matchedTotalProduct = data.totalProductNumber.find(function (branch) {
+				        return branch.branchName === branchName;
 					    });
 					    var matchedProducts = data.branchProductList.filter(function (product) {
 					        return product.branchName === matchedBranch.branchName && product.category != "관람객" &&
 					            product.status === "판매중";
 					    });
-					   /*  var matchedTickets = data.branchProductList.filter(function (product) {
-					        return product.branchName === matchedBranch.branchName && product.category === "티켓" &&
-					            product.status === "판매중";
-					    }); */
 					
 					    if (matchedBranch) {
 					        console.log("클릭된 지점명과 일치하는 지점명");
@@ -484,21 +397,23 @@ new Promise((resolve, reject) => {
 					
 					        // 상품리스트로 테이블 업데이트
 					        var productListTable = $('.productList table');
-					        productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
-					        // 티켓리스트로 테이블 업데이트
-					        var ticketListTable = $('.ticketList table');
-					        ticketListTable.html('<tr><th>티켓번호</th><th>티켓명</th><th>가격</th></tr>');
-					
+					        productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
+					        
+					     	// 총 상품 개수 추가
+   		       		  		$('#totalProductNumber').html('상품 개수 : ' + matchedTotalProduct.totalProductNumber);
+					     	
 					        // 상품 데이터를 테이블에 추가
 					        if (matchedProducts.length > 0) {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
 					                var productInfo = '<tr>' +
-					                    '<td>' + product.productID + '</td>' +
-					                    '<td><a href="storeProductDetail.do?productID=' + product.productID + '&branchID=' + matchedBranch.branchID + '">' + product.productName + '</a></td>' +
-					                    '<td>' + product.price + '</td>' +
-					                    '</tr>';
-					
+					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
+					                '<td>' + product.productID + '</td>' +
+					                '<td>' + product.productName + '</td>' +
+					                '<td>' + product.price + '</td>' +
+					                '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+					                '</tr>';
+
 					                productListTable.append(productInfo);
 					            }
 					        } else {
@@ -508,25 +423,6 @@ new Promise((resolve, reject) => {
 					                '</tr>';
 					            productListTable.append(productInfo);
 					        }
-					        // 티켓 데이터를 테이블에 추가
-					        if (matchedTickets.length > 0) {
-					            for (var j = 0; j < matchedTickets.length; j++) {
-					                var ticket = matchedTickets[j];
-					                var ticketInfo = '<tr>' +
-					                    '<td>' + ticket.productID + '</td>' +
-					                    '<td>' + ticket.productName + '</td>' +
-					                    '<td>' + ticket.price + '</td>' +
-					                    '</tr>';
-					                ticketListTable.append(ticketInfo);
-					            }
-					        } else {
-					            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
-					            var productInfo = '<tr>' +
-					                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
-					                '</tr>';
-					            productListTable.append(productInfo);
-					        }
-					
 					    } else {
 					        console.log("지점에 등록된 상품이 없습니다");
 					    }
@@ -545,6 +441,12 @@ new Promise((resolve, reject) => {
     console.log("에러 발생: " + error);
 });
 
+// 상품 리스트 등록 버튼 클릭시 상품명, 가격 value 값 비우기
+$('#modalProductRegister').click(function () {
+	$("#currentProductName").val('');
+	$('#currentProductPrice').val('');
+});
+	
 // 상품 검색 버튼 클릭
 $('#productSearch').click(function () {
 searchKeyword = $('.searchProduct').val();
@@ -552,16 +454,9 @@ console.log(searchKeyword);
 searchProduct(searchKeyword, currentBranchName);
 });
 
-// 티켓 검색 버튼 클릭
-/* $('#ticketSearch').click(function () {
-searchKeyword = $('.searchTicket').val();
-console.log(searchKeyword);
-searchProduct(searchKeyword, currentBranchName);
-}); */
-
 // 모달검색 버튼 클릭
  $('.secondProductModalSearch').click(function () {
-	 console.log("모달검색버튼 클릭");
+   console.log("모달검색버튼 클릭");
    searchKeyword = $('#secondProductModalSearch').val();
    currentBranchName = "본사상품"
    searchProduct(searchKeyword,currentBranchName);
@@ -631,57 +526,23 @@ searchProduct(searchKeyword, currentBranchName);
             success: function (data) {
                 // 검색 결과를 받아와서 동적으로 테이블에 추가
                 var searchedModalProduct = $('.searchedModalProduct table tbody');
-                searchedModalProduct.empty(); // 기존 내용 비우기
                 console.log("상품모달 리스트 성공");
                 console.log(data);
                 for (var i = 0; i < data.modalSearchedList.length; i++) {
                     var product = data.modalSearchedList[i];
                     var productInfo = '<tr>' +
-                        '<td>' + product.productID + '</td>' +
-                        '<td class="productNameCell">' + product.productName + '</td>' +
-                        '<td>' + product.price + '</td>' +
-                        '</tr>';
-                        searchedModalProduct.append(productInfo);
+				    '<td>' + product.productID + '</td>' +
+				    '<td class="productNameCell">' + product.productName + '</td>' +
+				    '<td>' + product.price + '</td>' +
+				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '</tr>';
+				    
+                    searchedModalProduct.append(productInfo);
                 }
 
             },
             error: function (e) {
                 console.log("상품모달 리스트 실패");
-                console.log(e);
-            }
-        });
-    });
-});
-	
- // 모달 티켓 검색 버튼 클릭시
-    $(document).ready(function () {
-    $('#firstTicketSearchModal').click(function () {
-        // Ajax를 사용하여 서버에 검색 요청
-        $.ajax({
-            type: 'get',
-            url: 'modalTicketList.do',
-            data: {
-              'currentBranchName': currentBranchName,
-          	},
-            dataType: 'json',
-            success: function (data) {
-                // 검색 결과를 받아와서 동적으로 테이블에 추가
-                var searchedModalTicket = $('.searchedModalTicket table tbody');
-                searchedModalTicket.empty(); // 기존 내용 비우기
-                console.log("티켓모달 리스트 성공");
-                console.log(data);
-                for (var i = 0; i < data.modalSearchedList.length; i++) {
-                    var ticket = data.modalSearchedList[i];
-                    var ticketInfo = '<tr>' +
-                        '<td>' + ticket.productID + '</td>' +
-                        '<td class="ticketNameCell">' + ticket.productName + '</td>' +
-                        '<td>' + ticket.price + '</td>' +
-                        '</tr>';
-                        searchedModalTicket.append(ticketInfo);
-                }
-            },
-            error: function (e) {
-                console.log("티켓모달 리스트 실패");
                 console.log(e);
             }
         });
@@ -694,30 +555,14 @@ searchProduct(searchKeyword, currentBranchName);
       var clickedRow = $(this).closest('tr');
       currentProductName = clickedRow.find('td:eq(1)').text();
       currentProductPrice = clickedRow.find('td:eq(2)').text();
-    $('#currentProductName').val(currentProductName);
-    $('#currentProductPrice').val(currentProductPrice);
-      // 여기에서 필요한 작업 수행
+      $('#currentProductName').val(currentProductName);
+      $('#currentProductPrice').val(currentProductPrice);
       console.log("선택한 상품명: " + currentProductName);
       console.log("선택한 가격: " + currentProductPrice);
-
+	  console.log ($('#currentProductName').val());
       $('#secondProductModal').modal('hide');
   });
  
-    // ticketName을 클릭하는 이벤트 처리
-    $(document).on('click', '.ticketNameCell', function() {
-      // 클릭한 행의 productName과 price 값을 가져와 변수에 저장
-      var clickedRow = $(this).closest('tr');
-      currentProductName = clickedRow.find('td:eq(1)').text();
-      currentProductPrice = clickedRow.find('td:eq(2)').text();
-    $('#currentTicketName').val(currentProductName);
-    $('#currentTicketPrice').val(currentProductPrice);
-      // 여기에서 필요한 작업 수행
-      console.log("선택한 티켓명: " + currentProductName);
-      console.log("선택한 가격: " + currentProductPrice);
-
-      $('#secondTicketModal').modal('hide');
-  });
-	
 	// 검색된 상품 그리기
     function drawProduct(data) {
     console.log("drawProduct 함수");
@@ -728,7 +573,6 @@ searchProduct(searchKeyword, currentBranchName);
 
         // 모달 상품 검색 결과를 보여주는 테이블
         var searchedModalProduct = $('.searchedModalProduct table tbody');
-        searchedModalProduct.html('<tr><th>상품번호</th><th>상품명</th><th>가격</th></tr>');
         searchedModalProduct.empty(); // 기존 내용 비우기
         for (var i = 0; i < data.searchedList.length; i++) {
             var product = data.searchedList[i];
@@ -738,10 +582,11 @@ searchProduct(searchKeyword, currentBranchName);
             console.log(data.searchedList[i].productName);
 
             var productInfo = '<tr>' +
-                '<td>' + product.productID + '</td>' +
-                '<td class="productNameCell">' + product.productName + '</td>' +
-                '<td>' + product.price + '</td>' +
-                '</tr>';
+		    '<td>' + product.productID + '</td>' +
+		    '<td>' + product.productName + '</td>' +
+		    '<td>' + product.price + '</td>' +
+		    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.serverFileName + ' Image"/></td>' +
+		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
     } else if (data.searchedList[0].status != "본사상품") {
@@ -845,27 +690,22 @@ searchProduct(searchKeyword, currentBranchName);
             }
         });
     }
-    document.getElementById('branchProductRegister').addEventListener('click', function() {
-      var currentBranchName = document.getElementById('currentProductBranchName').value;
-  	  var currentProductName = document.getElementById('currentProductName').value;
-  	  var isConfirmed = confirm("등록하시겠습니까?");
-      branchProductRegister(currentBranchName, currentProductName);
-      
-      /* if (isConfirmed) {
-      	 swal("등록되었습니다.", "", "success");
-          branchProductRegister(currentBranchName, currentProductName);
-      } */
-  });
     
-    document.getElementById('branchTicketRegister').addEventListener('click', function() {
-      var currentBranchName = document.getElementById('currentTicketBranchName').value;
-  	  var currentProductName = document.getElementById('currentTicketName').value;
-  	  var isConfirmed = confirm("등록하시겠습니까?");
-  	  branchProductRegister(currentBranchName, currentProductName);
-      /* if (isConfirmed) {
-          branchProductRegister(currentBranchName, currentProductName);
-      } */
-  });
+    function branchProductRegisterBtn(){
+        	console.log(currentBranchName);
+        	console.log(currentProductName);
+    	  var isConfirmed = confirm("등록하시겠습니까?");
+        if (isConfirmed) {
+        	branchProductRegister(currentBranchName, currentProductName);
+        	
+        } else {
+            console.log("등록이 취소되었습니다.");
+        }
+        
+    }
+   
+
+    
    	// 모달 상품등록 데이터를 서버로 보내는 함수
     function branchProductRegister(currentBranchName, currentProductName){
    		console.log("모달 상품등록 버튼");
@@ -879,7 +719,9 @@ searchProduct(searchKeyword, currentBranchName);
         success: function(data) {
             console.log(data);
             console.log("성공");
-           /*  swal("등록되었습니다.", "", "success"); */
+           alert("등록되었습니다!");
+           /* swal("등록되었습니다!", "", "success"); */
+           console.log(currentBranchName);
         },
         error: function(error) {
             console.error(error);
@@ -890,17 +732,55 @@ searchProduct(searchKeyword, currentBranchName);
    	// 본사상품 등록 페이지 불러오기
     function productInfoRegister(){
      	$.ajax({
-      url: "productInfoRegister.go",
-      type: "GET",
-      success: function(data) {
-          $("#productInfoRegisterPage").html(data);
-      },
-      error: function(e) {
-          console.log(e);
-      	}
-  	});
+	      url: "productInfoRegister.go",
+	      type: "GET",
+	      success: function(data) {
+	          $("#productInfoRegisterPage").html(data);
+	      },
+	      error: function(e) {
+	          console.log(e);
+	      	}
+	  	});
    }
+   	
+   	var productID;
+    document.getElementById('productTable').addEventListener('click', function (event) {
+      // 체크박스를 클릭한 경우에만 처리
+      if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
+          // 체크된 체크박스의 productID 값을 가져옴
+          productID = event.target.getAttribute('data-productID');
+          branchID = event.target.getAttribute('data-branchID');
+          console.log('Selected ProductID:', productID);
+          console.log('Selected branchID:', branchID);
+      }
+  });
+    
+   	// 지점 상품 삭제
+   	function branchProductDelete(){
+   		console.log(productID);
+   		console.log(branchID);
+	   	 var isConfirmed = confirm("삭제하시겠습니까?");
+	     if (isConfirmed) {
+	    	 $.ajax({
+	    			url: "branchProductDelete.do",
+	 	   		data: {
+	 	        'productID': productID,
+	 	        'branchID' : branchID
+	 	     	},
+	    			type: "POST",
+	    			success: function(data){
+	    				console.log("지점상품 삭제 성공");
+	    				alert("상품이 삭제되었습니다!");
+	    			},
+	    			error: function(e){
+	    				console.log(e);
+	    			}
+	    		});
+	     } else {
+	     }
+   	}
     	
+
 
 </script>
 </html>

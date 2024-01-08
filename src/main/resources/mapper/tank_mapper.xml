@@ -4,7 +4,7 @@
 >
 <mapper namespace="kr.co.cocean.tank.dao.TankDAO">
 
-	<select id="tankList" parameterType="Pager" resultType="Tank">
+	<select id="tankList" parameterType="map" resultType="Tank">
 		SELECT tm.tankID , tm.tankName ,
 		tc.tankType, b.branchName, tm.tankStatus, e.name FROM tankManagement tm
 		,inCharge ic ,branch b, tankCategory tc, employee e
@@ -13,13 +13,13 @@
 		GROUP BY tankID 
 		HAVING
 		e.name like CONCAT('%',#{search},'%')
-		ORDER BY tankID ASC LIMIT 0,20
+		ORDER BY tankID ASC LIMIT #{pageNum},10
 	</select>
 	
-<!-- 	<select id="getTotalCount" parameterType="Pager" resultType="Long"> -->
-<!-- 		SELECT COUNT(*) FROM employee e JOIN inCharge ic ON e.employeeID = ic.employeeID  -->
-<!-- 			WHERE ic.category = 'tank' AND e.name like CONCAT('%',#{search},'%') -->
-<!-- 	</select> -->
+	<select id="totalCount" parameterType="map" resultType="Integer">
+		SELECT ROUND(COUNT(*)/10) FROM employee e JOIN inCharge ic ON e.employeeID = ic.employeeID 
+			WHERE ic.category = 'tank' AND e.name like CONCAT('%',#{search},'%')
+	</select>
 	
 	
 	<select id="getBranch" resultType="map">
@@ -97,9 +97,27 @@
 		WHERE employeeID = (SELECT ic.employeeID FROM inCharge ic WHERE ic.category = 'tank' AND ic.idx = #{param1})
 	</select>
 	
-	<select id="logForm" resultType="map">
-		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr 
-		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1
+<!-- 	<select id="logForm" resultType="map"> -->
+<!-- 		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr  -->
+<!-- 		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1 -->
+<!-- 	</select> -->
+	
+	<select id="recentRecord" resultType="map">
+		SELECT * FROM tankRecord tr WHERE recordDate = CURDATE() AND tankID = #{param} ORDER BY recordTime DESC LIMIT 1 
+	</select>
+	
+	<select id="recordList" parameterType="String" resultType="map">
+	SELECT MAX(recordMercury) as maxMer ,MIN(recordMercury) as minMer, ROUND(AVG(recordMercury),0)  as avgMer,
+		MAX(recordWaterLevel) as maxWater ,MIN(recordWaterLevel) as minWater, ROUND(AVG(recordWaterLevel),0)  as avgWater,
+		MAX(recordSalinity) as maxSal ,MIN(recordSalinity) as minSal, ROUND(AVG(recordSalinity),0)  as avgSal,
+		MAX(recordPh) as maxPh ,MIN(recordPh) as minPh, ROUND(AVG(recordPh),0)  as avgPh,
+		MAX(recordDo) as maxDo ,MIN(recordDo) as minDo, ROUND(AVG(recordDo),0)  as avgDo,
+		MAX(recordNitrates) as maxNita ,MIN(recordNitrates) as minNita, ROUND(AVG(recordNitrates),0)  as avgNita,
+		MAX(recordNitrites) as maxNiti ,MIN(recordNitrites) as minNiti, ROUND(AVG(recordNitrites),0)  as avgNiti,
+		MAX(recordAmmonia) as maxAm ,MIN(recordAmmonia) as minAm, ROUND(AVG(recordAmmonia),0)  as avgAm,
+		MAX(recordPhosphates) as maxPhos ,MIN(recordPhosphates) as minPhos, ROUND(AVG(recordPhosphates),0)  as avgPhos,
+		recordDate  FROM tankRecord 
+		WHERE tankID = #{param1} GROUP BY recordDate HAVING recordDate BETWEEN #{param2} AND LAST_DAY(#{param2}) ORDER BY recordTime DESC
 	</select>
 	
 	
