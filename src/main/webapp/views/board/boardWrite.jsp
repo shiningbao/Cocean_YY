@@ -22,22 +22,35 @@
 		</div>
 		<div class="card shadow p-3">
 			<h4>글작성</h4>
-			<p>제목</p>
 			<form action="write.do" method="post">
-			<input type="text" name="title"/>
-			<p>상단 고정</p>
-			<input type="checkbox" name="isPinned" value="1"/>
-			<input type="hidden" name="content" value=""/>
+			<div class="form-check form-check-inline">
+				<label class="form-check-label">
+					공지글 등록  
+					<input type="checkbox" name="isPinned" class="form-check-input ml-2" value="1"/>
+				</label>
+			</div>
+			
+			<div class="d-inline">
+				<h5>제목</h5>
+				<input type="text" name="title" class="form-control float-right" style="width: 100%"/>
+			</div>
+			
+			<input type="hidden" name="content" class="form-control" value=""/>
 			</form>
-			<div id="summernote"></div>
-			<button type="button" onclick="save()">작성</button>
+			<div class="mt-3">
+				<div id="summernote"></div>
+			</div>
+			<div class="d-inline mt-2">
+				<button class="float-right ml-2" type="button" onclick="save()">작성</button>
+				<button class="float-right ml-2" type="button" onclick="location.href='list'">취소</button>
+			</div>
 		</div>
 	</div>
 </body>
 <script>
 	
 	$('#summernote').summernote({
-		height: 200, width: 700,
+		height: 200,
 		maxHeight: 200,
 		minHeight: 200,
 		focus: false,
