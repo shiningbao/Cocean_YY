@@ -212,9 +212,9 @@
 	</div>
 		</div>
 		
-	<div class="row" style="display: flex; justify-content: flex-end; margin-right: 11%;
+	<div class="row" style="display: flex; justify-content: flex-end; margin-right: 12%;
     margin-top: 5%;">
-	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">취소</button>
+	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'" style="margin-right: 5px;">취소</button>
 	<button type="submit" class="btn btn-primary" id="confirmStart">저장</button>
 	</div>
 	</form>
