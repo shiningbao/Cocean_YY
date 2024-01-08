@@ -4,12 +4,17 @@
 >
 <mapper namespace="kr.co.cocean.board.dao.BoardDAO">	
 
+	<select id="getTotalCount">
+		SELECT COUNT(boardID) FROM board WHERE isHidden = 0 AND isPinned = 0 AND category = #{param1}
+	</select>
+
+
 	<select id="boardList" parameterType="board">
 		SELECT b.boardID, b.employeeID, b.title
 			,TO_CHAR(b.creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
 			,IFNULL((SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID), '익명') AS name
 		FROM board b WHERE isHidden = 0 AND isPinned = 0 AND category = #{param1}
-		ORDER BY b.boardID DESC
+		ORDER BY b.boardID DESC LIMIT #{param2} OFFSET #{param3}
 	</select>
 	
 	<select id="boardList_pin" parameterType="board">

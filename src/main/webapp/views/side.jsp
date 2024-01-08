@@ -185,10 +185,10 @@
                 </a>
                 <div id="board" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href='<c:url value="/board/notice/list"/>' >공지사항</a>
-                        <a class="collapse-item" href='<c:url value="/board/anony/list"/>' >익명게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/department/list"/>' >부서게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/program/list"/>' >프로그램 일정</a>
+                        <a class="collapse-item" href='<c:url value="/board/notice/list?page=1&search=''"/>' >공지사항</a>
+                        <a class="collapse-item" href='<c:url value="/board/anony/list?page=1&search=''"/>' >익명게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/department/list?page=1&search=''"/>' >부서게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/program/list?page=1&search=''"/>' >프로그램 일정</a>
                     </div>
                 </div>
             </li>
