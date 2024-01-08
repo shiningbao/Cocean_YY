@@ -78,9 +78,6 @@
     z-index: 1;
 }
 
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
 .psSelect2 {
     /* form-control 클래스 스타일 */
     margin-bottom:12px;

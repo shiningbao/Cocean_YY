@@ -29,8 +29,8 @@
 <body>
 <%-- <jsp:include page="../side.jsp"></jsp:include> --%>
 <div>
-<button onclick="fSch()" class="btn btn-primary schbtn">검색</button>
-<input type="text" id="schName" value="" class="form-control mb-2" style="width:70%">
+<button onclick="fSch()" class="btn btn-primary schbtn" >검색</button>
+<input type="text" id="schName" value="" class="form-control mb-2" placeholder="이름/부서/본부/지점명" style="width:70%">
 </div>
 <div id="jstree"></div>
 
@@ -62,27 +62,29 @@ $(function () {
         'plugins': ["search"],
     });
 
+
     // jstree 생성 후, --
     $("#jstree").on("ready.jstree", function () {
+    	console.log('----');
 
 	});
     
     var employeeID;
     var icon;
     var nodeText;
+
+
     // jstree 클릭 이벤트 처리
      $("#jstree").on('click', '.jstree-anchor', function (e) {
         var clickedNode = $(e.target).closest('li');
         employeeID = $("#jstree").jstree(true).get_node(clickedNode).id;
         
         nodeText = $("#jstree").jstree(true).get_node(clickedNode).text;
-        console.log(employeeID);
-        console.log(nodeText);
-        
   
         //console.log(employeeID);
     }); 
     // 더블클릭시 이벤트
+    
     $("#jstree").on('dblclick', '.jstree-anchor',function(e){
     	// 더블클릭시 값 전송
     	var clickedNode = $(e.target).closest('li');

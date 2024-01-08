@@ -10,12 +10,16 @@
 		INSERT INTO employee VALUES(#{employeeID},#{positionID},#{password},#{name},#{status},#{joinDate},#{phoneNumber},#{address},#{remainingAnnualLeave},#{departmentID},#{rankID},#{responID})
 	</insert>
 	 <select id="getBranch">
-        SELECT branchName FROM branch
+        SELECT branchName , branchID FROM branch
     </select>
 	
 
 	<select id="getBranchID">
-		SELECT hqName FROM headquarters h WHERE branchID =#{branchID}
+		SELECT hqName,hqID FROM headquarters h WHERE branchID =#{branchID}
+	</select>
+	
+	<select id="getBranchOrgID">
+		SELECT hqName ,hqID FROM headquarters h WHERE branchID =#{branchID} and isActive = 1 AND h.hqName NOT LIKE '-%'
 	</select>
 	
 	<select id="getHqID">
@@ -27,6 +31,7 @@
 	</select>
 	
 	<select id="getChart">
+
 				    SELECT * FROM (
 		    SELECT employeeID AS id, 
 		           CASE 
@@ -45,21 +50,24 @@
 		SELECT CONCAT('de',departmentID) AS id, 
 		       CONCAT('hq',hqID) AS parent, 
 		       departmentName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'fas 
+fa-building' AS 'icon'
 		FROM department d 
-		WHERE d.isActive = 1 AND d.departmentName NOT LIKE '-%'
+		WHERE   d.departmentName NOT LIKE '-%'
 		UNION ALL
 		SELECT CONCAT('hq',hqID) AS id, 
 		       CONCAT('br',branchID) AS parent, 
 		       hqName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'fas 
+fa-building' AS 'icon'
 		FROM headquarters h 
-		WHERE h.isActive = 1 AND h.hqName NOT LIKE '%-%'
+		WHERE  h.hqName NOT LIKE '%-%'
 		UNION ALL
 		SELECT CONCAT('br',branchID) AS id, 
 		       '#' AS parent, 
 		       branchName AS 'text', 
-		       'fas fa-building' AS 'icon'
+		       'fas 
+fa-building' AS 'icon'
 		FROM branch b;
 			</select>
 	
@@ -111,6 +119,14 @@
 		select (COUNT(employeeID))  from employee e WHERE employeeID =#{employeeID}
 	</select>
 	
+	<select id="checkDuplicateAddpositionID">
+		select (COUNT(positionID))  from position WHERE positionID =#{addpositionID}
+	</select>
+	
+	<select id="checkDuplicateAddRankID">
+		select (COUNT(rankID))  from rank WHERE rankID =#{addRankID}
+	</select>
+	
 	<insert id="upload">
 		INSERT INTO file(category, idx, path, serverFileName, oriFileName)
 			values(#{category},#{idx},#{path},#{serverFileName},#{oriFileName})
@@ -157,11 +173,19 @@
 	</select>
 	
 	<select id="getPositionName">
-		SELECT positionID ,positionName  from `position` p;
+		SELECT positionID ,positionName,isActive  from `position` p
+	</select>
+	
+	<select id="getPositionNameActive">
+		SELECT positionID ,positionName,isActive  from `position` p where isActive = 1
 	</select>
 	
 	<select id="getRankName">
-		SELECT rankID,rankName from rank;
+		SELECT rankID,rankName,isActive from rank
+	</select>
+	
+	<select id="getRankNameActive">
+		SELECT rankID,rankName,isActive from rank WHERE isActive = 1
 	</select>
 	
 	<select id="departmentChangeLog">
@@ -189,5 +213,64 @@
 	<update id="resetPassword">
 		UPDATE employee SET password = #{password} WHERE employeeID = #{employeeID}
 	</update>
+	
+	<select id="getdepartmentInfo">
+		select d.departmentID,d.departmentName,d.isActive,h.hqName from department d JOIN headquarters h ON d.hqID =h.hqID where departmentID = #{departmentID}
+		
+	</select>
+	
+	<select id="gethqInfo">
+		SELECT h.hqID ,h.hqName ,h.isActive ,b.branchName from headquarters h JOIN branch b ON h.branchID =b.branchID  where hqID =#{hqID}
+	</select>
+	
+	<select id="updateRank" resultType="Integer">
+		UPDATE rank
+		SET rankName = #{rankName}, isActive = #{isActive}
+		WHERE rankID = #{rankID}
+	</select>
+	
+	<select id="updatePosition">
+		UPDATE position
+		SET positionName = #{positionName}, isActive = #{isActive}
+		WHERE positionID = #{positionID}
+	</select>
+	
+	<insert id="addPostion">
+		INSERT INTO `position` (positionID,positionName,isActive) values (#{positionID},#{positionName},#{isActive});
+	</insert>
+	
+	<insert id="addRank">
+		INSERT INTO `rank` (rankID,rankName,isActive) values (#{rankID},#{rankName},#{isActive});
+	</insert>
+	
+	<insert id="addDepartment" useGeneratedKeys="true" keyColumn="departmentID" keyProperty="departmentID" parameterType="department">
+    INSERT INTO department (departmentName, isActive, hqID)
+    VALUES (#{departmentName}, #{isActive}, #{hqID})
+	</insert>
+	
+	<insert id="addhq">
+		INSERT into headquarters  (hqName,branchID,isActive) VALUES (#{hqName},#{branchID},#{isActive});
+	</insert>
+	
+	<update id="updateInfo">
+		update employee set name = #{name},
+		phoneNumber = #{phoneNumber},
+		address = #{address}
+		WHERE employeeID = #{employeeID}
+	</update>
+	
+	<update id="editHq">
+		update headquarters SET hqName = #{hqName} ,isActive =#{isActive} WHERE hqID =#{hqID}
+	</update>
+	<update id="editDp">
+		update department SET departmentName = #{departmentName} ,isActive =#{isActive} WHERE departmentID =#{departmentID}
+	</update>
+	
+	<select id="getDepartmentMembers">
+		SELECT count(employeeID) FROM employee e JOIN department d ON e.departmentID = d.departmentID WHERE d.departmentID =#{departmentID};
+	</select>
 
+	<insert id="addResponsibiliy">
+		INSERT INTO responsibility (departmentID,responName) VALUES (#{departmentID},#{responName})
+	</insert>
 </mapper>

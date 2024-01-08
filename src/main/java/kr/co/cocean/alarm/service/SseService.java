@@ -16,13 +16,13 @@ import kr.co.cocean.alarm.dto.AlarmDTO;
 @Service
 public class SseService {
 	
-	@Autowired AlarmDAO alramDao;
+	@Autowired AlarmDAO alarmDao;
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
-	public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
-	
 	public static String ctx;
+	
+	public static Map<Long, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
 	
 	public SseEmitter subscribe(long ID) {
 		
@@ -44,38 +44,20 @@ public class SseService {
 		return emitter;
 	}
 	
-	public void alarm(String category, int employeeID, int idx, String form) {
-		
+	public void alarm(int employeeID, String content, String url) {
 		long ID = employeeID;
 		
-		String content = "";
-		
-		
-		switch (category) {
+		String msg="<a href=\"";
+		msg += ctx+url;
+		msg += "\">";
+		msg += content;
+		msg += "</a>";
 
-			case "결재":
-				content = "<a href='"+ctx+"/approval/draftDetail.go?idx="+idx+"&employeeID="+employeeID+"&category=결재'>"+form+" 결재해주세요.</a>";
-				break;
-	
-			case "로그":
-				content = "<a href='"+ctx+"/animal/detail.go?animalID="+idx+"'>"+form+" 상세보기</a>";
-				break;
-				
-			default:
-				break;
-			
-		}
-		
-		AlarmDTO dto = new AlarmDTO();
-		dto.setEmployeeID(employeeID);
-		dto.setContent(content);
-		
-		alramDao.insertAlarm(dto);
 		
 		if(sseEmitters.containsKey(ID)) {
 			SseEmitter emitter = sseEmitters.get(ID);
 			try {
-				emitter.send(SseEmitter.event().name("alarm").data(content));
+				emitter.send(SseEmitter.event().name("alarm").data(msg));
 			} catch (IOException e) {
 				e.printStackTrace();
 				sseEmitters.remove(ID);

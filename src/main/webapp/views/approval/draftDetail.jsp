@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -28,6 +28,10 @@ button{
 #approvalLine{
 	font-size : 10px;
 	
+}
+
+.di-td-1{
+	width:86px;
 }
 
 #approvalLine, #approvalLine th, #approvalLine td {
@@ -130,9 +134,10 @@ button{
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
+<c:import url="/side"/>
 
-<div id="container">
+<div class="container-fluid contentField">
+
 <div class="modal fade" id="opinionWrite" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -159,6 +164,9 @@ button{
 					<input type="hidden" id="approvalAction" name="action" value="">
 					<input type="hidden" id="lastOrder" name="lastOrder" value="">
 					<input type="hidden" id="order" name="order" value="">
+					<input type="hidden" value="${vac.remainingAnnualLeave}" name="ral" value="">
+					<input type="hidden" value="${vac.usageTime}" name="usageTime" value="">
+					<input type="hidden" value="${vac.category}" name="vacationCategory" value="">
                 </form>
 				</div>
 			</div>
@@ -184,41 +192,34 @@ button{
 			</div>
 		</div>
 	</div>
-<div class="topTitle">
-<h2>결재</h2>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="topTitle">
+	<h1 class="h3 mb-0 text-gray-800">결재</h1>
+	</div>
 </div>
 <div id="contentLine">
 <div id="contentContainer">
 <div id="formTitle">${list.formTitle}</div>
+<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
+<div id="agrSignature"><!-- 합의 서명 그려지는부분 --></div>	
+<br/>
 <div id="detailInfoTop" style="display: flex;">
-		<table id="detailInfo">
-			<tr>
-			    <th>상신자</th>
-			    <td>${list.name}</td>
-			</tr>
-			<tr>
-			    <th>소속부서</th>
-			    <td>${list.hqName}/${list.departmentName}</td>
-			</tr>
-			<tr>
-			    <th>상신일</th>
-			    <td>${list.draftDate}</td>
-			</tr>
-		</table>
-		
-		<table id="approvalSignature">
-			 <tr>
-		        <td rowspan="3" style="width: 10%; ">상신</td>
-		        <td style="width: 50%; font-size:13px; padding : 0;">${list.rankName}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 50%; font-size:10px;"> <img src="/photo/cocean/signature/${sign.serverFileName}" width="40" height="40" class="signatureImg">${list.name}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 50%;">${list.draftDate}</td>
-		    </tr>
-		</table>
-	</div>
+	<table id="detailInfo">
+		<tr>
+		    <th>상신자</th>
+		    <td>${list.name}</td>
+		     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="40" height="40" class="signatureImg"></td>
+		</tr>
+		<tr>
+		    <th>소속부서</th>
+		    <td>${list.hqName}/${list.departmentName}</td>
+		</tr>
+		<tr>
+		    <th>상신일</th>
+		    <td>${list.draftDate}</td>
+		</tr>
+	</table>
+</div>
 
 
 
@@ -271,18 +272,20 @@ button{
 		<th>휴가 종류</th>
 		<td colspan="2">${vac.category}</td>
 	</tr>
+	<c:if test="${hTitle eq 'waiting'}">
 	<tr>
 		<th>잔여 연차</th>
-		<td>${vac.remainingAnnualLeave}</td>
+		<td>${vac.remainingAnnualLeave}일</td>
 	</tr>
+	</c:if>
 	<tr>
 	    <th>사용 날짜</th>
-	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly>~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly>
+	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly></c:if>
 							  
 	</tr>
 	<tr>
 		<th>총 사용일</th>
-		<td>${vac.usageTime}</td>
+		<td>${vac.usageTime}일</td>
 	</tr>
 	<tr>
 		<th>사유</th>
@@ -321,21 +324,22 @@ button{
 <div id="bottom">
 
 <c:if test="${hTitle ne 'waiting'}">
-<input type="button" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
+<input type="button" class="btn btn-secondary" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
 </c:if>
 <c:if test="${category eq '합의' && hTitle eq 'waiting'}">
-	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-    <input type="button" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
-    <input type="button" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
+	<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+    <input type="button" class="btn btn-primary" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
+    <input type="button" class="btn btn-primary" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
 <c:if test="${category ne '합의' && hTitle eq 'waiting'}">
-	<input type="button" value="취소" onclick="location.href='waitingList.go'"/>
-    <input type="button" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
-    <input type="button" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
+	<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+    <input type="button" class="btn btn-primary" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
+    <input type="button" class="btn btn-primary" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
 </c:if>
 </div>
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
+	<div class="card shadow">
+	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -358,6 +362,7 @@ button{
 		</table>
 	</div>
 	</div>
+	</div>
 </div>	
 
 
@@ -365,7 +370,8 @@ button{
 
 
 
-
+<c:import url="/footer"/>	
+</body>
 <script>
 
 $('input[value="결재"]').click(function () {
@@ -512,5 +518,5 @@ function approvalSignature(item){
 }
 
  </script>
-</body>
+
 </html>

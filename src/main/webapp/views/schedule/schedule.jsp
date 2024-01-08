@@ -53,9 +53,6 @@ body {
 	font-size: 14px;
 }
 
-#calendar {
-	max-width: 90%;
-}
 
 /* .sidebar {
 	float: left;
@@ -237,9 +234,7 @@ body {
     /* 추가적인 스타일링을 적용할 수 있습니다 */
 }
 
-.fc-toolbar-title{
-	margin-right: 300px !important;
-}
+
 .reserve-btn.btn.btn-primary {
     height: 25px;
     width: 50px;

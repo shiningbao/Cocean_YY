@@ -11,17 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 #chart {
-	width: 100%;
+	width: 79%;
 	
 }
 
 #hTitle {
-	width: 100%;	
+	width: 20%;	
 }
 
-#hTitle p {
-	font-size: 22px;
-}
 
 #tank_table {
 	
@@ -93,20 +90,22 @@ button {
 <div class="row">
 	<div class="col-md">
 		<div class="topBar">
-			<div><i class="fi fi-sr-check" style="margin-right: 10px;"></i>하우스 정보</div>
+			<div style="color: #ffffff;">하우스 정보</div>
 				<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
 				<div class="barItem">관리 계획</div>
 			</div>
 		</div>
 		</div>
 
-<div class="row" style="display: flex;padding-top: 10%;flex-direction: column;align-content: space-around;align-items: center;">
-	<div id="hTitle" class="card shadow mb-4" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
-		<p>${map.tankName}
-		 ${map.branchName} [${map.area}]
-		 ${map.tankType} [${map.capacity}]
-		 등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
-		 <button class="btn btn-primary" style="width: 10%;" data-toggle="modal" data-target="#animo">코션친구들</button>
+<div class="row" style="display: flex;padding-top: 5%;flex-direction: row;align-content: space-around;align-items: center;">
+	<div id="hTitle" class="mb-auto" style="display: flex; flex-direction: colum; justify-content: space-around; align-items: center;">
+		 <div class="card border-secondary mb-3" style="max-width: 20rem;">
+  <div class="card-header"><h5 style="text-align: center;">${map.tankName}</br>[${map.branchName}]</h5></div>
+  <div class="card-body">
+    <p class="card-text">배치구역 [${map.area}]</br>${map.tankType} [${map.capacity}]</br>등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
+		 <button class="btn btn-primary" style="width: 100%;" data-toggle="modal" data-target="#animo">코션친구들</button>
+  </div>
+</div>
 	</div>
 	<div id="chart" class="card shadow mb-5">
 		<canvas id="myChart"></canvas>
@@ -120,42 +119,42 @@ button {
 					<th>담당자</th>
 					<th>바닥재</th>
 					<th>여과기</th>
-					<th>기준 수온</th>
-					<th>기준 수위</th>
-					<th>기준 염도</th>
+					<th>기준 수온/최근 수치</th>
+					<th>기준 수위/최근 수치</th>
+					<th>기준 염도/최근 수치</th>
 					
 				</tr>
 				<tr>
 					<td>${map.emName}</td>
 					<td>${map.flooring}</td>
 					<td>${map.filter}</td>
-					<td>${map.mercury}</td>
-					<td>${map.waterLevel}</td>
-					<td>${map.salinity}</td>
+					<td>${map.mercury}/${recent.recordMercury}</td>
+					<td>${map.waterLevel}/${recent.recordWaterLevel}</td>
+					<td>${map.salinity}/${recent.recordSalinity}</td>
 					
 				</tr>
 				<tr>
-					<th>기준 ph</th>
-					<th>기준 DO</th>
-					<th>기준 질산염</th>
-					<th>기준 아질산염</th>
-					<th>기준 암모니아</th>
-					<th>기준 인산염</th>
+					<th>기준 pH/최근 수치</th>
+					<th>기준 DO/최근 수치</th>
+					<th>기준 질산염/최근 수치</th>
+					<th>기준 아질산염/최근 수치</th>
+					<th>기준 암모니아/최근 수치</th>
+					<th>기준 인산염/최근 수치</th>
 				</tr>
 				<tr>
-					<td>${map.pH}</td>
-					<td>${map.dO}</td>
-					<td>${map.nitrates}</td>
-					<td>${map.nitrites}</td>
-					<td>${map.ammonia}</td>
-					<td>${map.phosphates}</td>
+					<td>${map.pH}/${recent.recordPh}</td>
+					<td>${map.dO}/${recent.recordDo}</td>
+					<td>${map.nitrates}/${recent.recordNitrates}</td>
+					<td>${map.nitrites}/${recent.recordNitrites}</td>
+					<td>${map.ammonia}/${recent.recordAmmonia}</td>
+					<td>${map.phosphates}/${recent.recordPhosphates}</td>
 				</tr>
 		</table>
 	</div>
 	</div>
 	</div>
-	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end;">
-	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'">이전</button>
+	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end; margin-right: 8%;">
+	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'" style="margin-right: 5px;">이전</button>
 	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>
 

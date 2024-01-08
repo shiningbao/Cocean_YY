@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -35,29 +35,19 @@
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-<main>
-	<div class="content">
-	
-		<div class="hTitle">
-				<a>참조/열람함</a>
-		</div>
-	
-	<!-- <form action="searchList.do" method="POST">
-	<select id="category" name="formCategory">
-	  <option value="전체" selected="selected">전체</option>
-	  <option value="일반">일반</option>
-	  <option value="근태">근태</option>
-	  <option value="인사">인사</option>
-	</select>
+<c:import url="/side"/>
 
-		<input type="search" name="keyword" placeholder="제목"/>
-		<button class="btn btn-primary">검색</button>
-	</form> -->
-	
+<div class="container-fluid contentField">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="hTitle">
+	<h1 class="h3 mb-0 text-gray-800">참조/열람함</h1>
+	</div>
+</div>
+<div class="card shadow mb-4">
+
 	 <nav class="navbar navbar float-right" id="search">
         <form class="form-inline">
-          <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
+          <input class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
           <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
         </form>
      </nav>
@@ -98,7 +88,9 @@
 	</table>
 	</div>
 	</div>
-	</main>
+	</div>
+
+<c:import url="/footer"/>	
 </body>
 <script>
 resizeWidth();

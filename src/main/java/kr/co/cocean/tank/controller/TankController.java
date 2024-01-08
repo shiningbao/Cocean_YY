@@ -70,6 +70,8 @@ public class TankController {
 		ModelAndView mav = new ModelAndView("tank/tankDetail");
 		HashMap<String, Object> map = service.tankDetail(tankID);
 		List<Map<String, Object>> tankAnimal = service.tankAnimal(tankID);
+		HashMap<String, Object> recentRecord = service.recentRecord(tankID);
+		mav.addObject("recent",recentRecord);
 		mav.addObject("tankAnimal",tankAnimal);			
 		mav.addObject("map",map);
 		return mav;
@@ -107,17 +109,22 @@ public class TankController {
 	@GetMapping("tank/houseLog.go")
 	public ModelAndView houseLog(@RequestParam int tankID, HttpSession session) {
 		ModelAndView mav = new ModelAndView("tank/houseLog");
-		HashMap<String, Object> map = service.logForm(tankID);
-		mav.addObject("map",map);
-		logger.info("map: "+map);
+		mav.addObject("tankID",tankID);
 		return mav;
 	}
 	
-	
-	@GetMapping("tank/newSide")
-	public String newSide() {
-		return "newSide";
+	@RequestMapping("tank/getRecord.ajax")
+	@ResponseBody
+	public List<Map<String, Object>> gerRecord(@RequestParam String tankID, String curDate, Model model) {
+		List<Map<String, Object>> recordList = service.getRecord(tankID,curDate);
+		logger.info("recordList: "+recordList.toString());
+		model.addAttribute("recordList",recordList);
+		return recordList;
+		
 	}
+	
+	
+
 	
 	
 	

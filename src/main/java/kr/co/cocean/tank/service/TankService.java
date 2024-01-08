@@ -93,8 +93,18 @@ public class TankService {
 	}
 
 
-	public HashMap<String, Object> logForm(int tankID) {
-		return dao.logForm(tankID);
+//	public HashMap<String, Object> logForm(int tankID) {
+//		return dao.logForm(tankID);
+//	}
+
+
+	public HashMap<String, Object> recentRecord(int tankID) {
+		return dao.recentRecord(tankID);
+	}
+
+
+	public List<Map<String, Object>> getRecord(String tankID, String curDate) {
+		return dao.recordList(tankID,curDate);
 	}
 
 }

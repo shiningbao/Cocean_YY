@@ -1,3 +1,5 @@
+writeDraftForm
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -7,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -21,6 +23,10 @@ table,th,td{
 		padding : 5px 10px;
 }
 
+.di-td-1{
+	width:86px;
+}
+
 input[type="text"]{
 	width : 100%;
 }
@@ -31,9 +37,19 @@ button{
 
 #approvalSignature{
 	margin-left : 20px;
+	margin-bottom : 20px;
 }
 
 #approvalSignature td{
+	text-align: center;
+}
+
+#agrSignature {
+	margin-bottom : 20px;
+}
+
+
+#agrSignature td{
 	text-align: center;
 }
 
@@ -85,7 +101,7 @@ button{
 }
 
 .modal-content{
-	width:135%;
+	width:133% !important;
 	height:100%;
 	overflow-y: auto;
 }
@@ -110,6 +126,7 @@ button{
 	position: absolute;
     left: 19%;
     bottom: -29%;
+    width:59%;
 }
 
 #rightContainer{
@@ -138,32 +155,36 @@ button{
     left: 18%;
 }
 
-.timeSelect {
-    /* form-control 클래스 스타일 */
-    height:32px;
-    display: block;
-    width: 45%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
 
 .dateSelect {
 	display:flex;
 	height:40px;
 }
 
+.signApp{
+	float:right;
+}
+
+#approvalSignature{
+	float:right;
+}
+
+
+#agrSignature{
+	float:left;
+}
+.signAgr{
+	float:left;
+}
+
+
+
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-<div class="container">
+<c:import url="/side"/>
+<div class="container-fluid contentField">
+
 <div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
@@ -177,25 +198,43 @@ button{
 					</button>
 				</div>
 				<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6" style="border-right:1px solid #EDEDED">
 					<div id="employeeList">
 					<jsp:include page="../approval/organization.jsp"></jsp:include>
 					</div>
+				</div>
+				
+				<div class="col-md-6">
+				<div id="line">
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="modal-footer">
+				 <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
-<div class="topTitle">
-<h2>기안 작성</h2>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="topTitle">
+	<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
+	</div>
 </div>
 <div id="contentLine">
 <div id="formTitle">${form.formTitle}</div>
+<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
+<div id="agrSignature"><!-- 합의 서명 그려지는부분 --></div>	
+<br/>
 <div id="draftInfoTop" style="display: flex;">
 <input type="hidden" value="${form.titleID}" name=titleID>
 		<table id="draftInfo">
 			<tr>
 			    <th>상신자</th>
 			    <td>${draftInfo.name}</td>
+			    <td rowspan="3" class="di-td-1"></td>
 			</tr>
 			<tr>
 			    <th>소속부서</th>
@@ -206,30 +245,12 @@ button{
 			    <td>${date}</td>
 			</tr>
 		</table>
-		
-		<table id="approvalSignature">
-			<tr>
-		        <td rowspan="3" style="width: 20px; ">상신</td>
-		        <td style="width: 80px; font-size:13px; padding : 0;">${draftInfo.rankName}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 80px; font-size:10px; vertical-align: bottom;">${draftInfo.name}</td>
-		    </tr>
-		    <tr>
-		        <td style="width: 80px;"></td>
-		    </tr>
-		</table>
-	
-	</div>
-
-
-	
-
-
+		</div>
 
 <br/>
 <!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
 <c:if test="${form.formTitle eq '업무기안서'}">
+<div class="wdContent">
 <table id="workDraftContent">
 	
 		<!-- <tr>
@@ -241,7 +262,7 @@ button{
 		    <td><table id="refTable" style="border:none;"><tr><td></td></tr></table></td>
 		</tr>
 		<tr>
-		<th>제목</th>
+			<th>제목</th>
 			<td><input type="text" name="title" placeholder="*제목을 입력해주세요."></td>
 		</tr>
 		<tr>
@@ -252,6 +273,7 @@ button{
 		</td>
 	</tr>
 </table>
+</div>
 </c:if>
 
 <c:if test="${form.formTitle eq '휴가신청서'}">
@@ -262,7 +284,7 @@ button{
 	</tr>
 	<tr>
 		<th>휴가 종류</th>
-			<td colspan="2"><select id="vacationCategory" name="vacationCategory">
+			<td colspan="2"><select id="vacationCategory" name="vacationCategory"> 
 					  <option value="연차" selected="selected">연차</option>
 					  <option value="반차">반차</option>
 					  <option value="병가">병가</option>
@@ -273,24 +295,19 @@ button{
 	</tr>
 	<tr>
 	    <th>잔여 연차</th>
-	    <td contentEditable="false" style="background-color:lightgray;">${draftInfo.remainingAnnualLeave}</td>
+	    <td id="remain" contentEditable="false" style="background-color:lightgray;">${draftInfo.remainingAnnualLeave}일</td>
 	</tr>
+	
 	<tr>
 	    <th>사용 날짜</th>
-	    <td> <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2">
-							    <!-- <select class="timeSelect" name="startTime">
-									  <option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-									</select> -->
-							    
-							    <p>&nbsp;~&nbsp;</p>
-							    <input type="date" name="end" id="endFac"  class="form-control mb-2">
-							   <!--  <select class="timeSelect" name="endTime">
-									<option value="00:00">00:00</option><option value="09:00">09:00</option><option value="09:30">09:30</option><option value="10:00">10:00</option><option value="10:30">10:30</option><option value="11:00">11:00</option><option value="11:30">11:30</option><option value="12:00">12:00</option><option value="12:30">12:30</option><option value="13:00">13:00</option> <option value="13:30">13:30</option><option value="14:00">14:00</option><option value="14:30">14:30</option><option value="15:00">15:00</option><option value="15:30">15:30</option><option value="16:00">16:00</option> <option value="17:00">17:00</option><option value="17:30">17:30</option><option value="18:00">18:00</option>
-								</select> --></div></td>
+	    <td> <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2">
+	    		<div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
+	    		</div>
+		</td>
 	</tr>
 	<tr>
 		<th>총 사용일</th>
-		<td id="usageTime" style="background-color:lightgray;"></td>
+		<td id="total" style="background-color:lightgray;"></td>
 	</tr>
 	<tr>
 		<th>사유</th>
@@ -336,13 +353,19 @@ button{
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
-<input type="button" id="tempSave" value="임시저장" onclick="saveCf(true)"/>
-<input type="button" id="write" value="등록" onclick="saveCf(false)"/>
-<input type="button" value="취소" onclick="location.href='formList.go'"/>
+<div id="render">
+<div id="btnRemove">
+<input type="button" class="btn btn-secondary"  value="취소" onclick="location.href='formList.go'"/>
+<input style="float:right" class="btn btn-primary" type="button" id="write" value="등록" onclick="save(${data.idx})"/>
+<input style="float:right" class="btn btn-primary" type="button" id="tempSave" value="임시저장" onclick="tempSave(${data.idx})"/>
 </div>
+</div>
+</div>
+
 <div id="rightContainer">
-	<div style="padding: 0px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -13px; right: 35px;">+</a>
+<div class="card shadow">
+	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -3px; right: 35px;">+</a>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -355,18 +378,20 @@ button{
 		</table>
 	</div>
 	</div>
-
+	</div>
 </div>
+
+
 
 <!-- </form> -->
 
 
 
 
-
-
-
+<c:import url="/footer"/>	
+</body>
 <script>
+
 
 	var textArea = $('#textarea').text();
 	var startDate;
@@ -380,7 +405,62 @@ button{
 	    });
 
 	// 휴가신청서 시간 부분
-	 $('input[name="start"]').on('change', function() {
+	
+	 $('#startFac, #endFac').on('change', function () {
+        calculateDays();
+    });
+	 
+function calculateDays() {
+    var startDay = $('#startFac').val();
+    var endDay = $('#endFac').val();
+    console.log(startDay);
+
+    if (startDay && endDay) {
+        var startDayTime = new Date(startDay).getTime();
+        var endDayTime = new Date(endDay).getTime();
+        var timeCal = endDayTime - startDayTime;
+        var daysCal = Math.ceil(timeCal / (1000 * 3600 * 24));
+
+        
+        var remainingDays = parseInt($('#remain').text());
+        if (daysCal + 1 > remainingDays) {
+            $('#total').text('잔여 연차를 초과하였습니다.').css('color', 'red');
+        }else{
+        	$('#total').text(daysCal+1 + '일').css('color', 'black');
+        }
+    }
+}
+
+ $('select[name="vacationCategory"]').on('change', function() {
+    var selectedOption = $(this).val();
+    console.log("선택옵션: " + selectedOption);
+
+    if (selectedOption === "반차") {
+        $('#endFac').prev('p').hide();
+        $('#endFac').hide();
+        $('#total').closest('tr').hide();
+        $('.ampm').show();
+        $('#startFac').css('width','85%');
+        $('#remain').closest('tr').show();
+    } else if(selectedOption === "연차"){
+        $('#endFac').prev('p').show();
+        $('#endFac').show();
+        $('.ampm').hide();
+        $('#total').closest('tr').show();
+        $('#remain').closest('tr').show();
+        $('#total').closest('tr').show();
+    }else if(selectedOption === "병가" || "공가" || "경조사"){
+		 $('#remain').closest('tr').hide();
+         $('#total').closest('tr').hide();
+         $('#endFac').prev('p').show();
+         $('#endFac').show();
+         $('.ampm').hide();
+    }
+});
+ 
+
+	
+	 /* $('input[name="start"]').on('change', function() {
 	        var start=$(this).val();
 	        // console.log(start);
 	        usageTime();
@@ -425,7 +505,7 @@ button{
         	}
 	    	});
 	}
-	 
+	  */
 	 
 	function remainedEmpID() {
 	    remLine = [];
@@ -445,28 +525,20 @@ button{
 	    getRemainedEmpID(remLine);
 	}
 	
-	function getEmployeeID(employeeID){
-		// console.log(employeeID);
+	function getEmployeeID(employeeID,nodeText){
+		console.log(employeeID);
 	}
-	
-	const handleResizeHeight = () => {
-	    textarea.current.style.height = 'auto'; //height 초기화
-	    textarea.current.style.height = textarea.current.scrollHeight + 'px';
-	};
 
-/* 	var config = {}
-	config.editorResizeMode = "none";
-	var editor = new RichTextEditor("#rich_editor", config); */
-	
+
 	$('#summernote').summernote({
-		height: 200, width: 700,
+		height: 200, width: 825,
 		maxHeight: 200,
 		minHeight: 200,
 		focus: true
 	});
 
 	
-	function saveCf(isTemp) {
+	/* function saveCf(isTemp) {
 	    if (isTemp) {
 	    	save(isTemp);
 	        alert('저장되었습니다.');
@@ -475,16 +547,18 @@ button{
 	            save(isTemp);
 	        }
 	    }
-	}
+	} */
 	
 	var order;
 	$("#approvalLine tbody tr").each(function (index) {
 	    order = index + 1;
 	});
 	
+	var idx;
+	
 	//기안 등록
-	function save(isTemp) {
-	   
+	function save(idx) {
+	   if(confirm("등록하시겠습니까?")){
 		var title = $('input[name="title"]').val(); // 업무기안서
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
@@ -522,14 +596,23 @@ button{
 	        var end = $('input[name="end"]').val();
 	        var endTime = $('select[name="endTime"]').val();
 	        var vacationCategory =$('#vacationCategory').val();
-	        var usageTime=$('#usageTime').text();
+	    	var total= $('#total').text().replace(/\D/g, ''); // 문자 빼기('일')
+	    	if(vacationCategory=='반차'){
+	    		total=0.5;
+	    		if($('input[value="오전반차"]:checked')){
+	    			vacationCategory=$('input[value="오전반차"]:checked').val();
+	    		}else{
+	    			vacationCategory=$('input[value="오후반차"]:checked').val();
+	    		}
+	    	}
 	        var textArea = $('#textarea').val();
-	        console.log(usageTime);
+	        console.log(total);
 	    	formData.append('startDate', start);
 	    	formData.append('endDate', end);
 	    	formData.append('vacationCategory', vacationCategory);
 	    	formData.append('textArea', textArea);
-	    	formData.append('usageTime', usageTime);
+	    	formData.append('total', total);
+
 	    }
     	// console.log(lastLine);
 	    
@@ -575,10 +658,6 @@ button{
 	    });
 
 	    formData.append('lastLine', JSON.stringify(lastLine));
-	    
-	    if (isTemp) {// 임시저장부분
-	        formData.append('tempSave', 1); // 1이면 임시저장
-	    } else {
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
 	        if ("${form.formTitle}" === "업무기안서"){
 	        if (!content.trim() && !title.trim()) {
@@ -593,20 +672,26 @@ button{
 		        alert("결재라인을 지정해주세요.");
 		        return;
 		    }
-	    }
+	    
 	    	
-	    if(!isTemp){
+	   
 	    if("${form.formTitle}" === "휴가신청서"){
+	    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
+	    		if(start ===''){
+	        		alert("날짜를 선택해주세요!");
+	        		return;
+	        	}
+        		
+        }else{
         	if (start === '' || end ==='') {
-                alert("날짜를 선택해주세요!");
+                alert("날짜를 전부 선택해주세요!");
                 return;
-            } else if (startTime === '00:00' || endTime === '00:00') {
-                alert("시간을 선택해주세요!");
-                return;
+            }else if($('#total').text()=='잔여 연차를 초과하였습니다.'){
+            	alert("잔여 연차를 확인해주세요!");
+            	return;
             }
         }
 	    }
-	    
 	    
 	        $.ajax({
 		        url: "/Cocean/approval/writeDraft.do",
@@ -628,12 +713,172 @@ button{
 		            console.error(e);
 		        }
 		    	});
-
+	    
+	   }
+	   return;
 	}
 	
-     
 	
 	
+	// 임시저장
+	function tempSave(idx) {
+			alert('저장되었습니다.');
+			console.log(idx);
+			var title = $('input[name="title"]').val(); // 업무기안서
+			var titleID = $('input[name="titleID"]').val(); // 양식titleID
+			var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
+			var lastLine = [];
+			
+		    var formData = new FormData();
+
+		    var filesInput = $('input[name="files"]')[0];
+		    var files = filesInput.files;
+		   //  console.log(files.length);
+		   //  console.log(filesInput);
+		    if (files.length === 0) {
+		        formData.append('files', null);
+		    }else{
+		    for (var i = 0; i < files.length; i++) {
+		        formData.append('files', files[i]);
+		    }
+		    }
+		    
+		    formData.append('titleID',titleID);
+		    formData.append('lastOrder',lastOrder);
+		    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
+		    if ("${form.formTitle}" === "업무기안서") {
+		    	var content = $("#summernote").summernote('code');// 업무기안서
+		        formData.append('content', content);
+		    	formData.append('title',title);
+		    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
+		    	var textArea = $('#textarea').val();
+		        formData.append('startDate', startDate);
+		        formData.append('endDate', endDate);
+		        formData.append('textArea', textArea);
+		    } else if("${form.formTitle}"==="휴가신청서"){
+		    	var start = $('input[name="start"]').val();
+		        var startTime = $('select[name="startTime"]').val();
+		        var end = $('input[name="end"]').val();
+		        var endTime = $('select[name="endTime"]').val();
+		        var vacationCategory =$('select[name="vacationCategory"]').val();
+		    	var total= $('#total').text().replace(/\D/g, ''); // 문자 빼기('일')
+		    	if(vacationCategory=='반차'){
+		    		total=0.5;
+		    		if($('input[value="오전반차"]:checked')){
+		    			vacationCategory=$('input[value="오전반차"]:checked').val();
+		    		}else{
+		    			vacationCategory=$('input[value="오후반차"]:checked').val();
+		    		}
+		    	}
+		        var textArea = $('#textarea').val();
+		        console.log(total);
+		    	formData.append('startDate', start);
+		    	formData.append('endDate', end);
+		    	formData.append('vacationCategory', vacationCategory);
+		    	formData.append('textArea', textArea);
+		    	formData.append('total', total);
+				console.log("아오:"+vacationCategory);
+		    }
+	    
+		    $("#approvalLine tbody tr").each(function (index) {
+		        var order = $(this).find('.order').text(); // 각자의 순서
+		        var employeeID = $(this).find('.employeeID').val(); // 결재자,합의자,참조자
+		        var category = $(this).find('.category').text();
+		        
+			
+		        if (employeeID !== undefined && category == '결재') {
+		            lastLine.push({
+		                employeeID: employeeID,
+		                order: order,
+		                category: '결재'
+		            });
+		        }
+		    });
+
+		    $("#approvalLine tbody tr").each(function (index) {
+		    	 var order = $(this).find('.order').text(); // 각자의 순서
+			     var employeeID = $(this).find('.employeeID').val();
+			     var category = $(this).find('.category').text();
+			     
+		        if (employeeID !== undefined && category == '합의') {
+		            lastLine.push({
+		                employeeID: employeeID,
+		                order: order,
+		                category: '합의'
+		            });
+		        }
+		    }); 
+
+		    $("#refTable .employeeID").each(function (index) {
+		        var employeeID = $(this).val();
+
+		        if (employeeID !== undefined) {
+		            lastLine.push({
+		                employeeID: employeeID,
+		                order: null,
+		                category:'참조'
+		            });
+		        }
+		    });
+
+		    formData.append('lastLine', JSON.stringify(lastLine));
+		    formData.append('tempSave', 1); 
+		    if(idx!==undefined){
+		    	console.log("이미 임시저장한거있음:idx="+idx);
+		    	formData.append("idx",idx);
+		    	$.ajax({
+			        url: "/Cocean/approval/writeDraft.do",
+			        method: "POST",
+			        processData: false,
+			        contentType: false,
+			        data: formData,
+			        cache: false,
+			        success: function (data) {
+			            console.log(data);
+			        },
+			        error: function (e) {
+			            console.error(e);
+			        }
+			    	});
+		    }else{
+	        $.ajax({
+		        url: "/Cocean/approval/writeDraft.do",
+		        method: "POST",
+		        processData: false,
+		        contentType: false,
+		        data: formData,
+		        cache: false,
+		        success: function (data) {
+		            console.log(data.idx);
+		            var idx=data.idx;
+		            changeBtn(idx);
+		        },
+		        error: function (e) {
+		            console.error(e);
+		        }
+		    	});
+		    }
+
+		}
+	
+	 function changeBtn(idx) {
+        $('#btnRemove').remove();
+        renderBtn(idx);
+	
+     }
+	 
+ 	 function renderBtn(idx) {
+         let el = `
+             <div id="btnRemove">
+	    		 <input type="button" value="취소" onclick="location.href='formList.go'"/>
+	   			 <input type="button" style="float:right" onclick="save(` + idx + `)" value="등록"/>
+	             <input type="button" style="float:right" onclick="tempSave(` + idx + `)" value="임시저장"/>
+             </div>
+     `;
+         $('#render').append(el);
+         console.log("생성된 idx:"+idx);
+     }
+
 	
 	
      function getApprovalLine(lineData){
@@ -655,6 +900,7 @@ button{
 		    // var agrTable = $("#agreeTable");
 		    var refTable = $("#refTable");
 		    var signTable = $("#approvalSignature");
+		    var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
 		        var row = $("<tr>");
 		        row.append("<th scope='row' class='order'>" + (appTable.find("tr").length + 1) + "</th>");
@@ -673,17 +919,59 @@ button{
 		        appTable.append(row);
 		        updateRowNumbers();
 		        // console.log(lineData.employeeID);
-				
+
 		        // signatureTable   
-		        if(lineData.category =="결재"){
-		        var frLastTd=$('#approvalSignature tr:first td:last');
-		        var scLastTd=$('#approvalSignature tr:odd td:last');
-		        var lastTd=$('#approvalSignature td:last');
-		        
-		        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.rank + "</td>").insertAfter(frLastTd);
-		        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" + lineData.name + "</td>").insertAfter(scLastTd);
-		        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
-		        }
+		        if(lineData.category =="결재"&&row.find(".order").html() == 2){
+			        var content=
+			        "<table class='signApp'>"+
+						"<tr>"+
+					        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					    "</tr>"+
+					    "<tr>"+
+					        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					    "</tr>"+
+					    "<tr>"+
+					        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					    "</tr>"+
+					"</table>"
+					signTable.append(content);
+					
+		        }else if(lineData.category =="결재"&&row.find(".order").html() != 2){
+			        var frLastTd=$('.signApp:last tr:first td:last');
+			        var scLastTd=$('.signApp:last tr:odd td:last');
+			        var lastTd=$('.signApp:last td:last');
+			        
+			        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>").insertAfter(scLastTd);
+			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+		        	}else if (lineData.category == "합의"&&appTable.find(".category:contains('합의')").length==1) {
+		        		  var content =
+		        			  "<table class='agrSign'>"+
+								"<tr>"+
+							        "<td rowspan='3' style='width: 20px;'>"+"합의"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+							        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+							    "</tr>"+
+							    "<tr>"+
+							        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>"+
+							    "</tr>"+
+							    "<tr>"+
+							        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"날짜"+"</td>"+
+							    "</tr>"+
+							"</table>"
+							agrSign.append(content);
+		        	
+		                } else if(appTable.find(".category:contains('합의')").length>1){
+		                	 var frLastTd=$('.agrSign:last tr:first td:last');
+		 			        var scLastTd=$('.agrSign:last tr:odd td:last');
+		 			        var lastTd=$('.agrSign:last td:last');
+		 			        
+		 			        $("<td rowspan='3' style='width: 20px;'>합의<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+		 			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>").insertAfter(scLastTd);
+		 			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'>"+"날짜"+"</td>").insertAfter(lastTd);
+		                  
+		                }
+		        	
 		    }else if(lineData.category == "참조"){
 		        row = $("<tr>");
 
@@ -700,6 +988,7 @@ button{
 		        refTable.append(row);
 		        // console.log(lineData.employeeID);
 		    }
+		    
 		    $(document).on('click', '.delete', function() {
 			    var element = $(this);
 			    var row = element.closest('tr')
@@ -712,6 +1001,9 @@ button{
 			        // console.log($('#approvalSignature .empID[value="' + delEmpID + '"]').parent());
 			        // 찾은 INPUT에 가까운 TD 지우기
 			      	$('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
+			      	$('#agrSignature .empID[value="' + delEmpID + '"]').parent().remove();
+			        
+			        
 			    } else {
 			        cell.remove();
 			    }
@@ -737,5 +1029,5 @@ button{
 		 // 결재라인 추가한거 취소
 		
 </script>
-</body>
+
 </html>
