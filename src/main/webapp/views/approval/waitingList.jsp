@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -18,14 +18,12 @@
 	text-align: center;
 }
 
-
-
-
-
-#search input {
-	z-index: 2;
+#search {
+	float: right;
+	width: 326px;
+	display:flex;
+	
 }
-
 
 @media screen and (max-width: 1457px) {
 	#search {
@@ -41,30 +39,25 @@
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
-<main>
-	<div class="content">
+	<c:import url="/side"/>
+	<div class="container-fluid contentField">
 	
-
-
+	<div class="d-sm-flex align-items-center justify-content-between mb-6" style="padding-top: 15px;">
 	<div class="hTitle">
-		<a>결재대기함</a>
+		<h1 class="h3 mb-0 text-gray-800">결재대기함</h1>
 	</div>
-	<!-- <form action="searchList.do" method="POST">
-	<select id="category" name="formCategory">
-	  <option value="전체" selected="selected">전체</option>
-	  <option value="일반">일반</option>
-	  <option value="근태">근태</option>
-	  <option value="인사">인사</option>
-	</select> -->
-
-	<nav class="navbar navbar float-right" id="search">
+	</div>
+	
+	<div class="row">
+	<nav class="navbar navbar" id="search">
           <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+            <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="waitingSearch()">검색</button>
           </form>
     </nav>
+    </div>
 	
+<div class="card shadow mb-4" style="margin-top:15px;">
 	<div id="waitingTable">
 		<table class="table table-hover">
 			<thead id="waitingTableHead">
@@ -85,10 +78,10 @@
 			<td>
 				<c:choose>
 					<c:when test="${list.title == null}">
-					<a href="draftDetail.go?idx=${list.idx}&category=${list.category}&hTitle=waiting">${list.formTitle}</a>
+					<a href="draftDetail.go?idx=${list.idx}&employeeID=${list.id}&category=${list.category}&hTitle=waiting">${list.formTitle}</a>
 					</c:when>
 					<c:otherwise>
-			        <a href="draftDetail.go?idx=${list.idx}&category=${list.category}&hTitle=waiting">${list.title}</a>
+			        <a href="draftDetail.go?idx=${list.idx}&employeeID=${list.id}&category=${list.category}&hTitle=waiting">${list.title}</a>
 			        </c:otherwise>
 				</c:choose>
 			</td>
@@ -100,10 +93,29 @@
 	</table>
 	</div>
 	</div>
-</main>
+
+	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
-resizeWidth();
+function waitingSearch() {
+	var keyword = $('#keyword').val();
+	$.ajax({
+		type : 'get',
+		url : 'waitingList.go',
+		data : {
+			'keyword' : keyword
+		},
+		dataType : 'JSON',
+		success : function(data) {
+			console.log(data);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+}
+
     $("#category").change(function () {
         var selectedCategory = $(this).val();
         var keyword = $("input[name='keyword']").val();

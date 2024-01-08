@@ -44,8 +44,35 @@ public class ApprovalDTO {
 	private String leaveEndDate;
 	private String leaveReason;
 	private String formCategory;
+	private int id;
+	private String draftEmp;
+	private String positionName;
+	private int total;
 	
-	
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	public String getDraftEmp() {
+		return draftEmp;
+	}
+	public void setDraftEmp(String draftEmp) {
+		this.draftEmp = draftEmp;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getFormCategory() {
 		return formCategory;
 	}

@@ -38,7 +38,11 @@ public interface TankDAO {
 
 	String getEm(int tankID);
 
-	HashMap<String, Object> logForm(int tankID);
+//	HashMap<String, Object> logForm(int tankID);
+
+	HashMap<String, Object> recentRecord(int tankID);
+
+	List<Map<String, Object>> recordList(String tankID, String curDate);
 
 //	Long getTotalCount(Pager pager);
 

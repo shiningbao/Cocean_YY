@@ -66,13 +66,19 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/waitingList.go")
-	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr, String keyword) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
+			if(keyword==null) {
 			ArrayList<ApprovalDTO> list = service.waitingList(employeeID);
 			mav.addObject("list", list);
+			
+			}else {
+				ArrayList<ApprovalDTO> sList = service.waitingSearch(keyword,employeeID);
+				mav.addObject("sList", sList);
+			}
 			mav.setViewName("approval/waitingList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -82,7 +88,7 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/draftDetail.go")
-	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, String category, String hTitle) {
+	public ModelAndView draftDetail(HttpSession session, RedirectAttributes rAttr, @RequestParam int idx, int employeeID, String category, String hTitle) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
@@ -115,7 +121,7 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value="/approval/tempSaveForm.go")
-	public ModelAndView updateForm(int idx, String employeeID) {
+	public ModelAndView updateForm(int idx, String employeeID, String date) {
 		ModelAndView mav = new ModelAndView("approval/tempSaveForm");
 		ApprovalDTO list = service.draftDetail(idx);
 		ApprovalDTO vac = service.vacDetail(idx);
@@ -130,6 +136,7 @@ public class ApprovalController {
 		mav.addObject("list", list);
 		mav.addObject("agrRef",agrRef);
 		mav.addObject("fileList",fileList);
+		mav.addObject("date", date);
 		mav.setViewName("approval/tempSaveForm");
 		return mav;
 	}
@@ -212,8 +219,13 @@ public class ApprovalController {
 	                lastLineInfoList.add(lastLineInfo);  
 	            }
 	            	logger.info("line:"+lastLineInfoList);
-	            	
-	                service.write(files, param, lastLineInfoList);
+	            	if(param.get("idx")==null) {
+	                // int idx=service.write(files, param, lastLineInfoList);
+	                // result.put("idx",idx);
+	            	}else { // 임시저장
+	            		logger.info(param.get("idx"));
+	            		// service.update(files,param,lastLineInfoList);
+	            	}
 	     
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
@@ -278,8 +290,12 @@ public class ApprovalController {
 		int lastOrder = Integer.parseInt((param).get("lastOrder"));
 		logger.info(param.get("action"));
 		String idx=param.get("idx");
+		double updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
 		 if(param.get("action").equals("결재")) { 
 			 logger.info("결재!!!");
+			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").equals("반차")) {
+				 service.updateRAL(updateRAL,param);
+			 }
 			 if(approvalOrder<lastOrder) {
 				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
 				 service.myStatus(param); // 내 상태 완료로 변경
@@ -308,29 +324,6 @@ public class ApprovalController {
 		return mav;
 	}
 	
-	@PostMapping(value = "/approval/calculateUsageTime")
-	@ResponseBody
-	public HashMap<String, Object> formSearch(@RequestParam String start, String startTime, String end, String endTime) {
-		logger.info(start+"/"+startTime+"/"+end+"/"+endTime);
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		if(start!=null&&startTime!=null&&end!=null&&endTime!=null) {
-		 String startDateTimeStr = start + " " + startTime;
-         String endDateTimeStr = end + " " + endTime;
-
-         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-         LocalDateTime startDateTime = LocalDateTime.parse(startDateTimeStr, formatter);
-         LocalDateTime endDateTime = LocalDateTime.parse(endDateTimeStr, formatter);
-
-         long totalMinutes = java.time.Duration.between(startDateTime, endDateTime).toMinutes();
-         double usageTime = (double) totalMinutes / (24 * 60);
-         BigDecimal roundedUsageTime = new BigDecimal(Math.ceil(usageTime * 10) / 10).setScale(1, RoundingMode.DOWN);
-
-         result.put("usageTime", roundedUsageTime);
-		}
-		return result;
-	}
-	
 	@GetMapping(value = "/approval/tempSaveList.go")
 	public ModelAndView tempSaveList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
@@ -355,6 +348,7 @@ public class ApprovalController {
 			int employeeID = dto.getEmployeeID();
 			ArrayList<ApprovalDTO> my = service.myList(employeeID);
 			mav.addObject("my", my);
+			mav.addObject("employeeID",employeeID);
 			mav.setViewName("approval/myDraftList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -379,7 +373,7 @@ public class ApprovalController {
 		return mav;
 	}
 	
-	@GetMapping(value = "/approval/completeList.go")
+	@GetMapping(value = "/approval/myApprovalList.go")
 	public ModelAndView completeList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
@@ -387,7 +381,7 @@ public class ApprovalController {
 			int employeeID = dto.getEmployeeID();
 			ArrayList<ApprovalDTO> comList = service.comList(employeeID);
 			mav.addObject("com", comList);
-			mav.setViewName("approval/completeList");
+			mav.setViewName("approval/myApprovalList");
 		} else {
 			mav.setViewName("redirect:/");
 			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
