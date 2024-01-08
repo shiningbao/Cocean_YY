@@ -9,7 +9,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cocean</title> 
 
-<!--      <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+    
+  <!--    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
 
 
@@ -171,6 +172,7 @@
                         <a class="collapse-item" href='<c:url value="/approval/waitingList.go"/>'>결재대기함</a>
                         <a class="collapse-item" href='<c:url value="/approval/refList.go"/>'>참조/열람함</a>
                         <a class="collapse-item" href='<c:url value="/approval/myDraftList.go"/>'>나의 기안함</a>
+                        <a class="collapse-item" href='<c:url value="/approval/myApprovalList.go"/>'>나의 결재함</a>
                         <a class="collapse-item" href='<c:url value="/approval/department.go"/>'>부서함</a>
                         <a class="collapse-item" href='<c:url value="/approval/tempSaveList.go"/>' >임시저장함</a>
                     </div>
@@ -185,10 +187,10 @@
                 </a>
                 <div id="board" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href='<c:url value="/board/notice/list"/>' >공지사항</a>
-                        <a class="collapse-item" href='<c:url value="/board/anony/list"/>' >익명게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/department/list"/>' >부서게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/program/list"/>' >프로그램 일정</a>
+                        <a class="collapse-item" href='<c:url value="/board/notice/list?page=1&search=''"/>' >공지사항</a>
+                        <a class="collapse-item" href='<c:url value="/board/anony/list?page=1&search=''"/>' >익명게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/department/list?page=1&search=''"/>' >부서게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/program/list?page=1&search=''"/>' >프로그램 일정</a>
                     </div>
                 </div>
             </li>

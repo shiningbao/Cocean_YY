@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -39,29 +39,21 @@
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>	
-<main>
+<c:import url="/side"/>
+<div class="container-fluid contentField">
 	<div class="content">
-		<div class="hTitle">
-			<a>나의결재함</a>
-		</div>
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	<div class="hTitle">
+	<h1 class="h3 mb-0 text-gray-800">나의 결재함</h1>
+	</div>
+</div>
 
-	<!-- <form action="searchList.do" method="POST">
-	<select id="category" name="formCategory">
-	  <option value="전체" selected="selected">전체</option>
-	  <option value="일반">일반</option>
-	  <option value="근태">근태</option>
-	  <option value="인사">인사</option>
-	</select>
+<div class="card shadow mb-4">
 
-		<input type="search" name="keyword" placeholder="제목"/>
-		<button class="btn btn-primary">검색</button>
-	</form>
-		 -->
 		 <nav class="navbar navbar float-right" id="search">
             <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
-              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+              <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="myAppSearch()">검색</button>
             </form>
           </nav>
 		 
@@ -78,9 +70,9 @@
 			<th scope="col">진행 상태</th>
 		</tr>
 		
-		<tbody id=comList>
 		<c:forEach items="${com}" var="com">
 		<c:if test="${com.approvalStatus ne '미대기' && com.approvalStatus ne '대기'}">
+		<tbody id=comList>
 		<tr>
 		<td scope="row">${com.draftDate}</td>
 		<c:if test="${com.draftStatus eq '완료'}">
@@ -104,36 +96,62 @@
             <td>${com.name }</td>
 			<td>${com.draftStatus}</td>
 		</tr>	
+		</tbody>
 		</c:if>
 		</c:forEach>
-		</tbody>
 	</table>
 	</div>
 	</div>
-</main>
+</div>
+</div>
+<c:import url="/footer"/>	
 </body>
 <script>
-resizeWidth();
+function myAppSearch() {
+	var keyword = $('#keyword').val();
+	$.ajax({
+		type : 'get',
+		url : 'myAppSearch',
+		data : {
+			'keyword' : keyword
+		},
+		dataType : 'JSON',
+		success : function(data) {
+			console.log(data.myAppList);
+			drawMyAppList(data.myAppList);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+}
+
+function drawMyAppList(myAppList) {
+	var content='';
+	myAppList.forEach(function(item,idx){
+		if(item.approvalStatus!=='미대기'&&item.approvalStatus!=='대기'){
+		  	content += '<tr>';
+		  	content += '<td scope="row">'+item.draftDate+'</td>';
+		  	if(item.draftStatus == '완료'){
+		  	content += '<td>'+item.approvalDate+'</td>';
+		  	}
+		  	content += '<td>'+item.formTitle+'</td>';
+		  	content += '<td>'+item.category+'</td>';
+			if(item.title==null){
+				content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.formTitle + '</a></td>';
+		  	}else if(item.title==''){
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.formTitle + '</a></td>';
+		  	}else{
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.title + '</a></td>';
+		  	}
+	        content += '<td>'+item.name+'</td>';
+	        content += '<td>'+item.draftStatus+'</td>';
+			content += '</tr>';
+		}
+	});
+	$('#comList').empty();
+	$('#comList').append(content);
 	
-    $("#category").change(function () {
-        var selectedCategory = $(this).val();
-        var keyword = $("input[name='keyword']").val();
-        console.log(selectedCategory);
-        filterList(selectedCategory, keyword);
-    });
-
-    function filterList(category, keyword) {
-        if (category === "전체") {
-            $("table tr").show();
-        } else {
-            $("table tr:gt(0)").hide();
-            $("table tr").filter(function () {
-            	 var categoryMatch = $(this).find("td:first").text() === category;
-                 var keywordMatch = $(this).find("td:last").text().includes(keyword);
-                 return categoryMatch && keywordMatch;
-            }).show();
-        }
-    }
-
+}
 </script>
 </html>

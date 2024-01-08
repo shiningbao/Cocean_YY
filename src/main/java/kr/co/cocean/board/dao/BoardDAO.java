@@ -10,7 +10,7 @@ import kr.co.cocean.board.dto.BoardDTO;
 @Mapper
 public interface BoardDAO {
 
-	ArrayList<BoardDTO> boardList(String category);
+	ArrayList<BoardDTO> boardList(String category, int perPage, Integer offset);
 	
 	ArrayList<BoardDTO> boardList_pin(String category);
 
@@ -19,5 +19,13 @@ public interface BoardDAO {
 	BoardDTO boardDetail(int boardID);
 
 	HashMap<String, String> prevNext(int boardID, String category);
+
+	ArrayList<BoardDTO> commentList(int boardID);
+
+	void commentWrite(BoardDTO param);
+
+	BoardDTO commentDetail(int commentID);
+
+	int getTotalCount(String category);
 
 }

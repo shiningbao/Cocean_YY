@@ -120,6 +120,16 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> waitingSearch(String keyword, int employeeID);
 
+	ArrayList<formDTO> formSearch(String keyword);
+
+	ArrayList<ApprovalDTO> dpSearch(String keyword, int employeeID);
+
+	ArrayList<ApprovalDTO> mySearch(String keyword, int employeeID);
+
+	ArrayList<ApprovalDTO> refSearch(String keyword, int employeeID);
+
+	ArrayList<ApprovalDTO> myAppSearch(String keyword, int employeeID);
+
 
 	/*
 	 * void update(ApprovalDTO dto);

@@ -6,6 +6,7 @@ import org.apache.ibatis.type.Alias;
 public class BoardDTO {
 	
 	private int boardID;
+	private int commentID;
 	private int employeeID;
 	private String name;
 	private String category;
@@ -21,6 +22,12 @@ public class BoardDTO {
 	}
 	public void setBoardID(int boardID) {
 		this.boardID = boardID;
+	}
+	public int getCommentID() {
+		return commentID;
+	}
+	public void setCommentID(int commentID) {
+		this.commentID = commentID;
 	}
 	public int getEmployeeID() {
 		return employeeID;

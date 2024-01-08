@@ -11,6 +11,7 @@
 		resize: none;
 		overflow-y: hidden;
 	}
+	
 
 </style>
 
@@ -55,12 +56,46 @@
 			
 			<div>
 			<h5>댓글</h5>
-			<textarea class="form-control resizeAuto"></textarea>
+			<div id="comment" class="mb-4">
+				<c:forEach items="${commentList}" var="item">
+					<div class="card p-2">
+						<div class="d-inline">
+							<div class="float-left">
+								<c:if test="${bt ne '익명게시판'}">
+									${item.name} / 
+								</c:if>
+								${item.creationDate}
+							</div>
+							<button class="float-right">숨김</button>
+						</div>
+						<div class="mt-1 pl-2 splitCon">${item.content}</div>
+					</div>
+				</c:forEach>
+			</div>
+
+			<div class="card p-2">
+
+				<c:if test="${bt ne '익명게시판'}">
+					${userInfo.name}
+				</c:if>
+				<c:if test="${bt eq '익명게시판'}">
+					익명
+				</c:if>
+	
+				<div class="d-inline">
+					<div class="float-left" style="width: 100%">
+						<textarea id="commnet" class="resizeAuto" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>
+					</div>
+					<div class="float-right">
+						<button onclick="commentWrite()">댓글 작성</button>
+					</div>
+				</div>
+			</div>
 			</div>
 			<div>
-				<button class="float-right ml-2">삭제</button>
-				<button class="float-right ml-2">수정</button>
-				<button class="float-right ml-2">목록</button>
+				<button class="float-right mt-4 ml-2">삭제</button>
+				<button class="float-right mt-4 ml-2">수정</button>
+				<button class="float-right mt-4 ml-2">목록</button>
 			</div>
 		
 		</div>
@@ -69,11 +104,70 @@
 	</div>
 </body>
 <script>
-$('.resizeAuto').on('input', function () {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-  });
-
+	split();
+	$('.resizeAuto').on('input', function () {
+	    this.style.height = 'auto';
+	    this.style.height = (this.scrollHeight) + 'px';
+	  });
+	
+	function commentWrite(){
+		var content = $('#commnet').val();
+		if(content == ''){
+			swal({
+				title: '댓글을 작성해 주세요',
+				button: '확인'
+			});
+		}else{
+			swal({
+				title:'댓글을 작성하시겠습니까?',
+				icon:'info',
+				buttons:['취소','확인']
+			}).then((isOkey) =>{
+				if(isOkey){
+					var data = {};
+					data.employeeID = ${userInfo.employeeID};
+					data.content = content;
+					data.boardID = ${detail.boardID};
+					//console.log(data);
+					$.ajax({
+						type: 'post',
+						url: 'commentWrite',
+						data: data,
+						dataType: 'JSON',
+						success: function(data){
+							console.log(data);
+							var con = '<div class="card p-2"><div><c:if test="${bt ne \'익명게시판\'}">';
+							con += data.newcomment.name;
+							con += ' / </c:if>';
+							con += data.newcomment.creationDate;
+							con += '</div><div class="mt-1 pl-2 splitCon">';
+							con += data.newcomment.content;
+							con += '</div></div>';
+							$('#comment').append(con);
+							split();
+						},
+						error: function(e){
+							console.log(e);
+						}
+					});
+				}
+			});
+		}
+	}
+	
+	function split(){
+		$('.splitCon').each(function(con){
+			var c = $(this).html();
+			var s = c.replace(/\n/g, '<br>');
+			$(this).html(s);
+		});
+	}
+	
+	
+	
+	
+	
+	
 
 </script>
 </html>
