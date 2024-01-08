@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cocean</title> 
     
-     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <!--    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -170,6 +170,7 @@
                         <a class="collapse-item" href='<c:url value="/approval/waitingList.go"/>'>결재대기함</a>
                         <a class="collapse-item" href='<c:url value="/approval/refList.go"/>'>참조/열람함</a>
                         <a class="collapse-item" href='<c:url value="/approval/myDraftList.go"/>'>나의 기안함</a>
+                        <a class="collapse-item" href='<c:url value="/approval/myApprovalList.go"/>'>나의 결재함</a>
                         <a class="collapse-item" href='<c:url value="/approval/department.go"/>'>부서함</a>
                         <a class="collapse-item" href='<c:url value="/approval/tempSaveList.go"/>' >임시저장함</a>
                     </div>

@@ -64,27 +64,41 @@ public class ApprovalController {
 		}
 		return mav;
 	}
+	
+	@RequestMapping(value = "/approval/formSearch")
+	@ResponseBody
+	public HashMap<String, Object> formSearch(@RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		ArrayList<formDTO> fList = service.formSearch(keyword);
+		result.put("fList", fList);
+		return result;
+	}
 
 	@GetMapping(value = "/approval/waitingList.go")
-	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr, String keyword) {
+	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			if(keyword==null) {
 			ArrayList<ApprovalDTO> list = service.waitingList(employeeID);
 			mav.addObject("list", list);
-			
-			}else {
-				ArrayList<ApprovalDTO> sList = service.waitingSearch(keyword,employeeID);
-				mav.addObject("sList", sList);
-			}
 			mav.setViewName("approval/waitingList");
 		} else {
 			mav.setViewName("redirect:/");
 			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/approval/waitingSearch")
+	@ResponseBody
+	public HashMap<String, Object> waitingSearch(HttpSession session, @RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = dto.getEmployeeID();
+		ArrayList<ApprovalDTO> sList = service.waitingSearch(keyword,employeeID);
+		result.put("sList", sList);
+		return result;
 	}
 
 	@GetMapping(value = "/approval/draftDetail.go")
@@ -154,12 +168,13 @@ public class ApprovalController {
 		return result;
 	}
 
-	@PostMapping(value = "/approval/searchList.do")
-	public ModelAndView formSearch(HttpSession session, RedirectAttributes rAttr, @RequestParam List<String> keyword) {
-		logger.info("keyword : {}", keyword);
-
-		return service.formSearch(session, rAttr, keyword);
-	}
+	/*
+	 * @PostMapping(value = "/approval/searchList.do") public ModelAndView
+	 * formSearch(HttpSession session, RedirectAttributes rAttr, @RequestParam
+	 * List<String> keyword) { logger.info("keyword : {}", keyword);
+	 * 
+	 * return service.formSearch(session, rAttr, keyword); }
+	 */
 
 	@GetMapping(value = "/approval/writeDraft.go")
 	public ModelAndView writeDraftgo(HttpSession session, RedirectAttributes rAttr, @RequestParam int titleID, String date) {
@@ -220,11 +235,11 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-	                // int idx=service.write(files, param, lastLineInfoList);
-	                // result.put("idx",idx);
+	                int idx=service.write(files, param, lastLineInfoList);
+	                result.put("idx",idx);
 	            	}else { // 임시저장
 	            		logger.info(param.get("idx"));
-	            		// service.update(files,param,lastLineInfoList);
+	            		service.update(files,param,lastLineInfoList);
 	            	}
 	     
 	        	} catch (Exception e) {
@@ -357,6 +372,17 @@ public class ApprovalController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/approval/mySearch")
+	@ResponseBody
+	public HashMap<String, Object> mySearch(HttpSession session, @RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = dto.getEmployeeID();
+		ArrayList<ApprovalDTO> myList = service.mySearch(keyword,employeeID);
+		result.put("myList", myList);
+		return result;
+	}
+	
 	@GetMapping(value = "/approval/refList.go")
 	public ModelAndView refList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
@@ -371,6 +397,17 @@ public class ApprovalController {
 			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/approval/refSearch")
+	@ResponseBody
+	public HashMap<String, Object> refSearch(HttpSession session, @RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = dto.getEmployeeID();
+		ArrayList<ApprovalDTO> refList = service.refSearch(keyword,employeeID);
+		result.put("refList", refList);
+		return result;
 	}
 	
 	@GetMapping(value = "/approval/myApprovalList.go")
@@ -389,6 +426,17 @@ public class ApprovalController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/approval/myAppSearch")
+	@ResponseBody
+	public HashMap<String, Object> myAppSearch(HttpSession session, @RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = dto.getEmployeeID();
+		ArrayList<ApprovalDTO> myAppList = service.myAppSearch(keyword,employeeID);
+		result.put("myAppList", myAppList);
+		return result;
+	}
+	
 	@GetMapping(value = "/approval/department.go")
 	public ModelAndView departmentList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
@@ -403,6 +451,17 @@ public class ApprovalController {
 			rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/approval/dpSearch")
+	@ResponseBody
+	public HashMap<String, Object> dpSearch(HttpSession session, @RequestParam String keyword) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = dto.getEmployeeID();
+		ArrayList<ApprovalDTO> dList = service.dpSearch(keyword,employeeID);
+		result.put("dList", dList);
+		return result;
 	}
 	
 	

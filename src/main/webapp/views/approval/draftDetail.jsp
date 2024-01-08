@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -364,10 +364,6 @@ button{
 	</div>
 	</div>
 </div>	
-
-
-
-
 
 
 <c:import url="/footer"/>	
