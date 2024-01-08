@@ -10,22 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
-import kr.co.cocean.mypage.dto.LoginDTO;
 
 @Service
 public class ApprovalService {
@@ -40,20 +35,16 @@ public class ApprovalService {
 		return dao.list();
 	}
 
-	public ModelAndView formSearch(HttpSession session, RedirectAttributes rAttr, List<String> keyword) {
-		ModelAndView mav = new ModelAndView();
-		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		
-		if(dto!=null) {
-			ArrayList<ApprovalDTO> list = dao.formSearch(keyword);
-			mav.addObject("list",list);
-			mav.setViewName("approval/formList");
-		}else{
-			mav.setViewName("redirect:/");
-			rAttr.addFlashAttribute("msg","로그인이 필요한 서비스입니다");
-		}
-		return mav;
-	}
+	/*
+	 * public ModelAndView formSearch(HttpSession session, RedirectAttributes rAttr,
+	 * List<String> keyword) { ModelAndView mav = new ModelAndView(); LoginDTO dto =
+	 * (LoginDTO) session.getAttribute("userInfo");
+	 * 
+	 * if(dto!=null) { ArrayList<ApprovalDTO> list = dao.formSearch(keyword);
+	 * mav.addObject("list",list); mav.setViewName("approval/formList"); }else{
+	 * mav.setViewName("redirect:/");
+	 * rAttr.addFlashAttribute("msg","로그인이 필요한 서비스입니다"); } return mav; }
+	 */
 
 	public ApprovalDTO draftInfo(int employeeID) {
 		return dao.draftInfo(employeeID);
@@ -115,14 +106,13 @@ public class ApprovalService {
 				dao.approvalTs(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 				}
 		}
-		 for (LineDTO lineInfo : lastLineInfoList) { // 알람관련
-	            String category = lineInfo.getCategory();
-	            String employeeID = lineInfo.getApprovalEmp();
-	            dto = dao.getForm(idx);
-	            String form = dto.getFormTitle();
-	            SseService sseService = new SseService(); 
-	           // sseService.alarm(category,Integer.parseInt(employeeID), idx, form);
-	        }
+		/*
+		 * for (LineDTO lineInfo : lastLineInfoList) { // 알람관련 String category =
+		 * lineInfo.getCategory(); String employeeID = lineInfo.getApprovalEmp(); dto =
+		 * dao.getForm(idx); String form = dto.getFormTitle(); SseService sseService =
+		 * new SseService(); sseService.alarm(category,Integer.parseInt(employeeID),
+		 * idx, form); }
+		 */
 		 return idx;
 		
 	}
@@ -172,11 +162,6 @@ public class ApprovalService {
 		
 	}
 
-	
-	
-	
-	
-	
 	// file 테이블에 insert 
 	public void upload(MultipartFile uploadFile, int idx) {
 		
@@ -334,6 +319,26 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> waitingSearch(String keyword, int employeeID) {
 		return dao.waitingSearch(keyword,employeeID);
+	}
+	
+	public ArrayList<formDTO> formSearch(String keyword) {
+		return dao.formSearch(keyword);
+	}
+
+	public ArrayList<ApprovalDTO> dpSearch(String keyword, int employeeID) {
+		return dao.dpSearch(keyword,employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> mySearch(String keyword, int employeeID) {
+		return dao.mySearch(keyword,employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> refSearch(String keyword, int employeeID) {
+		return dao.refSearch(keyword,employeeID);
+	}
+
+	public ArrayList<ApprovalDTO> myAppSearch(String keyword, int employeeID) {
+		return dao.myAppSearch(keyword,employeeID);
 	}
 
 	

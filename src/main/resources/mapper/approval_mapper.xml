@@ -8,12 +8,12 @@
 		SELECT * FROM draftForm
 	</select>
 	
-	<select id="formSearch" parameterType="list" resultType="approval">
+	<!-- <select id="formSearch" parameterType="list" resultType="approval">
 		SELECT * FROM draftForm WHERE title IN
 			<foreach collection="list" item="item" open ="(" separator = "," close=")">
 			 #{item}
 			</foreach>
-	</select>
+	</select> -->
 	
 	<select id="draftInfo" resultType="approval">
 		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
@@ -71,7 +71,7 @@
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
-		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx,df.titleID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
  		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx WHERE df.idx=#{idx}
 	</select>
 	
@@ -364,9 +364,18 @@
 		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc
 	</select>
 	
+	<select id="mySearch" resultType="approval">
+		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' AND title LIKE CONCAT('%',#{keyword},'%') ORDER BY d.draftDate desc
+	</select>
+	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
 		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
+	</select>
+	
+	<select id="refSearch" resultType="approval">
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' AND title LIKE CONCAT('%',#{keyword},'%')ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="comList" resultType="approval">
@@ -374,8 +383,17 @@
 		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID}
 	</select>
 	
+	<select id="myAppSearch" resultType="approval">
+		SELECT a.approvalDate, a.approvalStatus, e.employeeID, a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,d.draftDate FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND (title LIKE CONCAT('%',#{keyword},'%') OR name LIKE CONCAT('%',#{keyword},'%') OR formTitle LIKE CONCAT('%',#{keyword},'%'))
+	</select>
+	
 	<select id="departmentList" resultType="approval">
 		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY idx ORDER BY a.approvalDate desc
+	</select>
+	
+	<select id="dpSearch" resultType="approval">
+		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' AND (title LIKE CONCAT('%',#{keyword},'%') OR name LIKE CONCAT('%',#{keyword},'%') OR formTitle LIKE CONCAT('%',#{keyword},'%')) GROUP BY idx ORDER BY a.approvalDate desc
 	</select>
 	
 	<select id="getSign" resultType="approval">
@@ -396,7 +414,11 @@
 
 	<select id="waitingSearch" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' AND (title LIKE '%#{keyword}%' OR name LIKE '%f%')ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' AND (title LIKE CONCAT('%',#{keyword},'%') OR name LIKE CONCAT('%',#{keyword},'%') OR formTitle LIKE CONCAT('%',#{keyword},'%')) ORDER BY d.draftDate desc
+	</select>
+	
+	<select id="formSearch" resultType="form">
+		SELECT * FROM draftForm WHERE formTitle LIKE CONCAT('%',#{keyword},'%')
 	</select>
 
 	<!-- <update id="update">

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -102,13 +102,14 @@ function waitingSearch() {
 	var keyword = $('#keyword').val();
 	$.ajax({
 		type : 'get',
-		url : 'waitingList.go',
+		url : 'waitingSearch',
 		data : {
 			'keyword' : keyword
 		},
 		dataType : 'JSON',
 		success : function(data) {
-			console.log(data);
+			console.log(data.sList);
+			drawSlist(data.sList);
 		},
 		error : function(e) {
 			console.log(e);
@@ -116,25 +117,24 @@ function waitingSearch() {
 	});
 }
 
-    $("#category").change(function () {
-        var selectedCategory = $(this).val();
-        var keyword = $("input[name='keyword']").val();
-        console.log(selectedCategory);
-        filterList(selectedCategory, keyword);
-    });
-
-    function filterList(category, keyword) {
-        if (category === "전체") {
-            $("table tr").show();
-        } else {
-            $("table tr:gt(0)").hide();
-            $("table tr").filter(function () {
-            	 var categoryMatch = $(this).find("td:first").text() === category;
-                 var keywordMatch = $(this).find("td:last").text().includes(keyword);
-                 return categoryMatch && keywordMatch;
-            }).show();
-        }
-    }
-
+function drawSlist(sList) {
+	var content='';
+	sList.forEach(function(item,idx){
+		  	content += '<tr>';
+		  	content += '<td scope="row">'+item.draftDate+'</td>';
+		  	content += '<td>'+item.category+'</td>';
+		  	if(item.title==null){
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '&category=' + item.category + '&hTitle=waiting">' + item.formTitle + '</a></td>'
+		  	}else{
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '&category=' + item.category + '&hTitle=waiting">' + item.title + '</a></td>'
+		  	}
+	        content += '<td>'+item.approvalStatus+'</td>';
+	        content += '<td>'+item.name+'</td>';
+			content += '</tr>';
+	});
+	$('#waitingList').empty();
+	$('#waitingList').append(content);
+	
+}
 </script>
 </html>

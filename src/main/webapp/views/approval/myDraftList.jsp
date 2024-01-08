@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -46,8 +46,8 @@
 
 	 <nav class="navbar navbar float-right" id="search">
             <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="제목" aria-label="Search">
-              <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+              <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="제목" aria-label="Search">
+              <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="mySearch()">검색</button>
             </form>
           </nav>
           
@@ -92,30 +92,45 @@
 <c:import url="/footer"/>	
 </body>
 <script>
-resizeWidth();
+function mySearch() {
+	var keyword = $('#keyword').val();
+	$.ajax({
+		type : 'get',
+		url : 'mySearch',
+		data : {
+			'keyword' : keyword
+		},
+		dataType : 'JSON',
+		success : function(data) {
+			console.log(data.myList);
+			drawMyList(data.myList);
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+}
 
-
-
-
-    $("#category").change(function () {
-        var selectedCategory = $(this).val();
-        var keyword = $("input[name='keyword']").val();
-        console.log(selectedCategory);
-        filterList(selectedCategory, keyword);
-    });
-
-    function filterList(category, keyword) {
-        if (category === "전체") {
-            $("table tr").show();
-        } else {
-            $("table tr:gt(0)").hide();
-            $("table tr").filter(function () {
-            	 var categoryMatch = $(this).find("td:first").text() === category;
-                 var keywordMatch = $(this).find("td:last").text().includes(keyword);
-                 return categoryMatch && keywordMatch;
-            }).show();
-        }
-    }
+function drawMyList(myList) {
+	var content='';
+	myList.forEach(function(item,idx){
+		  	content += '<tr>';
+		  	content += '<td scope="row">'+item.draftDate+'</td>';
+		  	content += '<td>'+item.formCategory+'</td>';
+			if(item.title==null){
+				content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.formTitle + '</a></td>';
+		  	}else if(item.title==''){
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.formTitle + '</a></td>';
+		  	}else{
+		  		content += '<td>' + '<a href="draftDetail.go?idx=' + item.idx + '&employeeID=' + item.id + '">' + item.title + '</a></td>';
+		  	}
+	        content += '<td>'+item.draftStatus+'</td>';
+			content += '</tr>';
+	});
+	$('#myList').empty();
+	$('#myList').append(content);
+	
+}
 
 </script>
 </html>
