@@ -44,7 +44,7 @@
 			<div class="row">
 				<div class="col-md">
 					<div class="topBar">
-						<div class="barItem" onclick="location.href='detail.go?tankID=${map.tankID}'">하우스정보</div>
+						<div class="barItem" onclick="location.href='detail.go?tankID=${tankID}'">하우스정보</div>
 						<div style="color: #ffffff;">하우스 기록</div>
 						<div class="barItem">관리 계획</div>
 					</div>
@@ -63,19 +63,19 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="text-align: center;">
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="text-align: center; table-layout: fixed;">
 							<thead>
 							<tr>							
-							<th>날짜</th>
-							<th>수온</th>
-							<th>수위</th>
-							<th>염도</th>
-							<th>pH</th>
-							<th>Do</th>
-							<th>질산염</th>
-							<th>아질산염</th>
-							<th>암모니아</th>
-							<th>인산염</th>
+							<th style="width: 8%;">날짜</th>
+							<th style="width: 13%;">수온</th>
+							<th style="width: 13%;">수위</th>
+							<th style="width: 13%;">염도</th>
+							<th style="width: 13%;">pH</th>
+							<th style="width: 13%;">Do</th>
+							<th style="width: 13%;">질산염</th>
+							<th style="width: 13%;">아질산염</th>
+							<th style="width: 13%;">암모니아</th>
+							<th style="width: 13%;">인산염</th>
 							</tr>
 							</thead>
 							<tbody id="recordTable">
@@ -102,8 +102,8 @@
 			</div></body>
 <script>
 	$('#currentDate').val(new Date().toISOString().slice(0, 7));
-	console.log(new Date().toISOString().slice(0, 7));
-	console.log(${tankID});
+	// console.log(new Date().toISOString().slice(0, 7));
+	// console.log(${tankID});
 	
 	
 	let curDate = $('#currentDate').val();
@@ -124,31 +124,36 @@
 			data: {'tankID':tankID, 'curDate':curDate},
 			dataType: 'JSON',
 			success: function(data){
-				console.log(data);
-				alert(data);
-// 				data.forEach(function(list){
-// 					var content = '';
-// 					content += '<tr>';
-// 					content += '<td>'+${list.recordDate}+'</td>';
-// 					content += '<td>'+${list.maxMer}+'/'+${list.minMer}+'/'+${list.avgMer}+'</td>';
-// 					content += '<td>'+${list.maxWater}+'/'+${list.minSal}+'/'+${list.avgSal}+'</td>';
-// 					content += '<td>'+${list.maxSal}+'/'+${list.minPh}+'/'+${list.avgPh}+'</td>';
-// 					content += '<td>'+${list.maxPh}+'/'+${list.minPh}+'/'+${list.avgPh}+'</td>';
-// 					content += '<td>'+${list.maxDo}+'/'+${list.minDo}+'/'+${list.avgDo}+'</td>';
-// 					content += '<td>'+${list.maxNita}+'/'+${list.minNita}+'/'+${list.avgNita}+'</td>';
-// 					content += '<td>'+${list.maxNiti}+'/'+${list.minNiti}+'/'+${list.avgNiti}+'</td>';
-// 					content += '<td>'+${list.maxAm}+'/'+${list.minAm}+'/'+${list.avgAm}+'</td>';
-// 					content += '<td>'+${list.maxPhos}+'/'+${list.minPhos}+'/'+${list.avgPhos}+'</td>';
-// 					content += '</tr>';
-// 				});
-// 				$('#recordTable').empty();
-// 				$('#recordTable').append(content);
-				
+				drawList(data);
 			},
 			error: function(e){
 				console.log(e);
 			}
 		})
+	}
+	
+	
+	
+	function drawList(data){
+		var content = '';
+		
+		data.forEach(function(list){
+			content += '<tr>';
+			content += '<td>'+ list.recordDate.substring(8, 10) + '일' +'</td>';
+			content += '<td>'+ list.maxMer +'/'+ list.minMer +'/'+ list.avgMer +'</td>';
+			content += '<td>'+ list.maxWater +'/'+ list.minWater +'/'+ list.avgWater +'</td>';
+			content += '<td>'+ list.maxSal +'/'+ list.minSal +'/'+ list.avgSal +'</td>';
+			content += '<td>'+ list.maxPh +'/'+ list.minPh +'/'+ list.avgPh +'</td>';
+			content += '<td>'+ list.maxDo +'/'+ list.minDo +'/'+ list.avgDo +'</td>';
+			content += '<td>'+ list.maxNita +'/'+ list.minNita +'/'+ list.avgNita +'</td>';
+			content += '<td>'+ list.maxNiti +'/'+ list.minNiti +'/'+ list.avgNiti +'</td>';
+			content += '<td>'+ list.maxAm +'/'+ list.minAm +'/'+ list.avgAm +'</td>';
+			content += '<td>'+ list.maxPhos +'/'+ list.minPhos +'/'+ list.avgPhos +'</td>';
+			content += '</tr>';
+		});
+		$('#recordTable').empty();
+		$('#recordTable').append(content);
+		
 	}
 	
 	

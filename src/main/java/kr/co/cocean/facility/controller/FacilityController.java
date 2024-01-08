@@ -3,6 +3,8 @@ package kr.co.cocean.facility.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import kr.co.cocean.facility.service.FacilityService;
 @Controller
 public class FacilityController {
 	
+	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired FacilityService service;
 	
 	@RequestMapping(value="/facility/facility.go")
@@ -35,7 +38,6 @@ public class FacilityController {
 	@ResponseBody
 	public HashMap<String, Object> getFacilityName(@RequestParam String category) {
 		
-		 
 		List<HashMap<String, Object>> getfacilityName = service.getfacilityName(category);
 		HashMap<String, Object> result = new HashMap<String, Object>();
 		result.put("getfacilityName", getfacilityName);
@@ -53,17 +55,18 @@ public class FacilityController {
 		return result;
 	}
 	
-//	@PostMapping(value = "/facility/updateFacilityName.do")
-//	@ResponseBody
-//	public HashMap<String, Object> updateFacilityName( @RequestParam String facilityName) {   
-//		
-//		HashMap<String, Object> response = new HashMap<String, Object>();
-//		
-//		service.updateFacilityName(facilityName);
-//		
-//		response.put("message", "생성이 완료되었습니다."); 
-//		return response; 
-//		}
+	@PostMapping(value = "/facility/updateFacilityName.do")
+	@ResponseBody
+	public HashMap<String, Object> updateFacilityName( @RequestParam String facilityName,@RequestParam String facilityInfo,
+			@RequestParam String facilityID ) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		logger.info("@@@@@@"+facilityID);
+		service.updateFacilityName(facilityName,facilityInfo,facilityID);
+		
+		response.put("message", "생성이 완료되었습니다."); 
+		return response; 
+		}
 	 
 	@PostMapping(value = "/facility/delFacility.do")
 	@ResponseBody
@@ -74,6 +77,19 @@ public class FacilityController {
 		service.delFacility(deltxt);
 		
 		response.put("message", "삭제가 완료되었습니다."); 
+		return response; 
+		}
+	
+	@PostMapping(value = "/facility/addFacility.do")
+	@ResponseBody
+	public HashMap<String, Object> addFacility( @RequestParam String category, @RequestParam String facilityName
+			, @RequestParam String facilityInfo) {   
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		
+		service.addFacility(category,facilityName,facilityInfo);
+		
+		response.put("message", "생성이 완료되었습니다."); 
 		return response; 
 		}
 	

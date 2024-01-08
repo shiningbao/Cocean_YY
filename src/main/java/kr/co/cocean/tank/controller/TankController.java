@@ -99,11 +99,11 @@ public class TankController {
 	
 	@PostMapping("tank/tankSet.do")
 	public String tankSetting(@RequestParam Map<String, Object> params) throws UnsupportedEncodingException {
-		String emName = URLEncoder.encode(params.get("emName").toString(),"UTF-8"); 
+		// String emName = URLEncoder.encode(params.get("emName").toString(),"UTF-8"); 
 		String tankID = params.get("tankID").toString();
 		logger.info("params "+params);
 		service.tankSet(params);
-		return "redirect:/tank/detail.go?tankID="+tankID+"&emName="+emName;
+		return "redirect:/tank/detail.go?tankID="+tankID;
 	}
 	
 	@GetMapping("tank/houseLog.go")
@@ -119,6 +119,7 @@ public class TankController {
 		List<Map<String, Object>> recordList = service.getRecord(tankID,curDate);
 		logger.info("recordList: "+recordList.toString());
 		model.addAttribute("recordList",recordList);
+		model.addAttribute("tankID", tankID);
 		return recordList;
 		
 	}

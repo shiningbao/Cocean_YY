@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <style>
@@ -53,8 +53,8 @@
 
  <nav class="navbar navbar float-right" id="search">
  <form class="form-inline">
-    <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+    <input class="form-control mr-sm-2" id="keyword" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="formSearch()">검색</button>
  </form>
 </nav>
 	
@@ -89,26 +89,40 @@
 <c:import url="/footer"/>	
 </body>
 <script>
-resizeWidth();
-    $("#category").change(function () {
-        var selectedCategory = $(this).val();
-        var keyword = $("input[name='keyword']").val();
-        console.log(selectedCategory);
-        filterList(selectedCategory, keyword);
-    });
+function formSearch() {
+	var keyword = $('#keyword').val();
+	$.ajax({
+		type : 'get',
+		url : 'formSearch',
+		data : {
+			'keyword' : keyword
+		},
+		dataType : 'JSON',
+		success : function(data) {
+			console.log(data.fList);
+			drawFlist(data.fList);
+			
+		},
+		error : function(e) {
+			console.log(e);
+		}
+	});
+}
 
-    function filterList(category, keyword) {
-        if (category === "전체") {
-            $("table tr").show();
-        } else {
-            $("table tr:gt(0)").hide();
-            $("table tr").filter(function () {
-            	 var categoryMatch = $(this).find("td:first").text() === category;
-                 var keywordMatch = $(this).find("td:last").text().includes(keyword);
-                 return categoryMatch && keywordMatch;
-            }).show();
-        }
+    
+    function drawFlist(fList) {
+    	var content='';
+    	fList.forEach(function(item,idx){
+    		  	content += '<tr>';
+    		  	content += '<td scope="row">'+item.formCategory+'</td>';
+    	        content += '<td>'+'<a href="writeDraft.go?titleID='+item.titleID+'&date=<%= formattedDate %>">'+item.formTitle+'</a></td>';
+    			content += '</tr>';
+    	});
+    	$('#formList').empty();
+    	$('#formList').append(content);
+    	
     }
+
 
 </script>
 </html>

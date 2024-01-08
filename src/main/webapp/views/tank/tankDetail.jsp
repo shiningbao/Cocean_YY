@@ -80,6 +80,7 @@ button {
 	background-color: #E9ECEF;
 }
 
+
 </style>
 </head>
 <body>
@@ -102,7 +103,7 @@ button {
 		 <div class="card border-secondary mb-3" style="max-width: 20rem;">
   <div class="card-header"><h5 style="text-align: center;">${map.tankName}</br>[${map.branchName}]</h5></div>
   <div class="card-body">
-    <p class="card-text">배치구역 [${map.area}]</br>${map.tankType} [${map.capacity}]</br>등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
+    <p class="card-text">배치구역 [${map.area}]</br>${map.tankType} [${map.capacity}L]</br>등록일 [${fn:substring(map.registrationDate,0,10)}]</p>
 		 <button class="btn btn-primary" style="width: 100%;" data-toggle="modal" data-target="#animo">코션친구들</button>
   </div>
 </div>
@@ -114,7 +115,7 @@ button {
 	
 	<div class="row">
 	<div id="tank_table" class="card shadow mb-4">
-		<table class="table">
+		<table class="table" style="margin-bottom: 0px;">
 				<tr>
 					<th>담당자</th>
 					<th>바닥재</th>
@@ -128,9 +129,9 @@ button {
 					<td>${map.emName}</td>
 					<td>${map.flooring}</td>
 					<td>${map.filter}</td>
-					<td>${map.mercury}/${recent.recordMercury}</td>
-					<td>${map.waterLevel}/${recent.recordWaterLevel}</td>
-					<td>${map.salinity}/${recent.recordSalinity}</td>
+					<td>${map.mercury}/<a class="recent">${recent.recordMercury}</a></td>
+					<td>${map.waterLevel}/<a class="recent">${recent.recordWaterLevel}</a></td>
+					<td>${map.salinity}/<a class="recent">${recent.recordSalinity}</a></td>
 					
 				</tr>
 				<tr>
@@ -142,18 +143,18 @@ button {
 					<th>기준 인산염/최근 수치</th>
 				</tr>
 				<tr>
-					<td>${map.pH}/${recent.recordPh}</td>
-					<td>${map.dO}/${recent.recordDo}</td>
-					<td>${map.nitrates}/${recent.recordNitrates}</td>
-					<td>${map.nitrites}/${recent.recordNitrites}</td>
-					<td>${map.ammonia}/${recent.recordAmmonia}</td>
-					<td>${map.phosphates}/${recent.recordPhosphates}</td>
+					<td>${map.pH}/<a class="recent">${recent.recordPh}</a></td>
+					<td>${map.dO}/<a class="recent">${recent.recordDo}</a></td>
+					<td>${map.nitrates}/<a class="recent">${recent.recordNitrates}</a></td>
+					<td>${map.nitrites}/<a class="recent">${recent.recordNitrites}</a></td>
+					<td>${map.ammonia}/<a class="recent">${recent.recordAmmonia}</a></td>
+					<td>${map.phosphates}/<a class="recent">${recent.recordPhosphates}</a></td>
 				</tr>
 		</table>
 	</div>
 	</div>
 	</div>
-	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end; margin-right: 8%;">
+	<div class="row" style="display: flex;flex-direction: row;justify-content: flex-end; margin-right: 10%;">
 	<button type="button" class="btn btn-secondary" onclick="location.href='list.go'" style="margin-right: 5px;">이전</button>
 	<button type="button" class="btn btn-primary" onclick="location.href='tankSet.go?tankID=${map.tankID}'">수정</button>	
 	</div>

@@ -7,9 +7,9 @@ writeDraftForm
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-<!-- <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
 <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
@@ -692,6 +692,9 @@ function calculateDays() {
             }
         }
 	    }
+	    if(idx!==undefined){
+	    	formData.append("idx",idx);
+	    }
 	    
 	        $.ajax({
 		        url: "/Cocean/approval/writeDraft.do",
@@ -702,12 +705,8 @@ function calculateDays() {
 		        cache: false,
 		        success: function (data) {
 		            console.log(data);
-		          /*   if (!isTemp) {
-		                location.href = './myDraftList.go';
-		               
-		            }else{
-		            	location.href = './tempSaveList.go';
-		            } */
+		            location.href = './myDraftList.go';
+		
 		        },
 		        error: function (e) {
 		            console.error(e);
