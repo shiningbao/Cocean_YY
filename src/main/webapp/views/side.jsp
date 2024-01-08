@@ -115,7 +115,7 @@
                     <span>코션하우스</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="<c:url value='/statistics/list.go'/>">
                     <i class="fi fi-sr-chart-pie-alt"></i>
                     <span>통계</span></a>
             </li>
