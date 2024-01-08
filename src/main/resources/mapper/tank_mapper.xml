@@ -97,15 +97,28 @@
 		WHERE employeeID = (SELECT ic.employeeID FROM inCharge ic WHERE ic.category = 'tank' AND ic.idx = #{param1})
 	</select>
 	
-	<select id="logForm" resultType="map">
-		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr 
-		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1
-	</select>
+<!-- 	<select id="logForm" resultType="map"> -->
+<!-- 		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr  -->
+<!-- 		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1 -->
+<!-- 	</select> -->
 	
 	<select id="recentRecord" resultType="map">
 		SELECT * FROM tankRecord tr WHERE recordDate = CURDATE() AND tankID = #{param} ORDER BY recordTime DESC LIMIT 1 
 	</select>
 	
+	<select id="recordList" parameterType="String" resultType="map">
+	SELECT MAX(recordMercury) as maxMer ,MIN(recordMercury) as minMer, ROUND(AVG(recordMercury),2)  as avgMer,
+		MAX(recordWaterLevel) as maxWater ,MIN(recordWaterLevel) as minWater, ROUND(AVG(recordWaterLevel),2)  as avgWater,
+		MAX(recordSalinity) as maxSal ,MIN(recordSalinity) as minSal, ROUND(AVG(recordSalinity),2)  as avgSal,
+		MAX(recordPh) as maxPh ,MIN(recordPh) as minPh, ROUND(AVG(recordPh),2)  as avgPh,
+		MAX(recordDo) as maxDo ,MIN(recordDo) as minDo, ROUND(AVG(recordDo),2)  as avgDo,
+		MAX(recordNitrates) as maxNita ,MIN(recordNitrates) as minNita, ROUND(AVG(recordNitrates),2)  as avgNita,
+		MAX(recordNitrites) as maxNiti ,MIN(recordNitrites) as minNiti, ROUND(AVG(recordNitrites),2)  as avgNiti,
+		MAX(recordAmmonia) as maxAm ,MIN(recordAmmonia) as minAm, ROUND(AVG(recordAmmonia),2)  as avgAm,
+		MAX(recordPhosphates) as maxPhos ,MIN(recordPhosphates) as minPhos, ROUND(AVG(recordPhosphates),2)  as avgPhos,
+		recordDate  FROM tankRecord 
+		WHERE tankID = #{param1} GROUP BY recordDate HAVING recordDate BETWEEN #{param2} AND LAST_DAY(#{param2})
+	</select>
 	
 	
 </mapper>

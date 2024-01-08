@@ -109,17 +109,22 @@ public class TankController {
 	@GetMapping("tank/houseLog.go")
 	public ModelAndView houseLog(@RequestParam int tankID, HttpSession session) {
 		ModelAndView mav = new ModelAndView("tank/houseLog");
-		HashMap<String, Object> map = service.logForm(tankID);
-		mav.addObject("map",map);
-		logger.info("map: "+map);
+		mav.addObject("tankID",tankID);
 		return mav;
 	}
 	
-	
-	@GetMapping("tank/newSide")
-	public String newSide() {
-		return "newSide";
+	@RequestMapping("tank/getRecord.ajax")
+	@ResponseBody
+	public List<Map<String, Object>> gerRecord(@RequestParam String tankID, String curDate, Model model) {
+		List<Map<String, Object>> recordList = service.getRecord(tankID,curDate);
+		logger.info("recordList: "+recordList.toString());
+		model.addAttribute("recordList",recordList);
+		return recordList;
+		
 	}
+	
+	
+
 	
 	
 	
