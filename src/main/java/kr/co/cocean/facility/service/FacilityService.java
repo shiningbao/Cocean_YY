@@ -36,14 +36,19 @@ public class FacilityService {
 		return dao.getPersonnelLeader();
 	}
 
-	public void updateFacilityName(String facilityName) {
+	public void updateFacilityName(String facilityName, String facilityInfo, String facilityID) {
 		
-		dao.updateFacilityName(facilityName);
+		dao.updateFacilityName(facilityName,facilityInfo,facilityID);
 	}
 
 	public void delFacility(String deltxt) {
 		
 		dao.delFacility(deltxt);
+	}
+
+	public void addFacility(String category, String facilityName, String facilityInfo) {
+		
+		dao.addFacility(category,facilityName,facilityInfo);
 	}
 
 }
