@@ -27,8 +27,8 @@ public class StatisticsController {
 	
 	@GetMapping(value="/statistics/chart.do")
 	@ResponseBody
-	public Map<String, Object> statisticsChart(Model model){
+	public Map<String, Object> statisticsChart(){
 		logger.info("통계 데이터 가져오기");
-		return service.statisticsChart(model);
+		return service.statisticsChart();
 	}
 }
