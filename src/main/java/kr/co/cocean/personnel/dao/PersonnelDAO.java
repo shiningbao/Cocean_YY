@@ -118,4 +118,20 @@ public interface PersonnelDAO {
 
 	Integer totalCount(HashMap<String, Object> params);
 
+	void updateEmployeeAnnual();
+
+	List<HashMap<String, Object>> leaveYears();
+
+	void updateAnnual(List<HashMap<String, Integer>> dataList);
+
+	void saveAnnualLeave(List<HashMap<String, Integer>> dataList);
+
+	List<HashMap<String, Object>> getYearValue();
+
+	void updateAnnual(String year, String value);
+
+	HashMap<String, Object> getEmployeeAnnual(int employeeID);
+
+	List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear); 
+
 }

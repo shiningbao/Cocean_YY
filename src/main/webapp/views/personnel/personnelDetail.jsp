@@ -457,19 +457,37 @@ th {
 	</div>
 	
 		<div class="tab-content" id="annualLeaveTab" style="display: none;">
+		
+
 		<table style="width:100%">
+		올해
 			<tr>
-				<th>년도</th>
+				<th>발생한연차</th>
 				<th>잔여연차</th>
 				<th>사용연차</th>
 				
 			</tr>
 			<tr>
-				<td>2023</td>
-				<td>${person.remainingAnnualLeave }</td>
-				<td></td>
+				<td>${getEmployeeAnnual.value}일</td>
+				<td>${person.remainingAnnualLeave }일</td>
+				<td>${getEmployeeAnnual.value - person.remainingAnnualLeave}일</td>
 			</tr>
 		</table>
+				<ul class="wrap_ehr_stat">
+                    <li>
+                        <span class="stat_tit">연차 사용기간 :</span>
+                        
+                        <select id="vacation_term_list" style="display: inline-block;"><option value="2024-12-31">2024-01-01 ~ 2024-12-31</option><option value="2023-12-31">2023-01-01 ~ 2023-12-31</option><option value="2022-12-31">2022-01-01 ~ 2022-12-31</option><option value="2021-12-31">2021-01-01 ~ 2021-12-31</option><option value="2020-12-31">2020-01-01 ~ 2020-12-31</option><option value="2019-12-31">2019-01-01 ~ 2019-12-31</option><option value="2018-12-31">2018-01-01 ~ 2018-12-31</option></select>
+                    </li>
+                </ul>
+		<table>
+
+			<tr class="findAttend" >
+			
+			</tr>
+		</table>
+
+				
 
 	</div>
 	
@@ -697,7 +715,7 @@ function onDepartmentSelect() {
 $(document).ready(function() {
 	var employeeID = '${person.employeeID}';
 	console.log(employeeID);
-
+	  $('#vacation_term_list').val('2024-12-31').trigger('change');
     // 기본 탭을 선택한 상태로 초기화
     $('.tab').removeClass('active');
     $('.tab-content').removeClass('active');
@@ -891,6 +909,45 @@ $('#resetPassword').on('click',function(){
 	}
 
 });
+$('#vacation_term_list').val('2024-12-31').trigger('change');
+$('#vacation_term_list').on('change', function () {
+    $('.findAttend').empty(); // 기존의 데이터를 비워줍니다.
+    var dateVal = $(this).find('option:selected').text();
+    var [startYear, endYear] = dateVal.split(' ~ ');
+    console.log(startYear, endYear);
+    $.ajax({
+        url: 'findAttend.do',
+        data: {
+            employeeID: employeeID,
+            startYear: startYear,
+            endYear: endYear
+        },
+        type: 'post',
+        success: function (data) {
+            console.log(data);
+            if (data.length === 0) {
+                $('.findAttend').html('<td colspan="4">사용한 연차가 없습니다.</td>'); // 데이터가 없을 때 출력하는 부분입니다.
+            } else {
+            	var table = '<table><tr><th>종류</th><th>시작날짜</th><th>끝날짜</th><th>사용일수</th></tr>';
+
+            	data.forEach(function (item) {
+            	    table += '<tr>';
+            	    table += '<td>' + item.category + '</td>';
+            	    table += '<td>' + item.vacationStartDate + '</td>';
+            	    table += '<td>' + (item.vacationEndDate === undefined ? '반차' : item.vacationEndDate) + '</td>';
+            	    table += '<td>' + item.usageTime + '</td>';
+            	    table += '</tr>';
+            	});
+
+            	table += '</table>';
+            	$('.findAttend').append(table);
+            }
+        },
+        error: function (e) {
+            console.log(e);
+        }
+    })
+})
 function sample6_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {

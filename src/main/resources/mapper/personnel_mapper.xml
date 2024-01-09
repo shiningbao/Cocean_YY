@@ -72,7 +72,7 @@ fa-building' AS 'icon'
 			</select>
 	
 	<select id="totalCount" parameterType="map" resultType="Integer">
-		SELECT ROUND(COUNT(*)/10) FROM employee e;
+		SELECT CEIL(COUNT(*)/10) FROM employee e;
 	</select>
 	
 	<select id="personnelList">
@@ -278,4 +278,51 @@ fa-building' AS 'icon'
 	<insert id="addResponsibiliy">
 		INSERT INTO responsibility (departmentID,responName) VALUES (#{departmentID},#{responName})
 	</insert>
+	
+	<update id="updateEmployeeAnnual">
+		update employee set remainingAnnualLeave = 0;
+	</update>
+	
+	<select id="leaveYears">
+		SELECT joinDate
+		FROM employee e 
+		WHERE joinDate;
+	</select>
+	
+	<update id="saveAnnualLeave" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" separator=";">
+		UPDATE annualLeave SET year =#{item.year}, value=#{item.value}
+		WHERE year = #{item.year}
+		</foreach>
+	</update>
+	
+	<select id="getYearValue">
+		SELECT year,value FROM annualLeave;
+	</select>
+
+
+	<select id="getEmployeeAnnual" >
+	    SELECT value
+		FROM annualLeave
+		WHERE year = (
+		    SELECT FLOOR(DATEDIFF(NOW(), joinDate) / 365) AS years 
+		    FROM employee 
+		    WHERE  employeeID = #{employeeID}
+		); 
+	</select>
+	
+	<update id="updateAnnual" parameterType="String">
+	        UPDATE employee
+	        SET remainingAnnualLeave = #{value}
+	        WHERE FLOOR(DATEDIFF(NOW(), joinDate) / 365) = #{year}
+	</update>
+	
+	<select id="findAttend">
+		SELECT ad.category ,ad.vacationStartDate ,ad.vacationEndDate ,ad.usageTime  
+		FROM attendanceDraft ad JOIN draft d ON ad.idx =d.idx WHERE employeeID =#{employeeID}
+		AND ad.vacationStartDate BETWEEN #{startYear} AND #{endYear}
+	</select>
+	
+	
+
 </mapper>
