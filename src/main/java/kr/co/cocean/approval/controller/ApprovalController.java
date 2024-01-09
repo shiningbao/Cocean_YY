@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -306,8 +308,9 @@ public class ApprovalController {
 		double updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
 		 if(param.get("action").equals("결재")) { 
 			 logger.info("결재!!!");
-			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").equals("반차")) {
+			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
 				 service.updateRAL(updateRAL,param);
+				 logger.info("잔여연차:"+updateRAL);
 			 }
 			 if(approvalOrder<lastOrder) {
 				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
@@ -338,13 +341,14 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value = "/approval/tempSaveList.go")
-	public ModelAndView tempSaveList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView tempSaveList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> save = service.saveList(employeeID);
+			ArrayList<ApprovalDTO> save = service.saveList(employeeID,pager);
 			mav.addObject("save", save);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/tempSaveList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -353,15 +357,29 @@ public class ApprovalController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/approval/removeSave")
+	@ResponseBody
+	public HashMap<String, Object> removeSave(@RequestBody List<HashMap<String,String>> selectedSave) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		logger.info("선택된 애들:"+selectedSave);
+		for (HashMap<String, String> selected : selectedSave) {
+			 // service.removeSave(selected);
+			logger.info("뽑기:"+selected);
+		}
+		return result;
+	}
+	
+	
 	@GetMapping(value = "/approval/myDraftList.go")
-	public ModelAndView myDraftList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView myDraftList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> my = service.myList(employeeID);
+			ArrayList<ApprovalDTO> my = service.myList(employeeID,pager);
 			mav.addObject("my", my);
 			mav.addObject("employeeID",employeeID);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/myDraftList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -382,13 +400,14 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value = "/approval/refList.go")
-	public ModelAndView refList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView refList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> ref = service.refList(employeeID);
+			ArrayList<ApprovalDTO> ref = service.refList(employeeID,pager);
 			mav.addObject("ref", ref);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/refList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -409,13 +428,14 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value = "/approval/myApprovalList.go")
-	public ModelAndView completeList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView completeList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> comList = service.comList(employeeID);
+			ArrayList<ApprovalDTO> comList = service.comList(employeeID,pager);
 			mav.addObject("com", comList);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/myApprovalList");
 		} else {
 			mav.setViewName("redirect:/");
@@ -436,13 +456,14 @@ public class ApprovalController {
 	}
 	
 	@GetMapping(value = "/approval/department.go")
-	public ModelAndView departmentList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView departmentList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> departmentList = service.departmentList(employeeID);
+			ArrayList<ApprovalDTO> departmentList = service.departmentList(employeeID,pager);
 			mav.addObject("list", departmentList);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/departmentDraftList");
 		} else {
 			mav.setViewName("redirect:/");

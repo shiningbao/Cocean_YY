@@ -18,13 +18,6 @@
 	text-align: center;
 }
 
-#search {
-	float: right;
-	width: 326px;
-	display:flex;
-	
-}
-
 @media screen and (max-width: 1457px) {
 	#search {
 		top: 23%;
@@ -35,6 +28,7 @@
 	#search input {
 		margin-bottom: 5px;
 	}
+	
 
 </style>
 </head>
@@ -48,7 +42,6 @@
 	</div>
 	</div>
 	
-	<div class="row">
 	<nav class="navbar navbar" id="search">
           <form class="form-inline" action="waitingList.go" method="get" id="frm">
             <input type="hidden" name="startNum" value="1" id="startNum">
@@ -57,7 +50,6 @@
             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="waitingSearch()">검색</button>
           </form>
     </nav>
-    </div>
 	
 <div class="card shadow mb-4" style="margin-top:15px;">
 	<div id="waitingTable">
@@ -96,8 +88,7 @@
 	</div>
 	</div>
 
-	</div>
-	
+<!-- 페이징 처리 -->
 <div>
   <ul class="pagination" id="paging">
   <c:if test="${pager.pageNum > 1}">
@@ -123,6 +114,10 @@
 	  </ul>
 </div>
 
+	</div>
+	
+
+
 	<c:import url="/footer"/>
 </body>
 <script>
@@ -139,7 +134,6 @@ $(".p").click(function() {
 $('.p').click(function(){
 	
 	const no = $(this).attr("data-list-pn");
-	alert(no);
 	$("#pageNum").val(no);
 	$('#frm').submit();
 })

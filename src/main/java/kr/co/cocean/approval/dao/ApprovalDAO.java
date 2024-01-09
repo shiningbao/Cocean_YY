@@ -72,19 +72,19 @@ public interface ApprovalDAO {
 
 	void writeattendenceDraft(ApprovalDTO dto);
 
-	ArrayList<ApprovalDTO> saveList(int employeeID);
+	ArrayList<ApprovalDTO> saveList(HashMap<String, Object> params);
 
 	ApprovalDTO vacDetail(int idx);
 
 	ApprovalDTO lvDetail(int idx);
 
-	ArrayList<ApprovalDTO> myList(int employeeID);
+	ArrayList<ApprovalDTO> myList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> refList(int employeeID);
+	ArrayList<ApprovalDTO> refList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> comList(int employeeID);
+	ArrayList<ApprovalDTO> comList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> departmentList(int employeeID);
+	ArrayList<ApprovalDTO> departmentList(HashMap<String, Object> params);
 
 	ApprovalDTO getSign(int idx, int employeeID);
 
@@ -135,6 +135,18 @@ public interface ApprovalDAO {
 	Integer totalCount(HashMap<String, Object> params);
 
 	ArrayList<ApprovalDTO> waitingList(HashMap<String, Object> params);
+
+	Integer RCount(HashMap<String, Object> params);
+
+	Integer MaCount(HashMap<String, Object> params);
+
+	Integer mDcount(HashMap<String, Object> params);
+
+	Integer dpCount(HashMap<String, Object> params);
+
+	Integer sCount(HashMap<String, Object> params);
+
+	HashMap<String, Object> removeSave(String selected);
 
 
 	/*
