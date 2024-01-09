@@ -300,7 +300,7 @@
     <!-- 여기까지 사이드/상단바 -->
 
     <!-- 페이지 상단 이동버튼-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <a class="scroll-to-top rounded" href="#page-top" style="display: list-item">
         <i class="fas fa-angle-up"></i>
     </a>
 
