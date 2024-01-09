@@ -3,6 +3,7 @@ package kr.co.cocean.board.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.board.dao.BoardDAO;
 import kr.co.cocean.board.dto.BoardDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class BoardService {
@@ -19,8 +21,9 @@ public class BoardService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	public ArrayList<BoardDTO> boardList(String category) {
-		return dao.boardList(category);
+	public ArrayList<BoardDTO> boardList(String category, int perPage, Integer pageNum) {
+		Integer offset = (pageNum -1) * perPage;
+		return dao.boardList(category,perPage,offset);
 	}
 
 	public ArrayList<BoardDTO> boardList_pin(String category) {
@@ -51,6 +54,13 @@ public class BoardService {
 		}
 		
 		return dto;
+	}
+
+	public int getTotalCount(String category,int perPage) {
+		int count = dao.getTotalCount(category);
+		int totalCount = (int) Math.ceil((double) count / perPage);
+		logger.info("totalCount: {}",totalCount);
+		return totalCount;
 	}
 	
 	

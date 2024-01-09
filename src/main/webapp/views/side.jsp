@@ -115,7 +115,7 @@
                     <span>코션하우스</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="<c:url value='/statistics/list.go'/>">
                     <i class="fi fi-sr-chart-pie-alt"></i>
                     <span>통계</span></a>
             </li>
@@ -187,10 +187,10 @@
                 </a>
                 <div id="board" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href='<c:url value="/board/notice/list"/>' >공지사항</a>
-                        <a class="collapse-item" href='<c:url value="/board/anony/list"/>' >익명게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/department/list"/>' >부서게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/program/list"/>' >프로그램 일정</a>
+                        <a class="collapse-item" href='<c:url value="/board/notice/list?page=1&search=''"/>' >공지사항</a>
+                        <a class="collapse-item" href='<c:url value="/board/anony/list?page=1&search=''"/>' >익명게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/department/list?page=1&search=''"/>' >부서게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/program/list?page=1&search=''"/>' >프로그램 일정</a>
                     </div>
                 </div>
             </li>
@@ -265,7 +265,7 @@
 					<li class="nav-item dropdown no-arrow">
 						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="mr-2 d-none d-lg-inline text-gray-600 small">사용자</span>
+							<span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.userInfo.name}</span>
 							<img	class="img-profile rounded-circle"	src="<c:url value='/resource/img/undraw_profile.svg'/>"/>
 						</a>
 						
@@ -337,8 +337,24 @@
 </body>
 
 <script>
-	// 알람창
+	$('#sidebarToggle').on('click',function(){
+		var width = $('#accordionSidebar').width();
+		console.log(width);
+		if(width <= 150){
+			$('.contentField').css({'padding-left':'130px'});
+			$('#accordionSidebar').css({'overflow-y':'clip'});
+		}else{
+			$('.contentField').css({'padding-left':'250px'});
+			$('#accordionSidebar').css({'overflow-y':'scroll'});
+		}
+		
+	});
 
+
+
+
+
+	// 알람창
 	var employeeID = '${userInfo.employeeID}';
 	//var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
 

@@ -72,7 +72,6 @@
     padding: 0; /* 내부 여백 제거 */
     cursor: pointer;
     float:right;
-    width: 
 }
 
 .dropdown {
@@ -100,6 +99,9 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.pagination{
+	margin-left: 40%;
+}
 
 
 </style>
@@ -114,19 +116,21 @@
 		</div>
 		    <div class="card shadow mb-4">
                       <div class="card-body">
-                                    <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">사원등록</button>
+                                   
         <div id="checkBox">
         
         <nav class="navbar navbar float-right" id="search">
-            <form class="form-inline">
+            <form class="form-inline" action="personnelList.go" method="get" id="frm">
            		<select id="emName" class="psSelect2">
            			<option value="employeeID">사번</option>
            			<option value="name">이름</option>
            		</select>
               <input class="form-control mr-sm-2" id="inputSearch" type="search" placeholder="사원명이나 사번을 입력하세요." aria-label="Search">
+               <input type="hidden" name="startNum" value="1" id="startNum">
+              <input type="hidden" name="pageNum" value="1" id="pageNum">
+              </form>
               <button class="btn btn-outline-primary my-2 my-sm-0" id="psSchBtn" type="button">검색</button>
               
-            </form>
           </nav>
     	</div>
     
@@ -169,6 +173,34 @@
 			</tbody> 
 		</table>
 	</div>
+	 <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">등록</button>
+	<div>
+	
+	
+  <ul class="pagination" id="paging">
+  <c:if test="${pager.pageNum > 1}">
+   <li class="page-item">
+  <div class="p" data-list-pn="${pager.pageNum-1}">
+      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
+    </div>
+    </li>
+    </c:if>
+    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
+    	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
+      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
+    	</li>
+		</c:forEach>
+	
+	<c:if test="${pager.pageNum < pager.totalCount}">
+	<li class="page-item">
+	<div class="p" data-list-pn="${pager.pageNum+1}">
+      <a class="page-link" >&raquo;</a>
+      </div>
+    </li>
+    </c:if>
+	  </ul>
+</div>
+	
 	
 	<div class="modal fade" id="regModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog">
@@ -196,6 +228,13 @@
 <c:import url="/footer"/>	
 </body>
 <script>
+$('.p').click(function(){
+	
+	const no = $(this).attr("data-list-pn");
+	$("#pageNum").val(no);
+	$('#frm').submit();
+})
+
     var tableHTML = '';
 
     // 페이지 로드 시 AJAX를 사용하여 서버에서 지점 목록을 가져옵니다.

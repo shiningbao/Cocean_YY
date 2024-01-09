@@ -26,6 +26,7 @@ import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class PersonnelService {
@@ -174,8 +175,17 @@ public class PersonnelService {
 	}
 
 
-	public List<HashMap<String, Object>> personnelList() {
-		return dao.personnelList();
+	public List<HashMap<String, Object>> personnelList(Pager pager) {
+		
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		Integer total = dao.totalCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		return dao.personnelList(params);
 	}
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
 		if(selectedBranchValue.equals("지점")) {
@@ -293,7 +303,7 @@ public class PersonnelService {
 	public void editDp(String departmentName, String departmentID, Boolean isActive) {
 		dao.editDp(departmentID,departmentName,isActive);
 	}
-	public int getDepartmentMembers(String departmentID) {
+	public List<HashMap<String, Object>> getDepartmentMembers(String departmentID) {
 		return dao.getDepartmentMembers(departmentID);
 	}
 	public void addResponsibiliy(String departmentID, String responName) {

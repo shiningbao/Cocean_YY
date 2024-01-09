@@ -21,13 +21,15 @@
 			<h1 class="h3 mb-0 text-gray-800">${bt}</h1>
 		</div>
 		<div class="card shadow p-3">
-			<h4>글작성</h4>
 			<form action="write.do" method="post">
 			<div class="form-check form-check-inline">
-				<label class="form-check-label">
-					공지글 등록  
-					<input type="checkbox" name="isPinned" class="form-check-input ml-2" value="1"/>
-				</label>
+				<h4 class="mr-4">글작성</h4>
+				<c:if test="${bt ne '익명게시판'}">
+					<label class="form-check-label">
+						공지글 등록  
+						<input type="checkbox" name="isPinned" class="form-check-input ml-2" value="1"/>
+					</label>
+				</c:if>
 			</div>
 			
 			<div class="d-inline">
@@ -42,10 +44,11 @@
 			</div>
 			<div class="d-inline mt-2">
 				<button class="float-right ml-2" type="button" onclick="save()">작성</button>
-				<button class="float-right ml-2" type="button" onclick="location.href='list'">취소</button>
+				<button class="float-right ml-2" type="button" onclick="location.href='list?page=1&search='">취소</button>
 			</div>
 		</div>
 	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
 	

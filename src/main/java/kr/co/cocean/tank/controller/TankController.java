@@ -36,7 +36,7 @@ public class TankController {
 	@Autowired
 	TankService service;
 	Logger logger = LoggerFactory.getLogger(getClass());
-
+ 
 	
 	@GetMapping(value="/tank/list.go")
 	public ModelAndView tankList(ModelAndView mav, TankDTO tankDTO, Pager pager) {

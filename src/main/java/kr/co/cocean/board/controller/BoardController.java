@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.cocean.board.dto.BoardDTO;
 import kr.co.cocean.board.service.BoardService;
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Controller
 public class BoardController {
@@ -31,7 +32,7 @@ public class BoardController {
 	@Autowired BoardService service;
 	
 	@GetMapping(value = "/board/{boardTitle}/list")
-	public String boardList(@PathVariable String boardTitle, Model model, HttpSession session) {
+	public String boardList(@PathVariable String boardTitle,@RequestParam int page, @RequestParam String search, Model model, HttpSession session) {
 		
 		String category = boardTitle;
 		String bt = "";	
@@ -53,9 +54,13 @@ public class BoardController {
 		}
 		
 		logger.info("category : {}",category);
-		
+		Pager pager = new Pager();
+		int perPage = 10;
+		pager.setPageNum(page);
+		pager.setTotalCount(service.getTotalCount(category, perPage));
+		model.addAttribute("pager", pager);
 		model.addAttribute("bt", bt);
-		model.addAttribute("list", service.boardList(category));
+		model.addAttribute("list", service.boardList(category,perPage,pager.getPageNum()));
 		model.addAttribute("list_pin", service.boardList_pin(category));
 		
 		return "board/boardList";
