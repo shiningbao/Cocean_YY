@@ -30,11 +30,11 @@
 				</div>
 				<div class="float-right">
 					<c:if test="${prevNext.prev ne null}">
-					<button onclick="location.href='detail?boardID=${prevNext.prev}'">이전글</button>
+					<button class="btn btn-outline-primary btn-sm" onclick="location.href='detail?boardID=${prevNext.prev}'">이전글</button>
 					</c:if>
 				
 					<c:if test="${prevNext.next ne null}">
-					<button onclick="location.href='detail?boardID=${prevNext.next}'">다음글</button>
+					<button class="btn btn-outline-primary btn-sm" onclick="location.href='detail?boardID=${prevNext.next}'">다음글</button>
 					</c:if>
 				</div>
 			</div>
@@ -102,6 +102,7 @@
 		
 
 	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
 	split();

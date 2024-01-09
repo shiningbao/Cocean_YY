@@ -342,8 +342,10 @@
 		console.log(width);
 		if(width <= 150){
 			$('.contentField').css({'padding-left':'130px'});
+			$('#accordionSidebar').css({'overflow-y':'clip'});
 		}else{
 			$('.contentField').css({'padding-left':'250px'});
+			$('#accordionSidebar').css({'overflow-y':'scroll'});
 		}
 		
 	});
