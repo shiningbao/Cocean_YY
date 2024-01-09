@@ -54,4 +54,6 @@ public interface AnimalDAO {
 	void animalDel(int animalID);
 
 	void testalarm(int employeeID, String url, String category);
+	
+	AnimalDTO getAnimalTitle(int animalID);
 }
