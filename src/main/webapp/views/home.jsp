@@ -12,7 +12,7 @@
 	<div class="container-fluid contentField">
 		<div class="container">
 
-		<div class="row" style="justify-content: space-between; height: 400px; padding-top: 3%">
+		<div class="row" style="justify-content: space-between; height: 470px; padding-top: 3%">
 			
 		<!-- 사원 정보 시작 -->
 			<div class="card border-secondary mb-3" style="width:60%;">
@@ -28,16 +28,17 @@
 		<!-- 사원 정보 끝 -->
 		
 		<!-- 기타 정보 시작 -->
-			<div class="card border-secondary  shadow mb-3" style="width:39%; text-align: center; align-items: center;">
+			<div class="card text-white bg-primary shadow mb-3 " style="width:39%; text-align: center; align-items: center;">
 			  <div class="card-body" style="align-items: center;">
 			    <h3 class="card-title" id="branch"></h3>
-			    <div style="width: 180px; height: 180px; margin-bottom: 5%;">
-			    <h5 class="card-text" id="icon"> </h5>
+			    <div style="width: 200px; height: 200px;">
+			    <h5 class="card-text"><img src="" id="icon" style="width: 75%; height: 75%; border-radius: 50%; margin-top: 6%;"/></h5>
+			    <h5 id="weatherMain"></h5>
 			    </div>
-			    <h5 class="card-text" id="nowTemp">현재 온도: </h5>
-			    <h5 class="card-text" id="feels">체감 온도: </h5>
-			    <h5 class="card-text" id="minTemp">최저 기온:  </h5>
-			    <h5 class="card-text" id="maxTemp">최고 기온:  </h5>
+			    <h3 class="card-text" id="nowTemp">&nbsp;</h3>
+			    <h5 class="card-text" id="feels">체감 온도&nbsp; </h5>
+			    <h5 class="card-text" id="minTemp">최저 기온&nbsp;  </h5>
+			    <h5 class="card-text" id="maxTemp">최고 기온&nbsp;  </h5>
 			  </div>
 			</div>
 		<!-- 기타 정보 끝 -->	
@@ -45,11 +46,12 @@
 			</div>
 			
 		<!-- 게시판 영역 시작 -->
-			<div class="row" style="height: 100%; margin-top: 4%;"">
+			<div class="row" style="height: 100%;">
 				<div class="card border-secondary mb-5" style="width:100%;">
 				  <div class="card-body">
 				    <h4 class="card-title">공지사항</h4>
 				    <p class="card-text">게시판 배치</p>
+				    <p class="card-text"></p>
 				  </div>
 				</div>
 			</div>
@@ -71,20 +73,27 @@ if(${sessionScope.userInfo.branchID} == 1){
 }
 
 $.getJSON(url,function(response){
-	$('#nowTemp').append(response.main.temp);
-	$('#feels').append(response.main.feels_like);
-	$('#minTemp').append(response.main.temp_min);
-	$('#maxTemp').append(response.main.temp_max);
+	$('#weatherMain').append(response.weather[0].main);
+	$('#nowTemp').append(Math.round(response.main.temp)+'°');
+	$('#feels').append(Math.round(response.main.feels_like)+'°');
+	$('#minTemp').append(Math.round(response.main.temp_min)+'°');
+	$('#maxTemp').append(Math.round(response.main.temp_max)+'°');
 	
-    var weatherIcon =
-        '<img src= "http://openweathermap.org/img/wn/'
-        + response.weather[0].icon +
-        '.png" alt="' + response.weather[0].description +'"style="width:80%; height:80%;"'+'/>'
+    var weatherIcon = response.weather[0].icon.substring(0,2);
+	$('#icon').attr('src','<c:url value="/resource/img/'+weatherIcon+'.gif"/>');
+
+    
+    
+    
+//         '<img src= "http://openweathermap.org/img/wn/'
+//         + response.weather[0].icon +
+//         '.png" alt="' + response.weather[0].description +'"style="width:80%; height:80%;"'+'/>'
+// <img src="<c:url value='/resource/img/10.gif'/>"/>
        
 
-    $('#icon').html(weatherIcon);
 	
 });
+
 
 
 </script>
