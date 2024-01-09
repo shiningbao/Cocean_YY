@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="totalCount" parameterType="map" resultType="Integer">
-		SELECT ROUND(COUNT(*)/10) FROM employee e JOIN inCharge ic ON e.employeeID = ic.employeeID 
+		SELECT CEIL(COUNT(*)/10) FROM employee e JOIN inCharge ic ON e.employeeID = ic.employeeID 
 			WHERE ic.category = 'tank' AND e.name like CONCAT('%',#{search},'%')
 	</select>
 	

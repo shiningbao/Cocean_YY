@@ -41,22 +41,23 @@
 <body>
 <c:import url="/side"/>
 <div class="container-fluid contentField">
-	<div class="content">
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+	
+		<div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding-top: 15px;">
 	<div class="hTitle">
 	<h1 class="h3 mb-0 text-gray-800">나의 결재함</h1>
 	</div>
 </div>
 
-<div class="card shadow mb-4">
-
-		 <nav class="navbar navbar float-right" id="search">
-            <form class="form-inline">
+		 <nav class="navbar navbar" id="search">
+            <form class="form-inline" action="myApprovalList.go" method="get" id="frm">
+            <input type="hidden" name="startNum" value="1" id="startNum">
+            <input type="hidden" name="pageNum" value="" id="pageNum">
               <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="myAppSearch()">검색</button>
             </form>
           </nav>
-		 
+          
+<div class="card shadow mb-4">
 	<div id="comTable">
 	<table class="table table-hover">
 		<thead id="comTableHead">
@@ -102,11 +103,54 @@
 	</table>
 	</div>
 	</div>
+	
+	<!-- 페이징 처리 -->
+<div>
+  <ul class="pagination" id="paging">
+  <c:if test="${pager.pageNum > 1}">
+    <li class="page-item">
+  <div class="p" data-list-pn="${pager.pageNum-1}">
+      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
+    </div>
+    </li>
+    </c:if>
+    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
+    	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
+      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
+    	</li>
+		</c:forEach>
+	
+	<c:if test="${pager.pageNum < pager.totalCount}">
+	<li class="page-item">
+	<div class="p" data-list-pn="${pager.pageNum+1}">
+      <a class="page-link" >&raquo;</a>
+      </div>
+    </li>
+    </c:if>
+	  </ul>
 </div>
+
 </div>
 <c:import url="/footer"/>	
 </body>
 <script>
+
+$(".p").click(function() {
+	const n= $(this).attr("data-list-pn");
+	$("#pageNum").val(n);
+	$('#frm').submit();
+			
+});
+
+
+//페이징 처리 클릭 이벤트
+$('.p').click(function(){
+	
+	const no = $(this).attr("data-list-pn");
+	$("#pageNum").val(no);
+	$('#frm').submit();
+})
+
 function myAppSearch() {
 	var keyword = $('#keyword').val();
 	$.ajax({
