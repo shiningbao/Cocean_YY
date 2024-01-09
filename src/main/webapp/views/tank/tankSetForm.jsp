@@ -20,7 +20,7 @@
     	text-align: center;
     	border: 2px solid #dedede;
     }
-    
+    input[type='text']{color:black;}
 
 </style>
 </head>
@@ -54,7 +54,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="categoryID">하우스 타입</label>
 				</div>
-				<select class="custom-select" id="category" name="categoryID" required>
+				<select class="custom-select" id="category" name="categoryID" required style="color: black;" onchange="defaultType()">
 				<option value="1" <c:if test="${map.categoryID == 1}">selected</c:if>>해수</option>
 				<option value="2" <c:if test="${map.categoryID == 2}">selected</c:if>>담수</option>
 				<option value="3" <c:if test="${map.categoryID == 3}">selected</c:if>>반수생</option>
@@ -66,7 +66,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="status">하우스 상태</label>
 				</div>
-				<select class="custom-select" id="status" name="status" required>
+				<select class="custom-select" id="status" name="status" required style="color: black;">
 			<option id="myBranch" value="정상" <c:if test="${map.tankStatus eq '정상'}">selected</c:if>>정상</option>
 			<option id="myBranch" value="이상" <c:if test="${map.tankStatus eq '이상'}">selected</c:if>>이상</option>
 			<option id="myBranch" value="폐쇄" <c:if test="${map.tankStatus eq '폐쇄'}">selected</c:if>>폐쇄</option>
@@ -94,7 +94,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="flooringNo">바닥재 타입</label>
 				</div>
-				<select class="custom-select" id="flooring" name="flooringNo" required>
+				<select class="custom-select" id="flooring" name="flooringNo" required style="color: black;">
 						<option value="탱크" <c:if test="${map.flooring eq '탱크'}">selected</c:if>>탱크</option>
 						<option value="모래" <c:if test="${map.flooring eq '모래'}">selected</c:if>>모래</option>
 						<option value="산호사" <c:if test="${map.flooring eq '산호사'}">selected</c:if>>산호사</option>
@@ -107,7 +107,7 @@
 				<div class="input-group-prepend">
 					<label class="input-group-text" for="filterType">여과기 타입</label>
 				</div>
-				<select class="custom-select" id="filter" name="filterType" required>
+				<select class="custom-select" id="filter" name="filterType" required style="color: black;">
 						<option value="측면 여과기" <c:if test="${map.filter eq '측면 여과기'}">selected</c:if>>측면 여과기</option>
 						<option value="저면 여과기" <c:if test="${map.filter eq '저면 여과기'}">selected</c:if>>저면 여과기</option>
 						<option value="상면 여과기" <c:if test="${map.filter eq '상면 여과기'}">selected</c:if>>상면 여과기</option>
@@ -122,7 +122,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">수온</span>
 			  </div>
-			  <input type="text" class="form-control"  required name="mercury" maxlength="7" value="${map.mercury}">
+			  <input type="text" class="form-control"  required name="mercury" id="mercury" maxlength="7" value="${map.mercury}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">°C</span>
 			  </div>
@@ -132,7 +132,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">수위</span>
 			  </div>
-			  <input type="text" class="form-control" required name="waterLevel" maxlength="7" value="${map.waterLevel}">
+			  <input type="text" class="form-control" required name="waterLevel" id="waterLevel" maxlength="7" value="${map.waterLevel}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">%</span>
 			  </div>
@@ -142,7 +142,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">염분</span>
 			  </div>
-			  <input type="text" class="form-control" required name="salinity" maxlength="7" value="${map.salinity}">
+			  <input type="text" class="form-control" required name="salinity" id="salinity" maxlength="7" value="${map.salinity}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">‰</span>
 			  </div>
@@ -152,21 +152,21 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">pH</span>
 			  </div>
-			  <input type="text" class="form-control" required name="pH" maxlength="7" value="${map.pH}">
+			  <input type="text" class="form-control" required name="pH" id="pH" maxlength="7" value="${map.pH}">
 			</div>
 			
 			<div class="input-group mb-4">
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">DO</span>
 			  </div>
-			  <input type="text" class="form-control" required name="dO" maxlength="7" value="${map.dO}">
+			  <input type="text" class="form-control" required name="dO" id="dO" maxlength="7" value="${map.dO}">
 			</div>
 			
 			<div class="input-group mb-4">
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">질산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="nitrates" maxlength="7"  value="${map.nitrates}">
+			  <input type="text" class="form-control" required name="nitrates" id="nitrates" maxlength="7"  value="${map.nitrates}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -176,7 +176,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">아질산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="nitrites" maxlength="7" value="${map.nitrites}">
+			  <input type="text" class="form-control" required name="nitrites" id="nitrites" maxlength="7" value="${map.nitrites}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -186,7 +186,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">암모니아</span>
 			  </div>
-			  <input type="text" class="form-control" required name="ammonia" maxlength="7" value="${map.ammonia}">
+			  <input type="text" class="form-control" required name="ammonia" id="ammonia" maxlength="7" value="${map.ammonia}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -196,7 +196,7 @@
 			  <div class="input-group-prepend">
 			    <span class="input-group-text">인산염</span>
 			  </div>
-			  <input type="text" class="form-control" required name="phosphates" maxlength="7" value="${map.phosphates}">
+			  <input type="text" class="form-control" required name="phosphates" id="phosphates" maxlength="7" value="${map.phosphates}">
 			  <div class="input-group-append">
 			    <span class="input-group-text">ppm</span>
 			  </div>
@@ -243,6 +243,59 @@ function submitForm(form){
 	});
 	return false;
 }
+
+
+function defaultType(){
+	var type = $('#category').val();
+	switch(type){
+	case "1":
+		$('#mercury').val(26);
+		$('#waterLevel').val(80);
+		$('#salinity').val(35);
+		$('#pH').val(8);
+		$('#dO').val(5);
+		$('#nitrates').val(2);
+		$('#nitrites').val(3);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "2":
+		$('#mercury').val(27);
+		$('#waterLevel').val(80);
+		$('#salinity').val(3);
+		$('#pH').val(7);
+		$('#dO').val(6);
+		$('#nitrates').val(8);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "3":
+		$('#mercury').val(25);
+		$('#waterLevel').val(20);
+		$('#salinity').val(0);
+		$('#pH').val(0);
+		$('#dO').val(0);
+		$('#nitrates').val(0);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	case "4":
+		$('#mercury').val(25);
+		$('#waterLevel').val(0);
+		$('#salinity').val(0);
+		$('#pH').val(0);
+		$('#dO').val(0);
+		$('#nitrates').val(0);
+		$('#nitrites').val(0);
+		$('#ammonia').val(0);
+		$('#phosphates').val(0);
+		break;
+	}
+	
+}
+
 
 </script>
 

@@ -59,7 +59,7 @@
 			</div>
 
 	
-			<div class="row">
+			<div class="row text-center">
 			<!-- 페이징 처리 -->
 			<div class="mx-auto">
 			  <ul class="pagination" id="paging">
@@ -87,7 +87,7 @@
 			</div>
 			
 			<div class="text-right">
-				<button class="float-right" onclick="location.href='write.go'">글작성</button>
+				<button class="btn btn-primary btn-sm float-right" onclick="location.href='write.go'">글작성</button>
 			</div>
 			
 			</div>
@@ -96,6 +96,7 @@
 	
 	
 	</div>
+	<c:import url="/footer"/>
 </body>
 
 <script>

@@ -21,22 +21,19 @@ import kr.co.cocean.statistics.dto.TankHistoryDTO;
 public class StatisticsService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StatisticsDAO dao;
-	public Map<String, Object> statisticsChart(Model model) {
+	public Map<String, Object> statisticsChart() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<AnimalHistoryDTO> animal = dao.animalHistory();
-		ArrayList<TankHistoryDTO> tank = dao.tankHistory();
+ 		ArrayList<TankHistoryDTO> tank = dao.tankHistory();
 		ArrayList<SalesHistoryDTO> product = dao.productHistory();
-		ArrayList<SalesHistoryDTO> ticket = dao.ticketHistory();
 		ArrayList<SalesHistoryDTO> visitors = dao.visitorsHistory();
-		// 복지사이트 추가 예정??
 		
 		map.put("animal", animal);
 		map.put("tank", tank);
 		map.put("product", product);
-		map.put("ticket", ticket);
 		map.put("visitors", visitors);
 		
-		model.addAttribute("animal",animal);
+//		model.addAttribute("animal",animal);
 //		model.addAttribute("tank",tank);
 //		model.addAttribute("product",product);
 //		model.addAttribute("ticket",ticket);
