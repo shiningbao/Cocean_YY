@@ -34,6 +34,8 @@ public class ScheduleService {
 	}
 	public void facilityWrite(ScheduleDTO dto) {
 		String facilityName = dto.getTitle();
+		dto.getStart();
+		dto.getEnd();
 		int row =dao.facilityWrite(dto);
 		if(row>0) {
 			dao.updateFacility(facilityName);
