@@ -1,6 +1,7 @@
 package kr.co.cocean.approval.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
+import kr.co.cocean.tank.dto.Pager;
 @Mapper
 public interface ApprovalDAO {
 
@@ -26,7 +28,7 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> employeeInfo(String employeeID);
 
-	ArrayList<ApprovalDTO> waitingList(int employeeID);
+	ArrayList<ApprovalDTO> waitingList(int employeeID, Pager pager);
 
 	ApprovalDTO draftDetail(int idx);
 
@@ -129,6 +131,10 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> refSearch(String keyword, int employeeID);
 
 	ArrayList<ApprovalDTO> myAppSearch(String keyword, int employeeID);
+
+	Integer totalCount(HashMap<String, Object> params);
+
+	ArrayList<ApprovalDTO> waitingList(HashMap<String, Object> params);
 
 
 	/*

@@ -1025,9 +1025,7 @@ function calculateDays() {
 	 function SendAddedLineData(lineData){
 	    	getAddedLineData(lineData);
 	    }
-	 
-	
-	 
+
 		// 결재 순서 업데이트
 		function updateRowNumbers(tableId) {
 		    $(tableId + ' tbody tr').each(function(index) {

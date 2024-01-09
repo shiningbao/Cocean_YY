@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class ApprovalService {
@@ -184,8 +186,19 @@ public class ApprovalService {
 		
 	}
 
-	public ArrayList<ApprovalDTO> waitingList(int employeeID) {
-		return dao.waitingList(employeeID);
+	public ArrayList<ApprovalDTO> waitingList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		Integer total = dao.totalCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("totalCount: "+pager.getTotalCount());
+		ArrayList<ApprovalDTO> list = dao.waitingList(params);
+		return list;
 	}
 
 	public ApprovalDTO draftDetail(int idx) {

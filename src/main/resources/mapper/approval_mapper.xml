@@ -67,7 +67,12 @@
 	
 	<select id="waitingList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
+	</select>
+	
+	<select id="totalCount" parameterType="map" resultType="Integer">
+		SELECT ROUND(COUNT(*)/10) FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=230011 AND a.approvalStatus='대기' ORDER BY d.draftDate DESC
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
@@ -183,7 +188,16 @@
 	</update>
 	
 	<update id="updateDraft">
-		UPDATE draft SET publicStatus=#{param1.publicStatus},draftDate=#{param2} WHERE idx=#{param1.idx}
+		UPDATE draft SET publicStatus=#{param1.publicStatus},draftDate=#{param2}, draftStatus=
+            <choose>
+	            <when test="param1.tempSave == 1">
+	                '임시저장'
+	            </when>
+	            <otherwise>
+	            	'대기'
+	            </otherwise>
+            </choose>
+		WHERE idx=#{param1.idx}		
 	</update>
 	
 	<update id="updateApproval">

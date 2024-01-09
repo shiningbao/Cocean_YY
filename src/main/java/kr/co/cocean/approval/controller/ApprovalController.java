@@ -1,11 +1,7 @@
 package kr.co.cocean.approval.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +36,7 @@ import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
 import kr.co.cocean.approval.service.ApprovalService;
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Controller
 public class ApprovalController {
@@ -75,13 +72,14 @@ public class ApprovalController {
 	}
 
 	@GetMapping(value = "/approval/waitingList.go")
-	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr) {
+	public ModelAndView waitingList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
-			ArrayList<ApprovalDTO> list = service.waitingList(employeeID);
+			ArrayList<ApprovalDTO> list = service.waitingList(employeeID,pager);
 			mav.addObject("list", list);
+			mav.addObject("pager",pager);
 			mav.setViewName("approval/waitingList");
 		} else {
 			mav.setViewName("redirect:/");
