@@ -311,6 +311,38 @@ public class PersonnelService {
 		
 		dao.addResponsibiliy(departmentID,responName);
 	}
+	public void updateEmployeeAnnual() { 
+		
+		dao.updateEmployeeAnnual();
+	}
+	public List<HashMap<String, Object>> leaveYears() {
+		return dao.leaveYears(); 
+	}
+	public void updateAnnual(List<HashMap<String, Integer>> dataList) {
+		
+		dao.updateAnnual(dataList);
+	}
+	public void saveAnnualLeave(List<HashMap<String, Integer>> dataList) {
+		
+		dao.saveAnnualLeave(dataList);
+		
+	}
+	public List<HashMap<String, Object>> getYearValue() {
+		return dao.getYearValue();
+	}
+	public void updateAnnual(String year, String value) {
+			
+		dao.updateAnnual(year,value);
+	}
+	public HashMap<String, Object> getEmployeeAnnual(int employeeID) {
+		return dao.getEmployeeAnnual(employeeID);
+	}
+	public List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear) {
+		// TODO Auto-generated method stub
+		return dao.findAttend(employeeID,startYear,endYear);
+	}
+	
+	
 	
 	
 

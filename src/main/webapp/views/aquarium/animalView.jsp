@@ -62,6 +62,6 @@
 
 
 function detailGo(animalID,nickname){
-	location.href="detail.go?animalID="+animalID;
+	location.href="detailBase?animalID="+animalID;
 }
 </script>

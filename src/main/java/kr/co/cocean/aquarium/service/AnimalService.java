@@ -101,7 +101,28 @@ public class AnimalService {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public ModelAndView animalDetailBase(int animalID) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_base");
+		mav.addObject("base", dao.animalDetail(animalID));
+		mav.addObject("image", dao.animalImage(animalID));
+		mav.addObject("incharge", dao.animalInCharge(animalID));	
+		mav.addObject("title", dao.getAnimalTitle(animalID));
+		return mav;
+	}
+	
+	public ModelAndView animalDetailLogPlan(int animalID, String category, String month) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_log");
+		
+		mav.addObject("category", category);
+		mav.addObject("content", dao.animalLogPlan(animalID, category, month));
+		mav.addObject("month",month);
+		mav.addObject("animalID", animalID);
+		mav.addObject("title", dao.getAnimalTitle(animalID));
+		
+		return mav;
+	}
+	
 	public String animalDetailAjax(int animalID, String con, Model model) {
 		String page = "aquarium/animalDetail_"+con;
 		if(con.equals("base")) {
@@ -284,6 +305,8 @@ public class AnimalService {
 		dao.animalDel(animalID);
 		
 	}
+
+
 	
 
 

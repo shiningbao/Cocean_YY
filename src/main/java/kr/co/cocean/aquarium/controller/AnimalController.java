@@ -120,6 +120,17 @@ public class AnimalController {
 	}
 	
 /* 코션친구들 상세보기 */
+	@GetMapping(value = "/animal/detailBase")
+	public ModelAndView animalDetailBase(@RequestParam int animalID) {
+		return service.animalDetailBase(animalID);
+	}
+	
+	@GetMapping(value = "/animal/detailLogPlan")
+	public ModelAndView animalDetailBase(@RequestParam int animalID, @RequestParam String category, @RequestParam String month) {
+		return service.animalDetailLogPlan(animalID, category, month);
+	}
+	
+	
 	@GetMapping(value = "/animal/detail.go")
 	public ModelAndView animalDetailGo(@RequestParam int animalID) {
 		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
@@ -173,9 +184,7 @@ public class AnimalController {
 		return service.inchargeChange(dto);
 	}
 	
-	
-	
-	@PostMapping(value = "/animal/organization")
+	@GetMapping(value = "/animal/organization")
 	public String organization() {
 		return "personnel/organization";
 	}
