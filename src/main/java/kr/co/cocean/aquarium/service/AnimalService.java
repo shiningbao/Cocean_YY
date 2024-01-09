@@ -155,9 +155,11 @@ public class AnimalService {
 	public void logplanWrite(LogPlanDTO param) {
 		dao.logplanWrite(param);
 		
-		int animalID = param.getIdx();
-		String status = param.getStatus();
-		dao.statusChange(animalID, status);
+		if(param.getManageCategory().equals("log")) {
+			int animalID = param.getIdx();
+			String status = param.getStatus();
+			dao.statusChange(animalID, status);			
+		}
 		
 		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
 		SseService sse = new SseService();
