@@ -23,8 +23,16 @@ th {
 	font-size: 20px;
 	margin-bottom: 5%;
 }
-
-#plusButton , #plusDepartmentButton{
+#addButton{
+    position: absolute;
+    font-size: 40px;
+    background: none;
+    float: right;
+    border: none;
+    left: 80%;
+    top: 61%;
+}
+#plusButton , #plusDepartmentButton {
 	font-size: 15px;
 	float: right;
 	background: none;
@@ -111,9 +119,9 @@ table {
 }
 
 .additional-buttons{
-	    position: absolute;
-    top: 13%;
-    left: 23.5%;
+    position: absolute;
+    top: 5vw;
+    left: 24vw;
 }
 .table-header {
     background-color: lightgray;
@@ -370,8 +378,9 @@ table {
 				             <label for="rankName">담당명:</label>
 							    <div id="responNames">
 							        <input type="text" class="form-control" name="responsibility[0].category" style="width: 80%" placeholder="1개이상 담당 입력" required>
+							    	<button id="addButton" type="button">+</button>
 							    </div>
-							    <button id="addButton" type="button">+</button>
+							    
 				        </div>
 				        <div class="form-group">
 				            <label for="isActive">활성화 여부:</label>
