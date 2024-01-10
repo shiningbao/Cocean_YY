@@ -14,9 +14,25 @@ public class SalesHistoryDTO {
 	private int price;
 	private int productIndex;
 	private String status;
+	private int totalSales;
+	private int salesYear;
+	private int salesMonth;
+	private int monthlySalesNumber;
+	private int monthlyTotalSales;
+	private String yearMonth;
+	private int monthlyVisitorsNumber;
 	
+	
+	
+	public int getMonthlyVisitorsNumber() {
+		return monthlyVisitorsNumber;
+	}
+	public void setMonthlyVisitorsNumber(int monthlyVisitorsNumber) {
+		this.monthlyVisitorsNumber = monthlyVisitorsNumber;
+	}
 	private Date salesRegDate;
 	private int salesNumber;
+	
 	
 	private Date entryDate;
 	private int visitorsNumber;
@@ -68,6 +84,42 @@ public class SalesHistoryDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public int getTotalSales() {
+		return totalSales;
+	}
+	public void setTotalSales(int totalSales) {
+		this.totalSales = totalSales;
+	}
+	public int getSalesYear() {
+		return salesYear;
+	}
+	public void setSalesYear(int salesYear) {
+		this.salesYear = salesYear;
+	}
+	public int getSalesMonth() {
+		return salesMonth;
+	}
+	public void setSalesMonth(int salesMonth) {
+		this.salesMonth = salesMonth;
+	}
+	public int getMonthlySalesNumber() {
+		return monthlySalesNumber;
+	}
+	public void setMonthlySalesNumber(int monthlySalesNumber) {
+		this.monthlySalesNumber = monthlySalesNumber;
+	}
+	public int getMonthlyTotalSales() {
+		return monthlyTotalSales;
+	}
+	public void setMonthlyTotalSales(int monthlyTotalSales) {
+		this.monthlyTotalSales = monthlyTotalSales;
+	}
+	public String getYearMonth() {
+		return yearMonth;
+	}
+	public void setYearMonth(String yearMonth) {
+		this.yearMonth = yearMonth;
+	}
 	public Date getSalesRegDate() {
 		return salesRegDate;
 	}
@@ -92,5 +144,7 @@ public class SalesHistoryDTO {
 	public void setVisitorsNumber(int visitorsNumber) {
 		this.visitorsNumber = visitorsNumber;
 	}
+	
+	
 	
 }

@@ -38,23 +38,148 @@
 		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
 		INNER JOIN branch b ON b.branchID = bp.branchID
 		WHERE pi.category = "상품" -->
-		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		<!-- SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
         bp.status, ph.salesRegDate, ph.salesNumber, b.branchName
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN productHistory ph ON bp.productIndex = ph.productIndex
 		INNER JOIN branch b ON b.branchID = bp.branchID
-		WHERE pi.category != "관람객"
+		WHERE pi.category != "관람객" -->
+		
+		SELECT
+   	yearMonth,
+   	salesYear,
+   	salesMonth,
+    branchName,
+    SUM(totalSalesAmount) AS monthlyTotalSales
+FROM (
+    SELECT 
+        DATE_FORMAT(ph.salesRegDate, '%Y-%m') AS yearMonth,
+        YEAR(ph.salesRegDate) AS salesYear,
+        MONTH(ph.salesRegDate) AS salesMonth,
+        bp.productID,
+        b.branchName,
+        SUM(ph.salesNumber * pi.price) AS totalSalesAmount
+    FROM 
+        productHistory ph
+    JOIN 
+        branchProduct bp ON ph.productIndex = bp.productIndex
+    JOIN 
+        productInformation pi ON bp.productID = pi.productID
+    JOIN 
+        branch b ON bp.branchID = b.branchID
+    GROUP BY 
+        yearMonth, bp.productID, b.branchName
+) AS subquery
+GROUP BY 
+    yearMonth, salesYear, salesMonth, branchName
+ORDER BY 
+    yearMonth, branchName;
 	</select>
 
+	<select id="ticketHistory" resultType="sales">
+		<!-- SELECT th.productIndex,
+		DATE_FORMAT(th.salesRegDate , '%Y-%m') AS yearMonth,
+    b.branchID,
+    b.branchName,
+    pi.productName,
+    bp.productID,
+    pi.category,
+    pi.price,
+    YEAR(th.salesRegDate) AS salesYear,
+    MONTH(th.salesRegDate) AS salesMonth,
+    SUM(th.salesNumber) AS monthlySalesNumber,
+    SUM(th.salesNumber * pi.price) AS monthlyTotalSales
+FROM
+    ticketHistory th
+    INNER JOIN branchProduct bp ON th.productIndex = bp.productIndex
+    INNER JOIN branch b ON bp.branchID = b.branchID
+    INNER JOIN productInformation pi ON bp.productID = pi.productID
+WHERE
+    th.productIndex IN (
+        SELECT
+            th.productIndex
+        FROM
+            productInformation
+        WHERE
+            category = '티켓'
+    )
+    AND bp.status = '판매중'
+GROUP BY
+    th.productIndex,
+    b.branchID,
+    b.branchName,
+    pi.productName,
+    pi.price,
+    YEAR(th.salesRegDate),
+    MONTH(th.salesRegDate); -->
+    SELECT
+   	yearMonth,
+   	salesYear,
+   	salesMonth,
+    branchName,
+    SUM(totalSalesAmount) AS monthlyTotalSales
+FROM (
+    SELECT 
+        DATE_FORMAT(th.salesRegDate, '%Y-%m') AS yearMonth,
+        YEAR(th.salesRegDate) AS salesYear,
+        MONTH(th.salesRegDate) AS salesMonth,
+        bp.productID,
+        b.branchName,
+        SUM(th.salesNumber * pi.price) AS totalSalesAmount
+    FROM 
+        ticketHistory th
+    JOIN 
+        branchProduct bp ON th.productIndex = bp.productIndex
+    JOIN 
+        productInformation pi ON bp.productID = pi.productID
+    JOIN 
+        branch b ON bp.branchID = b.branchID
+    GROUP BY 
+        yearMonth, bp.productID, b.branchName
+) AS subquery
+GROUP BY 
+    yearMonth, salesYear, salesMonth, branchName
+ORDER BY 
+    yearMonth, branchName
+	</select>
 	<select id="visitorsHistory" resultType="sales">
-		SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
+		<!-- SELECT pi.productID, pi.productName, pi.category, pi.price, bp.productIndex, bp.branchID, 
 		bp.status, vh.entryDate, vh.visitorsNumber, b.branchName
 		FROM productInformation pi
 		LEFT JOIN branchProduct bp ON pi.productID = bp.productID
 		LEFT JOIN visitorsHistory vh ON bp.productIndex = vh.productIndex
 		INNER JOIN branch b ON b.branchID = bp.branchID
-		WHERE pi.category = "관람객"
+		WHERE pi.category = "관람객" -->
+		SELECT
+    yearMonth,
+    entryYear,
+    entryMonth,
+    branchName,
+    SUM(visitorsNumber) AS monthlyVisitorsNumber
+FROM (
+    SELECT 
+        DATE_FORMAT(vh.entryDate, '%Y-%m') AS yearMonth,
+        YEAR(vh.entryDate) AS entryYear,
+        MONTH(vh.entryDate) AS entryMonth,
+        bp.productID,
+        b.branchName,
+        vh.visitorsNumber
+    FROM 
+        visitorsHistory vh
+    JOIN 
+        branchProduct bp ON vh.productIndex = bp.productIndex
+    JOIN 
+        productInformation pi ON bp.productID = pi.productID
+    JOIN 
+        branch b ON bp.branchID = b.branchID
+    GROUP BY 
+        yearMonth, bp.productID, b.branchName
+) AS subquery
+GROUP BY 
+    yearMonth, entryYear, entryMonth, branchName
+ORDER BY 
+    yearMonth, branchName;
 	</select>
 
 </mapper>
