@@ -100,12 +100,16 @@ margin-top:15px;
 	width:200px;
 }
 
-.form-inline {
-margin-left:107px;
-margin-top:-20px;
-margin-right:50px;
+.row{
+	position: relative;
 }
 
+/*검색창*/
+.form-inline {
+	position: absolute;
+	left: 107px;
+	top: 20px;
+}
 
 
 #outreturn{
@@ -165,16 +169,16 @@ margin-top:1%;
 	 
     <nav class="navbar navbar" id="search">
 
- <form class="form-inline ">
+ 		
+
+
+<div class="row">
+<form class="form-inline ">
             <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." 
             aria-label="Search" >
             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
         </form>
-
-
-<div class="row">
    <div class="button-container">
-    
     <button type="submit" id="outreturn" class="btn btn-primary" >외부리스트</button>
     <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
     <button type="submit" id="del" class="btn btn-primary" onclick="del()">삭제</button>
