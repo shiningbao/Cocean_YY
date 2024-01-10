@@ -9,11 +9,10 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <style>
-
-	textarea {
-		height: 8em;
-		border: none;
+	.resizeAuto {
 		resize: none;
+		overflow-y: hidden;
+		min-height: 62px;
 	}
 		
 </style>
@@ -61,12 +60,13 @@
 						<tr>
 							<th class="text-center align-middle" scope="col">코션하우스</th>
 							<td>
-								<input type="text" class="form-control" name="branchID" value="1" style="display: none;" readonly/>
-								<select class="form-control" name="tankID">
+								<select class="form-control" name="tank">
 									<c:forEach items="${tankList}" var="item">
-										<option value="${item.tankID}">${item.tankName}</option>
+										<option value="${item.tankID}">${item.branchName} - ${item.tankName}</option>
 									</c:forEach>
 								</select>
+								<input type="text" class="form-control" id="branchID" name="branchID" style="display: none;" readonly/>
+								<input type="text" class="form-control" id="tankID" name="tankID" style="display: none;" readonly/>
 							</td>
 						</tr>
 						<tr>
@@ -94,7 +94,7 @@
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">세부 정보</th>
-							<td><textarea class="form-control" name="details" required></textarea></td>
+							<td><textarea class="form-control resizeAuto" id="details" name="details" oninput="resizeAuto(this)" required></textarea></td>
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">사진</th>
@@ -114,9 +114,26 @@
 		</div>
 	</div>
 	<c:import url="/animal/classifi"/>
-
+	<c:import url="/footer"/>
 </body>
 <script>
+
+var branchIDList = [];
+var tankIDList = [];
+var index;
+
+<c:forEach items="${tankList}" var="item" varStatus="idx">
+	branchIDList.push('${item.branchID}');
+	tankIDList.push('${item.tankID}');
+</c:forEach>
+
+$('#tank').on('change',function(){
+	var i = $('#tank').val();
+	$('#branchID').val(branchIDList[i]);
+	$('#tankID').val(tankIDList[i]);
+});
+
+
 
 
 // 분류체계 모달 관련
@@ -149,6 +166,11 @@ function writeSubmit(){
 		$("#classifiModal").modal('show');
 	}
 	return result;
+}
+
+function resizeAuto(e){
+	e.style.height = '62px';
+	e.style.height = (e.scrollHeight) + 'px';
 }
 
 

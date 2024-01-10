@@ -240,7 +240,9 @@
 	}
 	
 	
-	
+	function logplanUpdateGo(e,${item.logID}){
+		
+	}
 	
 	
 	

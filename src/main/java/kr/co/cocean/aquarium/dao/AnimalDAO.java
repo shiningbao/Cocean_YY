@@ -21,7 +21,7 @@ public interface AnimalDAO {
 
 	ArrayList<ClassficationDTO> classficationSearch(String keyword);
 
-	ArrayList<AnimalDTO> tankList(int branchID);
+	ArrayList<HashMap<String, Object>> tankList();
 
 	void animalWrte(AnimalDTO param);
 

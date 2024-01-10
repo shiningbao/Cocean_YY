@@ -53,8 +53,8 @@ public class AnimalService {
 		return dao.classficationSearch(keyword);
 	}
 
-	public ArrayList<AnimalDTO> tankList(int branchID) {
-		return dao.tankList(branchID);
+	public ArrayList<HashMap<String, Object>> tankList() {
+		return dao.tankList();
 	}
 	
 	
@@ -246,7 +246,7 @@ public class AnimalService {
 		AnimalDTO content = dao.animalDetail(animalID);
 		
 		mav.addObject("content", content);
-		mav.addObject("tankList", dao.tankList(content.getBranchID()));
+		mav.addObject("tankList", dao.tankList());
 		return mav;
 	}
 

@@ -10,6 +10,7 @@
 	.resizeAuto {
 		resize: none;
 		overflow-y: hidden;
+		min-height: 54px;
 	}
 	
 
@@ -108,11 +109,6 @@
 </body>
 <script>
 	split();
-// 	$('.resizeAuto').on('input', function () {
-// 	    this.style.height = 'auto';
-// 	    console.log('auto');
-// 	    this.style.height = (this.scrollHeight) + 'px';
-// 	  });
 	
 	function resizeAuto(e){
 		e.style.height = 'auto';
@@ -172,6 +168,10 @@
 		});
 	}
 	
+	function resplit(con){
+		re	
+	}
+	
 	function commentFunction(e,commentID){
 		var con = $(e).text();
 
@@ -193,18 +193,22 @@
 	}
 	
 	function commentUpdate(e,commentID){
+		$('#comment').find('button').prop('disabled', true);
 		var $target = $(e).parent().next();
 		$target.removeClass('splitCon');
 		var content = $target.html();
+		content = content.replace(/<br>/g, '\n');
 		var updateForm = '<textarea class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>';
-		updateForm +='<div class="float-right"><button>취소</button>';
-		updateForm +='<button>댓글 수정</button></div>';
+		updateForm +='<div class="float-right"><button onclick="location.href = location.href">취소</button>';
+		updateForm +='<button onclick="commentUpdateGo('+commentID+')">댓글 수정</button></div>';
 		$target.html(updateForm);
-		$target.find('textarea').val(content);
+		$target.find('textarea').val(content).trigger('input');
 		$(e).parent().children('button').css({'display':'none'});
 	}
 	
-	
+	function commentUpdateGo(commentID){
+		// 댓글 수정
+	}
 	
 
 </script>
