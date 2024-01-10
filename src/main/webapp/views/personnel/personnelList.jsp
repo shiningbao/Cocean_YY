@@ -7,25 +7,8 @@
 <meta charset="UTF-8">
 
  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<%-- <script
-=======
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<script
->>>>>>> origin/master
-	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-	crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="<c:url value='/resource/css/sidebar.css'/>">
-<<<<<<< HEAD
-<link rel="icon" href="resource/img/favi.png" type="image/x-icon"> --%>
-
-
-<!-- 부트스트랩 CSS/favicon -->
 
 <title>Insert title here</title>
 <style>
@@ -114,25 +97,28 @@
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
 		</div>
-		    <div class="card shadow mb-4">
-                      <div class="card-body">
+		
+		<div class="row"style="display:flex;">
+			<form class="form-inline" action="personnelList.go" method="get"
+				id="frm">
+				<select id="emName" class="psSelect2">
+					<option value="employeeID">사번</option>
+					<option value="name">이름</option>
+				</select> 
+				<input class="form-control mr-sm-2" id="inputSearch" type="search"
+					placeholder="사원명이나 사번을 입력하세요." aria-label="Search"> 
+					<input type="hidden" name="startNum" value="1" id="startNum">
+					<input type="hidden" name="pageNum" value="1" id="pageNum">
+			</form>
+			<button class="btn btn-outline-primary" id="psSchBtn"
+				type="button">검색</button>
+		</div>
+		
+		<div class="card shadow mb-4">
+              <div class="card-body">
                                    
-        <div id="checkBox">
         
-        <nav class="navbar navbar float-right" id="search">
-            <form class="form-inline" action="personnelList.go" method="get" id="frm">
-           		<select id="emName" class="psSelect2">
-           			<option value="employeeID">사번</option>
-           			<option value="name">이름</option>
-           		</select>
-              <input class="form-control mr-sm-2" id="inputSearch" type="search" placeholder="사원명이나 사번을 입력하세요." aria-label="Search">
-               <input type="hidden" name="startNum" value="1" id="startNum">
-              <input type="hidden" name="pageNum" value="1" id="pageNum">
-              </form>
-              <button class="btn btn-outline-primary my-2 my-sm-0" id="psSchBtn" type="button">검색</button>
-              
-          </nav>
-    	</div>
+
     
 
 	<div id="personnel_table">
@@ -173,7 +159,7 @@
 			</tbody> 
 		</table>
 	</div>
-	 <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">등록</button>
+	 
 	<div>
 	
 	
@@ -218,11 +204,13 @@
         </div>
       </div>
     </div>
+    
 </div>
                                     
                                     
                                 </div>
                             </div>
+                            <button type="button" style="margin-left: 91%;" id="personnelRegist" class="btn btn-primary " data-toggle="modal" data-target="#regModal">등록</button>
 <!-- 	<div class="thisMember">현재 사원수</div> -->
 		
 <c:import url="/footer"/>	
@@ -243,9 +231,9 @@ $('.p').click(function(){
         method: 'GET',
         success: function(response) {
             // 성공적으로 데이터를 받아온 경우 드롭다운 메뉴 생성
-            response.forEach(function(getbranch) {
-                $('.dropdown-menu').append('<a class="dropdown-item" href="#" data-value="' + getbranch + '">' + getbranch + '</a>');
-            });
+        	 response.forEach(function(branch) {
+                 $('.dropdown-menu').append('<a class="dropdown-item" href="#" data-value="' + branch.branchID + '">' + branch.branchName + '</a>');
+             });
         },
         error: function(xhr, status, error) {
             console.error(error);

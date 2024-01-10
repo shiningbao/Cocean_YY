@@ -356,7 +356,7 @@
 
 	// 알람창
 	var employeeID = '${userInfo.employeeID}';
-	//var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
+	var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
 
 	eventSource.addEventListener('connect', function(event) {
 		console.log(event.data);

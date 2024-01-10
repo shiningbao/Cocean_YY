@@ -39,6 +39,10 @@ public interface ScheduleDAO {
 
 	void updateCal(HashMap<String, Object> dataToSend);
 
+	List<HashMap<String, Object>> scheduleAlarm();
+
+	void addalarm(List<HashMap<String, Object>> result);
+
 
 	/* List<String> showInterestCalendar(String loginEmployeeID); */
 
