@@ -20,13 +20,30 @@
 <div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 
 <div>
-  <label>지점 : </label>
-  <select id="selectType">
-  </select>
-  <input type="button" id="branchChange"  value="확인">
-<canvas id="coceanFriends"></canvas>
-<canvas id="coceanHouse"></canvas>
+  <label>지점: </label>
+  <select id="selectType"></select>
+  <select id="selectsalesYearMonth"></select>
+  <input type="button" id="branchChange" value="확인">
+
+  <div class="row">
+    <div class="col">
+      <canvas id="coceanFriends"></canvas>
+    </div>
+    <div class="col">
+      <canvas id="coceanHouse"></canvas>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <canvas id="sales"></canvas>
+    </div>
+    <div class="col">
+      <canvas id="visitors"></canvas>
+    </div>
+  </div>
 </div>
+
 </div>
 </div>
 <c:import url="/footer"/>
@@ -34,6 +51,24 @@
 
 </body>
 <script>
+
+// 현재 날짜 구하기(년월 까지)
+var now = new Date();
+var year = now.getFullYear();
+var month = now.getMonth() + 1;
+var nowsalesYearMonth = year + "-" + month;
+console.log("현재 년월 : "+nowsalesYearMonth);
+
+
+//6개월 이전 날짜 계산
+var sixMonthsAgo = new Date();
+sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+var sixMonthsAgoYear = sixMonthsAgo.getFullYear();
+var sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 2;
+var sixMonthsAgosalesYearMonth = sixMonthsAgoYear + "-" + sixMonthsAgoMonth;
+console.log("6개월 이전 년월 : "+sixMonthsAgosalesYearMonth);
+
+
 $(document).ready(function(){
 	chart();
 });
@@ -46,13 +81,9 @@ function chart() {
       success: function (data) {
           console.log("통계 데이터 가져오기 성공");
           console.log(data);
-          /* drawGraph(data.animal);
-          drawGraph(data.tank);
-          drawGraph(data.product);
-          drawGraph(data.visitors); */
           
           // 지점 셀렉트 박스 추가
-          var branchs = data.visitors.filter(function (branch) {
+          var branchs = data.animal.filter(function (branch) {
 		        return branch.branchName;
 		    });
           for (var i = 0; i < branchs.length; i++) {
@@ -91,7 +122,7 @@ function chart() {
 
           // 코션하우스 차트 그리기
           console.log("코션하우스 그래프 그리기");
-          console.log(data.animal);
+          console.log(data.tank);
 			
           var doughnutChartCoceanHouse = document.querySelector('#coceanHouse').getContext('2d');
           const coceanHouse = new Chart(doughnutChartCoceanHouse, {
@@ -118,13 +149,139 @@ function chart() {
             }
           });
           
+          // 매출, 관람객 차트는 막대그래프
+       	  // 매출 차트 그리기
+          console.log("매출 그래프 그리기");
+		  
+          let salesYearMonth = [];
+          let monthlyTicketSales = [];
+          let monthlyProductSales = [];
+          
+          var ticketSales = data.ticket.filter(function (ticket) {
+		        return ticket.branchName === "가산점";
+		    });
+          console.log("티켓 매출");
+          console.log(ticketSales);
+          
+          var productSales = data.product.filter(function (product) {
+		        return product.branchName === "가산점";
+		    });
+          console.log("상품 매출");
+          console.log(productSales);
+		 for (var i = 0; i < 6; i++) {
+				salesYearMonth.push(ticketSales[i].yearMonth);
+				monthlyTicketSales.push(ticketSales[i].monthlyTotalSales);
+			} 
+		 for (var i = 0; i < 6; i++) {
+				monthlyProductSales.push(productSales[i].monthlyTotalSales);
+			} 
+			
+		// 6개월 이전까지의 데이터만 push
+			/* for (var i = 0; i < ticketSales.length; i++) {
+			  if (ticketSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && ticketSales[i].salesYearMonth <= nowsalesYearMonth) {
+			    salesYearMonth.push(ticketSales[i].salesYearMonth);
+			    monthlyTicketSales.push(ticketSales[i].monthlyTotalSales);
+			  }
+			}
+			for (var i = 0; i < ticketSales.length; i++) {
+			  if (productSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && productSales[i].salesYearMonth <= nowsalesYearMonth) {
+			    salesYearMonth.push(productSales[i].salesYearMonth);
+			    monthlyProductSales.push(productSales[i].monthlyTotalSales);
+			  }
+			} */
+			
+          var barChartSales = document.querySelector('#sales').getContext('2d');
+          const sales = new Chart(barChartSales, {
+            type: 'bar',
+            data: {
+              labels: salesYearMonth,
+              datasets: [
+              	{	
+              		label : '상품 매출',
+              		data : monthlyProductSales
+              	},
+              	{	
+              		label : '티켓 매출',
+              		data : monthlyTicketSales
+              	}],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: '매출 그래프'
+                }
+              }
+            }
+          });
+          
+          
+       	  // 관람객 차트 그리기
+          console.log("관람객 그래프 그리기");
+		  
+          let visitorsYearMonth = [];
+          let monthlyVisitorsNumber = [];
+          
+          var visitorsData = data.visitors.filter(function (visitors) {
+		        return visitors.branchName === "가산점";
+		    });
+          console.log("관람객");
+          console.log(visitorsData);
+          
+		 for (var i = 0; i < 6; i++) {
+			 visitorsYearMonth.push(visitorsData[i].yearMonth);
+			 monthlyVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
+			} 
+			
+		// 6개월 이전까지의 데이터만 push
+			/* for (var i = 0; i < ticketSales.length; i++) {
+			  if (ticketSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && ticketSales[i].salesYearMonth <= nowsalesYearMonth) {
+			    salesYearMonth.push(ticketSales[i].salesYearMonth);
+			    monthlyTicketSales.push(ticketSales[i].monthlyTotalSales);
+			  }
+			}
+			for (var i = 0; i < ticketSales.length; i++) {
+			  if (productSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && productSales[i].salesYearMonth <= nowsalesYearMonth) {
+			    salesYearMonth.push(productSales[i].salesYearMonth);
+			    monthlyProductSales.push(productSales[i].monthlyTotalSales);
+			  }
+			} */
+			
+          var barChartVisitors = document.querySelector('#visitors').getContext('2d');
+          const visitors = new Chart(barChartVisitors, {
+            type: 'bar',
+            data: {
+              labels: visitorsYearMonth,
+              datasets: [
+              	{	
+              		label : '관람객 수',
+              		data : monthlyVisitorsNumber
+              	}],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: '매출 그래프'
+                }
+              }
+            }
+          });
           // 지점 변경 버튼 클릭시
           $('#branchChange').click(function () {
             // 선택된 지점의 이름
             var selectedBranch = $('#selectType').val();
             console.log("클릭된 지점명: " + selectedBranch);
 
-            // 선택된 지점에 해당하는 데이터를 찾아서 차트 다시 그리기
+            // 선택된 지점 동물 데이터로 차트 업데이트
             var branchAnimalData = data.animal.find(function (animal) {
                 return animal.branchName === selectedBranch;
             });
@@ -138,7 +295,7 @@ function chart() {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
             }
             
-         // 선택된 지점에 해당하는 데이터를 찾아서 차트 다시 그리기
+         // 선택된 지점 수조 데이터로 차트 업데이트
             var branchTankData = data.tank.find(function (tank) {
                 return tank.branchName === selectedBranch;
             });
@@ -153,6 +310,58 @@ function chart() {
             } else {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
             }
+            
+         // 선택된 지점 티켓 데이터로 차트 업데이트
+            var branchTicketData = data.ticket.filter(function (ticket) {
+                return ticket.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 티켓 데이터");
+           console.log(branchTicketData);
+		   console.log(sales.data.datasets[1]);
+            if (branchTicketData) {
+                // 티켓 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	sales.data.datasets[1].data[i] = branchTicketData[i].monthlyTotalSales;
+			} 
+                sales.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+         // 선택된 지점 상품 데이터로 차트 업데이트
+            var branchProductData = data.product.filter(function (product) {
+                return product.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 상품 데이터");
+           console.log(branchProductData);
+		   console.log(sales.data.datasets[0]);
+            if (branchTicketData) {
+                // 상품 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	sales.data.datasets[0].data[i] = branchProductData[i].monthlyTotalSales;
+			} 
+                sales.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+            
+         // 선택된 지점 관람객 데이터로 차트 업데이트
+            var branchVisitorsData = data.visitors.filter(function (visitors) {
+                return visitors.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 관람객 데이터");
+           console.log(branchVisitorsData);
+		   console.log(visitors.data.datasets[0]);
+            if (branchVisitorsData) {
+                // 관람객 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	visitors.data.datasets[0].data[i] = branchVisitorsData[i].monthlyVisitorsNumber;
+			} 
+                visitors.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
         });
       },
       error: function (e) {
@@ -164,65 +373,6 @@ function chart() {
   
   
   
-/* var myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-          ],
-          borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-          ],
-          borderWidth: 1
-      }]
-  },
-  options: {
-      animation: {
-          duration: 0
-      }, 
-      scales: {
-          yAxes: [{
-              ticks: {
-                  beginAtZero: true
-              }
-          }]
-      }
-  }
-});
-// label 변경
-myChart.data.labels = ["R", "B", "Y", "G", "P", "O"];
-// 그냥 마치, 딕셔너리 리스트의 자료구조인 것처럼 접근해서 값을 변경해줘도 문제없습니다. 
-myChart.data.datasets[0].data = [1, 2, 3, 4, 5, 6];
-myChart.update();
-var frame_duration = 1000;
-var i=0;
-d3.interval(
-  function(){
-      if (i > 10) {
-          this.stop();
-      }
-      else {
-          myChart.data.datasets[0].data = [1 + i, 2 + i, 3 + i, 4 + i, 5 + i, 6 + i];
-          myChart.update(); // 데이터를 바꾼 다음, 이렇게 업데이트를 해야 적용된다.
-      }
-      i=i+1;
-  }, 
-  frame_duration
-); */
 
 </script>
 </html>

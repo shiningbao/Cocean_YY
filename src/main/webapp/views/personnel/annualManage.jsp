@@ -34,6 +34,13 @@ margin-bottom: 14%;
 .marginrow{
 	margin-top: 5%;
 }
+
+.addbtn,.delbtn{
+	border: none;
+	background: none;
+	font-size: 30px;
+}
+
 </style>
 </head>
 <body>
@@ -189,8 +196,8 @@ margin-bottom: 14%;
                                   </div>
                         </div>
                         <div class="col2">
-                        	<button onclick="addRow()" type="button">+</button>
-                        	<button onclick="delRow()" type="button">-</button>
+                        	<button onclick="addRow()" class="addbtn" type="button">+</button>
+                        	<button onclick="delRow()" class="delbtn"type="button">-</button>
                         </div>
                     </div>
                 </td>

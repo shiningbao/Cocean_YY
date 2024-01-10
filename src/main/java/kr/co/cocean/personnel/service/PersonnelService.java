@@ -341,6 +341,30 @@ public class PersonnelService {
 		// TODO Auto-generated method stub
 		return dao.findAttend(employeeID,startYear,endYear);
 	}
+	public int delHistory(String historyID) {
+		// TODO Auto-generated method stub
+		return dao.delHistory(historyID);
+	}
+	public int delscHistory(String historyID) {
+		// TODO Auto-generated method stub
+		return dao.delscHistory(historyID);
+	}
+	public int delDepartmentLog(String logID) {
+		// TODO Auto-generated method stub
+		return dao.delDepartmentLog(logID);
+	}
+	public List<HashMap<String, Object>> departmentChangeLogAX(String employeeID) {
+		// TODO Auto-generated method stub
+		return dao.departmentChangeLogAX(employeeID);
+	}
+	public List<HashMap<String, Object>> ajaxGetHistory(String employeeID) {
+		// TODO Auto-generated method stub
+		return dao.ajaxGetHistory(employeeID);
+	}
+	public List<HashMap<String, Object>> ajaxGetscHistory(String employeeID) {
+		// TODO Auto-generated method stub
+		return dao.ajaxGetscHistory(employeeID);
+	}
 	
 	
 	

@@ -47,7 +47,7 @@ public class SseService {
 	public void alarm(int employeeID, String content, String url) {
 		long ID = employeeID;
 		
-		String msg="<a href=\"";
+		String msg="<strong>알람:</strong><a href=\"";
 		msg += ctx+url;
 		msg += "\">";
 		msg += content;

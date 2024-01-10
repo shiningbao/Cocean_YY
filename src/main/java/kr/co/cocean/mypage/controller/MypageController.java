@@ -42,7 +42,7 @@ public class MypageController {
 	@Autowired MypageService service;
 
 		
-	
+	/*
 	@GetMapping(value="mypage/mypage")
 	public ModelAndView mypagedetail(HttpSession session) {
 		logger.info("마이 페이지 이동 요청");
@@ -56,32 +56,26 @@ public class MypageController {
 		logger.info("list: "+list);
 		mav.addObject("list", list);
 		return mav;
-	}
-
-
-	
-/*
-	@GetMapping(value="mypage/listcall")
-	@ResponseBody
-	public HashMap<String, Object> mypagelist(HttpSession session){
-		logger.info("mypage 컨트롤 접속");
-		HashMap<String, Object>result = new HashMap<String, Object>();
-		ArrayList<MypageDTO> list = service.mypagelist();
-		
-		result.put("list", list);
-		
-		return result;
 	}*/
 	
 
-	//마이페이지 리스트 
-	/*
-	@GetMapping(value="mypage/")
 	
-	*/
-
-
+	@GetMapping(value="mypage/mypage")
+	public ModelAndView mypagedetail(HttpSession session) {
+		logger.info("마이 페이지 이동 요청");
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+        logger.info("userInfo: "+userInfo);
+        int userId = userInfo.getEmployeeID();
+		logger.info("userId: "+userId);
+		ModelAndView mav = new ModelAndView("mypage/mypage");
+		HashMap<String, Object> list = service.detail(userId);
+		HashMap<String, Object> getEmployeeAnnual = service.getEmployeeAnnual(userId);
+		mav.addObject("mypage", list);	
+		mav.addObject("getEmployeeAnnual", getEmployeeAnnual);
+		return mav;
+	}
 	
+
 	
 	//수정 페이지 이동
 	@GetMapping(value="/mypage/mypageupdate")
@@ -121,22 +115,8 @@ public class MypageController {
 
 	
 	
+}
 	
-	
-	//돌아가기버튼(이거는 버리기)
-	/*
-	  @RequestMapping(value="mypage/mypageback")
-      public String back() {
-         return "mypage/mypage";
-      }
-	*/
-	
-	
-	
-	
-		
-	}
-
 	
 
 	

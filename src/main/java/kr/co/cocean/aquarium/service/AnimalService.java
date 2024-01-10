@@ -53,8 +53,8 @@ public class AnimalService {
 		return dao.classficationSearch(keyword);
 	}
 
-	public ArrayList<AnimalDTO> tankList(int branchID) {
-		return dao.tankList(branchID);
+	public ArrayList<HashMap<String, Object>> tankList() {
+		return dao.tankList();
 	}
 	
 	
@@ -101,7 +101,28 @@ public class AnimalService {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public ModelAndView animalDetailBase(int animalID) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_base");
+		mav.addObject("base", dao.animalDetail(animalID));
+		mav.addObject("image", dao.animalImage(animalID));
+		mav.addObject("incharge", dao.animalInCharge(animalID));	
+		mav.addObject("title", dao.getAnimalTitle(animalID));
+		return mav;
+	}
+	
+	public ModelAndView animalDetailLogPlan(int animalID, String category, String month) {
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_log");
+		
+		mav.addObject("category", category);
+		mav.addObject("content", dao.animalLogPlan(animalID, category, month));
+		mav.addObject("month",month);
+		mav.addObject("animalID", animalID);
+		mav.addObject("title", dao.getAnimalTitle(animalID));
+		
+		return mav;
+	}
+	
 	public String animalDetailAjax(int animalID, String con, Model model) {
 		String page = "aquarium/animalDetail_"+con;
 		if(con.equals("base")) {
@@ -134,9 +155,11 @@ public class AnimalService {
 	public void logplanWrite(LogPlanDTO param) {
 		dao.logplanWrite(param);
 		
-		int animalID = param.getIdx();
-		String status = param.getStatus();
-		dao.statusChange(animalID, status);
+		if(param.getManageCategory().equals("log")) {
+			int animalID = param.getIdx();
+			String status = param.getStatus();
+			dao.statusChange(animalID, status);			
+		}
 		
 		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
 		SseService sse = new SseService();
@@ -223,7 +246,7 @@ public class AnimalService {
 		AnimalDTO content = dao.animalDetail(animalID);
 		
 		mav.addObject("content", content);
-		mav.addObject("tankList", dao.tankList(content.getBranchID()));
+		mav.addObject("tankList", dao.tankList());
 		return mav;
 	}
 
@@ -284,6 +307,8 @@ public class AnimalService {
 		dao.animalDel(animalID);
 		
 	}
+
+
 	
 
 

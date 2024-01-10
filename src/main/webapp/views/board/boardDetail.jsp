@@ -10,6 +10,7 @@
 	.resizeAuto {
 		resize: none;
 		overflow-y: hidden;
+		min-height: 54px;
 	}
 	
 
@@ -66,7 +67,9 @@
 								</c:if>
 								${item.creationDate}
 							</div>
-							<button class="float-right">숨김</button>
+							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
+							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
+							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
 						</div>
 						<div class="mt-1 pl-2 splitCon">${item.content}</div>
 					</div>
@@ -82,20 +85,20 @@
 					익명
 				</c:if>
 	
-				<div class="d-inline">
+				<div class="d-inline mt-1">
 					<div class="float-left" style="width: 100%">
-						<textarea id="commnet" class="resizeAuto" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>
+						<textarea id="commnet" class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>
 					</div>
 					<div class="float-right">
-						<button onclick="commentWrite()">댓글 작성</button>
+						<button class="btn btn-outline-primary float-right ml-2" onclick="commentWrite()">댓글 작성</button>
 					</div>
 				</div>
 			</div>
 			</div>
 			<div>
-				<button class="float-right mt-4 ml-2">삭제</button>
-				<button class="float-right mt-4 ml-2">수정</button>
-				<button class="float-right mt-4 ml-2">목록</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2">삭제</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2">수정</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2">목록</button>
 			</div>
 		
 		</div>
@@ -106,10 +109,11 @@
 </body>
 <script>
 	split();
-	$('.resizeAuto').on('input', function () {
-	    this.style.height = 'auto';
-	    this.style.height = (this.scrollHeight) + 'px';
-	  });
+	
+	function resizeAuto(e){
+		e.style.height = 'auto';
+		e.style.height = (e.scrollHeight) + 'px';
+	}
 	
 	function commentWrite(){
 		var content = $('#commnet').val();
@@ -164,10 +168,47 @@
 		});
 	}
 	
+	function resplit(con){
+		re	
+	}
 	
+	function commentFunction(e,commentID){
+		var con = $(e).text();
+
+		swal({
+			title:'댓글을 '+con+'하시겠습니까?',
+			icon:'info',
+			buttons:['취소','확인']
+		}).then((isOkey) => {
+			if(isOkey){
+				if(con == '삭제'){
+					location.href = 'commentDel?boardID=${detail.boardID}&commentID='+commentID;
+				}else if(con == '수정'){
+					commentUpdate(e,commentID);
+				}else if(con == '숨김'){
+					location.href = 'commentHidden?boardID=${detail.boardID}&commentID='+commentID;
+				}
+			}
+		});
+	}
 	
+	function commentUpdate(e,commentID){
+		$('#comment').find('button').prop('disabled', true);
+		var $target = $(e).parent().next();
+		$target.removeClass('splitCon');
+		var content = $target.html();
+		content = content.replace(/<br>/g, '\n');
+		var updateForm = '<textarea class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>';
+		updateForm +='<div class="float-right"><button onclick="location.href = location.href">취소</button>';
+		updateForm +='<button onclick="commentUpdateGo('+commentID+')">댓글 수정</button></div>';
+		$target.html(updateForm);
+		$target.find('textarea').val(content).trigger('input');
+		$(e).parent().children('button').css({'display':'none'});
+	}
 	
-	
+	function commentUpdateGo(commentID){
+		// 댓글 수정
+	}
 	
 
 </script>

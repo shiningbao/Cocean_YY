@@ -11,42 +11,34 @@ table, th, td{
    padding: 5px 10px;
 }
 
-html,body {width:100%;  }
-body,div,ul,li{margin:0; padding:0;}
-ul,li {list-style:none;}
-
-
-/*tab css*/
-.tab{float:left; width:1200px; height:600px; overflow: auto;}
-.tabnav li{display: inline-block;  height:46px; text-align:center; border-right:1px solid #ddd;}
-.tabnav li a:before{content:""; position:absolute; left:0; top:0px; width:100%; height:3px; }
-.tabnav li a.active:before{background:#7ea21e;}
-.tabnav li a.active{border-bottom:1px solid #fff;}
-.tabnav li a{ position:relative; display:block; background: #f8f8f8; color: #000; padding:0 30px; line-height:46px; text-decoration:none; font-size:16px;}
-.tabnav li a:hover,
-.tabnav li a.active{background:#fff; color:#7ea21e; }
-
-
+/*테이블*/
 /*
- position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 200px; 
-  height: 200px; 
-  overflow: auto;
-  */
-
-
 .outaddress{
  position: absolute;
-  top: 40%; /* 예시로 10%로 조정. 필요에 따라 조절하세요. */
+  top: 50%; 
   left: 60%;
   transform: translate(-50%, -50%);
-  width: 600px;
+  width: 1000px;
   height: 50px;
+  margin-top:0px;
  
+}*/
+.outaddress{
+margin-top:-25px;
+margin-left:363px;
 }
+
+ .outaddress th {
+	background-color: #86B0F3;
+	width:137.5px;
+}
+   
+ .outaddress td {
+	background-color: #E9ECEF;
+	width:137.5px;
+}
+
+
 
 
 .inaddress{
@@ -59,7 +51,92 @@ position: absolute;
 }
 
 
+.tabnav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* 가운데 정렬을 위해 추가 */
+}
 
+.tabnav li {
+    margin-right: -5px;
+    width: 120px;
+}
+
+.tabnav a {
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #2F80ED;
+    color: #fff;
+    border-radius: 5px;
+    /*
+    transition: background-color 0.3s;
+    */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tabnav a:hover {
+   /* background-color: #2980b9;*/
+    transition: background-color 0.3s; /* 이 줄을 추가하여 지속적인 색상 변경을 방지합니다. */
+}
+
+
+
+.address {
+margin-top:15px;
+
+}
+
+ .address th {
+	background-color: #86B0F3;
+	width:200px;
+}
+   
+ .address td {
+	background-color: #E9ECEF;
+	width:200px;
+}
+
+.row{
+	position: relative;
+}
+
+/*검색창*/
+.form-inline {
+	position: absolute;
+	left: 107px;
+	top: 20px;
+}
+
+
+#outreturn{
+margin-left:300px;
+margin-bottom:20px;
+margin-top:20px;
+}
+
+#outsidejoin{
+margin-right:20px;
+}
+
+
+
+.button-container  {
+    margin-left: 466px; /* 원하는 간격으로 조절 */
+}
+
+#reserch {
+    margin-right: -20px; /* 원하는 만큼의 음수 마진 설정 */
+}
+
+
+#tab02{
+margin-top:1%;
+
+}
 
 </style>
 </head>
@@ -73,49 +150,41 @@ position: absolute;
 
 
 
-<jsp:include page="../side.jsp"></jsp:include>
+<c:import url="/side"/>
 
+<div class="container-fluid contentField">  
 
-
+<div class="card shadow p-3"> 
 <div class="tab">
 <!-- 외부검색 -->
     <ul class="tabnav">
-      <li><a href="#tab01" value="tab01">탭1</a></li>
-      <li><a href="#tab02" value="tab02">탭2</a></li>
+      <li><a href="#tab01" value="tab01" id="tab_01">외부 주소록</a></li>
+      <li><a href="#tab02" value="tab02" id="tab_02">내부 주소록</a></li>
     </ul>
     
     <div class="tabcontent">
       <div id="tab01">
-      <!-- 
-   <input type="text" name="name" placeholder="이름을 입력해주세요."/>
-   <button id="search">검색</button>
-    -->
-    <!--  
-    <nav class="navbar navbar" id="search">
-    <form class="form-inline">
-    <input type="text" name="name" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
-	<input type="button" id="reserch" value="검색" style="margin: 0px 5px;"/>
-	 </form>
-	 </nav>
-	 -->
-	 <!--  
-	     <nav class="navbar navbar" id="search">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." aria-label="Search">
-              <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch" type="submit">검색</button>
-            </form>
-          </nav>
-	 -->
 	 
 	 <div class="container text-center">
+	 
     <nav class="navbar navbar" id="search">
-        <form class="form-inline mx-auto">
-            <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." aria-label="Search">
+
+ 		
+
+
+<div class="row">
+<form class="form-inline ">
+            <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." 
+            aria-label="Search" >
             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
         </form>
-	<input type="button" id="outreturn" value="외부 리스트" style="margin: 0px 5px;"/>
-    <button onclick="del()">삭제</button>
-    <input id="outsidejoin" type="button" value="주소록 추가"/>   
+   <div class="button-container">
+    <button type="submit" id="outreturn" class="btn btn-primary" >외부리스트</button>
+    <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
+    <button type="submit" id="del" class="btn btn-primary" onclick="del()">삭제</button>
+</div>
+</div>
+  
     </nav>
 </div>
 	 
@@ -140,33 +209,41 @@ position: absolute;
 	
 	
       <div id="tab02">
-       <input type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="margin: 0px 5px;"/>
-	<input type="button" id="inreserch" value="검색" style="margin: 0px 5px;"/>
-    <input type="button" id="inreturn" value="내부 리스트" style="margin: 0px 5px;"/>
-    
-    <table class="address">
-      <thead>
-      <tr>
-         <th>이름</th>
-         <th>전화번호</th>
-         <th>직급</th>
-         <th>직책</th>
-         <th>부서</th>
-      </tr>
-      </thead>
-      <!-- 내용 -->
-      <tbody id="inlist">      
-      </tbody>      
-   </table>
-      </div>
+      
+     <div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; margin-top:8px;">
+        <input class="form-control mr-sm-2" type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="width: 200px;" aria-label="Search">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="inreserch" style="width: 60px; margin-left: 10px;">검색</button>
+        <button type="submit" id="inreturn" class="btn btn-primary" style="margin-left: 620px;">내부리스트</button>
     </div>
+
+    <table class="address">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>전화번호</th>
+                <th>직급</th>
+                <th>직책</th>
+                <th>부서</th>
+            </tr>
+        </thead>
+        <!-- 내용 -->
+        <tbody id="inlist">
+        </tbody>
+    </table>
+</div>
+    
   </div>
+  
+</div>
 
-
+</div>
 </body>
 <script>
 listCall();
 addresslistCall();
+
+
 
 //외부 리턴
 $('#outreturn').on('click',function(){
@@ -248,6 +325,8 @@ function del(){
    });
 }
 
+
+
 //외부주소록
 
 function listCall(){
@@ -309,7 +388,7 @@ $('#reserch').on('click', function () {
 
             if (data.size == 0) {
                 content = '<tr>';
-                content += '<td style="text-align: center; color: red;">' + name + '가 존재하지 않습니다.</td>';
+                content += '<td style="text-align: center; color: red;">' + name + '이 존재하지 않습니다.</td>';
                 content += '</tr>';
                 $('#list').append(content);
             } else {

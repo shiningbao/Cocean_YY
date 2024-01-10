@@ -4,69 +4,19 @@
 >
 <mapper namespace="kr.co.cocean.mypage.dao.AddressDAO">
 
-<!--  
-<select id="addresslist" resultType="kr.co.morae.mypage.dto.AddressDTO">
-		select userId, chargePrice, chargeDate, depositor from chargeHistory
-			where userId = #{param1} order by chargeNo desc limit 10 set #{param2}
-	</select>
--->	
-<!-- 
-<select id="interioraddresslist" resultType="kr.co.morae.mypage.dto.AddressDTO">
-	SELECT d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.employeeID = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID ;
-	</select>
- -->
-	<!-- 
-<select id="interioraddresspage" resultType="int">
-		select ceil(count()/10) as pages from employee where employeeID = #{param1}
-</select>
- -->
 
-<!-- 
-
-
- <delete id="del">
-      DELETE FROM personalAddressBook WHERE addressNumber=#{param1};
-   </delete>
-
-
-<select id="list" resultType="address">
-
-		SELECT addressNumber, name, positionLevel,rankLevel,departmentName,phoneNumber 
-		FROM personalAddressBook
-	</select>
-	
-<select id="inlist" resultType="inaddress">
-		SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.status = #{param1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID 
-	</select>	
- 
-
-	
-	
-
-<update id="update" parameterType="hashmap">
-		UPDATE personalAddressBook SET
-			name = #{name}
-			,positionLevel = #{positionLevel}
-			,rankLevel = #{rankLevel}
-			,departmentName = #{departmentName}
-			,phoneNumber = #{phoneNumber}
-		WHERE addressNumber =#{param1} 
-	</update>
-	-->
 
 	<select id="list" resultType="outaddress">
 		SELECT 
-			p.addressNumber, 
-			p.name, 
-			p.positionLevel , 
-			p.rankLevel ,
-			p.departmentName ,
-			p.phoneNumber 
-		FROM personalAddressBook p ORDER BY addressNumber asc
+        p.addressNumber, 
+        p.name, 
+        p.positionLevel, 
+        p.rankLevel,
+        p.departmentName,
+        p.phoneNumber
+    FROM personalAddressBook p
+    WHERE p.EmployeeID = #{userId}
+    ORDER BY p.addressNumber ASC
 	</select>
 	
 	

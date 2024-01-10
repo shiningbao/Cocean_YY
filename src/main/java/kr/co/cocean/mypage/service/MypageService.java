@@ -34,6 +34,16 @@ public class MypageService {
 	@Autowired MypageDAO dao;
 	@Autowired PasswordEncoder encoder;
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 /* 리스트
 	public HashMap<String, Object> myInfo(int userId) {
 		logger.info("서비스 받았다");
@@ -72,19 +82,6 @@ public class MypageService {
 	
 	
 
-	//비밀번호 조회
-	/*
-	public String pwCheck(int employeeID) {	
-		logger.info("다오로 가는중");
-		return dao.pwCheck(employeeID);
-	}
-	
-	//비밀번호 수정
-	
-	public Object pwUpdate(String memberId, String hashedPw) {
-
-		return dao.pwUpdate(memberId,hashedPw);
-	}*/
 	
 	//비밀번호 수정
 	
@@ -123,9 +120,30 @@ public class MypageService {
 
 
 	//마이페이지 리스트
+	/*
 	public List<HashMap<String, Object>> mypagedetail(int userId) {
 		return dao.mypagedetail(userId);
+	}*/
+
+
+
+
+
+	//내정보 리스트
+	public HashMap<String, Object> detail(int userId) {
+		
+		return dao.datail(userId);
 	}
+
+	//연차
+	public HashMap<String, Object> getEmployeeAnnual(int userId) {
+		return dao.getEmployeeAnnual(userId);	
+	}
+
+
+
+
+	
 	
 
 	

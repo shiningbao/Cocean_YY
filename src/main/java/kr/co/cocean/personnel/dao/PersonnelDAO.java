@@ -132,6 +132,18 @@ public interface PersonnelDAO {
 
 	HashMap<String, Object> getEmployeeAnnual(int employeeID);
 
-	List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear); 
+	List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear);
+
+	int delHistory(String historyID);
+
+	int delscHistory(String historyID);
+
+	int delDepartmentLog(String logID);
+
+	List<HashMap<String, Object>> departmentChangeLogAX(String employeeID);
+
+	List<HashMap<String, Object>> ajaxGetHistory(String employeeID);
+
+	List<HashMap<String, Object>> ajaxGetscHistory(String employeeID); 
 
 }

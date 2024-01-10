@@ -93,7 +93,7 @@ button {
 		<div class="topBar">
 			<div style="color: #ffffff;">하우스 정보</div>
 				<div class="barItem" onclick="location.href='houseLog.go?tankID=${map.tankID}'">하우스 기록</div>
-				<div class="barItem">관리 계획</div>
+				<div class="barItem" onclick="location.href='housePlan.go?tankID=${map.tankID}'">관리 계획</div>
 			</div>
 		</div>
 		</div>

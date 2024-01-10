@@ -64,7 +64,7 @@ public class AnimalController {
 		
 		ModelAndView mav = new ModelAndView("/aquarium/animalWrite");
 		
-		mav.addObject("tankList", service.tankList(branchID));
+		mav.addObject("tankList", service.tankList());
 		return mav;
 	}
 	
@@ -105,7 +105,7 @@ public class AnimalController {
 		
 		service.animalUpdate(files,param,employeeID);
 		
-		String page = "redirect: detail.go?animalID="+param.getAnimalID();
+		String page = "redirect: detailBase?animalID="+param.getAnimalID();
 		rAttr.addFlashAttribute("msg", "코션친구들을 수정했습니다.");
 		
 		return page;
@@ -120,29 +120,16 @@ public class AnimalController {
 	}
 	
 /* 코션친구들 상세보기 */
-	@GetMapping(value = "/animal/detail.go")
-	public ModelAndView animalDetailGo(@RequestParam int animalID) {
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail_form");
-		mav.addObject("animalID", animalID);
-		return mav;
+	@GetMapping(value = "/animal/detailBase")
+	public ModelAndView animalDetailBase(@RequestParam int animalID) {
+		return service.animalDetailBase(animalID);
 	}
 	
-	@PostMapping(value = "/animal/detail.ajax")
-	public String animalDetailAjax(@RequestParam String animalID, @RequestParam String con, Model model) {
-		logger.info("animalID : {}",animalID);
-		int intAnimalID = Integer.parseInt(animalID);
-		logger.info("con : {}",con);
-		return service.animalDetailAjax(intAnimalID, con, model);
+	@GetMapping(value = "/animal/detailLogPlan")
+	public ModelAndView animalDetailBase(@RequestParam int animalID, @RequestParam String category, @RequestParam String month) {
+		return service.animalDetailLogPlan(animalID, category, month);
 	}
-	
-	@PostMapping(value = "/animal/detail.ajax.month")
-	public String animalDetailAjaxMonth(@RequestParam String animalID, @RequestParam String con, Model model, @RequestParam String month) {
-		logger.info("animalID : {}",animalID);
-		int intAnimalID = Integer.parseInt(animalID);
-		logger.info("con : {}",con);
-		return service.animalDetailAjax(intAnimalID, con, month, model);
-	}
-	
+		
 /* 기록 계획 관련 */
 	@PostMapping(value = "/animal/logplanWrite.go")
 	@ResponseBody
@@ -173,9 +160,7 @@ public class AnimalController {
 		return service.inchargeChange(dto);
 	}
 	
-	
-	
-	@PostMapping(value = "/animal/organization")
+	@GetMapping(value = "/animal/organization")
 	public String organization() {
 		return "personnel/organization";
 	}

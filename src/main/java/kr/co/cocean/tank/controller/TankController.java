@@ -117,21 +117,29 @@ public class TankController {
 	@ResponseBody
 	public List<Map<String, Object>> gerRecord(@RequestParam String tankID, String curDate, Model model) {
 		List<Map<String, Object>> recordList = service.getRecord(tankID,curDate);
-		logger.info("recordList: "+recordList.toString());
+		// logger.info("recordList: "+recordList.toString());
 		model.addAttribute("recordList",recordList);
 		model.addAttribute("tankID", tankID);
 		return recordList;
 		
 	}
 	
+	@GetMapping("tank/housePlan.go")
+	public ModelAndView housePlan(@RequestParam int tankID) {
+		ModelAndView mav = new ModelAndView("tank/housePlan");
+		mav.addObject("tankID",tankID);
+		return mav;
+	}
 	
+	@RequestMapping("tank/addPlan.ajax")
+	@ResponseBody
+	public String addPlan(@RequestParam HashMap<String, Object> params) {
+		logger.info("params"+params); 
+		String ok = "ok";
+		//service.addPlan();
+		return ok;
+	}
 
-	
-	
-	
-	
-
-	
 }
 
 

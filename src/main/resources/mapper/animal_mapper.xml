@@ -38,8 +38,11 @@
 				OR commonName LIKE CONCAT('%',#{keyword},'%')				
 	</select>
 	
-	<select id="tankList" parameterType="int" resultType="animal">
-		SELECT tankID, tankName FROM tankManagement WHERE branchID = #{param1}
+	<select id="tankList" resultType="map">
+		SELECT branchID, b.branchName, tm.tankID, tm.tankName
+			FROM tankManagement tm
+			NATURAL JOIN branch b
+			ORDER BY branchID, tm.tankName;
 	</select>
 	
 	<insert id="animalWrte" parameterType="animal" useGeneratedKeys="true" keyColumn="animalID" keyProperty="animalID">
@@ -134,10 +137,20 @@
 		DELETE FROM animalManagement WHERE animalID=#{param1}
 	</delete>
 
+	<select id="getAnimalTitle" resultType="animal">
+		SELECT am.nickname, am.status, bct.commonName,
+			CONCAT(am.classificationCode, LPAD(am.CodeNumber,6,'0')) AS animalCode
+		FROM animalManagement am NATURAL JOIN biologicalClassificationTable bct
+		WHERE animalID=#{animalID}
+	</select>
+
 
 	<insert id="testalarm">
 		INSERT INTO notificationHistory(employeeID,url,content) values(#{param1},#{param2},#{param3});
 	</insert>
+	
+	
+	
 </mapper>
 
 
