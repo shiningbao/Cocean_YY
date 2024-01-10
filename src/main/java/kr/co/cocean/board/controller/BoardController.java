@@ -32,7 +32,7 @@ public class BoardController {
 	@Autowired BoardService service;
 	
 	@GetMapping(value = "/board/{boardTitle}/list")
-	public String boardList(@PathVariable String boardTitle,@RequestParam int page, @RequestParam String search, Model model, HttpSession session) {
+	public String boardList(@PathVariable String boardTitle,@RequestParam int page, @RequestParam String search, @RequestParam String searchCategory, Model model, HttpSession session) {
 		
 		String category = boardTitle;
 		String bt = "";	
@@ -57,11 +57,11 @@ public class BoardController {
 		Pager pager = new Pager();
 		int perPage = 10;
 		pager.setPageNum(page);
-		pager.setTotalCount(service.getTotalCount(category, perPage));
+		pager.setTotalCount(service.getTotalCount(category, perPage,searchCategory,search));
 		model.addAttribute("pager", pager);
 		model.addAttribute("bt", bt);
-		model.addAttribute("list", service.boardList(category,perPage,pager.getPageNum()));
-		model.addAttribute("list_pin", service.boardList_pin(category));
+		model.addAttribute("list", service.boardList(category,perPage,pager.getPageNum(),searchCategory,search));
+		//model.addAttribute("list_pin", service.boardList_pin(category));
 		
 		return "board/boardList";
 	}
@@ -69,7 +69,6 @@ public class BoardController {
 	
 	@GetMapping(value = "/board/{boardTitle}/write.go")
 	public String boardWriteGo(@PathVariable String boardTitle, Model model) {
-		
 		String bt = "";	
 		switch (boardTitle) {
 			case "notice":
@@ -119,9 +118,9 @@ public class BoardController {
 		param.setCategory(category);
 		
 		service.boardWrite(param);
-		rAttr.addFlashAttribute("msg", "게시글을 등록했습니다.");
+		rAttr.addFlashAttribute("msg", "게시글을 작성했습니다.");
 		
-		return "redirect:/board/"+boardTitle+"/list";
+		return "redirect:/board/"+boardTitle+"/list?searchCategory=&search=&page=1";
 	}
 	
 	
@@ -174,9 +173,20 @@ public class BoardController {
 	}
 	
 	
+	@GetMapping(value = "/board/{boardTitle}/commentDel")
+	public String commentDel(@PathVariable String boardTitle, @RequestParam int commentID, @RequestParam int boardID) {
+		String redirect = "redirect:/board/"+boardTitle+"/detail?boardID="+boardID;
+		service.commentDel(commentID);
+		return redirect;
+		
+	}
 	
-	
-	
+	@GetMapping(value = "/board/{boardTitle}/commentHidden")
+	public String commentHidden(@PathVariable String boardTitle, @RequestParam int commentID, @RequestParam int boardID) {
+		String redirect = "redirect:/board/"+boardTitle+"/detail?boardID="+boardID;
+		service.commentHidden(commentID);
+		return redirect;
+	}
 	
 	
 	

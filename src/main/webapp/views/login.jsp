@@ -92,5 +92,17 @@
         </div>
     </body>
     <script>
+    
+	var msg = "${msg}";
+	if(msg != ""){
+		swal({
+			title: msg,
+			button: '확인'
+		});
+	}
+    
+    
+    
+    
     </script>
 </html>

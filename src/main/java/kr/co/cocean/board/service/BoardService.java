@@ -21,9 +21,9 @@ public class BoardService {
 	
 	Logger logger = LoggerFactory.getLogger(getClass());
 
-	public ArrayList<BoardDTO> boardList(String category, int perPage, Integer pageNum) {
+	public ArrayList<BoardDTO> boardList(String category, int perPage, Integer pageNum, String searchCategory, String search) {
 		Integer offset = (pageNum -1) * perPage;
-		return dao.boardList(category,perPage,offset);
+		return dao.boardList(category,perPage,offset,searchCategory,search);
 	}
 
 	public ArrayList<BoardDTO> boardList_pin(String category) {
@@ -56,11 +56,19 @@ public class BoardService {
 		return dto;
 	}
 
-	public int getTotalCount(String category,int perPage) {
-		int count = dao.getTotalCount(category);
+	public int getTotalCount(String category,int perPage, String searchCategory, String search) {
+		int count = dao.getTotalCount(category,searchCategory,search);
 		int totalCount = (int) Math.ceil((double) count / perPage);
 		logger.info("totalCount: {}",totalCount);
 		return totalCount;
+	}
+
+	public void commentDel(int commentID) {
+		dao.commentDel(commentID);
+	}
+
+	public void commentHidden(int commentID) {
+		dao.commentHidden(commentID);
 	}
 	
 	

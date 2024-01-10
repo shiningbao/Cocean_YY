@@ -61,16 +61,19 @@
 	.alarmclick:hover{
 		cursor: pointer;
 	}
-	.alrmDel:hover{
+	.alarmDel:hover{
 		cursor: pointer;
 	}
-	#alarmtest{
-		display: none;
+	#alarmDiv{
+ 		display: none;
 		position: fixed;
-		width: 300px;
-		background-color : red;
+		width: 280px;
 		right: 30px;
 		bottom: 10px;
+		z-index: 10;
+	}
+	#alarmText{
+		width: 220px;
 	}
 	
 </style>
@@ -187,10 +190,10 @@
                 </a>
                 <div id="board" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href='<c:url value="/board/notice/list?page=1&search=''"/>' >공지사항</a>
-                        <a class="collapse-item" href='<c:url value="/board/anony/list?page=1&search=''"/>' >익명게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/department/list?page=1&search=''"/>' >부서게시판</a>
-                        <a class="collapse-item" href='<c:url value="/board/program/list?page=1&search=''"/>' >프로그램 일정</a>
+                        <a class="collapse-item" href='<c:url value="/board/notice/list?searchCategory=&search=&page=1"/>' >공지사항</a>
+                        <a class="collapse-item" href='<c:url value="/board/anony/list?searchCategory=&search=&page=1"/>' >익명게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/department/list?searchCategory=&search=&page=1"/>' >부서게시판</a>
+                        <a class="collapse-item" href='<c:url value="/board/program/list?searchCategory=&search=&page=1"/>' >프로그램 일정</a>
                     </div>
                 </div>
             </li>
@@ -318,7 +321,7 @@
                 <div class="modal-body">로그아웃 확인 메시지</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="#">로그아웃</a>
+                    <a class="btn btn-primary" href="<c:url value='/mypage/logout'/>">로그아웃</a>
                 </div>
             </div>
         </div>
@@ -326,10 +329,12 @@
     
     
     <!-- 알림오면 생기는 창 -->
-    <div id="alarmtest">
-		<div>eeeeeeeee</div>
-		<div ><i class="fas fa-times alrmDel" onclick="alarmHidden()"></i></div>
+	<div id="alarmDiv" class="alert alert-primary" role="alert">
+	 	<div id="alarmText" class="float-left"></div>
+		<div class="float-right alarmDel"><i class="fas fa-times" onclick="alarmHidden()"></i></div>
 	</div>
+	
+	
 <%-- <script src="<c:url value='/resource/vendor/jquery/jquery.min.js'/>"></script> --%>
 <script	src="<c:url value='/resource/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resource/vendor/jquery-easing/jquery.easing.min.js'/>"></script>
@@ -337,6 +342,15 @@
 </body>
 
 <script>
+	
+	var msg = "${msg}";
+	if(msg != ""){
+		swal({
+			title: msg,
+			button: '확인'
+		});
+	}
+	
 	$('#sidebarToggle').on('click',function(){
 		var width = $('#accordionSidebar').width();
 		console.log(width);
@@ -350,13 +364,9 @@
 		
 	});
 
-
-
-
-
 	// 알람창
 	var employeeID = '${userInfo.employeeID}';
-	//var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
+	var eventSource = new EventSource(	'<c:url value="/sse/subscibe/'+employeeID+'"/>');
 
 	eventSource.addEventListener('connect', function(event) {
 		console.log(event.data);
@@ -364,8 +374,8 @@
 	
 	eventSource.addEventListener('alarm', function(event) {
 		//console.log(event.data);
-		$('#alarmtest').html(event.data);
-		$('#alarmtest').css({'display':'block'});
+		$('#alarmText').html(event.data);
+		$('#alarmDiv').css({'display':'block'});
 		setTimeout(function () {
 			alarmHidden();
         }, 5000);
@@ -373,7 +383,7 @@
 	});
 
 	function alarmHidden(){
-		$('#alarmtest').css({'display':'none'});
+		$('#alarmDiv').css({'display':'none'});
 	}
 	
 	alarmList();
@@ -414,7 +424,7 @@
 				}else if(list[i].url.includes('/schedule')){
 					con += '<div class="icon-circle bg-info"><i class="fi fi-sr-calendar-pen text-white">';
 				}else{
-					con += '<div class="icon-circle bg-info"><i class="fi fi-sr-calendar-pen text-black">';
+					con += '<div class="icon-circle bg-light"><i class="far fa-bell text-black">';
 				}
 				
 				con += '</i></div></div><div class="alarmclick mr-5" style="width: 100%" onclick="location.href=\'';
@@ -422,12 +432,12 @@
 				con += list[i].notificationTime;
 				con += '</div><div>';
 				con += list[i].content;
-				con += '</div></div><div class="float-right"><i class="fas fa-times hover" onclick="alarmDel('
+				con += '</div></div><div class="float-right alarmDel"><i class="fas fa-times hover" onclick="alarmDel('
 				con += list[i].historyID;
 				con += ')"></i></div></div>';
 				dropdown += con;
 			}
-			dropdown +='</div><div class="dropdown-item text-center small text-gray-500" onclick="alarmDel(\'all\')">모두 삭제</a>';					
+			dropdown +='</div><div class="dropdown-item text-center small text-gray-500 alarmDel" onclick="alarmDel(\'all\')">모두 삭제</div>';					
 		}		
 		$('#alarmDrop').html(dropdown);
 		

@@ -5,7 +5,7 @@
 <mapper namespace="kr.co.cocean.alarm.dao.AlarmDAO">	
 
 	<select id="getList" resultType="alarm">
-		SELECT historyID, url, content, TO_CHAR(notificationTime, 'yyyy-mm-dd hh24:mi') notificationTime
+		SELECT historyID, url, content, DATE_FORMAT(notificationTime, '%Y-%m-%d %H:%i') AS notificationTime
 		FROM notificationHistory WHERE employeeID = #{param1} AND isRead = 0
 	</select>
 	
