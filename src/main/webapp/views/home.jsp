@@ -32,7 +32,8 @@
 			  <div class="card-body" style="align-items: center;">
 			    <h3 class="card-title" id="branch"></h3>
 			    <div style="width: 200px; height: 200px;">
-			    <h5 class="card-text"><img src="" id="icon" style="width: 75%; height: 75%; border-radius: 50%; margin-top: 6%;"/></h5>
+			    <h5 class="card-text" style="background-color: white; width: 80%; height: 80%; border-radius: 50%; margin-left: 10%;"
+			    ><img src="" id="icon" style="width: 75%; height: 75%; border-radius: 50%; margin-top: 10%;"/></h5>
 			    <h5 id="weatherMain"></h5>
 			    </div>
 			    <h3 class="card-text" id="nowTemp">&nbsp;</h3>
