@@ -146,7 +146,7 @@ public interface ApprovalDAO {
 
 	Integer sCount(HashMap<String, Object> params);
 
-	HashMap<String, Object> removeSave(String selected);
+	int removeList(String idx, String titleID);
 
 
 	/*

@@ -79,6 +79,7 @@ button{
 
 #approvalLine{
 	font-size : 10px;
+	border-spacing : 10px 10px;
 	
 }
 
@@ -177,8 +178,41 @@ button{
 	float:left;
 }
 
+.input-file-button{
+    padding: 3px 10px;
+    background-color: #2e59d9;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 83px;
+}
 
+.delete{
+	cursor:pointer;
+}
 
+th {
+    background-color: #ededed;
+}
+
+.orderNum{
+	background-color: white;
+}
+
+.order{
+	background-color: white;
+}
+
+.addApprovalLine{
+	width:20px;
+	height:20px;
+
+}
+
+.delete{
+	width:15px;
+	height:15px;
+}
 </style>
 </head>
 <body>
@@ -295,7 +329,7 @@ button{
 	</tr>
 	<tr>
 	    <th>잔여 연차</th>
-	    <td id="remain" contentEditable="false" style="background-color:lightgray;">${draftInfo.remainingAnnualLeave}일</td>
+	    <td id="remain" contentEditable="false" style="background-color:#ededed;">${draftInfo.remainingAnnualLeave}일</td>
 	</tr>
 	
 	<tr>
@@ -335,7 +369,10 @@ button{
 
 
 <br/>
-<input type="file" name="files" multiple="multiple">
+<label class="input-file-button" for="input-file">
+ 파일첨부
+</label>
+<input type="file" id="input-file" style="display:none;"/>
 <br/>
 
 
@@ -363,13 +400,13 @@ button{
 </div>
 
 <div id="rightContainer">
-<div class="card shadow">
-	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <a href="#" class="addApprovalLine" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; font-size: 30px; cursor: pointer; font-weight: bold; position: absolute; top: -3px; right: 35px;">+</a>
+<div class="card shadow" style="margin-left:10px;">
+	<div class="lineContent" style="padding: 10px 15px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
 	<hr/>
 		<table id="approvalLine">
 			<tr>
-				<th>1</th>
+				<th class="img-profile rounded-circle"></th>
 				<td>상신</td>
 				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
 				<td>${draftInfo.rankName}</td>
@@ -561,15 +598,16 @@ function calculateDays() {
 	   if(confirm("등록하시겠습니까?")){
 		var title = $('input[name="title"]').val(); // 업무기안서
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
-		var lastOrder = $("#approvalLine tbody tr:last th").text(); // 결재라인의 마지막 순서
+		var lastOrder = parseInt($("#approvalLine tbody tr:last .order").val()); // 결재라인의 마지막 순서
 		var lastLine = [];
 		
+		console.log("마지막순서:"+lastOrder);
 	    var formData = new FormData();
 
 	    var filesInput = $('input[name="files"]')[0];
 	    var files = filesInput.files;
-	    console.log(files.length);
-	    console.log(filesInput);
+	    // console.log(files.length);
+	    // console.log(filesInput);
 	    if (files.length === 0) {
 	        formData.append('files', null);
 	    }else{
@@ -617,10 +655,10 @@ function calculateDays() {
     	// console.log(lastLine);
 	    
 	    $("#approvalLine tbody tr").each(function (index) {
-	        var order = $(this).find('.order').text(); // 각자의 순서
+	        var order = $(this).find('.order').val(); // 각자의 순서
 	        var employeeID = $(this).find('.employeeID').val(); // 결재자,합의자,참조자
 	        var category = $(this).find('.category').text();
-	        
+	        console.log("순서:"+order);
 		
 	        if (employeeID !== undefined && category == '결재') {
 	            lastLine.push({
@@ -632,7 +670,7 @@ function calculateDays() {
 	    });
 
 	    $("#approvalLine tbody tr").each(function (index) {
-	    	 var order = $(this).find('.order').text(); // 각자의 순서
+	    	 var order = $(this).find('.order').val(); // 각자의 순서
 		     var employeeID = $(this).find('.employeeID').val();
 		     var category = $(this).find('.category').text();
 		     
@@ -895,17 +933,22 @@ function calculateDays() {
 		    var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
 		        var row = $("<tr>");
-		        row.append("<th scope='row' class='order'>" + (appTable.find("tr").length + 1) + "</th>");
+		        if(lineData.category=="결재" || lineData.category== "합의")
+		        	row.append("<th class='img-profile rounded-circle'><input type='hidden' name='order' class='order' value='" + (appTable.find("tr").length + 1) + "'></th>");
+		      /*   
+		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
+		        	row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
+		        } */
 		        row.append("<td class='category'>" + lineData.category + "</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
-		            row.append('<label class="delete">'+'x'+'</label>');
+		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        } 
 		        else {
 		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
 		            row.append("<td>" + lineData.rank + "</td>");
 		            row.append("<td>" + lineData.name + "</td>");
-		            row.append('<label class="delete">'+'x'+'</label>');
+		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        appTable.append(row);
@@ -913,18 +956,18 @@ function calculateDays() {
 		        // console.log(lineData.employeeID);
 
 		        // signatureTable   
-		        if(lineData.category =="결재"&&row.find(".order").html() == 2){
+		        if(lineData.category =="결재"&&appTable.find(".category:contains('결재')").length==1){
 			        var content=
 			        "<table class='signApp'>"+
 						"<tr>"+
-					        "<td rowspan='3' style='width: 20px;'>"+"결재"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
-					        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					        "<td rowspan='3' style='width: 20px; background-color:#ededed;'>"+"결재"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:13px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
 					    "</tr>"+
 					    "<tr>"+
 					        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 					    "</tr>"+
 					    "<tr>"+
-					        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 					    "</tr>"+
 					"</table>"
 					signTable.append(content);
@@ -934,21 +977,21 @@ function calculateDays() {
 			        var scLastTd=$('.signApp:last tr:odd td:last');
 			        var lastTd=$('.signApp:last td:last');
 			        
-			        $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+			        $("<td rowspan='3' style='width: 20px; background-color:#ededed;'>결재<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
 			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>").insertAfter(scLastTd);
-			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
+			        $("<td style='width: 80px; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
 		        	}else if (lineData.category == "합의"&&appTable.find(".category:contains('합의')").length==1) {
 		        		  var content =
 		        			  "<table class='agrSign'>"+
 								"<tr>"+
-							        "<td rowspan='3' style='width: 20px;'>"+"합의"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
-							        "<td style='width: 80px; font-size:13px; padding : 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+							        "<td rowspan='3' style='width: 20px; background-color:#ededed;' >"+"합의"+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+							        "<td style='width: 80px; font-size:13px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
 							    "</tr>"+
 							    "<tr>"+
-							        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>"+
+							        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 							    "</tr>"+
 							    "<tr>"+
-							        "<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"날짜"+"</td>"+
+							        "<td style='width: 80px; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
 							    "</tr>"+
 							"</table>"
 							agrSign.append(content);
@@ -958,9 +1001,9 @@ function calculateDays() {
 		 			        var scLastTd=$('.agrSign:last tr:odd td:last');
 		 			        var lastTd=$('.agrSign:last td:last');
 		 			        
-		 			        $("<td rowspan='3' style='width: 20px;'>합의<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
-		 			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+"싸인"+"</td>").insertAfter(scLastTd);
-		 			        $("<td style='width: 80px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'>"+"날짜"+"</td>").insertAfter(lastTd);
+		 			        $("<td rowspan='3' style='width: 20px; background-color:#ededed;'>합의<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td><td style='width: 80px; font-size:13px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>" +lineData.positionName+"\u00A0"+lineData.name+ "</td>").insertAfter(frLastTd);
+		 			        $("<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>").insertAfter(scLastTd);
+		 			        $("<td style='width: 80px; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'><input type='hidden'></td>").insertAfter(lastTd);
 		                  
 		                }
 		        	
@@ -970,11 +1013,11 @@ function calculateDays() {
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row = $("<td>" + lineData.rank + lineData.name + "</td>");
 		            row.append(row);
-		            row.append('<label class="delete">' + 'x' + '</label>');
+		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        } else {
 		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
 		            row.append(row);
-		            row.append('<label class="delete">' + 'x' + '</label>');
+		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);
@@ -1015,9 +1058,42 @@ function calculateDays() {
 		// 결재 순서 업데이트
 		function updateRowNumbers(tableId) {
 		    $(tableId + ' tbody tr').each(function(index) {
-		        $(this).find('th:first').text(index + 1);
+		    	 var row = $(this);
+		         var orderInput = row.find('.order');
+		         orderInput.val(index + 1);
+		    });
+		}  
+		
+
+		
+		/* function updateRowNumbers(tableId) {
+		    var rows = $(tableId + ' tbody tr');
+
+		    rows.each(function(index) {
+		        var currentRow = $(this);
+		        var currentCategory = currentRow.find('.category').text();
+		        console.log(currentRow.html());
+
+		        // Check if the current row has '결재' category
+		        if (currentCategory === '결재') {
+		            var prevRow = rows.eq(index - 1);
+		            var prevPrevRow = rows.eq(index - 2);
+
+		            // Check if the previous row has '합의' category and the row before the previous one has an index greater than or equal to 2
+		            if (prevRow.length && prevRow.find('.category').text() === '합의' && prevPrevRow.length && prevPrevRow.index() >= 2) {
+		                currentRow.find('.order').text(prevPrevRow.index() + 2);
+		            } else {
+		                currentRow.find('.order').text(index + 1);
+		            }
+		        } else {
+		            currentRow.find('.order').text(index + 1);
+		        }
 		    });
 		}
+		 */
+		
+		
+		
 		 // 결재라인 추가한거 취소
 		
 </script>
