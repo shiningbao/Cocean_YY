@@ -71,7 +71,9 @@ fa-building' AS 'icon'
 		FROM branch b;
 			</select>
 	
-
+	<select id="totalCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM employee e;
+	</select>
 	
 	<select id="personnelList">
 		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
@@ -81,7 +83,7 @@ fa-building' AS 'icon'
 		JOIN branch b  ON h.branchID = b.branchID 
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r  ON e.rankID = r.rankID
-		ORDER BY e.employeeID ASC
+		ORDER BY e.employeeID ASC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="getSelectOptionBranch">
@@ -267,10 +269,60 @@ fa-building' AS 'icon'
 	</update>
 	
 	<select id="getDepartmentMembers">
-		SELECT count(employeeID) FROM employee e JOIN department d ON e.departmentID = d.departmentID WHERE d.departmentID =#{departmentID};
+		SELECT CONCAT(e.name ," ",p.positionName) AS name   FROM employee e 
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN `position` p ON p.positionID  = e.positionID 
+		WHERE d.departmentID =#{departmentID};
 	</select>
 
 	<insert id="addResponsibiliy">
 		INSERT INTO responsibility (departmentID,responName) VALUES (#{departmentID},#{responName})
 	</insert>
+	
+	<update id="updateEmployeeAnnual">
+		update employee set remainingAnnualLeave = 0;
+	</update>
+	
+	<select id="leaveYears">
+		SELECT joinDate
+		FROM employee e 
+		WHERE joinDate;
+	</select>
+	
+	<update id="saveAnnualLeave" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" separator=";">
+		UPDATE annualLeave SET year =#{item.year}, value=#{item.value}
+		WHERE year = #{item.year}
+		</foreach>
+	</update>
+	
+	<select id="getYearValue">
+		SELECT year,value FROM annualLeave;
+	</select>
+
+
+	<select id="getEmployeeAnnual" >
+	    SELECT value
+		FROM annualLeave
+		WHERE year = (
+		    SELECT FLOOR(DATEDIFF(NOW(), joinDate) / 365) AS years 
+		    FROM employee 
+		    WHERE  employeeID = #{employeeID}
+		); 
+	</select>
+	
+	<update id="updateAnnual" parameterType="String">
+	        UPDATE employee
+	        SET remainingAnnualLeave = #{value}
+	        WHERE FLOOR(DATEDIFF(NOW(), joinDate) / 365) = #{year}
+	</update>
+	
+	<select id="findAttend">
+		SELECT ad.category ,ad.vacationStartDate ,ad.vacationEndDate ,ad.usageTime  
+		FROM attendanceDraft ad JOIN draft d ON ad.idx =d.idx WHERE employeeID =#{employeeID}
+		AND ad.vacationStartDate BETWEEN #{startYear} AND #{endYear}
+	</select>
+	
+	
+
 </mapper>

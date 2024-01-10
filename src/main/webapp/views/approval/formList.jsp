@@ -21,11 +21,6 @@
 	text-align: center;
 }
 
-#search input {
-	z-index: 99999;
-}
-
-
 @media screen and (max-width: 1457px) {
 	#search {
 		top: 23%;
@@ -44,21 +39,21 @@
 <c:import url="/side"/>
 <div class="container-fluid contentField">
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+<div class="d-sm-flex align-items-center justify-content-between mb-4" style="padding-top: 15px;">
 	<div class="hTitle">
 	<h1 class="h3 mb-0 text-gray-800">기안서 양식</h1>
 	</div>
 </div>
-<div class="card shadow mb-4">
 
- <nav class="navbar navbar float-right" id="search">
+ <nav class="navbar navbar" id="search">
  <form class="form-inline">
     <input class="form-control mr-sm-2" id="keyword" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="formSearch()">검색</button>
  </form>
 </nav>
-	
-	
+
+<div class="card shadow mb-4">
+
 	<% 
    Date myDate = new Date();
    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

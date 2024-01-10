@@ -36,7 +36,7 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> getDepartmentText(String departmentText);
 
-	List<HashMap<String, Object>> personnelList();
+	List<HashMap<String, Object>> personnelList(HashMap<String, Object> params);
 
 	List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue);
 
@@ -112,8 +112,26 @@ public interface PersonnelDAO {
 
 	void editDp(String departmentName, String departmentID, Boolean isActive);
 
-	int getDepartmentMembers(String departmentID);
+	List<HashMap<String, Object>> getDepartmentMembers(String departmentID);
 
 	void addResponsibiliy(String departmentID, String responName);
+
+	Integer totalCount(HashMap<String, Object> params);
+
+	void updateEmployeeAnnual();
+
+	List<HashMap<String, Object>> leaveYears();
+
+	void updateAnnual(List<HashMap<String, Integer>> dataList);
+
+	void saveAnnualLeave(List<HashMap<String, Integer>> dataList);
+
+	List<HashMap<String, Object>> getYearValue();
+
+	void updateAnnual(String year, String value);
+
+	HashMap<String, Object> getEmployeeAnnual(int employeeID);
+
+	List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear); 
 
 }

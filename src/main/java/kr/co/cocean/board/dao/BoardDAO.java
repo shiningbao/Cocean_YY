@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.co.cocean.board.dto.BoardDTO;
 
 @Mapper
 public interface BoardDAO {
 
-	ArrayList<BoardDTO> boardList(String category, int perPage, Integer offset);
+	ArrayList<BoardDTO> boardList(@Param("category") String category
+			,@Param("perPage") int perPage, @Param("offset")Integer offset
+			,@Param("searchCategory")String searchCategory,@Param("search") String search);
 	
 	ArrayList<BoardDTO> boardList_pin(String category);
 
@@ -26,6 +29,10 @@ public interface BoardDAO {
 
 	BoardDTO commentDetail(int commentID);
 
-	int getTotalCount(String category);
+	int getTotalCount(@Param("category") String category, @Param("searchCategory")String searchCategory,@Param("search") String search);
+
+	void commentDel(int commentID);
+
+	void commentHidden(int commentID);
 
 }

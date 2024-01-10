@@ -17,30 +17,31 @@
 
 <style>
 	
-/* 	.topBar { */
-/* 		width: 100%; */
-/* 		height: 60px; */
+ .topBar { 
+    width: 100%;
+    height: 60px;
+    left: 130px;
+ 	background-color: #86B0F3; 
+ 	display: flex; 
+	
+ 	justify-content: space-evenly; 
+ } 
+ .topBar div{ 
+	
+ 	width: 100%; 
+ 	height: 100%; 
+ 	position: relative; 
+ 	text-align: center; 
+ 	font-size: 21px; 
+ 	padding-top: 14px; 
+ 	cursor: default; 
+ } 
 
-/* 		background-color: #86B0F3; */
-/* 		display: flex; */
-		
-/* 		justify-content: space-evenly; */
-/* 	} */
-/* 	.topBar div{ */
-		
-/* 		width: 33%; */
-/* 		height: 100%; */
-/* 		position: relative; */
-/* 		text-align: center; */
-/* 		font-size: 21px; */
-/* 		padding-top: 14px; */
-/* 		cursor: default; */
-/* 	} */
-	.barItem:hover{
-		cursor: pointer;
-		background-color: #2F80ED;
-		padding-top: 13px;
-	}
+.barItem:hover{
+	cursor: pointer;
+	background-color: #2F80ED;
+	padding-top: 13px;
+}
 	
 	.imgChange:hover{
 		cursor: pointer;
@@ -51,22 +52,21 @@
 <body>
 	<c:import url="/side"/>
 	<div class="container-fluid contentField">
+	
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
 		</div>
-	
-		<div class="card shadow mb-4">
-
+		
+		<div class="col-10 mx-auto">
 			<div class="topBar">
 				<div class="barItem" id="base">친구들 정보</div>
 				<div class="barItem" id="log">친구들 기록</div>
 				<div class="barItem" id="plan">관리 계획</div>
 			</div>
-			
 			<h2 class="animalTilte"></h2>
-			
+				
+			<div class="drawContent"></div>
 		</div>
-		<div class="drawContent"></div>
 	</div>
 	<c:import url="/footer"/>
 </body>

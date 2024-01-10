@@ -1,5 +1,7 @@
 package kr.co.cocean.personnel.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,10 +33,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
+import kr.co.cocean.personnel.dto.annualDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 import kr.co.cocean.personnel.service.PersonnelService;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
+import kr.co.cocean.tank.dto.Pager;
+import kr.co.cocean.tank.dto.TankDTO;
 
 @Controller
 public class PersonnelController {
@@ -117,10 +124,10 @@ public class PersonnelController {
 	}
 	
 	@RequestMapping(value="/personnel/personnelList.go")
-	public ModelAndView personnelList() {
+	public ModelAndView personnelList(TankDTO tankDTO,Pager pager) {
 		
 		ModelAndView mav = new ModelAndView("personnel/personnelList");
-		 List<HashMap<String, Object>> list = service.personnelList();
+		 List<HashMap<String, Object>> list = service.personnelList(pager);
 		 for (HashMap<String, Object> hashMap : list) {
 			 if(hashMap.get("departmentName").equals("-가산")) {
 				 hashMap.put("departmentName", "-");
@@ -129,6 +136,7 @@ public class PersonnelController {
 				 hashMap.put("departmentName", "-");
 			 } 
 		}
+		 mav.addObject("pager", pager);
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
 		return mav;
@@ -142,14 +150,23 @@ public class PersonnelController {
 		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
 		List<HashMap<String, Object>> workHistory = service.workHistory(employeeID);
 		List<HashMap<String, Object>> departmentChangeLog = service.departmentChangeLog(employeeID);
+		HashMap<String, Object> getEmployeeAnnual = service.getEmployeeAnnual(employeeID);
 		logger.info("@@@@@"+departmentChangeLog);
 		logger.info("detailList=="+list);
+		mav.addObject("getEmployeeAnnual", getEmployeeAnnual);
 		mav.addObject("person", list);
 		mav.addObject("employeeHistory", employeeHistory);
 		mav.addObject("workHistory", workHistory);
 		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
 	} 
+	@PostMapping(value="/personnel/findAttend.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> findAttend(@RequestParam String employeeID , @RequestParam String startYear, @RequestParam String endYear){
+		
+		List<HashMap<String, Object>> list = service.findAttend(employeeID, startYear,endYear);
+		return list;
+	}
 	
 	@GetMapping(value="/personnel/getSelectOptionBranch.do")
 	@ResponseBody
@@ -374,8 +391,11 @@ public class PersonnelController {
 		}else if(employeeID.startsWith("de")) {
 			String departmentID =employeeID.substring(2);
 			HashMap<String, Object> dpInfo = service.getdepartmentInfo(departmentID);
-			int thisDepartmentMembers = service.getDepartmentMembers(departmentID);
-			result.put("thisDepartmentMembers", thisDepartmentMembers);
+			/*
+			 * List<HashMap<String, Object>> thisDepartmentMembers =
+			 * service.getDepartmentMembers(departmentID);
+			 * result.put("thisDepartmentMembers", thisDepartmentMembers);
+			 */
 			result.put("dpInfo", dpInfo);
 		}else if(employeeID.startsWith("hq")) {
 			String hqID =employeeID.substring(2);
@@ -503,5 +523,47 @@ public class PersonnelController {
 		response.put("message", "생성이 완료되었습니다."); 
 		return response; 
 		}
+	@PostMapping(value="/personnel/annualLeave.do")
+	public ResponseEntity<String> annualLeave( @RequestBody List<HashMap<String, Integer>> dataList){
+			
+			List<HashMap<String,Object>> leaveYears = service.leaveYears();
+			logger.info("leaveYears =="+leaveYears);
+			SimpleDateFormat formmater = new SimpleDateFormat("yyyy-MM-dd");
+		
+		
+		for (HashMap<String, Integer> dataMap : dataList) {
+	        Integer year = dataMap.get("year");
+	        Integer value = dataMap.get("value");
+	        // year와 value를 활용한 로직 수행
+	        
+	        
+	     
+		}
+		service.saveAnnualLeave(dataList);
+		/* service.updateAnnual(dataList); */
+
+		return ResponseEntity.ok("연차 계산 완료");
+	}
+	
+	// 매년 1월1일 00:01분 근속년수별 연차업데이트
+	@Scheduled(cron = "0 1 0 1 1 ?")
+	public void updateAnnual() {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<HashMap<String, Object>> getYearValue = service.getYearValue();
+		
+		for (HashMap<String, Object> hashMap : getYearValue) {
+			 String year = (String) hashMap.get("year");
+		        String value = (String) hashMap.get("value");
+		        logger.info("year =="+year +"// value ==" + value);
+		        service.updateAnnual(year,value); 
+		}
+		
+	}	
+	// 매년 1월1일 모든사원 연차 0으로
+	@Scheduled(cron = "0 0 1 1 * ?")
+	public void calculateAnnualLeave() {
+
+		service.updateEmployeeAnnual();
+	}
 
 }

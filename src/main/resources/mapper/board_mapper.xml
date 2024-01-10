@@ -5,26 +5,57 @@
 <mapper namespace="kr.co.cocean.board.dao.BoardDAO">	
 
 	<select id="getTotalCount">
-		SELECT COUNT(boardID) FROM board WHERE isHidden = 0 AND isPinned = 0 AND category = #{param1}
+		SELECT COUNT(*)
+		FROM(
+			(SELECT b.boardID FROM board b
+				LEFT JOIN  employee e ON e.employeeID = b.employeeID
+				WHERE b.isHidden = 0 AND b.isPinned = 0 AND b.category = #{category}
+				<if test="!search.equals('')">
+					AND
+					<choose>
+						<when test="searchCategory.equals('name')">e.name</when>
+						<when test="searchCategory.equals('title')">b.title</when>
+					</choose>
+					LIKE CONCAT('%',#{search},'%')
+				</if>)
+			UNION ALL
+			(SELECT b2.boardID
+				FROM board b2 WHERE b2.isHidden = 0 AND b2.isPinned = 1 AND b2.category = #{category})
+		) AS Total
 	</select>
 
 
 	<select id="boardList" parameterType="board">
-		SELECT b.boardID, b.employeeID, b.title
-			,TO_CHAR(b.creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
-			,IFNULL((SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID), '익명') AS name
-		FROM board b WHERE isHidden = 0 AND isPinned = 0 AND category = #{param1}
-		ORDER BY b.boardID DESC LIMIT #{param2} OFFSET #{param3}
+		SELECT *
+		FROM(
+			(SELECT b.boardID, b.employeeID, b.title, isPinned
+				,DATE_FORMAT(b.creationDate, '%Y-%m-%d %H:%i') AS creationDate
+				,IFNULL(e.name, '익명') AS name
+				FROM board b
+				LEFT JOIN  employee e ON e.employeeID = b.employeeID
+				WHERE isHidden = 0 AND isPinned = 1 AND category = #{category})
+			UNION ALL
+			(SELECT b.boardID, b.employeeID, b.title, isPinned
+				,DATE_FORMAT(b.creationDate, '%Y-%m-%d %H:%i') AS creationDate
+				,IFNULL(e.name, '익명') AS name
+				FROM board b
+				LEFT JOIN  employee e ON e.employeeID = b.employeeID
+				WHERE b.isHidden = 0 AND b.isPinned = 0 AND b.category = #{category}
+					<if test="!search.equals('')">
+						AND
+						<choose>
+							<when test="searchCategory.equals('name')">name</when>
+							<when test="searchCategory.equals('title')">b.title</when>
+						</choose>
+						LIKE CONCAT('%',#{search},'%')
+					</if>
+				)
+		) AS boardLIst
+		ORDER BY isPinned DESC, boardID DESC
+		LIMIT #{perPage} OFFSET #{offset}
 	</select>
 	
-	<select id="boardList_pin" parameterType="board">
-		SELECT b.boardID, b.employeeID, b.title
-			,TO_CHAR(b.creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
-			,(SELECT e.name FROM employee e WHERE e.employeeID = b.employeeID) AS name
-		FROM board b WHERE isHidden = 0 AND isPinned = 1 AND category = #{param1}
-		ORDER BY b.boardID DESC
-	</select>
-	
+
 	<insert id="boardWrite" parameterType="board">
 		INSERT INTO board
 			(employeeID,category,title,content,isPinned) VALUES(
@@ -62,6 +93,14 @@
 			,TO_CHAR(creationDate, 'yyyy-mm-dd hh24:mi') AS creationDate
 			FROM comment c WHERE c.commentID = #{param1}
 	</select>
+	
+	<delete id="commentDel">
+		DELETE FROM comment WHERE commentID = #{param1}
+	</delete>
+	
+	<update id="commentHidden">
+		UPDATE comment SET isHidden = 1 WHERE commentID =#{param1}
+	</update>
 	
 		
 </mapper>

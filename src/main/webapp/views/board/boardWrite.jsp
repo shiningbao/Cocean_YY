@@ -26,7 +26,7 @@
 				<h4 class="mr-4">글작성</h4>
 				<c:if test="${bt ne '익명게시판'}">
 					<label class="form-check-label">
-						공지글 등록  
+						게시글 상단 고정  
 						<input type="checkbox" name="isPinned" class="form-check-input ml-2" value="1"/>
 					</label>
 				</c:if>
@@ -34,7 +34,7 @@
 			
 			<div class="d-inline">
 				<h5>제목</h5>
-				<input type="text" name="title" class="form-control float-right" style="width: 100%"/>
+				<input type="text" name="title" class="form-control float-right" style="width: 100%"  required/>
 			</div>
 			
 			<input type="hidden" name="content" class="form-control" value=""/>
@@ -43,11 +43,12 @@
 				<div id="summernote"></div>
 			</div>
 			<div class="d-inline mt-2">
-				<button class="float-right ml-2" type="button" onclick="save()">작성</button>
-				<button class="float-right ml-2" type="button" onclick="location.href='list?page=1&search='">취소</button>
+				<button class="btn btn-primary float-right ml-2" type="button" onclick="save()">작성</button>
+				<button class="btn btn-secondary float-right ml-2" type="button" onclick="location.href='list?searchCategory=&search=&page=1'">취소</button>
 			</div>
 		</div>
 	</div>
+	<c:import url="/footer"/>
 </body>
 <script>
 	
@@ -62,17 +63,27 @@
 
 	function save(){
 		var content = $('#summernote').summernote('code');
+		$('input[name="content"]').val(content);
 		if(content.length > (2*1024*1024)){
 			swal({
 				title : '컨텐츠의 크기가 큽니다. 이미지 갯수나 크기를 줄여주세요',
 				button: '확인'
 			});
+		}else if(!$('form')[0].checkValidity()){
+			swal({
+				title : '제목 또는 내용을 입력해주세요',
+				button: '확인'
+			});			
 		}else{
-			$('input[name="content"]').val(content);
-			$('form').submit();
-		
-            
-
+			swal({
+				title:'게시글을 작성하시겠습니까?',
+				icon:'info',
+				buttons:['취소','확인']
+			}).then((isOkey) => {
+				if(isOkey){
+					$('form').submit();	
+				}
+			});
         }
 		
 	}

@@ -26,6 +26,7 @@ import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class PersonnelService {
@@ -174,8 +175,17 @@ public class PersonnelService {
 	}
 
 
-	public List<HashMap<String, Object>> personnelList() {
-		return dao.personnelList();
+	public List<HashMap<String, Object>> personnelList(Pager pager) {
+		
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		Integer total = dao.totalCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		return dao.personnelList(params);
 	}
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
 		if(selectedBranchValue.equals("지점")) {
@@ -293,7 +303,7 @@ public class PersonnelService {
 	public void editDp(String departmentName, String departmentID, Boolean isActive) {
 		dao.editDp(departmentID,departmentName,isActive);
 	}
-	public int getDepartmentMembers(String departmentID) {
+	public List<HashMap<String, Object>> getDepartmentMembers(String departmentID) {
 		return dao.getDepartmentMembers(departmentID);
 	}
 	public void addResponsibiliy(String departmentID, String responName) {
@@ -301,6 +311,38 @@ public class PersonnelService {
 		
 		dao.addResponsibiliy(departmentID,responName);
 	}
+	public void updateEmployeeAnnual() { 
+		
+		dao.updateEmployeeAnnual();
+	}
+	public List<HashMap<String, Object>> leaveYears() {
+		return dao.leaveYears(); 
+	}
+	public void updateAnnual(List<HashMap<String, Integer>> dataList) {
+		
+		dao.updateAnnual(dataList);
+	}
+	public void saveAnnualLeave(List<HashMap<String, Integer>> dataList) {
+		
+		dao.saveAnnualLeave(dataList);
+		
+	}
+	public List<HashMap<String, Object>> getYearValue() {
+		return dao.getYearValue();
+	}
+	public void updateAnnual(String year, String value) {
+			
+		dao.updateAnnual(year,value);
+	}
+	public HashMap<String, Object> getEmployeeAnnual(int employeeID) {
+		return dao.getEmployeeAnnual(employeeID);
+	}
+	public List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear) {
+		// TODO Auto-generated method stub
+		return dao.findAttend(employeeID,startYear,endYear);
+	}
+	
+	
 	
 	
 

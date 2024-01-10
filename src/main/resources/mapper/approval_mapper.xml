@@ -67,7 +67,12 @@
 	
 	<select id="waitingList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
+	</select>
+	
+	<select id="totalCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' ORDER BY d.draftDate
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
@@ -183,7 +188,16 @@
 	</update>
 	
 	<update id="updateDraft">
-		UPDATE draft SET publicStatus=#{param1.publicStatus},draftDate=#{param2} WHERE idx=#{param1.idx}
+		UPDATE draft SET publicStatus=#{param1.publicStatus},draftDate=#{param2}, draftStatus=
+            <choose>
+	            <when test="param1.tempSave == 1">
+	                '임시저장'
+	            </when>
+	            <otherwise>
+	            	'대기'
+	            </otherwise>
+            </choose>
+		WHERE idx=#{param1.idx}		
 	</update>
 	
 	<update id="updateApproval">
@@ -357,11 +371,27 @@
 </update>
 
 	<select id="saveList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate desc
+		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content,df.titleID FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
 	</select>
 	
+	<select id="sCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM draft WHERE employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY draftDate DESC
+	</select>
+	
+	<delete id="removeSave">
+		DELETE FROM attendanceDraft WHERE idx=#{selected};
+		DELETE FROM leaveDraft WHERE idx=#{selected};
+		DELETE FROM workDraft WHERE idx=#{selected};
+		DELETE FROM approval WHERE idx=#{selected};
+		DELETE FROM draft WHERE idx=#{selected};
+	</delete>
+	
 	<select id="myList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc
+		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10
+	</select>
+	
+	<select id="mDcount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM draft WHERE employeeID=#{employeeID} AND draftStatus!='임시저장' ORDER BY draftDate DESC
 	</select>
 	
 	<select id="mySearch" resultType="approval">
@@ -370,7 +400,11 @@
 	
 	<select id="refList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10
+	</select>
+	
+	<select id="RCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx WHERE a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장'
 	</select>
 	
 	<select id="refSearch" resultType="approval">
@@ -380,7 +414,11 @@
 	
 	<select id="comList" resultType="approval">
 		SELECT a.approvalDate, a.approvalStatus, e.employeeID, a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,d.draftDate FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID}
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND NOT a.approvalStatus IN('미대기','대기') LIMIT #{pageNum},10
+	</select>
+	
+	<select id="MaCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM approval WHERE employeeID=#{employeeID} AND NOT approvalStatus IN('미대기','대기')
 	</select>
 	
 	<select id="myAppSearch" resultType="approval">
@@ -389,7 +427,11 @@
 	</select>
 	
 	<select id="departmentList" resultType="approval">
-		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY idx ORDER BY a.approvalDate desc
+		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
+	</select>
+	
+	<select id="dpCount" parameterType="map" resultType="Integer">
+		SELECT CEIL(COUNT(*)/10) FROM draft d LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName =(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료'ORDER BY a.approvalDate DESC
 	</select>
 	
 	<select id="dpSearch" resultType="approval">

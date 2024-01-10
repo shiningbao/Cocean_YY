@@ -36,7 +36,7 @@ public class TankController {
 	@Autowired
 	TankService service;
 	Logger logger = LoggerFactory.getLogger(getClass());
-
+ 
 	
 	@GetMapping(value="/tank/list.go")
 	public ModelAndView tankList(ModelAndView mav, TankDTO tankDTO, Pager pager) {
@@ -117,21 +117,13 @@ public class TankController {
 	@ResponseBody
 	public List<Map<String, Object>> gerRecord(@RequestParam String tankID, String curDate, Model model) {
 		List<Map<String, Object>> recordList = service.getRecord(tankID,curDate);
-		logger.info("recordList: "+recordList.toString());
+		// logger.info("recordList: "+recordList.toString());
 		model.addAttribute("recordList",recordList);
 		model.addAttribute("tankID", tankID);
 		return recordList;
 		
 	}
-	
-	
 
-	
-	
-	
-	
-
-	
 }
 
 

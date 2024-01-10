@@ -17,7 +17,7 @@
 			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
 		</div>
 		
-		<div class="card shadow mb-2">
+		<div class="card shadow mb-2 col-12 mx-auto">
 			<nav class="navbar navbar" id="search">
 		    	<div class="form-check form-check-inline">
 					<label class="form-check-label">
@@ -98,7 +98,7 @@
 		    </nav>
 		</div>
 		
-		<div class="card shadow mb-4">
+		<div class="card shadow col-12 mx-auto">
 			<div class="drawList"></div>
 			<div class="card-body">
 			<button  type="button" class="btn btn-primary float-right" id="write">등록</button>

@@ -869,9 +869,9 @@ function calculateDays() {
  	 function renderBtn(idx) {
          let el = `
              <div id="btnRemove">
-	    		 <input type="button" value="취소" onclick="location.href='formList.go'"/>
-	   			 <input type="button" style="float:right" onclick="save(` + idx + `)" value="등록"/>
-	             <input type="button" style="float:right" onclick="tempSave(` + idx + `)" value="임시저장"/>
+	    		 <input type="button" class="btn btn-secondery"value="취소" onclick="location.href='formList.go'"/>
+	   			 <input type="button" class="btn btn-primary" style="float:right" onclick="save(` + idx + `)" value="등록"/>
+	             <input type="button" class="btn btn-primary" style="float:right" onclick="tempSave(` + idx + `)" value="임시저장"/>
              </div>
      `;
          $('#render').append(el);
@@ -883,13 +883,6 @@ function calculateDays() {
      function getApprovalLine(lineData){
  		// console.log(lineData);
  		 for (var i = 0; i < lineData.length; i++) {
-            /*   console.log("category:", lineData[i].category);
-              console.log("hqName:", lineData[i].hqName);
-              console.log("dpName:"+lineData[i].departmentName);
-              console.log("rank:", lineData[i].rank);
-              console.log("name:", lineData[i].name);
-              console.log("employeeID:", lineData[i].employeeID); */
-              
               addLineToTable(lineData[i]);
           }
  	}

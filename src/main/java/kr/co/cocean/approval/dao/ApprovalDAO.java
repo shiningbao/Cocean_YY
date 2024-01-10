@@ -1,6 +1,7 @@
 package kr.co.cocean.approval.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
+import kr.co.cocean.tank.dto.Pager;
 @Mapper
 public interface ApprovalDAO {
 
@@ -26,7 +28,7 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> employeeInfo(String employeeID);
 
-	ArrayList<ApprovalDTO> waitingList(int employeeID);
+	ArrayList<ApprovalDTO> waitingList(int employeeID, Pager pager);
 
 	ApprovalDTO draftDetail(int idx);
 
@@ -70,19 +72,19 @@ public interface ApprovalDAO {
 
 	void writeattendenceDraft(ApprovalDTO dto);
 
-	ArrayList<ApprovalDTO> saveList(int employeeID);
+	ArrayList<ApprovalDTO> saveList(HashMap<String, Object> params);
 
 	ApprovalDTO vacDetail(int idx);
 
 	ApprovalDTO lvDetail(int idx);
 
-	ArrayList<ApprovalDTO> myList(int employeeID);
+	ArrayList<ApprovalDTO> myList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> refList(int employeeID);
+	ArrayList<ApprovalDTO> refList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> comList(int employeeID);
+	ArrayList<ApprovalDTO> comList(HashMap<String, Object> params);
 
-	ArrayList<ApprovalDTO> departmentList(int employeeID);
+	ArrayList<ApprovalDTO> departmentList(HashMap<String, Object> params);
 
 	ApprovalDTO getSign(int idx, int employeeID);
 
@@ -129,6 +131,22 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> refSearch(String keyword, int employeeID);
 
 	ArrayList<ApprovalDTO> myAppSearch(String keyword, int employeeID);
+
+	Integer totalCount(HashMap<String, Object> params);
+
+	ArrayList<ApprovalDTO> waitingList(HashMap<String, Object> params);
+
+	Integer RCount(HashMap<String, Object> params);
+
+	Integer MaCount(HashMap<String, Object> params);
+
+	Integer mDcount(HashMap<String, Object> params);
+
+	Integer dpCount(HashMap<String, Object> params);
+
+	Integer sCount(HashMap<String, Object> params);
+
+	HashMap<String, Object> removeSave(String selected);
 
 
 	/*
