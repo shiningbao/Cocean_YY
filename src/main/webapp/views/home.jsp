@@ -64,8 +64,8 @@
 <script>
 
 var url = '';
-
-if(${sessionScope.userInfo.branchID} == 1){
+const branch = ${sessionScope.userInfo.branchID};
+if(branch == 1){
 	$('#branch').html('가산동');
 	url = 'https://api.openweathermap.org/data/2.5/weather?lat=37.4765800&lon=126.8802000&appid=2bbf4a1d6f2c86d2569a4fe70726f66c&units=metric';
 }else{

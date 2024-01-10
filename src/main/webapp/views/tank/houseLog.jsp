@@ -46,7 +46,7 @@
 					<div class="topBar">
 						<div class="barItem" onclick="location.href='detail.go?tankID=${tankID}'">하우스정보</div>
 						<div style="color: #ffffff;">하우스 기록</div>
-						<div class="barItem">관리 계획</div>
+						<div class="barItem" onclick="location.href='housePlan.go?tankID=${tankID}'">관리 계획</div>
 					</div>
 				</div>
 			</div>
@@ -79,9 +79,9 @@
 							</tr>
 							</thead>
 							<tbody id="recordTable">
-							<c:forEach items="${recordList}" var="list">
+<%-- 							<c:forEach items="${recordList}" var="list"> --%>
 	
-							</c:forEach>
+<%-- 							</c:forEach> --%>
 							</tbody>
 							
 							</table>

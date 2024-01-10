@@ -123,6 +123,22 @@ public class TankController {
 		return recordList;
 		
 	}
+	
+	@GetMapping("tank/housePlan.go")
+	public ModelAndView housePlan(@RequestParam int tankID) {
+		ModelAndView mav = new ModelAndView("tank/housePlan");
+		mav.addObject("tankID",tankID);
+		return mav;
+	}
+	
+	@RequestMapping("tank/addPlan.ajax")
+	@ResponseBody
+	public String addPlan(@RequestParam HashMap<String, Object> params) {
+		logger.info("params"+params); 
+		String ok = "ok";
+		//service.addPlan();
+		return ok;
+	}
 
 }
 
