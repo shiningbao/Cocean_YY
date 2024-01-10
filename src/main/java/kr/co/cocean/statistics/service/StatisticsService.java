@@ -26,11 +26,13 @@ public class StatisticsService {
 		ArrayList<AnimalHistoryDTO> animal = dao.animalHistory();
  		ArrayList<TankHistoryDTO> tank = dao.tankHistory();
 		ArrayList<SalesHistoryDTO> product = dao.productHistory();
+		ArrayList<SalesHistoryDTO> ticket = dao.ticketHistory();
 		ArrayList<SalesHistoryDTO> visitors = dao.visitorsHistory();
 		
 		map.put("animal", animal);
 		map.put("tank", tank);
 		map.put("product", product);
+		map.put("ticket", ticket);
 		map.put("visitors", visitors);
 		
 //		model.addAttribute("animal",animal);
