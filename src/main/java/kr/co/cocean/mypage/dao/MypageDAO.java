@@ -19,7 +19,16 @@ public interface MypageDAO {
 	void changePw(String newPass, int employeeID);
 
 	//마이페이지 리스트
+	/*
 	List<HashMap<String, Object>> mypagedetail(int userId);
+*/
+	
+	//내정보
+	HashMap<String, Object> datail(int userId);
+	//연차
+	HashMap<String, Object> getEmployeeAnnual(int userId);
+
+
 
 	
 	

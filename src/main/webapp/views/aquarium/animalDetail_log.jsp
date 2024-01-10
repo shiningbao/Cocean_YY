@@ -51,16 +51,18 @@
 			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
 		</div>
 		
-		<div class="col-10 mx-auto">
+		<div class="col-12 mx-auto">
 			<div><h4>${title.status} / ${title.nickname} / ${title.commonName} / ${title.animalCode}</h4></div>
 			<div class="detailBar">
-				<div class="detailBar_item" id="base" onclick="logPlanPage('base')">친구들 정보</div>
-				<div class="detailBar_item" id="log" onclick="logPlanPage('log')">친구들 기록</div>
-				<div class="detailBar_item" id="plan" onclick="logPlanPage('plan')">관리 계획</div>
+				<div class="detailBar_item" id="base" onclick="detailPage('base')">친구들 정보</div>
+				<div class="detailBar_item" id="log" onclick="detailPage('log')">친구들 기록</div>
+				<div class="detailBar_item" id="plan" onclick="detailPage('plan')">관리 계획</div>
 			</div>
 			
-			<div class="card shadow mx-auto">
-				<input class="form-control m-2" type="month" name="month" value="${month}" onchange="monthchange()" style="width:200px"/>
+			<br/>
+			
+			<div class="card shadow pt-4 p-2 mx-2">
+				<input class="form-control mx-2" type="month" name="month" value="${month}" onchange="monthchange()" style="width:200px"/>
 				<br/>
 				<div id="logPlanWriteForm">
 					<h5>
@@ -71,38 +73,47 @@
 							친구들 관리 계획 작성
 						</c:if>
 					</h5>
-					<div class="d-inline">
-						<div class="float-left">
+					<div class="row">
+						<div class="col-md-6 align-items-center">
 							${userInfo.departmentName} ${userInfo.name}
 						</div>
-						<div class="float-right">
-							<c:if test="${category eq 'log'}">
-							현재 상태:
-								<select id="status">
-									<option value="정상">정상</option>
-									<option value="질병">질병</option>
-									<option value="격리">격리</option>
-									<option value="폐사">폐사</option>
-								</select>
+						<div class="col-md-6 d-flex  mb-2 justify-content-end align-items-center">
+						<c:if test="${category eq 'log'}">
+						<div class="float-rigth">현재 상태:</div>
+
+							<select id="status" class="form-control mx-2" style="width: 200px">
+								<option value="정상">정상</option>
+								<option value="질병">질병</option>
+								<option value="격리">격리</option>
+								<option value="폐사">폐사</option>
+							</select>
+
 							</c:if>
-							<input class="float-right" type="button" name="logWrite" value="등록" onclick="logplanWrite()"/>
+							<button class="btn btn-primary mr-1 ml-2"
+								type="button" name="logWrite" onclick="logplanWrite()">등록</button>
 						</div>
 					</div>
 				</div>
 					<div id="summernote"></div>
-				
-				<br/>
-			
+
+				<hr>
 				<div>
+					<c:if test="${empty content}">
+					<div class="card p-2">작성된 내용이 없습니다</div>
+					</c:if>
 					<c:forEach items="${content}" var="item" varStatus="st">
-						<div style="border:1px solid black">	
-							<div id="${item.employeeID}">${item.departmentName} ${item.name}</div>
-							<div>${item.creationDate}</div>
-							<button onclick="logplanUpdateGo(this,${item.logID})">수정</button>
-							<button onclick="logplanDel('${item.logID}')">삭제</button>
-							${item.content}
-							상태: ${item.status}
-							<div id="log_${item.logID}"></div>
+						<div class="card p-2">
+							<div class="d-inline">
+								<div class="float-left" id="${item.employeeID}">
+									${item.departmentName}_${item.name} / ${item.creationDate}
+								</div>
+								<button class="btn btn-outline-primary btn-sm mr-1 ml-1 float-right" onclick="logplanUpdateGo(this,${item.logID})">수정</button>
+								<button class="btn btn-outline-primary btn-sm mr-1 ml-1 float-right" onclick="logplanDel('${item.logID}')">삭제</button>
+								<div class="float-right">상태: ${item.status}</div>
+							</div>
+							<div class="mt-1 pl-2">${item.content}</div>
+								
+								<div id="log_${item.logID}"></div>
 						</div>
 					</c:forEach>
 				</div>
@@ -111,8 +122,11 @@
 		</div>
 
 	</div>
+	<c:import url="/footer"></c:import>
 </body>
 <script>	
+	var category = '${category}';
+	
 	var msg = "${msg}";
 	if(msg != ""){
 		swal({
@@ -121,13 +135,13 @@
 		});
 	}
 
-	function logPlanPage(category){
+	function detailPage(c){
 		var month = getMonth();
 		var rink;
-		if(category == 'base'){
+		if(c == 'base'){
 			rink = 'detailBase?animalID=${animalID}';
 		}else{
-			rink = 'detailLogPlan?animalID=${animalID}&category='+category+'&month='+month;
+			rink = 'detailLogPlan?animalID=${animalID}&category='+c+'&month='+month;
 		}
 		console.log(rink);
 		location.href=rink;
@@ -152,7 +166,6 @@
 		});
 	}
 
-	
 	function monthchange(){
 		var month = $('input[name="month"]').val();
 		console.log(month);
@@ -160,7 +173,6 @@
 	}
 	
 	function logplanWrite(){
-		var status = $('#status').val();
 		var content = $('#summernote').summernote('code');
 		if(content.length > (2*1024*1024)){
 			swal({
@@ -168,33 +180,65 @@
 				button: '확인'
 			});
 		}else{
-			logplanWriteDo(content,status);
+			var data = {};
+			//data.employeeID = employeeID;
+			data.manageCategory = '${category}';
+			data.coceanCategory = 'animal';
+			data.idx = '${animalID}';
+			data.content = content;
+			if(category == 'log'){
+				data.status = $('#status').val();	
+			}else{
+				data.status = '-';
+			}
+			$.ajax({
+				type:'post',
+				url:'logplanWrite.go',
+				data:data,
+				dataType:'JSON',
+				success:function(data){
+					console.log(data);
+					location.href = location.href;
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
 	}
-	
-	function logplanWriteDo(content,s){
-		//var employeeID = '${userInfo.employeeID}';
-		var data = {};
-		//data.employeeID = employeeID;
-		data.manageCategory = '${category}';
-		data.coceanCategory = 'animal';
-		data.idx = '${animalID}';
-		data.content = content;
-		data.status = s;
-		$.ajax({
-			type:'post',
-			url:'logplanWrite.go',
-			data:data,
-			dataType:'JSON',
-			success:function(data){
-				console.log(data);
-				location.href = location.href;
-			},
-			error:function(e){
-				console.log(e);
+			
+	// 일지계획 삭제
+	function logplanDel(id){
+		console.log(id);
+		swal({
+			title:'삭제하시겠습니까?',
+			icon:'error',
+			buttons:['취소','삭제']
+		}).then((isOkey) => {
+			if(isOkey){
+				$.ajax({
+					type:'post',
+					url:'logplanDel',
+					data:{'logID':id},
+					dataType:'JSON',
+					success:function(data){
+						swal({
+							title: data.msg,
+							button: '확인'
+						}).then((isOkey2) => {
+							if(isOkey2){
+								location.href = location.href;								
+							}
+						});
+					},
+				    error: function(e) {
+				        console.log(e);
+				    }
+				});	
 			}
 		});
 	}
+	
 	
 	
 	

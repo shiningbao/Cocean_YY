@@ -13,32 +13,37 @@
 
 <style>
 	
- .detailBar { 
-    width: 100%;
-    height: 60px;
-    left: 130px;
- 	background-color: #86B0F3; 
- 	display: flex; 
+	 .detailBar { 
+	    width: 100%;
+	    height: 60px;
+	    left: 130px;
+	 	background-color: #86B0F3; 
+	 	display: flex; 
+		
+	 	justify-content: space-evenly; 
+	 } 
+	 .detailBar div{ 
+		
+	 	width: 100%; 
+	 	height: 100%; 
+	 	position: relative; 
+	 	text-align: center; 
+	 	font-size: 21px; 
+	 	padding-top: 14px; 
+	 	cursor: default; 
+	 } 
 	
- 	justify-content: space-evenly; 
- } 
- .detailBar div{ 
-	
- 	width: 100%; 
- 	height: 100%; 
- 	position: relative; 
- 	text-align: center; 
- 	font-size: 21px; 
- 	padding-top: 14px; 
- 	cursor: default; 
- } 
-
-.detailBar_item:hover{
-	cursor: pointer;
-	background-color: #2F80ED;
-	padding-top: 13px;
-}
-	
+	.detailBar_item:hover{
+		cursor: pointer;
+		background-color: #2F80ED;
+		padding-top: 13px;
+	}
+	.imgChange{
+		width: 100%;
+	}
+	.imgChange i{
+		font-size: 10px;
+	}
 	.imgChange:hover{
 		cursor: pointer;
 	}
@@ -49,30 +54,29 @@
 <body>
 
 <c:import url="/side"/>
-	
 	<div class="container-fluid contentField">
 		
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">코션친구들</h1>
 		</div>
 		
-		<div class="col-10 mx-auto">
+		<div class="col-12 mx-auto">
 			<div><h4>${title.status} / ${title.nickname} / ${title.commonName} / ${title.animalCode}</h4></div>
 			<div class="detailBar">
-				<div class="detailBar_item" id="base" onclick="logPlanPage('base')">친구들 정보</div>
-				<div class="detailBar_item" id="log" onclick="logPlanPage('log')">친구들 기록</div>
-				<div class="detailBar_item" id="plan" onclick="logPlanPage('plan')">관리 계획</div>
+				<div class="detailBar_item" id="base" onclick="detailPage('base')">친구들 정보</div>
+				<div class="detailBar_item" id="log" onclick="detailPage('log')">친구들 기록</div>
+				<div class="detailBar_item" id="plan" onclick="detailPage('plan')">관리 계획</div>
 			</div>
 			
 			<br/>
 			
 			<div class="row">
+			
 				<div class="col-md-6">
-					<div class="card shadow pt-4 p-2">
+					<div class="card shadow pt-4 p-2 mx-2">
 						<div class="row">
 							<div class="imgChange col-md-1 mb-2" onclick="imgChange(-1)">
-								<img class="img-fluid" alt="carrot-side2.png"
-									src='<c:url value="/resource/img/carrot-side2.png"/>'>
+								<i class="fi fi-sr-angle-left"></i>
 							</div>
 							<div class="col-md-10 mb-2 text-center">
 								<div style="height:100%; width:100%; margin:0 auto; ">
@@ -80,8 +84,7 @@
 								</div>
 							</div>
 							<div class="imgChange col-md-1 mb-2" onclick="imgChange(1)">
-								<img class="img-fluid" alt="carrot-side.png"
-									src='<c:url value="/resource/img/carrot-side.png"/>'>
+								<i class="fi fi-sr-angle-right"></i>
 							</div>
 							<div class="col-md-4 mb-2 pl-4">
 								<div class="animalImg">
@@ -101,70 +104,73 @@
 						</div>
 					</div>	
 				</div>
-				<div class="card shadow col-md-6">
-					<table class="animalTable table table-bordered">
-						<tr>
-							<th class="text-center" scope="col">코션친구들 코드</th>
-							<td>${base.animalCode}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">분류</th>
-							<td>${base.taxonomy}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">학명</th>
-							<td>${base.scientificName}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">국명</th>
-							<td>${base.commonName}</td>
-						<tr>
-							<th class="text-center" scope="col">지점</th>
-							<td>${base.branchName}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">코션하우스</th>
-							<td>${base.tankName} 
-								<a href="<c:url value='/tank/detail.go?tankID=${base.tankID}'/>">
-									<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button>
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">마리 수</th>
-							<td>${base.individual}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">태어난 날</th>
-							<td>${base.birthDate}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">들어온 날</th>
-							<td>${base.entryDate}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">세부 정보</th>
-							<td>${base.details}</td>
-						</tr>
-						<tr>
-							<th class="text-center" scope="col">
-								<p>담당자</p>
-								<button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#inchargeModal">담당자 지정</button>
-							</th>
-							<td>
-								<c:if test="${empty incharge}">담당자 없음</c:if> <c:forEach
-									items="${incharge}" var="ic"><p>${ic.departmentName} ${ic.name}</p>
-								</c:forEach>
-							</td>
-						</tr>
-					</table>
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button class="btn btn-secondary mr-2" onclick="animaList()">이전</button>
-						<button class="btn btn-primary mr-2" onclick="animalUpdate(${base.animalID})">수정</button>
-						<button class="btn btn-primary" onclick="animalDel(${base.animalID})">삭제</button>
+				
+				<div class="col-md-6">
+					<div class="card shadow pt-4 p-2 mx-2">
+						<table class="animalTable table table-bordered">
+							<tr>
+								<th class="text-center" scope="col">코션친구들 코드</th>
+								<td>${base.animalCode}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">분류</th>
+								<td>${base.taxonomy}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">학명</th>
+								<td>${base.scientificName}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">국명</th>
+								<td>${base.commonName}</td>
+							<tr>
+								<th class="text-center" scope="col">지점</th>
+								<td>${base.branchName}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">코션하우스</th>
+								<td>${base.tankName} 
+									<a href="<c:url value='/tank/detail.go?tankID=${base.tankID}'/>">
+										<button class="btn btn-outline-primary btn-sm ml-2">하우스 이동</button>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">마리 수</th>
+								<td>${base.individual}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">태어난 날</th>
+								<td>${base.birthDate}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">들어온 날</th>
+								<td>${base.entryDate}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">세부 정보</th>
+								<td>${base.details}</td>
+							</tr>
+							<tr>
+								<th class="text-center" scope="col">
+									<p>담당자</p>
+									<button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#inchargeModal">담당자 지정</button>
+								</th>
+								<td>
+									<c:if test="${empty incharge}">담당자 없음</c:if> <c:forEach
+										items="${incharge}" var="ic"><p>${ic.departmentName} ${ic.name}</p>
+									</c:forEach>
+								</td>
+							</tr>
+						</table>
+						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+							<button class="btn btn-secondary mr-2 mb-2" onclick="animaList()">이전</button>
+							<button class="btn btn-primary mr-2 mb-2" onclick="animalUpdate(${base.animalID})">수정</button>
+							<button class="btn btn-primary mr-2 mb-2" onclick="animalDel(${base.animalID})">삭제</button>
+						</div>
 					</div>
 				</div>
-			
+				
 			</div>
 	
 
@@ -235,7 +241,8 @@
 			</div>
 		</div>
 	</div>
-
+	<c:import url="/footer"></c:import>
+</body>
 <script>
 	var msg = "${msg}";
 	if(msg != ""){
@@ -245,13 +252,13 @@
 		});
 	}
 	
-	function logPlanPage(category){
+	function detailPage(c){
 		var month = getMonth();
 		var rink;
-		if(category == 'base'){
+		if(c == 'base'){
 			rink = 'detailBase?animalID=${base.animalID}';
 		}else{
-			rink = 'detailLogPlan?animalID=${base.animalID}&category='+category+'&month='+month;
+			rink = 'detailLogPlan?animalID=${base.animalID}&category='+c+'&month='+month;
 		}
 		console.log(rink);
 		location.href=rink;
@@ -461,4 +468,4 @@
 	}
 	
 </script>
-
+</html>

@@ -4,19 +4,7 @@
 >
 <mapper namespace="kr.co.cocean.mypage.dao.WorkDAO">
 
- <!--  
-<select id="worklist" resultType="work">
-	<![CDATA[
-SELECT w.workID ,e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
-FROM employee e
-INNER JOIN work w ON e.employeeID = w.employeeID
-WHERE w.workDate >= #{param1} AND w.workDate <= #{param2}
-GROUP BY e.employeeID, w.workDate
-	
-	]]>
-</select>
--->
-
+ 
 <select id="worklist" resultType="work">
 	<![CDATA[
 SELECT w.workID, e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
@@ -26,11 +14,50 @@ WHERE e.employeeID = #{userId} AND w.workDate >= #{param1}AND w.workDate <= #{pa
 GROUP BY e.employeeID, w.workDate
 	]]>
 </select>
-<!--  이따가 다시 짜기  
-<insert id="saveTimestamp">
 
 
+<!--  
+<select id="worklist" resultType="map">
+    <![CDATA[
+    SELECT w.workID, e.employeeID, w.workDate, MIN(w.gowork) AS gowork, MAX(w.leavework) AS leavework
+    FROM employee e
+    INNER JOIN work w ON e.employeeID = w.employeeID
+    WHERE e.employeeID = #{userId} AND w.workDate BETWEEN #{param1} AND #{param2}
+    GROUP BY e.employeeID, w.workDate
+    ORDER BY w.workDate
+    LIMIT #{pager.pageNum}, #{pager.pageSize}
+    ]]>
+</select>
 
+<select id="totalCount" parameterType="map" resultType="Integer">
+    SELECT ROUND(COUNT(*)/10) FROM work w
+    INNER JOIN employee e ON w.employeeID = e.employeeID
+    WHERE e.employeeID = #{userId}
+      AND w.workDate BETWEEN #{pfirstSearchDate} AND #{plastSearchDate}
+</select>
+-->
+
+<!--  
+<insert id="gocheck">
+    INSERT INTO `work` (employeeID, workDate, gowork)
+    VALUES (#{userId}, #{data.dateTime}, #{data.dateTime})
+    ON DUPLICATE KEY UPDATE gowork = VALUES(gowork);
 </insert>
 -->
+
+<insert id="gocheck" parameterType="map">
+ INSERT INTO `work` (employeeID, workDate, gowork)
+    VALUES (#{userId}, #{datedataValue}, #{timedataValue})
+    ON DUPLICATE KEY UPDATE gowork = VALUES(gowork);
+</insert>
+
+
+<update id="leavecheck" parameterType="map">
+    <![CDATA[
+    UPDATE work
+    SET leavework = #{timedataValue}
+    WHERE employeeID = #{userId} AND workDate = #{datedataValue};
+    ]]>
+</update>
+
 </mapper>

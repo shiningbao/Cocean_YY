@@ -41,7 +41,7 @@ WHERE path = 'profile' AND idx = #{param2}
 <!-- 마이페이지 리스트 -->
 	<select id="mypagedetail">
 				SELECT 
-		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName, h.hqName,h.hqID, res.responName,
+		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber,e.remainingAnnualLeave ,b.branchName,b.branchID, d.departmentName, h.hqName,h.hqID, res.responName,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status
 		FROM employee e
 		JOIN department d ON e.departmentID = d.departmentID
@@ -58,16 +58,40 @@ WHERE path = 'profile' AND idx = #{param2}
 	
 	
 	
+<!--  내 정보 -->
+<select id="datail">
+				SELECT 
+		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName,d.departmentID, h.hqName,h.hqID,res.responID, res.responName,
+		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status,e.remainingAnnualLeave
+		FROM employee e
+		JOIN department d ON e.departmentID = d.departmentID
+		JOIN headquarters h ON d.hqID = h.hqID 
+		JOIN branch b ON h.branchID = b.branchID 
+		JOIN responsibility res ON e.responID = res.responID
+		JOIN `position` p ON e.positionID = p.positionID 
+		JOIN `rank` r ON e.rankID = r.rankID
+		LEFT JOIN file f_profile ON f_profile.idx = e.employeeID AND f_profile.path = 'profile'
+		LEFT JOIN file f_signature ON f_signature.idx = e.employeeID AND f_signature.path = 'signature'
+		WHERE e.employeeID = #{employeeID};		
+	</select>
+
+	
+
+<!-- 연차  -->
+
+<select id="getEmployeeAnnual" >
+	    SELECT value
+		FROM annualLeave
+		WHERE year = (
+		    SELECT FLOOR(DATEDIFF(NOW(), joinDate) / 365) AS years 
+		    FROM employee 
+		    WHERE  employeeID = #{employeeID}
+		); 
+	</select>
 
 
 
-
-
-
-
-
-<!--  수정 맵퍼쪽에 문제가 있음 -->
-
+<!--  수정 -->
 <select id="selectEncpw" parameterType="int" resultType="string">
 SELECT password FROM employee WHERE employeeID = #{employeeID}
 </select>

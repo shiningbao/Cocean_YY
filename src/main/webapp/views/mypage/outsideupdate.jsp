@@ -10,14 +10,19 @@
         border-collapse: collapse;
         padding: 5px 10px;
     }
+    
+   
 </style>
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
+
+<c:import url="/side"/>
+
+<div class="container-fluid contentField"> 
 
 <form action="outaddressupdate" method="post">
 <input type="hidden" name="addressNumber" value="${outaddress.addressNumber}"/>
-<table>
+<table id="addressupdate">
 
          <tr>
              <!--공백문자-->
@@ -58,6 +63,8 @@
              </th> 
      </table>
  </form>     
+  </div>
+        
         
 </body>
 <script>
