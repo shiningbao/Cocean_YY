@@ -18,8 +18,6 @@ public class MainController {
 		return "footer";
 	}	
 	
-
-	
 	@RequestMapping(value="/newSide")
 	public String newSide() {
 		

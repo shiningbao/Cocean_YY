@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
 import kr.co.cocean.approval.dto.formDTO;
+import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class ApprovalService {
@@ -184,8 +186,21 @@ public class ApprovalService {
 		
 	}
 
-	public ArrayList<ApprovalDTO> waitingList(int employeeID) {
-		return dao.waitingList(employeeID);
+	public ArrayList<ApprovalDTO> waitingList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.totalCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		
+		return dao.waitingList(params);
 	}
 
 	public ApprovalDTO draftDetail(int idx) {
@@ -257,8 +272,21 @@ public class ApprovalService {
 		dao.passApp(idx,approvalOrder);
 	}
 
-	public ArrayList<ApprovalDTO> saveList(int employeeID) {
-		return dao.saveList(employeeID);
+	public ArrayList<ApprovalDTO> saveList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.sCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		
+		return dao.saveList(params);
 	}
 
 	public Object tempSaveForm(int idx, String employeeID) {
@@ -273,20 +301,71 @@ public class ApprovalService {
 		return dao.lvDetail(idx);
 	}
 
-	public ArrayList<ApprovalDTO> myList(int employeeID) {
-		return dao.myList(employeeID);
+	public ArrayList<ApprovalDTO> myList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.mDcount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		
+		return dao.myList(params);
 	}
 
-	public ArrayList<ApprovalDTO> refList(int employeeID) {
-		return dao.refList(employeeID);
+	public ArrayList<ApprovalDTO> refList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.RCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		
+		return dao.refList(params);
 	}
 
-	public ArrayList<ApprovalDTO> comList(int employeeID) {
-		return dao.comList(employeeID);
+	public ArrayList<ApprovalDTO> comList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.MaCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		return dao.comList(params);
 	}
 
-	public ArrayList<ApprovalDTO> departmentList(int employeeID) {
-		return dao.departmentList(employeeID);
+	public ArrayList<ApprovalDTO> departmentList(int employeeID, Pager pager) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("pageNum", (pager.getPageNum()-1)*10);
+		params.put("search", pager.getSearch());
+		params.put("employeeID", employeeID);
+		Integer total = dao.dpCount(params);
+		if(total == 0) {
+			pager.setTotalCount(1);
+		}else {
+			pager.setTotalCount(total);			
+		}
+		logger.info("params:{}",params);
+		logger.info("totalCount: "+pager.getTotalCount());
+		
+		return dao.departmentList(params);
 	}
 
 	public ApprovalDTO getSign(int idx, int employeeID) {
@@ -339,6 +418,10 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> myAppSearch(String keyword, int employeeID) {
 		return dao.myAppSearch(keyword,employeeID);
+	}
+
+	public HashMap<String, Object> removeSave(String selected) {
+		return dao.removeSave(selected);
 	}
 
 	

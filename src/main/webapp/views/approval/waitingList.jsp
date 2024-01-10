@@ -18,13 +18,6 @@
 	text-align: center;
 }
 
-#search {
-	float: right;
-	width: 326px;
-	display:flex;
-	
-}
-
 @media screen and (max-width: 1457px) {
 	#search {
 		top: 23%;
@@ -35,6 +28,7 @@
 	#search input {
 		margin-bottom: 5px;
 	}
+	
 
 </style>
 </head>
@@ -48,14 +42,14 @@
 	</div>
 	</div>
 	
-	<div class="row">
 	<nav class="navbar navbar" id="search">
-          <form class="form-inline">
+          <form class="form-inline" action="waitingList.go" method="get" id="frm">
+            <input type="hidden" name="startNum" value="1" id="startNum">
+            <input type="hidden" name="pageNum" value="" id="pageNum">
             <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="waitingSearch()">검색</button>
           </form>
     </nav>
-    </div>
 	
 <div class="card shadow mb-4" style="margin-top:15px;">
 	<div id="waitingTable">
@@ -94,10 +88,59 @@
 	</div>
 	</div>
 
+<!-- 페이징 처리 -->
+<div>
+  <ul class="pagination" id="paging">
+  <c:if test="${pager.pageNum > 1}">
+    <li class="page-item">
+  <div class="p" data-list-pn="${pager.pageNum-1}">
+      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
+    </div>
+    </li>
+    </c:if>
+    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
+    	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
+      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
+    	</li>
+		</c:forEach>
+	
+	<c:if test="${pager.pageNum < pager.totalCount}">
+	<li class="page-item">
+	<div class="p" data-list-pn="${pager.pageNum+1}">
+      <a class="page-link" >&raquo;</a>
+      </div>
+    </li>
+    </c:if>
+	  </ul>
+</div>
+
 	</div>
+	
+
+
 	<c:import url="/footer"/>
 </body>
 <script>
+
+$(".p").click(function() {
+	const n= $(this).attr("data-list-pn");
+	$("#pageNum").val(n);
+	$('#frm').submit();
+			
+});
+
+
+//페이징 처리 클릭 이벤트
+$('.p').click(function(){
+	
+	const no = $(this).attr("data-list-pn");
+	$("#pageNum").val(no);
+	$('#frm').submit();
+})
+	
+
+
+
 function waitingSearch() {
 	var keyword = $('#keyword').val();
 	$.ajax({

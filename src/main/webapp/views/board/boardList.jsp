@@ -20,6 +20,16 @@
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">${bt}</h1>
 		</div>
+		<div>
+			<select id="searchCategory" class="form-control">
+				<option value="title">제목</option>
+				<c:if test="${bt ne '익명게시판'}">
+					<option value="name">작성자</option>
+				</c:if>
+			</select>
+			<input id="search" type="text" class="form-control"/>
+			<button class="btn btn-outline-primary" onclick="searchGo()">검색</button>
+		</div>
 		
 		<div class="card shadow p-3">
 			<div class="minHight">
@@ -39,17 +49,17 @@
 						</tr>
 					</thead>
 					<tr>
-					<c:forEach items="${list_pin}" var="item">
+					<c:if test="${empty list}">
 						<tr>
-							<td>공지</td>
-							<td onclick="detailGo(${item.boardID})"><a href="detail?boardID=${item.boardID}">${item.title}</a></td>
-							<td>${item.name}</td>
-							<td>${item.creationDate}</td>
+							<td colspan="4">게시글이 없습니다.</td>
 						</tr>
-					</c:forEach>
+					</c:if>
 					<c:forEach items="${list}" var="item">
 						<tr>
-							<td>${item.boardID}</td>
+							<td>
+								<c:if test="${item.isPinned eq 1}">공지</c:if>
+								<c:if test="${item.isPinned ne 1}">${item.boardID}</c:if>
+							</td>
 							<td onclick="detailGo(${item.boardID})"><a href="detail?boardID=${item.boardID}">${item.title}</a></td>
 							<td>${item.name}</td>
 							<td>${item.creationDate}</td>
@@ -59,36 +69,36 @@
 			</div>
 
 	
-			<div class="row text-center">
-			<!-- 페이징 처리 -->
-			<div class="mx-auto">
-			  <ul class="pagination" id="paging">
-			  <c:if test="${pager.pageNum > 1}">
-			    <li class="page-item">
-			  <div class="p" data-list-pn="${pager.pageNum-1}">
-			      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
-			    </div>
-			    </li>
-			    </c:if>
-			    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
-			    	 <li class="${pager.pageNum == i ? 'page-item active':'page-item'}">
-			      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
-			    	</li>
-					</c:forEach>
-				
-				<c:if test="${pager.pageNum < pager.totalCount}">
-				<li class="page-item">
-				<div class="p" data-list-pn="${pager.pageNum+1}">
-			      <a class="page-link" >&raquo;</a>
-			      </div>
-			    </li>
-			    </c:if>
-				  </ul>
-			</div>
+			<div class="row text-center mx-0">
+				<!-- 페이징 처리 -->
+				<div class="mx-auto">
+				  <ul class="pagination" id="paging">
+				  <c:if test="${pager.pageNum > 1}">
+				    <li class="page-item">
+				  <div class="p" data-list-pn="${pager.pageNum-1}">
+				      <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
+				    </div>
+				    </li>
+				    </c:if>
+				    	<c:forEach begin="1" end="${pager.totalCount}" var="i">
+				    	 <li class="${pager.pageNum == i ? 'page-item active':'page-item'}">
+				      		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
+				    	</li>
+						</c:forEach>
+					
+					<c:if test="${pager.pageNum < pager.totalCount}">
+					<li class="page-item">
+					<div class="p" data-list-pn="${pager.pageNum+1}">
+				      <a class="page-link" >&raquo;</a>
+				      </div>
+				    </li>
+				    </c:if>
+					  </ul>
+				</div>
 			
-			<div class="text-right">
-				<button class="btn btn-primary btn-sm float-right" onclick="location.href='write.go'">글작성</button>
-			</div>
+				<div class="text-right">
+					<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
+				</div>
 			
 			</div>
 			
@@ -100,6 +110,7 @@
 </body>
 
 <script>
+	
 	var msg = "${msg}";
 	if(msg != ""){
 		swal({
@@ -114,14 +125,28 @@
 	
 	
 	$('.p').click(function(){
-		
 		const no = $(this).attr("data-list-pn");
-		//alert(no);
-		console.log(no);
-		$("#pageNum").val(no);
-		location.href='list?page='+no+'&search=';
+		//console.log(no);
+		//console.log(location.href);
+		var href = location.href;
+		if(href.length != 0){
+			href = href.slice(0, -1) + no;
+		}
+		location.href = href;
 	})
 	
+	function searchGo(){
+		var searchCategory = $('#searchCategory').val();
+		var search = $('#search').val();
+		if(search != ''){
+			location.href='list?searchCategory='+searchCategory+'&search='+search+'&page=1';		
+		}else{
+			swal({
+				title: '검색어를 입력해주세요',
+				button: '확인'
+			});
+		}
+	}
 	
 	
 

@@ -32,7 +32,8 @@
 			  <div class="card-body" style="align-items: center;">
 			    <h3 class="card-title" id="branch"></h3>
 			    <div style="width: 200px; height: 200px;">
-			    <h5 class="card-text"><img src="" id="icon" style="width: 75%; height: 75%; border-radius: 50%; margin-top: 6%;"/></h5>
+			    <h5 class="card-text" style="background-color: white; width: 80%; height: 80%; border-radius: 50%; margin-left: 10%;"
+			    ><img src="" id="icon" style="width: 75%; height: 75%; border-radius: 50%; margin-top: 10%;"/></h5>
 			    <h5 id="weatherMain"></h5>
 			    </div>
 			    <h3 class="card-text" id="nowTemp">&nbsp;</h3>
@@ -72,6 +73,7 @@ if(${sessionScope.userInfo.branchID} == 1){
 	url = 'https://api.openweathermap.org/data/2.5/weather?lat=33.4935000&lon=126.4497280&appid=2bbf4a1d6f2c86d2569a4fe70726f66c&units=metric'
 }
 
+// 날씨 API
 $.getJSON(url,function(response){
 	$('#weatherMain').append(response.weather[0].main);
 	$('#nowTemp').append(Math.round(response.main.temp)+'°');
@@ -80,18 +82,7 @@ $.getJSON(url,function(response){
 	$('#maxTemp').append(Math.round(response.main.temp_max)+'°');
 	
     var weatherIcon = response.weather[0].icon.substring(0,2);
-	$('#icon').attr('src','<c:url value="/resource/img/'+weatherIcon+'.gif"/>');
-
-    
-    
-    
-//         '<img src= "http://openweathermap.org/img/wn/'
-//         + response.weather[0].icon +
-//         '.png" alt="' + response.weather[0].description +'"style="width:80%; height:80%;"'+'/>'
-// <img src="<c:url value='/resource/img/10.gif'/>"/>
-       
-
-	
+	$('#icon').attr('src','<c:url value="/resource/img/'+weatherIcon+'.gif"/>');	
 });
 
 
