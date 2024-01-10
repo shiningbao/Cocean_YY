@@ -13,32 +13,37 @@
 
 <style>
 	
- .detailBar { 
-    width: 100%;
-    height: 60px;
-    left: 130px;
- 	background-color: #86B0F3; 
- 	display: flex; 
+	 .detailBar { 
+	    width: 100%;
+	    height: 60px;
+	    left: 130px;
+	 	background-color: #86B0F3; 
+	 	display: flex; 
+		
+	 	justify-content: space-evenly; 
+	 } 
+	 .detailBar div{ 
+		
+	 	width: 100%; 
+	 	height: 100%; 
+	 	position: relative; 
+	 	text-align: center; 
+	 	font-size: 21px; 
+	 	padding-top: 14px; 
+	 	cursor: default; 
+	 } 
 	
- 	justify-content: space-evenly; 
- } 
- .detailBar div{ 
-	
- 	width: 100%; 
- 	height: 100%; 
- 	position: relative; 
- 	text-align: center; 
- 	font-size: 21px; 
- 	padding-top: 14px; 
- 	cursor: default; 
- } 
-
-.detailBar_item:hover{
-	cursor: pointer;
-	background-color: #2F80ED;
-	padding-top: 13px;
-}
-	
+	.detailBar_item:hover{
+		cursor: pointer;
+		background-color: #2F80ED;
+		padding-top: 13px;
+	}
+	.imgChange{
+		width: 100%;
+	}
+	.imgChange i{
+		font-size: 10px;
+	}
 	.imgChange:hover{
 		cursor: pointer;
 	}
@@ -71,8 +76,7 @@
 					<div class="card shadow pt-4 p-2 mx-2">
 						<div class="row">
 							<div class="imgChange col-md-1 mb-2" onclick="imgChange(-1)">
-								<img class="img-fluid" alt="carrot-side2.png"
-									src='<c:url value="/resource/img/carrot-side2.png"/>'>
+								<i class="fi fi-sr-angle-left"></i>
 							</div>
 							<div class="col-md-10 mb-2 text-center">
 								<div style="height:100%; width:100%; margin:0 auto; ">
@@ -80,8 +84,7 @@
 								</div>
 							</div>
 							<div class="imgChange col-md-1 mb-2" onclick="imgChange(1)">
-								<img class="img-fluid" alt="carrot-side.png"
-									src='<c:url value="/resource/img/carrot-side.png"/>'>
+								<i class="fi fi-sr-angle-right"></i>
 							</div>
 							<div class="col-md-4 mb-2 pl-4">
 								<div class="animalImg">
