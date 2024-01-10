@@ -63,7 +63,7 @@ background-color: #f4f4f4;
     width: 350px; 
     height: 100px; 
     padding: 20px; 
-    background-color: #0066FF;
+    background-color: #0099FF;
     
 }
 

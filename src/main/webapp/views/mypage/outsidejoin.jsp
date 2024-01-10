@@ -103,7 +103,7 @@
     
          <tr>
              <th colspan="2" style="text-align: center;">
-                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="리스트" style="width:70px;"/>
+                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="리스트" type="button"style="width:70px;"/>
 				 <button type="submit" id="save" class="btn btn-primary">저장</button>
              </th>
          </tr>
