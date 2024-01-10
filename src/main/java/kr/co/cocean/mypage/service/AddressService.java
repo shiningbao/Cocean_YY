@@ -26,10 +26,16 @@ public class AddressService {
    @Autowired AddressDAO dao;
 
    //외부리스트
+   /*
    public ArrayList<OutAddressDTO> list() {
       
       return dao.list();
-   }
+   }*/
+   
+   public ArrayList<OutAddressDTO> list(int userId) {
+		
+	   return dao.list(userId);
+	}
 
    public int delete(ArrayList<String> delList) {
       int cnt = 0;      
@@ -98,6 +104,8 @@ public ArrayList<OutAddressDTO> inaddresssearch(String inname) {
 	
 	return relist1;
 }
+
+
 
 
 

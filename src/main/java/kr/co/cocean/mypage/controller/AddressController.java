@@ -38,11 +38,13 @@ public class AddressController {
    }
    
    //외부리스트
+   /*
    @GetMapping(value="mypage/listCall")
    @ResponseBody
    public HashMap<String, Object> listCall(HttpSession session) {
       logger.info("list 시작");
       HashMap<String, Object>result = new HashMap<String, Object>();
+      
       
       if(session.getAttribute("userInfo") == null) {
          result.put("login", false);
@@ -53,7 +55,29 @@ public class AddressController {
       }
       logger.info("서비스 넘어가기전");   
       return result;
+   }*/
+   
+   
+   @GetMapping(value="mypage/listCall")
+   @ResponseBody
+   public HashMap<String, Object> listCall(HttpSession session) {
+      logger.info("list 시작");
+      HashMap<String, Object>result = new HashMap<String, Object>();
+      LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+      int userId= userInfo.getEmployeeID();
+      if(session.getAttribute("userInfo") == null) {
+         result.put("login", false);
+      }else {
+         result.put("login", true);
+         ArrayList<OutAddressDTO> list = service.list(userId);
+         result.put("list", list);
+      }
+      logger.info("서비스 넘어가기전");   
+      return result;
    }
+   
+   
+   
    
    
    //외부검색 
