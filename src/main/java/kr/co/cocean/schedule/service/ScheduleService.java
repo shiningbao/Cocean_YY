@@ -78,5 +78,14 @@ public class ScheduleService {
 		dao.updateCal(dataToSend);
 	}
 	
+	public List<HashMap<String, Object>> scheduleAlarm() {
+		return dao.scheduleAlarm();
+	}
+	public void addalarm(List<HashMap<String, Object>> result) {
+		
+		dao.addalarm(result);
+		
+	}
+	
 
 }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
@@ -196,6 +198,32 @@ public class ScheduleController {
 		return "success";
 	}
 	
+	@Scheduled(cron = "0 */30 * * * *")
+	public void scheduleAlarm() {
+	    List<HashMap<String, Object>> result =service.scheduleAlarm();
+	    logger.info("스케줄결과값 !! "+result);
+	    if(result.size()>0) {
+	    	
+	    	SseService sse = new SseService();
+	    	for (HashMap<String, Object> hashMap : result) {
+	    		hashMap.put("url", "/schedule/schedule.go");
+	    		
+	    		
+	    		String subCategory = (String) hashMap.get("subCategory");
+	    		if(subCategory.equals("예약")) {
+	    			hashMap.put("content", "예약 30분전입니다.");
+	    		}else {
+	    			hashMap.put("content", "일정 30분전입니다.");
+	    		}
+	    		
+	    		sse.alarm( (int)hashMap.get("employeeID") ,(String) hashMap.get("content"),(String) hashMap.get("url"));
+	    		
+	    	}
+	    	service.addalarm(result);
+	    	
+	    }
+	    
+	    }
 	
 		
 	

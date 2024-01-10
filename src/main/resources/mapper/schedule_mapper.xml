@@ -71,7 +71,22 @@
 		    remarks =#{remarks}
 		WHERE scheduleID =#{id};
 	</update>
+	
+		
+	<select id="scheduleAlarm" resultType="map">
+	
+		SELECT s.employeeID ,s.subCategory 
+		FROM schedule s  
+		WHERE s.start BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 30 MINUTE)
+	</select>
+	
+	<insert id="addalarm">
+		INSERT INTO notificationHistory (employeeID,url,content) VALUES
+		<foreach collection="result" item="item" separator=",">
+			(#{item.employeeID},#{item.url},#{item.content})
+		</foreach>
 
+	</insert>
 	<!-- <select id="showInterestCalendar">
 		SELECT calendarName from calendar where employeeID = #{loginEmployeeID};
 	</select> -->

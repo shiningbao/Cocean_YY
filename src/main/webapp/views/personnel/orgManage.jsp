@@ -9,28 +9,29 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <style>
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
- 	}
+/* th, td { */
+/* 	border: 1px solid #ddd; */
+/* 	padding: 8px; */
+/* 	text-align: left; */
+/*  	} */
 
-th {
-	background-color: #f4f4f4;
+/* th { */
+/* 	background-color: #f4f4f4; */
+/* } */
+
+td{
+	color:gray;
 }
-
 .headerInfo {
 	font-size: 20px;
 	margin-bottom: 5%;
 }
-#addButton{
-    position: absolute;
-    font-size: 40px;
+#addButton ,.delButton{
+
     background: none;
-    float: right;
+	font-size:20px;
     border: none;
-    left: 80%;
-    top: 61%;
+
 }
 #plusButton , #plusDepartmentButton {
 	font-size: 15px;
@@ -85,15 +86,15 @@ th {
 .tab-content.active {
 	display: block;
 }
-table {
-  border: 1px #a39485 solid;
-  font-size: .9em;
-  box-shadow: 0 2px 5px rgba(0,0,0,.25);
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: 5px;
-  overflow: hidden;
-}
+/* table { */
+/*   border: 1px #a39485 solid; */
+/*   font-size: .9em; */
+/*   box-shadow: 0 2px 5px rgba(0,0,0,.25); */
+/*   width: 100%; */
+/*   border-collapse: collapse; */
+/*   border-radius: 5px; */
+/*   overflow: hidden; */
+/* } */
 .editRank:hover  ,.editPosition:hover ,.edithq:hover ,.editdp:hover{
     /* 호버 시 적용될 스타일 */
     /* 예: 배경색 변경 */
@@ -128,6 +129,19 @@ table {
     font-weight: bold;
     /* 다른 스타일 속성 추가 */
 }
+
+.divide_bar {
+    box-shadow: 1px 1px 1px 0px #555555;
+    display: inline-block;
+    margin: -1px 19px;
+    width: 1px;
+    height: 24px;
+    background: #bebebe;
+    vertical-align: top;
+}
+.abc{
+	display:flex;
+}
 </style>
 </head>
 <body>
@@ -161,12 +175,14 @@ table {
 		</div>	
 		
 		<div class="col-9">
-					<div class="card shadow" style="margin-bottom: 10px; padding: 10px; font-size: 16px;">
+					<div class="card shadow" style="margin-bottom: 10px; padding: 17px; font-size: 16px;">
 					
 						<div>
 							<ul class="tab_menu">
 								<li data-tab="depart" class="tab">본부/부서</li>
+								<span class="divide_bar"></span>
 								<li data-tab="rank" class="tab">직급</li>
+								<span class="divide_bar"></span>
 								<li data-tab="position" class="tab">직책</li>
 									
 							</ul>
@@ -223,8 +239,10 @@ table {
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div style="float:right">
 				        <button class="btn btn-outline-primary cancleRank" type="button">취소</button>
 						<button class="btn btn-primary saveRank" type="submit">저장</button>
+						</div>
 				        
             </form>
           </div>
@@ -259,9 +277,10 @@ table {
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div style="float:right">
 				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
-				        
+				        </div>
             </form>
           </div>
         </div>
@@ -297,9 +316,10 @@ table {
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div style="float:right">
 				        <button class="btn btn-outline-primary cancleAddPosition" type="button">취소</button>
 						<button class="btn btn-primary addPositon" type="submit">생성</button>
-				        
+				        </div>
             </form>
           </div>
         </div>
@@ -334,9 +354,10 @@ table {
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
-				        <button class="btn btn-outline-primary cancleAddPosition" type="button">취소</button>
-						<button class="btn btn-primary addPositon" type="submit">생성</button>
-				        
+				        <div style="float:right">
+				        <button class="btn btn-outline-primary cancleAddRank" type="button">취소</button>
+						<button class="btn btn-primary addRank" type="submit">생성</button>
+				        </div>
             </form>
           </div>
         </div>
@@ -376,10 +397,15 @@ table {
 				        </div>
 				        <div class="form-group">
 				             <label for="rankName">담당명:</label>
-							    <div id="responNames">
-							        <input type="text" class="form-control" name="responsibility[0].category" style="width: 80%" placeholder="1개이상 담당 입력" required>
-							    	<button id="addButton" type="button">+</button>
-							    </div>
+				             
+							    <div id="responNames" >
+							    	<div class="abc">
+							        <input type="text" class="form-control" name="responsibility[0].category" style="width: 80%; margin-bottom: 20px " placeholder="1개이상 담당 입력" required>
+							        <button id="addButton" onclick="addRowRs()"type="button">+</button>
+							    	</div>
+							    </div>	
+							    	
+							    
 							    
 				        </div>
 				        <div class="form-group">
@@ -389,9 +415,10 @@ table {
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div style="float:right">
 				        <button class="btn btn-outline-primary cancleAddPosition" type="button">취소</button>
 						<button class="btn btn-primary addPositon" type="submit">생성</button>
-				        
+				        </div>
             </form>
           </div>
         </div>
@@ -650,14 +677,20 @@ function get1EmployeeID(employeeID, nodeText) {
 
             if (data.dpInfo) {
                 var content =
-                    '<div class="infoClass">' +
-                    '<table style="width:30%">' +
-                    '<tr><th>부서번호</th><td>' + data.dpInfo.departmentID + '</td></tr>' +
-                    '<tr><th>부서명</th><td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' + data.dpInfo.departmentName + '</td></tr>' +
-                    '<tr><th>활성화/비활성화</th><td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
-                    '<tr><th>상위본부</th><td>' + data.dpInfo.hqName + '</td></tr>' +
-                    '</table>' +
-                    '</div>';
+                    '<div class="headerInfo">' +
+                    '<span> 부서관리 </span>'+
+                    '</div>' +
+                    '<table class="table table-hover">' +
+                    '<colgroup> <col width="30%"> <col width="70%"> </colgroup>' +
+                    '<tr><th colspan="col">부서번호</th><td>' + data.dpInfo.departmentID + '</td></tr>' +
+                    '<tr><th colspan="col">부서명</th><td class="editdp" data-toggle="editdpModal" data-target="#editdpModal" data-departmentname="' + data.dpInfo.departmentName + '"  data-departmentid="' + data.dpInfo.departmentID + '" data-isactive="' + data.dpInfo.isActive + '">' +
+                    data.dpInfo.departmentName +
+                    '<i class="fas fa-edit ml-2"></i>' +
+                	'</td></tr>' +
+                    '<tr><th colspan="col">활성화/비활성화</th><td>' + (data.dpInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
+                    '<tr><th colspan="col">상위본부</th><td>' + data.dpInfo.hqName + '</td></tr>' +
+                    '</table>';
+                    
 //                     var psContent = '<div>';
 //                     for (var i = 0; i < dmdata.length; i++) {
 //                         if (dmdata[i].thisDepartmentMembers && dmdata[i].thisDepartmentMembers.name) {
@@ -670,14 +703,20 @@ function get1EmployeeID(employeeID, nodeText) {
                 $(".infoClass").empty().append(content);
             } else if (data.hqInfo) {
                 var contentHq =
-                    '<div class="infoClass">' +
-                    '<table style="width:30%">' +
-                    '<tr><th>본부번호</th><td>' + data.hqInfo.hqID + '</td></tr>' +
-                    '<tr><th>본부명</th><td class="edithq" data-toggle="edithqModal" data-target="#edithqModal" data-hqname="' + data.hqInfo.hqName + '"  data-hqid="' + data.hqInfo.hqID + '" data-isactive="' + data.hqInfo.isActive + '">' + data.hqInfo.hqName + '</td></tr>' +
-                    '<tr><th>활성화/비활성화</th><td>' + (data.hqInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
-                    '<tr><th>상위지점</th><td>' + data.hqInfo.branchName + '</td></tr>' +
-                    '</table>' +
-                    '</div>';
+                    '<div class="headerInfo">' +
+                    '<span> 본부관리 </span>'+
+                    '</div>' +
+                    '<table class="table table-hover">' +
+                    '<colgroup> <col width="30%"> <col width="70%"> </colgroup>' +
+                    '<tr><th colspan="col">본부번호</th><td>' + data.hqInfo.hqID + '</td></tr>' +
+                    '<tr><th colspan="col">본부명</th><td class="edithq" data-toggle="edithqModal" data-target="#edithqModal" data-hqname="' + data.hqInfo.hqName + '"  data-hqid="' + data.hqInfo.hqID + '" data-isactive="' + data.hqInfo.isActive + '">' +
+                    data.hqInfo.hqName +
+                    '<i class="fas fa-edit ml-2"></i>' +
+                	'</td></tr>'+
+                    '<tr><th colspan="col">활성화/비활성화</th><td>' + (data.hqInfo.isActive == 1 ? '활성화' : '비활성화') + '</td></tr>' +
+                    '<tr><th colspan="col">상위지점</th><td>' + data.hqInfo.branchName + '</td></tr>' +
+                    '</table>';
+                    
                 selectedDepartmentInfo = contentHq;
                 $(".infoClass").empty().append(contentHq);
             } else if (!data || $.isEmptyObject(data)) {
@@ -711,6 +750,23 @@ $(document).on('click','.edithq',function(){
     
     $('#edithqModal').modal('show'); // 모달 띄우기
 });
+
+$('.cancleRank').on('click',function(){
+	console.log('click');
+	 $('#editmodal').modal('hide');
+});
+
+$('.canclePosition').on('click',function(){
+	$('#editPositionmodal').modal('hide');
+})
+
+$('.cancleAddPosition').on('click',function(){
+	$('#addPositionmodal').modal('hide');
+})
+
+$('.cancleAddRank').on('click',function(){
+	$('#addRankmodal').modal('hide');
+})
 
 $(document).on('click','.editdp',function(){
 	console.log(this);
@@ -747,16 +803,20 @@ function drawRank(){
 		    '</div>' +
 		    '<div class="contentInfo">' +
 		    '<button id="plusButton" class=" rankAdd" data-toggle="addRankmodal" data-target="#addRankmodal"><i class="fas fa-plus"></i>추가</button>'+
-		    '<table>' +
+		    '<table class="table table-hover">' +
+		    '<colgroup> <col width="30%"> <col width="30%"> <col width="40%"> </colgroup>' +
 		    '<tr>' +
-		    '<th>직급번호</th>' +
-		    '<th>직급명</th>' +
-		    '<th>활성화/비활성화</th>' +
+		    '<th scope="col">직급번호</th>' +
+		    '<th scope="col">직급명</th>' +
+		    '<th scope="col">활성화/비활성화</th>' +
 		    '</tr>';
 			data.forEach(function(option) {
 			    content += '<tr>' +
 		        '<td>' + option.rankID + '</td>' +
-		        '<td class="editRank" data-toggle="editmodal" data-target="#editmodal" data-rankid="' + option.rankID + '" data-isactive="' + option.isActive + '">' + option.rankName + '</td>' +
+		        '<td class="editRank" data-toggle="editmodal" data-target="#editmodal" data-rankid="' + option.rankID + '" data-isactive="' + option.isActive + '">' +
+		        option.rankName +
+		        '<i class="fas fa-edit ml-2"></i>' +
+		    	'</td>' +
 		        '<td>' + (option.isActive == 1 ? '활성화' : '비활성화') + '</td>'
 		        
 		        '</tr>';
@@ -800,16 +860,20 @@ function drawPosition(){
 		    '</div>' +
 		    '<div class="contentInfo">' +
 		    '<button id="plusButton" class ="positionAdd" data-toggle="addPositionmodal" data-target="#addPositionmodal" ><i class="fas fa-plus"></i>추가</button>'+
-		    '<table>' +
+		    '<table class="table table-hover">' +
+		    '<colgroup> <col width="30%"> <col width="30%"> <col width="40%"> </colgroup>' +
 		    '<tr>' +
-		    '<th>직책번호</th>' +
-		    '<th>직책명</th>' +
-		    '<th>활성화/비활성화</th>' +
+		    '<th scope="col">직책번호</th>' +
+		    '<th scope="col">직책명</th>' +
+		    '<th scope="col">활성화/비활성화</th>' +
 		    '</tr>';
 			data.forEach(function(option,index) {
 			    content += '<tr>' +
 		        '<td>' + option.positionID + '</td>' +
-		        '<td class="editPosition" data-toggle="editmodal" data-target="#editmodal" data-positionid="' + option.positionID + '" data-isactive="' + option.isActive + '">' + option.positionName + '</td>' +
+		        '<td class="editPosition" data-toggle="editmodal" data-target="#editmodal" data-positionid="' + option.positionID + '" data-isactive="' + option.isActive + '">' +
+		        option.positionName +
+		        '<i class="fas fa-edit ml-2"></i>' +
+		    	'</td>' +
 		        '<td>' + (option.isActive == 1 ? '활성화' : '비활성화') + '</td>'
 		        '</tr>';
 			});
@@ -962,20 +1026,37 @@ $('#addRankSubmit').on('submit', function(e) {
 });
 var counter = 0; // 입력 필드를 구분하기 위한 카운터 변수
 
-$('#addButton').on('click', function() {
-    counter++; // 카운터 증가
+function addRowRs() {
+    counter++;
+    
     var newInput = $('<input>', {
         type: 'text',
         class: 'form-control',
         name: 'responsibility[' + counter + '].category',
-        style: 'width: 80%',
+        style: 'width: 80%; margin-bottom:20px;',
         required: true
     });
-    $('#responNames').append(newInput);
-});
-    // 담당명을 입력할 div에 추가
 
+    var delButton = $('<button>', {
+        text: '-',
+        class:'delButton',
+        click: function() {
+            $(this).parent().remove();
+        }
+    });
 
+    var plusButton = $('<button>', {
+        text: '+',
+        id: 'addButton', // 새로운 행을 추가할 버튼
+        type: 'button',
+        click: function() {
+            addRowRs();
+        }
+    });
+
+    var newRow = $('<div class="abc">').append(newInput).append(delButton).append(plusButton);
+    $('#responNames').append(newRow);
+}
 
 
 $('#addDepartmentSubmit').on('submit', function(e) {
