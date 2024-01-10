@@ -77,14 +77,14 @@
 						<div style="float: right;">
 							<a href="#" class="btn btn-success btn-circle">
 								<i class="fas fa-check"></i>
-							</a> 
+							</a>
 							<a href="#" class="btn btn-danger btn-circle"> 
 							<i class="fas fa-trash"></i>
 							</a>
 						</div>
 					</div>
 					<div class="card-body">
-						<p class="card-text">본문 내용</p>
+						<p class="card-text" id="content1">본문 내용</p>
 					</div>
 				</div>
 			</div>
@@ -106,6 +106,7 @@
                 <label>담당자</label>
                 <input type="text" id="manager" value="${sessionScope.userInfo.name}" readonly class="form-control">
                 <input type="hidden" id="empolyeeID" name="empolyeeID" value="${sessionScope.userInfo.employeeID}">
+                <input type="hidden"  name="tankID" value="${tankID}">
               </div>
               <div class="form-group">
                 <label>내용</label>
@@ -171,6 +172,7 @@ function addPlan(){
 }
 	
 	
+
 
 
 

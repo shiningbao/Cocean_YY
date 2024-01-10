@@ -121,4 +121,8 @@
 	</select>
 	
 	
+	<insert id="addPlan" parameterType="map">
+		INSERT INTO logPlanTable VALUES (null,#{empolyeeID},'plan','house',#{tankID},now(),#{content},'진행')
+	</insert>
+	
 </mapper>

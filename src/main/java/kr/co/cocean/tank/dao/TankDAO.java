@@ -46,6 +46,8 @@ public interface TankDAO {
 
 	Integer totalCount(HashMap<String, Object> params);
 
+	void addPlan(HashMap<String, Object> params);
+
 	
 
 }

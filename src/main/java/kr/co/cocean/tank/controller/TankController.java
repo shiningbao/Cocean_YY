@@ -136,7 +136,7 @@ public class TankController {
 	public String addPlan(@RequestParam HashMap<String, Object> params) {
 		logger.info("params"+params); 
 		String ok = "ok";
-		//service.addPlan();
+		service.addPlan(params);
 		return ok;
 	}
 

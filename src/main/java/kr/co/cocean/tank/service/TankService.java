@@ -118,4 +118,10 @@ public class TankService {
 		return dao.recordList(tankID,curDate);
 	}
 
+
+	public void addPlan(HashMap<String, Object> params) {
+		dao.addPlan(params);
+		
+	}
+
 }
