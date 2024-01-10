@@ -26,7 +26,11 @@
 
 <style>
 
-
+.delBtn ,.addBtn{
+	border: none;
+    background: none;
+}
+}
 .photo {
 	justify-content: start !important;
 }
@@ -43,16 +47,17 @@
 
 
 
-th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
+/* th, td { */
+/*     padding: 8px; */
+/*     text-align: left; */
+/* } */
 
-th {
-    background-color: #f4f4f4;
+/* th { */
+/*     background-color: #f4f4f4; */
+/* } */
+td{
+	color: gray;
 }
-
 /* 이미지 */
 .photo img, .photo2 img {
     max-width: 150px;
@@ -75,7 +80,7 @@ th {
 .tab_menu {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin-bottom: 40px ;
 }
 
 .tab_menu li {
@@ -118,7 +123,7 @@ th {
         display: block;
     }
     .formbtn{
-    	margin-left: 40%;
+    	    text-align: center;
     }
 
     #fileInput, #fileSignatureInput {
@@ -188,36 +193,44 @@ th {
 	border-radius: 0.25rem;
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.divide_bar {
+    box-shadow: 1px 1px 1px 0px #555555;
+    display: inline-block;
+    margin: -2px 17px;
+    width: 1px;
+    height: 27px;
+    background: #bebebe;
+    vertical-align: top;
+}
 </style>
 </head>
 <body>
 <c:import url="/side"/>
+<form id="detailSave"  enctype="multipart/form-data">
 <div class="container-fluid contentField">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">사원상세</h1>
 	</div>
+	
 		<div class="col-12">
 			<div class="card shadow">
 				<div class="card-body">
-
-		<form action="detailSave.do" method="POST" id="detailSave"  enctype="multipart/form-data">
-		<div class="">
-			<div class="wrap_info_content" >
-				<div class="wrap_header">
-					<div class="wrap_photo"></div>
-
-
-
-
-				</div>
-			</div>
-							<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
-			<table class="type_list_box">
+					
+						<div class="">
+							<div class="wrap_info_content" >
+								<div class="wrap_header">
+									<div class="wrap_photo">
+									
+									</div>
+								</div>
+							</div>
+			<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
+			
+			<table class="table">
 				<tbody>
-
 					<tr>
-						<td class="profile_image" rowspan="4" style="width: 10%"><span
-							class="img_profile"> <label class="photo" for="fileInput"> 
+						<td class="profile_image" rowspan="4" style="width: 10%">
+						<span class="img_profile"> <label class="photo" for="fileInput"> 
 								<label class="photo" for="fileInput">
 								<c:choose>
 										<c:when test="${person.profileImage != null}">
@@ -233,44 +246,45 @@ th {
 									</c:choose>
 									</label>
 							</label>
-							<input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
-						</span></td>
-						<th class="name">이름</th>
-						<th class="team">소속</th>
-
-						<td class="last" colspan="">${person.departmentName }</td>
-						<th>입사일</th>
-						<td class="" colspan="1">
-							  <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
-						</td>
-					</tr>
-					<tr>
-						<td class="name_txt" rowspan="3">
-							<p class="kor">${person.name}</p>
-
-						</td>
-						<th class="number">사번</th>
-						<td class="number_txt">${person.employeeID }</td>
-						<th class="telephone">지점</th>
-						<td class="telephone_txt last">${person.branchName }</td>
-					</tr>
-					<tr>
-						<th class="email">직급 / 직책</th>
-						<td class="email_txt">
-						${person.rankName }/${person.positionName}
+							
+								<input type="file" name="file" id="fileInput" title="등록" style="height:inherit;">
+							</span></td>
+							<th class="name">이름</th>
+							<th class="team">소속</th>
+	
+							<td class="last" colspan="">${person.departmentName }</td>
+							<th>입사일</th>
+							<td class="" colspan="1">
+								  <span class="wrap_date">${person.joinDate}<span class="ic ic_calendar"></span></span>
 							</td>
-						<th class="mobile">휴대번호</th>
-						<td class="mobile_txt last">${person.phoneNumber }</td>
-					</tr>
-					<tr>
-						<th class="rank">담당</th>
-						<td class="rank_txt">${person.responName }</td>
-						<th class="address">주소</th>
-						<td class="address_txt ">${person.address }</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+						</tr>
+						<tr>
+							<td class="name_txt" rowspan="3">
+								<p class="kor">${person.name}</p>
+	
+							</td>
+							<th class="number">사번</th>
+							<td class="number_txt">${person.employeeID }</td>
+							<th class="telephone">지점</th>
+							<td class="telephone_txt last">${person.branchName }</td>
+						</tr>
+						<tr>
+							<th class="email">직급 / 직책</th>
+							<td class="email_txt">
+							${person.rankName }/${person.positionName}
+								</td>
+							<th class="mobile">휴대번호</th>
+							<td class="mobile_txt last">${person.phoneNumber }</td>
+						</tr>
+						<tr>
+							<th class="rank">담당</th>
+							<td class="rank_txt">${person.responName }</td>
+							<th class="address">주소</th>
+							<td class="address_txt ">${person.address }</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
@@ -283,10 +297,15 @@ th {
 			<div>
 				<ul class="tab_menu">
 					<li data-tab="basic" class="tab">기본</li>
+					<span class="divide_bar"></span>
 					<li data-tab="info" class="tab">신상</li>
+					<span class="divide_bar"></span>
 					<li data-tab="workHistory" class="tab">이력</li>
+					<span class="divide_bar"></span>
 					<li data-tab="history" class="tab">학력</li>
+					<span class="divide_bar"></span>
 					<li data-tab="departmentChangeLog" class="tab">부서변경로그</li>
+					<span class="divide_bar"></span>
 					<li data-tab="annualLeave" class="tab">연차기록</li>
 					<!-- 다른 탭 추가 -->
 				</ul>
@@ -295,7 +314,7 @@ th {
 						<h3 class="tab_title" style="display: none;">기본 정보</h3>
 						<div class="ehr_basic viewForm">
 						
-							<table class="multi-row-table" style="width:100%;">
+							<table class="table table-hover" style="width:100%;">
 							    <tbody>
 							        <tr>
 										<th class="col3">지점</th>
@@ -360,7 +379,7 @@ th {
 	<div class="tab-content" id="workHistoryTab" style="display: none;">
 	<input type="hidden" name="employeeID" value="${person.employeeID }"> 
 	<input type="hidden" name="tabID">
-		<table style="width:100%" id="workHistoryTable">
+		<table class="table table-hover"style="width:100%" id="workHistoryTable">
 		
 			<tbody>
 				<tr>
@@ -375,32 +394,40 @@ th {
 				</tr>
 
 				<c:forEach var="history" items="${workHistory}">
+					
 					<tr>
+					<td style="display:none;">
+					<input type="hidden" class="historyID" value="${history.historyID }">
+					</td>
 						<td>${history.startDate}</td>
 						<td>${history.endDate}</td>
 						<td>${history.organizationName}</td>
 						<td>${history.remarks}</td>
-						<td></td>
+						<td><button onclick='delHistory()' type='button' class='delBtn'>X</button></td>
 					</tr>
 				</c:forEach>
-								<tr>
-			
-			<td><input type="date" name="historyArray[0].startDate"></td>
-            <td><input type="date" name="historyArray[0].endDate"></td>
-            <td><input type="text" name="historyArray[0].organizationName"></td>
-            <td><input type="text" name="historyArray[0].remarks"></td>
+			<tr>
+				<td><input type="date" name="historyArray[0].startDate"></td>
+	            <td><input type="date" name="historyArray[0].endDate"></td>
+	            <td><input type="text" name="historyArray[0].organizationName"></td>
+	            <td><input type="text" name="historyArray[0].remarks"></td>
 					<td>
 					<input type="hidden" name="historyArray[0].category" value="이력">
-						<button onclick="addRow1()" type="button">+</button>
+						<button onclick="addRow1()" type="button" style="
+						    border: none;
+						    background: none;
+						    font-size: 25px;
+						">+</button>
 					</td>
 				</tr>
+				
 			</tbody>
 		</table>
 	</div>
 	<!-- 학력 탭 내용 -->
 	<div class="tab-content" id="historyTab" style="display: none;">
 	
-		<table style="width:100%;" id="historyTable">
+		<table class="table table-hover"style="width:100%;" id="historyTable">
 			<tr>
 				<th>입학일</th>
 				<th>졸업일</th>
@@ -411,11 +438,13 @@ th {
 
 					<c:forEach var="history" items="${employeeHistory}">
 						<tr>
+						<td style="display:none;">
+							<input type="hidden" class="historyID" value="${history.historyID }">
 							<td>${history.startDate}</td>
 							<td>${history.endDate}</td>
 							<td>${history.organizationName}</td>
 							<td>${history.remarks}</td>
-							<td></td>
+							<td><button onclick='delscHistory()' type='button' class='delBtn'>X</button></td>
 						</tr>
 					</c:forEach>
 					<tr>
@@ -426,7 +455,11 @@ th {
 
 					<td>
 					<input type="hidden" name="schistoryArray[0].category" value="학력">
-						<button onclick="addRow()" type="button">+</button>
+						<button onclick="addRow()" type="button" style="
+						    border: none;
+						    background: none;
+						    font-size: 25px;
+						">+</button>
 					</td>
 				</tr>
 
@@ -435,17 +468,22 @@ th {
 	</div>
 	<div class="subPs2 tab-content" id="departmentChangeLogTab"
 		style="display: none;">
-		<table style="width:100%">
+		<table class="table table-hover"style="width:100%" id="dpChangeTable">
 			<tr>
 				<th>변경일</th>
 				<th>변경전부서</th>
 				<th>변경후부서</th>
+				<th></th>
 			</tr>
 			<c:forEach var="dplog" items="${departmentChangeLog}">
 			<tr>
+				<td style="display:none;">
+					<input type="hidden" class="logID" value="${dplog.logID }">
+				</td>
 				<td>${dplog.changeDate}</td>
 				<td>${dplog.beforedpID}</td>
 				<td>${dplog.afterdpID}</td>
+				<td><button onclick='delDepartmentLog()' type='button' class='delBtn'>X</button></td>
 			</tr>
 			</c:forEach>
 		</table>
@@ -458,33 +496,41 @@ th {
 	
 		<div class="tab-content" id="annualLeaveTab" style="display: none;">
 		
+	
+		<table class="table table-hover">
+			<colgroup>
+				<col width="30%">
+				<col width="30%">
+				<col width="40%">
+			</colgroup>
+			<thead>
 
-		<table style="width:100%">
-		올해
-			<tr>
-				<th>발생한연차</th>
-				<th>잔여연차</th>
-				<th>사용연차</th>
-				
-			</tr>
+				<tr>
+					<th scope="col">발생한 연차</th>
+					<th scope="col">잔여 연차</th>
+					<th scope="col">사용 연차</th>
+					
+				</tr>
+			</thead>
+			<tbody>
 			<tr>
 				<td>${getEmployeeAnnual.value}일</td>
 				<td>${person.remainingAnnualLeave }일</td>
 				<td>${getEmployeeAnnual.value - person.remainingAnnualLeave}일</td>
 			</tr>
+			</tbody>
 		</table>
-				<ul class="wrap_ehr_stat">
-                    <li>
+					<div>
                         <span class="stat_tit">연차 사용기간 :</span>
-                        
-                        <select id="vacation_term_list" style="display: inline-block;"><option value="2024-12-31">2024-01-01 ~ 2024-12-31</option><option value="2023-12-31">2023-01-01 ~ 2023-12-31</option><option value="2022-12-31">2022-01-01 ~ 2022-12-31</option><option value="2021-12-31">2021-01-01 ~ 2021-12-31</option><option value="2020-12-31">2020-01-01 ~ 2020-12-31</option><option value="2019-12-31">2019-01-01 ~ 2019-12-31</option><option value="2018-12-31">2018-01-01 ~ 2018-12-31</option></select>
-                    </li>
-                </ul>
-		<table>
+                        <select id="vacation_term_list" class="psSelect" style="display: inline-block; width:25%;"><option value="2024-12-31">2024-01-01 ~ 2024-12-31</option><option value="2023-12-31">2023-01-01 ~ 2023-12-31</option><option value="2022-12-31">2022-01-01 ~ 2022-12-31</option><option value="2021-12-31">2021-01-01 ~ 2021-12-31</option><option value="2020-12-31">2020-01-01 ~ 2020-12-31</option><option value="2019-12-31">2019-01-01 ~ 2019-12-31</option><option value="2018-12-31">2018-01-01 ~ 2018-12-31</option></select>
+					</div>
+		<table class="table table-hover findAttend">
+			<colgroup>
+				<col width="30%">
+				<col width="30%">
+				<col width="40%">
+			</colgroup>
 
-			<tr class="findAttend" >
-			
-			</tr>
 		</table>
 
 				
@@ -494,7 +540,7 @@ th {
 		</div>
 	
 		<div class="tab-content" id="infoTab" style="display: none;">
-		<table style="width:100%">
+		<table class ="table table-hover">
 			<tr>
 				<th>이름</th>
 				<th>휴대번호</th>
@@ -525,9 +571,10 @@ th {
     </div>
         <div class="formbtn">
         <button class="btn btn-outline-primary detailCancleBtn">취소</button>
-        <button class="btn btn-primary detailSaveBtn" type="button">저장</button>
+        <button class="btn btn-primary detailSaveBtn" type="submit">저장</button>
         </div>
-		</form>
+</form>
+
 		</div>
 		</div>
 		</div>
@@ -543,6 +590,7 @@ var hqPsID = '${person.hqID}';
 var dpName ='${person.departmentID}';
 var psResponsibility = '${person.responID}';
 var employeeID = '${person.employeeID}';
+var workHistory = '${workHistory}';
 console.log('------------');
 
 
@@ -741,6 +789,11 @@ $(document).ready(function() {
         var tabId = $(this).attr("data-tab");
        	$('input[name="tabID"]').val(tabId);
         $("#" + tabId + "Tab").show();
+        if(tabId == 'annualLeave' || tabId == 'departmentChangeLog'){
+        	$('.formbtn').hide();
+        }else{
+        	$('.formbtn').show();
+        }
     });
     
 	getPositionName();
@@ -805,13 +858,13 @@ function addRow() {
         "<td><input type='text' name='schistoryArray[" + rowIndex + "].remarks'></td>" +
         "<td>" +
         "<input type='hidden' name='schistoryArray[" + rowIndex + "].category' value='학력'>" +
-        "<button onclick='delRow(this)' type='button'>-</button>" +
-        "<button onclick='addRow()' type='button'>+</button>" +
+        "<button onclick='delRow(this)' type='button' class='delBtn'  >-</button>" +
+        "<button onclick='addRow()' type='button' class='addBtn' >+</button>" +
         "</td>" +
         "</tr>";
 
     rowIndex++;
-    $("#historyTable").append(newRow);
+    $("#historyTable tbody").append(newRow);
 }
 
 function delRow(btn) {
@@ -819,6 +872,7 @@ function delRow(btn) {
     $(btn).closest("tr").remove();
 }
 function addRow1() { // 이력
+	console.log('학력 추가버튼클릭');
     var newRow = "<tr>" +
         "<td><input type='date' name='historyArray[" + rowIndex1 + "].startDate'></td>" +
         "<td><input type='date' name='historyArray[" + rowIndex1 + "].endDate'></td>" +
@@ -826,19 +880,211 @@ function addRow1() { // 이력
         "<td><input type='text' name='historyArray[" + rowIndex1 + "].remarks'></td>" +
         "<td>" +
         "<input type='hidden' name='historyArray[" + rowIndex1 + "].category' value='이력'>" +
-        "<button onclick='delRow1(this)' type='button'>-</button>" +
-        "<button onclick='addRow1()' type='button'>+</button>" +
+        "<button onclick='delRow1(this)' type='button' class='delBtn'>-</button>" +
+        "<button onclick='addRow1()' type='button' class='addBtn'>+</button>" +
         "</td>" +
         "</tr>";
 	
         rowIndex1++;
-    $("#workHistoryTable").append(newRow);
+    $("#workHistoryTable tbody").append(newRow);
 }
 
 
 function delRow1(btn) {
     $(btn).closest("tr").remove();
 }
+function drawscHistoryTable() {
+
+    $.ajax({
+        url: 'ajaxGetscHistory.do',
+        data: { employeeID: employeeID },
+        type: 'post',
+        success: function(data) {
+            console.log(data);
+            var tableBody = $('#historyTable tbody');
+            tableBody.empty(); 
+
+            var tableHeader = $('<tr>');
+            tableHeader.append('<th>입학일</th>');
+            tableHeader.append('<th>졸업일</th>');
+            tableHeader.append('<th>학교명</th>');
+            tableHeader.append('<th>비고</th>');
+            tableHeader.append('<th>수정</th>');
+            tableBody.append(tableHeader);
+
+            // 이 부분에서 data에 들어있는 내용을 반복하면서 로우를 추가해줍니다.
+            data.forEach(function(item) {
+                var row = $('<tr>');
+                row.append('<td style="display:none;"><input type="hidden" class="historyID" value="' + item.historyID + '"></td>');
+                row.append('<td>' + item.startDate + '</td>');
+                row.append('<td>' + item.endDate + '</td>');
+                row.append('<td>' + item.organizationName + '</td>');
+                row.append('<td>' + item.remarks + '</td>');
+                row.append('<td><button onclick="delscHistory()" type="button" class="delBtn">X</button></td>');
+                tableBody.append(row);
+            });
+
+            var newRow = $('<tr>');
+            newRow.append('<td><input type="date" name="schistoryArray[0].startDate"></td>');
+            newRow.append('<td><input type="date" name="schistoryArray[0].endDate"></td>');
+            newRow.append('<td><input type="text" name="schistoryArray[0].organizationName"></td>');
+            newRow.append('<td><input type="text" name="schistoryArray[0].remarks"></td>');
+            newRow.append('<td><input type="hidden" name="schistoryArray[0].category" value="학력"><button onclick="addRow()" type="button" style="border: none; background: none; font-size: 25px;">+</button></td>');
+
+            tableBody.append(newRow);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    }); 	
+}
+
+
+function drawHistoryTable() {
+
+    $.ajax({
+        url: 'ajaxGetHistory.do',
+        data: { employeeID: employeeID },
+        type: 'post',
+        success: function(data) {
+            console.log(data);
+            var tableBody = $('#workHistoryTable tbody');
+            tableBody.empty(); 
+
+            var tableHeader = $('<tr>');
+            tableHeader.append('<th>입사일</th>');
+            tableHeader.append('<th>퇴사일</th>');
+            tableHeader.append('<th>회사명</th>');
+            tableHeader.append('<th>비고</th>');
+            tableHeader.append('<th>수정</th>');
+            tableBody.append(tableHeader);
+
+            // 이 부분에서 data에 들어있는 내용을 반복하면서 로우를 추가해줍니다.
+            data.forEach(function(item) {
+                var row = $('<tr>');
+                row.append('<td style="display:none;"><input type="hidden" class="historyID" value="' + item.historyID + '"></td>');
+                row.append('<td>' + item.startDate + '</td>');
+                row.append('<td>' + item.endDate + '</td>');
+                row.append('<td>' + item.organizationName + '</td>');
+                row.append('<td>' + item.remarks + '</td>');
+                row.append('<td><button onclick="delHistory()" type="button" class="delBtn">X</button></td>');
+                tableBody.append(row);
+            });
+
+            var newRow = $('<tr>');
+            newRow.append('<td><input type="date" name="historyArray[0].startDate"></td>');
+            newRow.append('<td><input type="date" name="historyArray[0].endDate"></td>');
+            newRow.append('<td><input type="text" name="historyArray[0].organizationName"></td>');
+            newRow.append('<td><input type="text" name="historyArray[0].remarks"></td>');
+            newRow.append('<td><input type="hidden" name="historyArray[0].category" value="이력"><button onclick="addRow1()" type="button" style="border: none; background: none; font-size: 25px;">+</button></td>');
+
+            tableBody.append(newRow);
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    }); 	
+}
+function ajaxDepartmentLog(){
+    $.ajax({
+        url:'departmentChangeLog.do',
+        data:{employeeID:employeeID},
+        type:'post',
+        success: function(data) {
+            console.log(data);
+            var tableBody = $('#dpChangeTable tbody');
+            tableBody.empty();
+
+            var tableHeader = $('<tr>' +
+                '<th>변경일</th>' +
+                '<th>변경전부서</th>' +
+                '<th>변경후부서</th>' +
+                '<th></th>' +
+                '</tr>');
+            tableBody.append(tableHeader);
+
+            data.forEach(function(item) {
+                var row = $('<tr>');
+                row.append('<td style="display:none;"><input type="hidden" class="logID" value="' + item.logID + '"></td>');
+                row.append('<td>' + item.beforedpID + '</td>');
+                row.append('<td>' + item.afterdpID + '</td>');
+                row.append('<td>' + item.changeDate + '</td>');
+                row.append('<td><button onclick="delDepartmentLog()" type="button" class="delBtn">X</button></td>');
+
+                tableBody.append(row);
+            });
+        },
+        error:function(e){
+            console.log(e);
+        }
+    });
+}
+function delHistory(){
+	var historyID =$(event.target).closest('tr').find('.historyID').val();
+	if(confirm("해당 이력을 삭제하시겠습니까?")){
+		
+	$.ajax({
+		url:'delHistory.do',
+		data:{historyID:historyID},
+		type:'post',
+		success:function(data){
+			console.log(data);
+			alert(data.message);
+			drawHistoryTable();
+		},
+		error:function(e){
+			console.log(e);
+		}
+		
+	});
+	}
+}
+
+function delscHistory(){
+	var historyID =$(event.target).closest('tr').find('.historyID').val();
+	if(confirm("해당 학력을 삭제하시겠습니까?")){
+		
+	$.ajax({
+		url:'delscHistory.do',
+		data:{historyID:historyID},
+		type:'post',
+		success:function(data){
+			console.log(data);
+			alert(data.message);
+			drawscHistoryTable();
+			
+		},
+		error:function(e){
+			console.log(e);
+		}
+		
+	});
+	}
+}
+
+function delDepartmentLog(){
+    var logID = $(event.target).closest('tr').find('.logID').val();
+    console.log(logID);
+    if(confirm("해당 로그을 삭제하시겠습니까?")){
+        $.ajax({
+            url:'delDepartmentLog.do',
+            data:{logID:logID},
+            type:'post',
+            success:function(data){
+                console.log(data);
+                alert(data.message);
+                // 삭제 성공 후에 새로운 데이터로 테이블 갱신
+                ajaxDepartmentLog();
+            },
+            error:function(e){
+                console.log(e);
+            }
+        });
+    }
+}
+
+    // 마지막에 추가할 새로운 입력란
+
 $('#fileInput').on('change', function(e) {
     var file = e.target.files[0];
     var reader = new FileReader();
@@ -878,17 +1124,50 @@ $('input[name="employeeID"]').on('focusout',function(){
 	});
 })
 
-$('.detailSaveBtn').on('click',function(){
-	console.log('click');
-	if(confirm("저장 하시겠습니까?")){
-		$('#detailSave').submit();	
-		/* location.href = location.href; */
-	}else{
+// $('.detailSaveBtn').on('click',function(){
+// 	console.log('click');
+// 	if(confirm("저장 하시겠습니까?")){
+// 		$('#detailSave').submit();	
+// 		/* location.href = location.href; */
+// 	}else{
 		
-	}
+// 	}
 	
    
     
+// });
+
+$('#detailSave').on('submit', function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+
+    $.ajax({
+        url: 'detailSave.do',
+        type: 'POST',
+        data: formData,
+        processData: false, // 데이터 처리 방법을 설정합니다.
+        contentType: false, // 컨텐츠 타입을 설정합니다.
+        success: function(response) {
+            // 성공적으로 응답을 받았을 때
+            console.log(response);
+            alert('저장 성공');
+            if(response.tabID=='workHistory'){
+            	drawHistoryTable();
+            }else if(response.tabID=='history'){
+            	drawscHistoryTable();
+            }else if(response.tabID=='basic'){
+            	ajaxDepartmentLog();
+            }
+            // 여기서 받은 response를 이용해 테이블을 다시 그리는 로직을 추가하세요.
+            // response를 통해 어떤 탭을 그릴지 판단하고 그에 맞는 로직을 구현합니다.
+        },
+        error: function(xhr, status, error) {
+            // 오류가 발생했을 때
+            console.error(error);
+            // 오류 처리 로직을 추가하세요.
+        }
+    });
+
 });
 
 $('#resetPassword').on('click',function(){
@@ -909,7 +1188,6 @@ $('#resetPassword').on('click',function(){
 	}
 
 });
-$('#vacation_term_list').val('2024-12-31').trigger('change');
 $('#vacation_term_list').on('change', function () {
     $('.findAttend').empty(); // 기존의 데이터를 비워줍니다.
     var dateVal = $(this).find('option:selected').text();
@@ -928,13 +1206,12 @@ $('#vacation_term_list').on('change', function () {
             if (data.length === 0) {
                 $('.findAttend').html('<td colspan="4">사용한 연차가 없습니다.</td>'); // 데이터가 없을 때 출력하는 부분입니다.
             } else {
-            	var table = '<table><tr><th>종류</th><th>시작날짜</th><th>끝날짜</th><th>사용일수</th></tr>';
+            	var table = '<tr><th scope="col">종류</th><th scope="col">연차 사용기간</th><th scope="col">사용일수</th></tr>';
 
             	data.forEach(function (item) {
             	    table += '<tr>';
             	    table += '<td>' + item.category + '</td>';
-            	    table += '<td>' + item.vacationStartDate + '</td>';
-            	    table += '<td>' + (item.vacationEndDate === undefined ? '반차' : item.vacationEndDate) + '</td>';
+            	    table += '<td>' + item.vacationStartDate +'/'+ (item.vacationEndDate === undefined ? '' : item.vacationEndDate) + '</td>';
             	    table += '<td>' + item.usageTime + '</td>';
             	    table += '</tr>';
             	});

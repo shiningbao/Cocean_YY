@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -160,6 +161,28 @@ public class PersonnelController {
 		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
 	} 
+	@PostMapping(value="/personnel/departmentChangeLog.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> departmentChangeLog(@RequestParam String employeeID){
+		
+		List<HashMap<String, Object>> list = service.departmentChangeLogAX(employeeID);
+		return list;
+	}
+	@PostMapping(value="/personnel/ajaxGetHistory.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> ajaxGetHistory(@RequestParam String employeeID){
+		
+		List<HashMap<String, Object>> list = service.ajaxGetHistory(employeeID); 
+		return list;
+	}
+	@PostMapping(value="/personnel/ajaxGetscHistory.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> ajaxGetscHistory(@RequestParam String employeeID){
+		
+		List<HashMap<String, Object>> list = service.ajaxGetscHistory(employeeID); 
+		return list;
+	}
+	
 	@PostMapping(value="/personnel/findAttend.do")
 	@ResponseBody 
 	public List<HashMap<String, Object>> findAttend(@RequestParam String employeeID , @RequestParam String startYear, @RequestParam String endYear){
@@ -292,31 +315,29 @@ public class PersonnelController {
 	
 
 	@PostMapping(value="/personnel/detailSave.do")
-	public ModelAndView historySave(@ModelAttribute HistoryDTO dto , @RequestParam int employeeID,
+	@ResponseBody
+	public HashMap<String,Object> historySave(@ModelAttribute HistoryDTO dto , @RequestParam int employeeID,
 			 @RequestParam HashMap<String, Object> params , @RequestParam String tabID,
 			 @RequestParam("file") MultipartFile file , @RequestParam("fileSignature") MultipartFile fileSignature) {
-	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
-	    
+//	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
+	    logger.info("dto ===" +dto);
+	    HashMap<String, Object> response = new HashMap<String, Object>();
 	    HistoryDTO[] historyArray = dto.getHistoryArray();
+	   
+	    logger.info("historyArray@@@@@@@@@@::"+historyArray.length);
 	    HistoryDTO[] schistoryArray = dto.getSchistoryArray();
+	    logger.info("schistoryArray@@@@@@@@@@::"+schistoryArray.length);
 	    logger.info("tabId@@@@@@@@@@::"+tabID);
 	    logger.info("params!!=="+params); 
 	    logger.info("history"+dto.getHistoryArray());
 	    logger.info("history"+dto.getStartDate());
 	    String beforedpID =(String) params.get("beforeDpID");
 	    String afterdpID = (String) params.get("departmentID");
-	    for (HistoryDTO historyDTO : schistoryArray) {
-			historyDTO.setCategory("학력");
-		}
-	    for (HistoryDTO historyDTO : historyArray) {
-			historyDTO.setCategory("이력");
-		}
-	    logger.info("@@@@==" +historyArray[0].getCategory()); 
+	    
 	    if(tabID.equals("workHistory")) {
-	    	
 	    	for (HistoryDTO history : historyArray) {
 	    		// history 객체로부터 값 추출
-	    		
+	    		logger.info("이력 머지??? =="+history);
 	    		dto.setEmployeeID(employeeID);
 	    		String startDate = history.getStartDate();
 	    		String endDate = history.getEndDate();
@@ -332,9 +353,14 @@ public class PersonnelController {
 	    		
 	    		// 이후에 수행할 작업을 여기에 추가
 	    		int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
+	    		if(row>0) {
+	    			response.put("tabID", tabID);
+	    		}
 	    	}
-	    }else if(tabID.equals("history")){
+	    }
+	    if(tabID.equals("history")){
 	          for (HistoryDTO schistory : schistoryArray) {
+	        	  logger.info("머지?? =="+schistory);
 	        	  dto.setEmployeeID(employeeID);
 	              String startDate = schistory.getStartDate();
 	              String endDate = schistory.getEndDate();
@@ -347,28 +373,35 @@ public class PersonnelController {
 	              logger.info("Organization Name: " + organizationName);
 	              logger.info("Remarks: " + remarks); 
 	              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
-	  		}
-	    }else if(tabID.equals("basic")) {
+	              if(row>0) {
+		    			response.put("tabID", tabID);
+		    		}
+	          }
+	    }
+	    if(tabID.equals("basic")) {
 	  	  	  logger.info("basic접근");
 			  int row = service.updateEmployee(employeeID,params);
 			  service.updateEmployeeImg(employeeID,fileSignature,file);
 			  if(row>0) {
 				  logger.info("변경전 부서"+beforedpID+ "변경 후 부서"+afterdpID);
+				  response.put("tabID", tabID);
 				  if(!beforedpID.equals(afterdpID)) {
 					  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
 				  } 
 				 
 			  }
-	    }else if(tabID.equals("info")) {
+	    }
+	    if(tabID.equals("info")) {
 	    	
 	    	service.updateinfo(employeeID,params);
+	    	response.put("tabID", tabID);
 	    }
 
 
 				 
 	    
   	    
-			return mav; 
+			return response; 
       }
 	@PostMapping(value="/personnel/resetPassword.do")
 	@ResponseBody
@@ -544,7 +577,51 @@ public class PersonnelController {
 
 		return ResponseEntity.ok("연차 계산 완료");
 	}
-	
+	@PostMapping(value="/personnel/delHistory.do")
+	@ResponseBody
+	public HashMap<String, Object> delHistory (@RequestParam String historyID) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		int row = service.delHistory(historyID);
+		if(row>0) {
+			
+			response.put("message", "삭제 성공");
+		}else {
+			response.put("message", "삭제 실패");
+		}
+		
+		return response;
+	}
+	@PostMapping(value="/personnel/delscHistory.do")
+	@ResponseBody
+	public HashMap<String, Object> delscHistory (@RequestParam String historyID) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		int row = service.delscHistory(historyID);
+		if(row>0) {
+			
+			response.put("message", "삭제 성공");
+		}else {
+			response.put("message", "삭제 실패");
+		}
+		
+		return response;
+	}
+	@PostMapping(value="/personnel/delDepartmentLog.do")
+	@ResponseBody
+	public HashMap<String, Object> delDepartmentLog (@RequestParam String logID) {
+		
+		HashMap<String, Object> response = new HashMap<String, Object>();
+		int row = service.delDepartmentLog(logID);
+		if(row>0) {
+			
+			response.put("message", "삭제 성공");
+		}else {
+			response.put("message", "삭제 실패");
+		}
+		
+		return response;
+	}
 	// 매년 1월1일 00:01분 근속년수별 연차업데이트
 	@Scheduled(cron = "0 1 0 1 1 ?")
 	public void updateAnnual() {
@@ -564,6 +641,7 @@ public class PersonnelController {
 	public void calculateAnnualLeave() {
 
 		service.updateEmployeeAnnual();
+		
 	}
 
 }

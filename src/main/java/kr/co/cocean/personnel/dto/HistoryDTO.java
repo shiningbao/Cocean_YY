@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,19 +44,20 @@ public class HistoryDTO {
 	public void setFormatter(DateTimeFormatter formatter) {
 		this.formatter = formatter;
 	}
-	public HistoryDTO[] getSchistoryArray() {
-		return schistoryArray;
-	}
-	public void setSchistoryArray(HistoryDTO[] schistoryArray) {
-		this.schistoryArray = schistoryArray;
-	}
+
+	
 	public HistoryDTO[] getHistoryArray() {
 		return historyArray;
 	}
 	public void setHistoryArray(HistoryDTO[] historyArray) {
 		this.historyArray = historyArray;
 	}
-
+	public HistoryDTO[] getSchistoryArray() {
+		return schistoryArray;
+	}
+	public void setSchistoryArray(HistoryDTO[] schistoryArray) {
+		this.schistoryArray = schistoryArray;
+	}
 	public String getCategory() {
 		return category;
 	}

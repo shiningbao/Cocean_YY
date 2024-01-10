@@ -95,7 +95,7 @@ fa-building' AS 'icon'
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r  ON e.rankID = r.rankID
 		<if test="selectedBranchValue !='지점'">
-		where b.branchName =#{selectedBranchValue}
+		where b.branchID =#{selectedBranchValue}
 		</if>
 		ORDER BY e.employeeID ASC ;
 	</select>
@@ -167,11 +167,17 @@ fa-building' AS 'icon'
 	</select>
 	
 	<select id="employeeHistory">
-		SELECT startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='학력' AND employeeID =#{employeeID}
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='학력' AND employeeID =#{employeeID}
+	</select>
+	<select id="ajaxGetscHistory">
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='학력' AND employeeID =#{employeeID}	
+	</select>
+	<select id="ajaxGetHistory">
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
 	</select>
 
 	<select id="workHistory">
-		SELECT startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
 	</select>
 	
 	<select id="getPositionName">
@@ -193,13 +199,24 @@ fa-building' AS 'icon'
 	<select id="departmentChangeLog">
 	SELECT DATE_FORMAT(dcl.changeDate, '%Y-%m-%d') AS changeDate,
 	       beforeD.departmentName AS beforedpID,
-	       afterD.departmentName AS afterdpID
+	       afterD.departmentName AS afterdpID,
+	       dcl.logID
 	FROM departmentChangeLog dcl
 	JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
 	JOIN department afterD ON afterD.departmentID = dcl.afterdpID
 	WHERE dcl.employeeID = #{employeeID};
 	</select>
 	
+	<select id="departmentChangeLogAX">
+			SELECT DATE_FORMAT(dcl.changeDate, '%Y-%m-%d') AS changeDate,
+	       beforeD.departmentName AS beforedpID,
+	       afterD.departmentName AS afterdpID,
+	       dcl.logID
+			FROM departmentChangeLog dcl
+			JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
+			JOIN department afterD ON afterD.departmentID = dcl.afterdpID
+			WHERE dcl.employeeID = #{employeeID};
+	</select>
 	<insert id="historySave">
 		INSERT INTO employeeHistory (employeeID,startDate,endDate,organizationName,remarks,category) VALUES (#{employeeID},#{startDate},#{endDate},#{organizationName},#{remarks},#{category});
 	</insert>
@@ -323,6 +340,18 @@ fa-building' AS 'icon'
 		AND ad.vacationStartDate BETWEEN #{startYear} AND #{endYear}
 	</select>
 	
+	<delete id="delHistory">
+		DELETE from employeeHistory where historyID = #{historyID}
+	</delete>
+	
+	<delete id="delscHistory">
+		DELETE from employeeHistory where historyID = #{historyID}
+	</delete>
+	
+		<delete id="delDepartmentLog">
+		DELETE FROM departmentChangeLog WHERE logID = #{logID}
+	</delete>
+
 	
 
 </mapper>
