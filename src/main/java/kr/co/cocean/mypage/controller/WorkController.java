@@ -91,7 +91,7 @@ public class WorkController {
 
 		
 		//출근
-		@PostMapping(value = "mypage/gocheck")
+		@PostMapping(value = "gocheck")
 		@ResponseBody
 		public Map<String, Object> gocheck(@RequestParam Map<String, String> requestData,
 		                                   HttpSession session) {
@@ -137,7 +137,7 @@ public class WorkController {
 		   
 
 		//퇴근(t)
-		@PostMapping(value = "mypage/leavecheck")
+		@PostMapping(value = "leavecheck")
 		@ResponseBody
 		public Map<String, Object> leavecheck(@RequestParam Map<String, String> leaveData,
 		                                   HttpSession session) {

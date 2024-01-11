@@ -19,6 +19,7 @@
         align-items: center;
         height: 80%; 
         margin-right:140px;
+
         
     }
 
@@ -61,11 +62,13 @@
 
 
     <!-- div 건들지 말기 -->
-<div class="container-fluid contentField"> 
+<div class="container-fluid contentField">
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
+ <div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">주소록 추가</h1>
-	</div>  
+	</div> 
+<div class="card shadow p-3">  
+ 
 <div class="form-container"> 
 <form action="outsidejoins" method="post">
      <table class="addressjoin ">
@@ -110,6 +113,7 @@
      </table>
  </form>
 </div>
+ </div>
  </div>
 </body>
 <script>
