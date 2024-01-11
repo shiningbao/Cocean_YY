@@ -35,8 +35,8 @@
 }
 .listTable {
     overflow: auto;
-    width: 630px;
-    height: 377px;
+    width: 519px;
+    height: 355px
 }
 
 table, th, td{
@@ -49,7 +49,7 @@ text-align: center;
 .productList{
     left: 770px;
     top: 70px;
-    width: 500px;
+    width: 585px;
 }
 
 #modalSearch{
@@ -95,7 +95,7 @@ img:hover {
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
     </div>
 </div>
-<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
+<div class="container" style="display: flex; margin-left: 33px; flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 <div class="row">
 <div class="branchLocation">지점
 </div>
@@ -151,18 +151,19 @@ img:hover {
 	상품 개수 :
 	</div>
 	</div>
-	<div class="row">
+	<div class="row" style="flex-wrap: nowrap;">
 		<div class="col">
 		<div id="productTable" class="listTable">
-		<table>
+		<table style="width: 100%;">
 		</table>
 		</div>
 		</div>
-	<div class="col">
-		<div id="productInfoRegisterPage">
+		
+		<div class="col">
+			<div id="productInfoRegisterPage">
+		 	</div>
 	 	</div>
  	</div>
-	</div>
  
  	</div>
 </div>

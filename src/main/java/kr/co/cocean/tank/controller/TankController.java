@@ -140,12 +140,27 @@ public class TankController {
 		return ok;
 	}
 	
-	@RequestMapping("tank/getPlan")
+	@RequestMapping("tank/getPlan.ajax")
 	@ResponseBody
 	public List<Map<String, Object>> getPlan(@RequestParam HashMap<String, Object> params, Model model){
 		List<Map<String, Object>> housePlan = service.getPlan(params);
 		model.addAttribute("housePlan",housePlan);
 		return housePlan;
+	}
+	
+	
+	@RequestMapping("tank/removePlan.ajax")
+	@ResponseBody
+	public int removePlan(@RequestParam int logID) {
+		int chk = service.removePlan(logID);
+		return chk;
+	}
+	
+	@RequestMapping("tank/donePlan.ajax")
+	@ResponseBody
+	public int donePlan(@RequestParam int logID) {
+		int chk = service.donePlan(logID);
+		return chk;
 	}
 
 }

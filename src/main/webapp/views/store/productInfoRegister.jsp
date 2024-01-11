@@ -14,7 +14,7 @@
         padding: 5px 10px;
     }
     table{
-    	width: 100px;
+    	width: 50px;
     }
     form {
     	width: 200px;

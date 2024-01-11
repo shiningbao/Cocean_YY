@@ -50,6 +50,10 @@ public interface TankDAO {
 
 	List<Map<String, Object>> getPlan(HashMap<String, Object> params);
 
+	int removePlan(int logID);
+
+	int donePlan(int logID);
+
 	
 
 }
