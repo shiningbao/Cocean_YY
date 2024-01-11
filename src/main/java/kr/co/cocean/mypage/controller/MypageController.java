@@ -40,7 +40,6 @@ public class MypageController {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired MypageService service;
-
 		
 	/*
 	@GetMapping(value="mypage/mypage")
@@ -58,7 +57,7 @@ public class MypageController {
 		return mav;
 	}*/
 	
-
+	
 	
 	@GetMapping(value="mypage/mypage")
 	public ModelAndView mypagedetail(HttpSession session) {
@@ -70,9 +69,23 @@ public class MypageController {
 		ModelAndView mav = new ModelAndView("mypage/mypage");
 		HashMap<String, Object> list = service.detail(userId);
 		HashMap<String, Object> getEmployeeAnnual = service.getEmployeeAnnual(userId);
+		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(userId);
+		List<HashMap<String, Object>> workHistory = service.workHistory(userId);
+		List<HashMap<String, Object>> departmentChangeLog = service.departmentChangeLog(userId);
 		mav.addObject("mypage", list);	
 		mav.addObject("getEmployeeAnnual", getEmployeeAnnual);
+		mav.addObject("employeeHistory", employeeHistory);
+		mav.addObject("workHistory", workHistory);
+		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
+	}
+	
+	@PostMapping(value="/mypage/findAttend.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> findAttend(@RequestParam String employeeID , @RequestParam String startYear, @RequestParam String endYear){
+		
+		List<HashMap<String, Object>> list = service.findAttend(employeeID, startYear,endYear);
+		return list;
 	}
 	
 
@@ -89,8 +102,8 @@ public class MypageController {
 	//수정(암호화)
 	
 	@PostMapping(value="/mypage/changePw")
-	public String changePw(HttpSession session,@RequestParam HashMap<String , Object>params,Model model) {
-		String page= "mypage/mypageupdate";
+	public String changePw(HttpSession session,@RequestParam HashMap<String , Object>params,Model model ,RedirectAttributes ra) {
+		String page= "";
 
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
@@ -104,10 +117,11 @@ public class MypageController {
 		
 
 		if(result >0) {
-			model.addAttribute("msg","수정에 성공 했습니다");
+			ra.addFlashAttribute("msg", "비밀번호 수정 성공");
 			page = "redirect:/home";
 		}else {
-			model.addAttribute("msg", "현재 비밀번호가 일치 하지 않습니다.");
+			ra.addFlashAttribute("msg", "현재 비밀번호와 일치하지 않습니다.");
+			page = "redirect:/mypage/mypage";
 		}
 		
 		return page;

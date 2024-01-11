@@ -143,6 +143,45 @@ public class MypageService {
 
 
 
+
+
+	public List<HashMap<String, Object>> employeeHistory(int userId) {
+		// TODO Auto-generated method stub
+		return dao.employeeHistory(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> workHistory(int userId) {
+		// TODO Auto-generated method stub
+		return dao.workHistory(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> departmentChangeLog(int userId) {
+		// TODO Auto-generated method stub
+		return dao.departmentChangeLog(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear) {
+		return dao.findAttend(employeeID,startYear,endYear);
+	}
+
+
+
+
 	
 	
 
