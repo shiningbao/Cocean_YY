@@ -129,4 +129,14 @@ public class TankService {
 		return dao.getPlan(params);
 	}
 
+
+	public int removePlan(int logID) {
+		return dao.removePlan(logID);
+	}
+
+
+	public int donePlan(int logID) {
+		return dao.donePlan(logID);
+	}
+
 }
