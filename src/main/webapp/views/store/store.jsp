@@ -152,14 +152,17 @@ img:hover {
 	</div>
 	</div>
 	<div class="row">
-	<div id="productTable" class="listTable col-10">
-	<table>
-	</table>
-	</div>
-	<div id="productInfoRegisterPage" class="col-2">
- 	
+		<div class="col">
+		<div id="productTable" class="listTable">
+		<table>
+		</table>
+		</div>
+		</div>
+	<div class="col">
+		<div id="productInfoRegisterPage">
+	 	</div>
  	</div>
-</div>
+	</div>
  
  	</div>
 </div>
