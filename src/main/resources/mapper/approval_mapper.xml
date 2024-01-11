@@ -435,7 +435,7 @@
 	</select>
 	
 	<select id="departmentList" resultType="approval">
-		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
+		select a.approvalStatus,d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="dpCount" parameterType="map" resultType="Integer">

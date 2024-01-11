@@ -43,6 +43,22 @@
 	cursor:pointer;
 }
 
+.tempStatus{
+	background-color: #b3d3f6;
+    border: 1px solid #b3d3f6;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 19px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+
+
 
 </style>
 </head>
@@ -110,7 +126,7 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-			<td>${save.draftStatus}<input type="hidden" name="idx" value="${save.idx}" id="idx"></td>
+			<td><span class="tempStatus">임시저장</span><input type="hidden" name="idx" value="${save.idx}" id="idx"></td>
 		</tr>	
 		</c:forEach>
 		</tbody>

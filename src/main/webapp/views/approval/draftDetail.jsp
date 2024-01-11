@@ -237,7 +237,7 @@ th {
 <div id="contentContainer">
 <div id="formTitle">${list.formTitle}</div>
 <div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
-<div id="agrSignature"><!-- 합의 서명 그려지는부분 --></div>	
+<!-- <div id="agrSignature">합의 서명 그려지는부분</div>	 -->
 <br/>
 <div id="detailInfoTop" style="display: flex;">
 	<table id="detailInfo">
