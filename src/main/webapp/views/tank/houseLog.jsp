@@ -88,18 +88,11 @@
 							</div>
 							</div>		
 						</div>
-
-
 					</div>
-
-
-
-
-
-
 				</div>
 				<c:import url="/footer" />
-			</div></body>
+			</div>
+	</body>
 <script>
 	$('#currentDate').val(new Date().toISOString().slice(0, 7));
 	// console.log(new Date().toISOString().slice(0, 7));

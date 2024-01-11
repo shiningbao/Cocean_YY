@@ -119,8 +119,8 @@ public class TankService {
 	}
 
 
-	public void addPlan(HashMap<String, Object> params) {
-		dao.addPlan(params);
+	public int addPlan(HashMap<String, Object> params) {
+		return dao.addPlan(params);
 		
 	}
 

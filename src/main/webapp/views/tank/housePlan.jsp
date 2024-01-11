@@ -70,7 +70,7 @@
 				</div>
 			</div>
 
-<div id="plan">
+<div id="plan" style="height: 90vh; overflow: auto;">
 
 
 
@@ -117,15 +117,9 @@
         </div>
       </div>
     </div>
-    
-    
-    
-
-
-
-
 		</div>
-</div>
+		<c:import url="/footer" />
+	</div>
 </body>
 <script>
 $('#currentDate').val(new Date().toISOString().slice(0, 7));
@@ -161,7 +155,9 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 				console.log(data);
 				drawPlan(data);					
 				}else {
-					swal('등록된 계획이 없습니다.','새로운 관리 계획을 등록하세요','warning');
+					var text = '<h5 style="text-align: center; margin-top: 5%; color: darkgray;">등록된 관리 계획이 없습니다.</h5>';
+					$('#plan').empty();
+					$('#plan').append(text);
 				}
 			},
 			error: function(e){
@@ -174,11 +170,11 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 	function drawPlan(data){
 		var index = '';
 		data.forEach(function(list){
-		index += '<div class="row" style="margin-top: 5%; width: 100%;  margin: 5px 0 0 1px;">';
-		index += '<div class="card mb-8 border-left-primary" style="width: 100%;">';
+		index += '<div class="row" style="margin-top: 5%; width: 99%;  margin: 5px 0 0 5px;">';
+		index += '<div class="card mb-8 border-left-'+(list.status == "진행" ? "warning":"success")+'" style="width: 100%;">';
 		index += '<div class="card-header">';
 		index += '<span class="'+(list.status == "진행" ? "badge badge-warning":"badge badge-success") +'">'+list.status+'</span> ';
-		index += '<a>'+list.creationDate.substring(5,16).replace("T", "&nbsp;&nbsp;등록시간&nbsp;&nbsp;")+'</a>';
+		index += '<a>'+list.creationDate.substring(5,10).replace("-",'월')+'일'+list.creationDate.substring(10,16).replace("T", "&nbsp;&nbsp;").replace(":","시")+'분'+'</a>';
 		index += '<div style="float: right;">'
 		index += '<a href="javascript:void(0);" onclick="donePlan(this);" style="margin-right: 5px;" class="btn btn-success btn-circle" log="'+ list.logID +'">';
 		index += '<i class="fas fa-check"></i></a>';
@@ -206,7 +202,9 @@ function addPlan(){
 			data: params,
 			dataType: 'JSON',
 			success: function(data){
-				
+				if(data > 0){
+					getPlan();
+				}
 			},
 			error: function(e){
 				console.log(e);
@@ -214,7 +212,6 @@ function addPlan(){
 		})
 		$('#housePlanModal').modal('hide');
 		$('#content').val('');
-		getPlan();
 	}else{
 		swal('내용을 입력하세요.','','warning');
 	}
