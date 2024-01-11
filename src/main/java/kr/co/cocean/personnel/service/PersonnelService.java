@@ -175,28 +175,32 @@ public class PersonnelService {
 	}
 
 
-	public List<HashMap<String, Object>> personnelList(Pager pager) {
-		
-		HashMap<String, Object> params = new HashMap<String, Object>();
+	public List<HashMap<String, Object>> personnelList(Pager pager, HashMap<String, Object> params) {
+		pager.setSearch((String) params.get("inputSearch"));
 		params.put("pageNum", (pager.getPageNum()-1)*10);
-		Integer total = dao.totalCount(params);
+		params.put((String) params.get("category"), pager.getCategory());
+		params.put((String) params.get("inputSearch"), pager.getSearch());
+		Integer total = dao.totalCountSearch(params);
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
 			pager.setTotalCount(total);			
 		}
+		
+		logger.info("getPageNum=="+pager.getPageNum());
+		logger.info("getSearch=="+pager.getSearch());
+		logger.info("getgetCategory=="+pager.getCategory());
+		
 		return dao.personnelList(params);
 	}
+
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
 		if(selectedBranchValue.equals("지점")) {
 		}
 		return dao.getSelectOptionBranch(selectedBranchValue);
 	}
 
-	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption) {
-		// TODO Auto-generated method stub
-		return dao.searchPerson(searchValue,selectedOption);
-	}
+
 	public Boolean checkDuplicateEmployeeID(String employeeID) {
 		return dao.checkDuplicateEmployeeID(employeeID);
 	}

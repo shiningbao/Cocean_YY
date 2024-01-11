@@ -11,8 +11,16 @@ public class Pager {
 	private Integer startNum;
 	private Integer pageNum;
 	private Integer totalCount;
+	private String category;
 	
 	
+	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public Integer getPageNum() {
 		if(this.pageNum==null || this.pageNum<1) {
 			this.pageNum=1;
