@@ -15,19 +15,19 @@ public class MypageDTO {
 	private int remainingAnnualLeave;
 	private String status;
 	private String responsibility;
-	
+
 	//file
 	private int imageID;
 	private String serverFileName;
 	private String category;
 	private String path;
 	private int idx;
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public int getEmployeeID() {
 		return employeeID;
 	}
@@ -118,28 +118,28 @@ public class MypageDTO {
 	public void setIdx(int idx) {
 		this.idx = idx;
 	}
-	
-	
-	
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-	
-	
-	
 
 
 
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

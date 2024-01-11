@@ -17,8 +17,8 @@ public class LogPlanDTO {
 	private Date creationDate;
 	private String content;
 	private String status;
-	
-	
+
+
 	public int getLogID() {
 		return logID;
 	}
@@ -79,6 +79,6 @@ public class LogPlanDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 
 }

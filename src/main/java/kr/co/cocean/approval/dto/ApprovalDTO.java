@@ -48,7 +48,7 @@ public class ApprovalDTO {
 	private String draftEmp;
 	private String positionName;
 	private int total;
-	
+
 	public int getTotal() {
 		return total;
 	}
@@ -133,7 +133,7 @@ public class ApprovalDTO {
 	public void setUsageTime(double usageTime) {
 		this.usageTime = usageTime;
 	}
-	
+
 	public String getRemainingAnnualLeave() {
 		return remainingAnnualLeave;
 	}
@@ -200,7 +200,7 @@ public class ApprovalDTO {
 	public void setFormTitle(String formTitle) {
 		this.formTitle = formTitle;
 	}
-	
+
 	public Date getDraftDate() {
 		return draftDate;
 	}

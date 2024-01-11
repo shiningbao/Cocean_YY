@@ -9,7 +9,7 @@ public class ClassficationDTO {
 	private String taxonomy;
 	private String scientificName;
 	private String commonName;
-	
+
 	public int getSpeciesID() {
 		return speciesID;
 	}
@@ -34,5 +34,5 @@ public class ClassficationDTO {
 	public void setCommonName(String commonName) {
 		this.commonName = commonName;
 	}
-	
+
 }

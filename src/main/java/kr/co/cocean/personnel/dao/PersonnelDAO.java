@@ -1,18 +1,12 @@
 package kr.co.cocean.personnel.dao;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.util.MultiValueMap;
 
 import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dto.HistoryDTO;
-import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 
@@ -21,7 +15,7 @@ public interface PersonnelDAO {
 
 
 	int join(HashMap<String, Object> params);
-	
+
     List<HashMap<String, Object>> getBranch();
 
 
@@ -58,7 +52,7 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> getPositionName();
 
-	List<HashMap<String, Object>> getRankName(); 
+	List<HashMap<String, Object>> getRankName();
 
 	List<HashMap<String, Object>> departmentChangeLog(int employeeID);
 
@@ -144,6 +138,6 @@ public interface PersonnelDAO {
 
 	List<HashMap<String, Object>> ajaxGetHistory(String employeeID);
 
-	List<HashMap<String, Object>> ajaxGetscHistory(String employeeID); 
+	List<HashMap<String, Object>> ajaxGetscHistory(String employeeID);
 
 }

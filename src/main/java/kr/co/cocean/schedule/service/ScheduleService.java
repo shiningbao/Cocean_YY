@@ -24,12 +24,12 @@ public class ScheduleService {
 		dao.scheduleWrite(dto);
 	}
 	public List<HashMap<String, Object>> getCallenderEvents(int employeeID) {
-		
+
 		return dao.getCallenderEvents(employeeID);
 	}
 	public List<String> getFacility(String text) {
-		
-				
+
+
 		return dao.getFacility(text);
 	}
 	public void facilityWrite(ScheduleDTO dto) {
@@ -40,7 +40,7 @@ public class ScheduleService {
 		if(row>0) {
 			dao.updateFacility(facilityName);
 		}
-		
+
 	}
 	public List<HashMap<String, Object>> getFacilityEvents() {
 		return dao.getFacilityEvents();
@@ -70,22 +70,22 @@ public class ScheduleService {
 		return dao.delMyCal(id);
 	}
 	public void interestDelCalendar(String calendarID) {
-		
+
 		dao.interestDelCalendar(calendarID);
 	}
 
 	public void updateCal(HashMap<String, Object> dataToSend) {
 		dao.updateCal(dataToSend);
 	}
-	
+
 	public List<HashMap<String, Object>> scheduleAlarm() {
 		return dao.scheduleAlarm();
 	}
 	public void addalarm(List<HashMap<String, Object>> result) {
-		
+
 		dao.addalarm(result);
-		
+
 	}
-	
+
 
 }

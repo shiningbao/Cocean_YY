@@ -11,9 +11,9 @@ public class InaddressDTO {
 	private String positionName;
 	private String rankName;
 	private String departmentName;
-	
-	
-	
+
+
+
 
 	public int getEmployeeID() {
 		return employeeID;
@@ -51,6 +51,6 @@ public class InaddressDTO {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	
-	
+
+
 }

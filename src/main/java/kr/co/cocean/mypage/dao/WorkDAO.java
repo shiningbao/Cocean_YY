@@ -1,18 +1,11 @@
 package kr.co.cocean.mypage.dao;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import kr.co.cocean.mypage.dto.OutAddressDTO;
 import kr.co.cocean.mypage.dto.WorkDTO;
-import kr.co.cocean.tank.dto.Pager;
 
 @Mapper
 public interface WorkDAO {
@@ -37,12 +30,12 @@ public interface WorkDAO {
 	//페이징 처리
 	Integer totalCount(HashMap<String, Object> params);
 */
-	
-	
-	
 
-	
-	
 
-	
+
+
+
+
+
+
 }

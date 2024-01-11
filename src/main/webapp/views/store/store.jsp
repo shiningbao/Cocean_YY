@@ -75,7 +75,7 @@ img:hover {
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
 #deleteBtn{
-	margin-left: 250px;
+	margin-left: 335px;
 }
 
 </style>
@@ -403,6 +403,7 @@ new Promise((resolve, reject) => {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
 					                var productInfo = '<tr>' +
+					                /* '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' + */
 					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.productName + '</td>' +
@@ -748,7 +749,7 @@ searchProduct(searchKeyword, currentBranchName);
       // 체크박스를 클릭한 경우에만 처리
       if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
           // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('data-productID');
+          productID = event.target.getAttribute('ßID');
           branchID = event.target.getAttribute('data-branchID');
           console.log('Selected ProductID:', productID);
           console.log('Selected branchID:', branchID);

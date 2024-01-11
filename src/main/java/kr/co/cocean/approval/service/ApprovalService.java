@@ -7,8 +7,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +25,11 @@ import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class ApprovalService {
-	
+
 	private String root = "C:/upload/cocean/";
-	
+
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired ApprovalDAO dao;
 
 	public ArrayList<formDTO> list() {
@@ -42,7 +40,7 @@ public class ApprovalService {
 	 * public ModelAndView formSearch(HttpSession session, RedirectAttributes rAttr,
 	 * List<String> keyword) { ModelAndView mav = new ModelAndView(); LoginDTO dto =
 	 * (LoginDTO) session.getAttribute("userInfo");
-	 * 
+	 *
 	 * if(dto!=null) { ArrayList<ApprovalDTO> list = dao.formSearch(keyword);
 	 * mav.addObject("list",list); mav.setViewName("approval/formList"); }else{
 	 * mav.setViewName("redirect:/");
@@ -52,7 +50,7 @@ public class ApprovalService {
 	public ApprovalDTO draftInfo(int employeeID) {
 		return dao.draftInfo(employeeID);
 	}
-	
+
 	public int write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
 		ApprovalDTO dto = new ApprovalDTO();
 		int writerID = Integer.parseInt(param.get("writerID"));
@@ -74,12 +72,12 @@ public class ApprovalService {
 		if(param.get("total")!=null&&!param.get("total").isEmpty()) {
 		dto.setUsageTime(Double.parseDouble(param.get("total")));
 		}
-		
+
 		logger.info("params:{}",param);
 
 		dao.write(dto); // draft테이블에 insert
 		int idx=dto.getIdx();
-		
+
 		if(files!=null) {
 		for (MultipartFile file : files) {
 			upload(file,idx);
@@ -104,15 +102,15 @@ public class ApprovalService {
 			 * (!agreementLines.isEmpty()) { LineDTO minOrderLine =
 			 * Collections.min(agreementLines, Comparator.comparing(LineDTO::getOrder)); int
 			 * minOrder = Integer.parseInt(minOrderLine.getOrder());
-			 * 
+			 *
 			 * for (LineDTO lineDTO : agreementLines) {
 			 * lineDTO.setOrder(String.valueOf(minOrder)); if
 			 * ("결재".equals(lineDTO.getCategory())) {
-			 * 
+			 *
 			 * break;
-			 * 
+			 *
 			 * } }
-			 * 
+			 *
 			 * }
 			 */
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
@@ -120,7 +118,7 @@ public class ApprovalService {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
 			}
 		}else { // 첫 임시저장
-			
+
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
 					dao.lineEmptyTs(idx,lastOrder,writerID); // approval테이블에 insert
 				}else{
@@ -135,10 +133,10 @@ public class ApprovalService {
 		 * idx, form); }
 		 */
 		 return idx;
-		
+
 	}
-	
-	
+
+
 	public void update(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
 		LocalDateTime now = LocalDateTime.now();
 		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -150,8 +148,8 @@ public class ApprovalService {
 				for (MultipartFile file : files) {
 					String oriFileName = file.getOriginalFilename();
 					String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-					String newFileName = System.currentTimeMillis()+ext;	
-					
+					String newFileName = System.currentTimeMillis()+ext;
+
 					try {
 						byte[] bytes;
 						bytes = file.getBytes();
@@ -161,7 +159,7 @@ public class ApprovalService {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+
 				}
 			}
 		}
@@ -180,16 +178,16 @@ public class ApprovalService {
 			}else {
 				dao.updateReincrement(param);
 			}
-		
+
 	}
 
-	// file 테이블에 insert 
+	// file 테이블에 insert
 	public void upload(MultipartFile uploadFile, int idx) {
-		
+
 		String oriFileName = uploadFile.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;	
-		
+		String newFileName = System.currentTimeMillis()+ext;
+
 		try {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
@@ -202,11 +200,11 @@ public class ApprovalService {
 
 	public ArrayList<ApprovalDTO> employeeInfo(String employeeID) {
 		return dao.employeeInfo(employeeID);
-		
+
 	}
 
 	public ArrayList<ApprovalDTO> waitingList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -214,11 +212,11 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
-		
+
 		return dao.waitingList(params);
 	}
 
@@ -229,7 +227,7 @@ public class ApprovalService {
 
 	public void saveApprovalLine(int employeeID, String category) {
 		dao.saveApprovalLine(employeeID,category);
-		
+
 	}
 
 	public formDTO formTitle(int titleID) {
@@ -241,14 +239,14 @@ public class ApprovalService {
 	}
 
 	public ArrayList<ApprovalDTO> signList(String idx, String loginId) {
-		
+
 		return dao.signList(idx);
 	}
 
 	public ArrayList<ApprovalDTO> agrRef(int idx) {
 		return dao.agrRef(idx);
 	}
-	
+
 	public ArrayList<ApprovalDTO> fileList(int idx) {
 		return dao.fileList(idx);
 	}
@@ -259,22 +257,22 @@ public class ApprovalService {
 
 	public void rejectDraft(Map<String, String> param) {
 		dao.rejectDraft(param);
-		
+
 	}
 
 	public void rejectApp(Map<String, String> param) {
 		dao.rejectApp(param);
-		
+
 	}
 
 	public void approveDraft(Map<String, String> param) {
 		dao.approveDraft(param);
-		
+
 	}
 
 	public void approveApp(Map<String, String> param) {
 		dao.approveApp(param);
-		
+
 	}
 
 	public ApprovalDTO getOrder(String idx, String loginId) {
@@ -283,16 +281,16 @@ public class ApprovalService {
 
 	public void myApprove(Map<String, String> param) {
 		dao.myApprove(param);
-		
+
 	}
 
-	
+
 	public void passApp(String idx, int approvalOrder) {
 		dao.passApp(idx,approvalOrder);
 	}
 
 	public ArrayList<ApprovalDTO> saveList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -300,11 +298,11 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
-		
+
 		return dao.saveList(params);
 	}
 
@@ -321,7 +319,7 @@ public class ApprovalService {
 	}
 
 	public ArrayList<ApprovalDTO> myList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -329,16 +327,16 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
-		
+
 		return dao.myList(params);
 	}
 
 	public ArrayList<ApprovalDTO> refList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -346,16 +344,16 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
-		
+
 		return dao.refList(params);
 	}
 
 	public ArrayList<ApprovalDTO> comList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -363,7 +361,7 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
@@ -371,7 +369,7 @@ public class ApprovalService {
 	}
 
 	public ArrayList<ApprovalDTO> departmentList(int employeeID, Pager pager) {
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
 		params.put("employeeID", employeeID);
@@ -379,11 +377,11 @@ public class ApprovalService {
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("params:{}",params);
 		logger.info("totalCount: "+pager.getTotalCount());
-		
+
 		return dao.departmentList(params);
 	}
 
@@ -393,22 +391,22 @@ public class ApprovalService {
 
 	public void passDraft(String idx) {
 		dao.passDraft(idx);
-		
+
 	}
 
 	public void myStatus(Map<String, String> param) {
 		dao.myStatus(param);
-		
+
 	}
 
 	public void myAgree(Map<String, String> param) {
 		dao.myAgree(param);
-		
+
 	}
 
 	public void rejectAgree(Map<String, String> param) {
 		dao.rejectAgree(param);
-		
+
 	}
 
 	public void updateRAL(double updateRAL, Map<String, String> param) {
@@ -418,7 +416,7 @@ public class ApprovalService {
 	public ArrayList<ApprovalDTO> waitingSearch(String keyword, int employeeID) {
 		return dao.waitingSearch(keyword,employeeID);
 	}
-	
+
 	public ArrayList<formDTO> formSearch(String keyword) {
 		return dao.formSearch(keyword);
 	}
@@ -444,9 +442,9 @@ public class ApprovalService {
 		int cnt = 0;
 		cnt = dao.removeList(idx,titleID);
 		return cnt;
-		
+
 	}
-	
+
 
 	/*
 	 * public ArrayList<HashMap<String, Object>> employeeList() { return

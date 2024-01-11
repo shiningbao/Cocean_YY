@@ -32,20 +32,20 @@ import kr.co.cocean.store.dto.StoreProductDTO;
 public class StoreService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StoreDAO dao;
-	
+
 	StoreDTO storedto = new StoreDTO();
 	// 상품 사진 경로
 	// mac 경로
 	//	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
-	
+
 	// window 경로
 	private String root = "C:/upload/cocean/";
-	
+
 	// 카카오 지도 api 사용
 	public JSONObject kakaoAPi(Model model) {
-	    Map<String, Object> map = new HashMap<String, Object>();
+	    Map<String, Object> map = new HashMap<>();
 	    ArrayList<StoreDTO> branchList = dao.branchList();
-	    
+
 	    // 카카오 REST api key
 	    String REST_KEY = "01be87ade0ecf17b7ce8981fd0711323";
 	    Double lat = branchList.get(0).getBranchLatitude();
@@ -54,14 +54,14 @@ public class StoreService {
 	    String api_url = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json?x=" + lon + "&y=" + lat;
 	    BufferedReader br = null;
 	    JSONObject obj = new JSONObject();
-	    
+
 	    ObjectMapper mapper = new ObjectMapper();
 	    try {
 	        URL url = new URL(api_url);
 	        URLConnection conn = url.openConnection();
 	        conn.setRequestProperty("Authorization", "KakaoAK " + REST_KEY);
 	        br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-	        
+
 	        if (br != null) obj = mapper.readValue(br, JSONObject.class);
 
 	        // obj에서 documents 가져오기
@@ -91,12 +91,12 @@ public class StoreService {
 	    }
 
 	    logger.info("obj = " + obj.toString());
-	    
+
 	    return obj;
 	}
-	
+
 	public Map<String, Object> storeList(Model model) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		ArrayList<StoreProductDTO> branchProductList = dao.branchProductList();
 		ArrayList<StoreDTO> branchList = dao.branchList();
 		ArrayList<StoreProductDTO> totalProductNumber = dao.totalProductNumber();
@@ -108,7 +108,7 @@ public class StoreService {
 
 	// 상품 검색 리스트 보여주기용
 	public Map<String, Object> searchProduct(String searchKeyword, String branchName) {
-		Map<String, Object> map =  new HashMap<String, Object>();
+		Map<String, Object> map =  new HashMap<>();
 		ArrayList<StoreProductDTO> list = dao.searchProduct(searchKeyword, branchName);
 		if(list.get(0).getStatus()==null) {
 			list.get(0).setStatus(branchName);
@@ -128,14 +128,14 @@ public class StoreService {
 	}
 
 	public Map<String, Object> modalProductList(String currentBranchName) {
-		Map<String, Object> map =  new HashMap<String, Object>();
+		Map<String, Object> map =  new HashMap<>();
 		ArrayList<StoreProductDTO> list = dao.modalProductList(currentBranchName);
 		map.put("modalSearchedList", list);
 		return map;
 	}
-	
+
 	public Map<String, Object> modalTicketList(String currentBranchName) {
-		Map<String, Object> map =  new HashMap<String, Object>();
+		Map<String, Object> map =  new HashMap<>();
 		ArrayList<StoreProductDTO> list = dao.modalTicketList(currentBranchName);
 		map.put("modalSearchedList", list);
 		return map;
@@ -155,7 +155,7 @@ public class StoreService {
 		mav.setViewName("store/storeProductDetail");
 		return mav;
 	}
-	
+
 	public ModelAndView storeProductDetail(int productID, int branchID) {
 		ModelAndView mav = new ModelAndView();
 		StoreProductDTO list = dao.storeProductDetail(productID);
@@ -172,13 +172,13 @@ public class StoreService {
 		dao.branchProductRegister(1, productID);
 		String oriFileName = photo.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;	
+		String newFileName = System.currentTimeMillis()+ext;
 		logger.info("사진 : "+photo);
 		logger.info("서버파일네임");
 		logger.info(newFileName);
 		logger.info("원래파일명");
 		logger.info(oriFileName);
-		
+
 		if(photo.getSize()!=0) {
 			try {
 				byte[] bytes = photo.getBytes();
@@ -204,11 +204,11 @@ public class StoreService {
 		 dao.branchProductDelete(productID, branchID);
 	}
 
-	
 
-	
 
-	
+
+
+
 
 
 }

@@ -20,29 +20,29 @@ import kr.co.cocean.mypage.dto.LoginDTO;
 public class AlarmController {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired AlarmService service;
-	
+
 	@PostMapping(value = "/alarm/getList")
 	@ResponseBody
 	public HashMap<String, Object> getList(HttpSession session) {
-		
+
 		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = userInfo.getEmployeeID();
-		
+
 		return service.getList(employeeID);
 	}
-	
+
 	@GetMapping(value = "/alarm/del/{employeeID}/{historyID}")
 	@ResponseBody
 	public HashMap<String, Object> del(@PathVariable int employeeID, @PathVariable int historyID){
 		return service.del(employeeID,historyID);
 	}
-	
+
 	@GetMapping(value = "/alarm/allDel/{employeeID}")
 	@ResponseBody
 	public HashMap<String, Object> allDel(@PathVariable int employeeID){
-		
+
 		return service.allDel(employeeID);
 	}
 

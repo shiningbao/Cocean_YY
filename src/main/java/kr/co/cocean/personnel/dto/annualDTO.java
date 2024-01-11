@@ -2,14 +2,7 @@ package kr.co.cocean.personnel.dto;
 
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
 import org.apache.ibatis.type.Alias;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Service;
 @Alias("annual")
 public class annualDTO {
 
@@ -27,8 +20,8 @@ public class annualDTO {
 	public void setValue(int value) {
 		this.value = value;
 	}
-	
-	
-	
-	
+
+
+
+
 }

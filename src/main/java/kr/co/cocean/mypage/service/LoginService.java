@@ -13,15 +13,15 @@ import kr.co.cocean.mypage.dto.LoginDTO;
 @Service
 public class LoginService {
 	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired LoginDAO dao;
 	@Autowired PasswordEncoder encoder;
-	
+
 
 
 
 	public LoginDTO login(String userNum) {
-		
+
 		return dao.login(userNum);
 	}
 
@@ -29,24 +29,24 @@ public class LoginService {
 
 
 	public boolean getPw(String userNum, String password) {
-		String enc_pw = dao.getPw(userNum);		
+		String enc_pw = dao.getPw(userNum);
 		return encoder.matches(password, enc_pw);
 	}
 
 
 
 
-	
 
-	
 
-	
-	
-	
-	
+
+
+
+
+
+
 /*
 	public LoginDTO login(String userNum,String password) {
-		String enc_pw = dao.getPw(userNum);		
+		String enc_pw = dao.getPw(userNum);
 		return encoder.matches(pw, enc_pw);
 	}*/
 
@@ -56,14 +56,14 @@ public class LoginService {
 <<<<<<< HEAD
 		return dao.login(userNum,password);
 	}
-	
-	
+
+
 =======
 		return dao.login(userNum,password );
 	}*/
 
 
 
-	
-	
+
+
 }

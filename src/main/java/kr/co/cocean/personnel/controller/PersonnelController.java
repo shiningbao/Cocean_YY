@@ -1,18 +1,10 @@
 package kr.co.cocean.personnel.controller;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.tomcat.util.http.parser.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,29 +25,27 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.cocean.personnel.dto.HistoryDTO;
 import kr.co.cocean.personnel.dto.PersonnelDTO;
-import kr.co.cocean.personnel.dto.annualDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 import kr.co.cocean.personnel.service.PersonnelService;
-import kr.co.cocean.schedule.dto.ScheduleDTO;
 import kr.co.cocean.schedule.service.ScheduleService;
 import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 
 @Controller
 public class PersonnelController {
-	
+
 	@Autowired PersonnelService service;
 	@Autowired ScheduleService scService;
 	@Autowired PasswordEncoder encoder;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	PersonnelDTO dto = new PersonnelDTO();
-	
+
 	@RequestMapping(value="/personnel/join.go")
 	public String personnel() {
-		
+
 		return "personnel/personnel";
 	}
-	
+
     @GetMapping(value="/personnel/getBranchID.do")
 	@ResponseBody
     public List<HashMap<String, Object>> getBranchID(String branchID) {
@@ -73,13 +62,13 @@ public class PersonnelController {
 
 		return teams;
 	}
-	
+
     @GetMapping(value="/personnel/getHqID.do")
 	@ResponseBody
     public List<HashMap<String, Object>> getHqID(String hqID) {
         logger.info("val =="+hqID);
         List<HashMap<String, Object>>  res = service.getHqID(hqID);
-        
+
 		return res;
 	}
 
@@ -87,46 +76,46 @@ public class PersonnelController {
     @RequestMapping(value="/personnel/getBranch.do")
     @ResponseBody
     public List<HashMap<String, Object>> getBranch(){
-        
+
     	List<HashMap<String, Object>> getbranch = service.getBranch();
-        
+
         return getbranch;
     }
- 
-    
+
+
 	@RequestMapping(value="/personnel/getDepartmentText.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getDepartmentText(String departmentText){
-		
+
 		List<HashMap<String, Object>> getDepartmentText = service.getDepartmentText(departmentText);
-		
+
 		return getDepartmentText;
 	}
 	@RequestMapping(value="/personnel/organization")
 	public String goChart() {
-		
+
 		return "personnel/organization";
 	}
-	
-	
+
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/personnel/getChart.do" ,produces= {org.springframework.http.MediaType.APPLICATION_XML_VALUE, org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity getChart() {
-		
-		return new ResponseEntity(service.getChart(),HttpStatus.OK); 
+
+		return new ResponseEntity(service.getChart(),HttpStatus.OK);
 	}
-	 
+
 	@RequestMapping(value="/personnel/getEmployeeID.do")
 	@ResponseBody
 	public ModelAndView getEmployeeID(String employeeID) {
 		logger.info("employeeID==========="+employeeID);
 		ModelAndView mav = new ModelAndView("redirect:/schedule/schedule.go");
-		return mav; 
+		return mav;
 	}
-	
+
 	@RequestMapping(value="/personnel/personnelList.go")
 	public ModelAndView personnelList(TankDTO tankDTO,Pager pager) {
-		
+
 		ModelAndView mav = new ModelAndView("personnel/personnelList");
 		 List<HashMap<String, Object>> list = service.personnelList(pager);
 		 for (HashMap<String, Object> hashMap : list) {
@@ -135,17 +124,17 @@ public class PersonnelController {
 			 }
 			 if(hashMap.get("departmentName").equals("-제주")) {
 				 hashMap.put("departmentName", "-");
-			 } 
+			 }
 		}
 		 mav.addObject("pager", pager);
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
 		return mav;
-	} 
-	
+	}
+
 	@GetMapping(value="/personnel/detail.go")
 	public ModelAndView detail(@RequestParam int employeeID) {
-		logger.info("employeeID" +employeeID); 
+		logger.info("employeeID" +employeeID);
 		ModelAndView mav = new ModelAndView("personnel/personnelDetail");
 		HashMap<String, Object> list = service.detail(employeeID);
 		List<HashMap<String, Object>> employeeHistory = service.employeeHistory(employeeID);
@@ -160,37 +149,37 @@ public class PersonnelController {
 		mav.addObject("workHistory", workHistory);
 		mav.addObject("departmentChangeLog", departmentChangeLog);
 		return mav;
-	} 
+	}
 	@PostMapping(value="/personnel/departmentChangeLog.do")
-	@ResponseBody 
+	@ResponseBody
 	public List<HashMap<String, Object>> departmentChangeLog(@RequestParam String employeeID){
-		
+
 		List<HashMap<String, Object>> list = service.departmentChangeLogAX(employeeID);
 		return list;
 	}
 	@PostMapping(value="/personnel/ajaxGetHistory.do")
-	@ResponseBody 
+	@ResponseBody
 	public List<HashMap<String, Object>> ajaxGetHistory(@RequestParam String employeeID){
-		
-		List<HashMap<String, Object>> list = service.ajaxGetHistory(employeeID); 
+
+		List<HashMap<String, Object>> list = service.ajaxGetHistory(employeeID);
 		return list;
 	}
 	@PostMapping(value="/personnel/ajaxGetscHistory.do")
-	@ResponseBody 
+	@ResponseBody
 	public List<HashMap<String, Object>> ajaxGetscHistory(@RequestParam String employeeID){
-		
-		List<HashMap<String, Object>> list = service.ajaxGetscHistory(employeeID); 
+
+		List<HashMap<String, Object>> list = service.ajaxGetscHistory(employeeID);
 		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/findAttend.do")
-	@ResponseBody 
+	@ResponseBody
 	public List<HashMap<String, Object>> findAttend(@RequestParam String employeeID , @RequestParam String startYear, @RequestParam String endYear){
-		
+
 		List<HashMap<String, Object>> list = service.findAttend(employeeID, startYear,endYear);
 		return list;
 	}
-	
+
 	@GetMapping(value="/personnel/getSelectOptionBranch.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getSelectOptionBranch(@RequestParam String selectedBranchValue){
@@ -205,18 +194,18 @@ public class PersonnelController {
 		}
 		return list;
 	}
-	
+
 	@GetMapping(value="/personnel/searchPerson.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption){
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
+		List<HashMap<String, Object>> list = new ArrayList<>();
 		logger.info("aaa==="+selectedOption);
 			 list= service.searchPerson(searchValue,selectedOption);
-		 
-		
-		return list; 
+
+
+		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/checkDuplicateEmployeeID.do")
 	@ResponseBody
 	public Boolean checkDuplicateEmployeeID(String employeeID) {
@@ -224,13 +213,13 @@ public class PersonnelController {
 		logger.info("result!!! =="+result);
 		return result;
 	}
-	
+
 	@PostMapping(value="/personnel/checkDuplicateAddpositionID.do")
 	@ResponseBody
 	public Boolean checkDuplicateAddpositionID(String addpositionID) {
 		Boolean result = service.checkDuplicateAddpositionID(addpositionID);
 		logger.info("result!!! =="+result);
-		return result; 
+		return result;
 	}
 
 	@PostMapping(value="/personnel/checkDuplicateAddRankID.do")
@@ -240,51 +229,51 @@ public class PersonnelController {
 		logger.info("result!!! =="+result);
 		return result;
 	}
-	
-	
+
+
 	@RequestMapping(value="/personnel/orgManage.go")
 	public String orgManage() {
-		
+
 		return "personnel/orgManage";
 	}
 	@RequestMapping(value="/personnel/annualManage.go")
 	public String annualManage() {
-		
+
 		return "personnel/annualManage";
 	}
-	
+
 	@PostMapping(value="/personnel/getPositionName.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getPositionName(){
-		
+
 		List<HashMap<String, Object>> list = service.getPositionName();
 		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/getPositionNameActive.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getPositionNameActive(){
-		
+
 		List<HashMap<String, Object>> list = service.getPositionNameActive();
 		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/getRankName.do")
-	@ResponseBody 
+	@ResponseBody
 	public List<HashMap<String, Object>> getRankName(){
-		
+
 		List<HashMap<String, Object>> list = service.getRankName();
 		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/getRankNameActive.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getRankNameActive(){
-		
+
 		List<HashMap<String, Object>> list = service.getRankNameActive();
 		return list;
 	}
-	
+
 	@PostMapping(value="/personnel/join.do")
 	public ModelAndView join(@RequestParam("file") MultipartFile file ,@RequestParam("fileSignature")
 	MultipartFile fileSignature ,@RequestParam HashMap<String, Object> params) {
@@ -294,7 +283,7 @@ public class PersonnelController {
 		logger.info("params =="+params);
 		String page= "";
 		String pw = "cocean1111";
-		
+
 		String password = encoder.encode(pw);
 		params.put("password", password);
 		logger.info("aaa=="+params.get("positionID"));
@@ -302,7 +291,7 @@ public class PersonnelController {
 		params.put("status",status);
 
 		int row= service.join(params,file,fileSignature);
-		
+
 		if(row>0) {
 			String perNum = (String) params.get("employeeID");
 			mav.setViewName("redirect:/personnel/personnelList.go");
@@ -311,8 +300,8 @@ public class PersonnelController {
 		}
 		return mav;
 	}
-	
-	
+
+
 
 	@PostMapping(value="/personnel/detailSave.do")
 	@ResponseBody
@@ -321,19 +310,19 @@ public class PersonnelController {
 			 @RequestParam("file") MultipartFile file , @RequestParam("fileSignature") MultipartFile fileSignature) {
 //	    ModelAndView mav = new ModelAndView("redirect:/personnel/detail.go?employeeID=" + employeeID);
 	    logger.info("dto ===" +dto);
-	    HashMap<String, Object> response = new HashMap<String, Object>();
+	    HashMap<String, Object> response = new HashMap<>();
 	    HistoryDTO[] historyArray = dto.getHistoryArray();
-	   
+
 	    logger.info("historyArray@@@@@@@@@@::"+historyArray.length);
 	    HistoryDTO[] schistoryArray = dto.getSchistoryArray();
 	    logger.info("schistoryArray@@@@@@@@@@::"+schistoryArray.length);
 	    logger.info("tabId@@@@@@@@@@::"+tabID);
-	    logger.info("params!!=="+params); 
+	    logger.info("params!!=="+params);
 	    logger.info("history"+dto.getHistoryArray());
 	    logger.info("history"+dto.getStartDate());
 	    String beforedpID =(String) params.get("beforeDpID");
 	    String afterdpID = (String) params.get("departmentID");
-	    
+
 	    if(tabID.equals("workHistory")) {
 	    	for (HistoryDTO history : historyArray) {
 	    		// history 객체로부터 값 추출
@@ -350,7 +339,7 @@ public class PersonnelController {
 	    		logger.info("End Date: " + endDate);
 	    		logger.info("Organization Name: " + organizationName);
 	    		logger.info("Remarks: " + remarks);
-	    		
+
 	    		// 이후에 수행할 작업을 여기에 추가
 	    		int row =service.historySave(employeeID,startDate,endDate,organizationName,remarks,category);
 	    		if(row>0) {
@@ -371,7 +360,7 @@ public class PersonnelController {
 	              logger.info("Start Date: " + startDate);
 	              logger.info("End Date: " + endDate);
 	              logger.info("Organization Name: " + organizationName);
-	              logger.info("Remarks: " + remarks); 
+	              logger.info("Remarks: " + remarks);
 	              int row =service.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	              if(row>0) {
 		    			response.put("tabID", tabID);
@@ -387,21 +376,21 @@ public class PersonnelController {
 				  response.put("tabID", tabID);
 				  if(!beforedpID.equals(afterdpID)) {
 					  service.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
-				  } 
-				 
+				  }
+
 			  }
 	    }
 	    if(tabID.equals("info")) {
-	    	
+
 	    	service.updateinfo(employeeID,params);
 	    	response.put("tabID", tabID);
 	    }
 
 
-				 
-	    
-  	    
-			return response; 
+
+
+
+			return response;
       }
 	@PostMapping(value="/personnel/resetPassword.do")
 	@ResponseBody
@@ -411,13 +400,13 @@ public class PersonnelController {
 		service.resetPassword(password,employeeID);
 		return "success";
 	}
-	
-	
+
+
 	@PostMapping(value="/personnel/getEmployeeInfo.do")
 	@ResponseBody
 	public HashMap<String, Object> getEmployeeInfo(@RequestParam String employeeID,@RequestParam String nodeText) {
 		logger.info("조직관리 =="+employeeID);
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		if(employeeID.matches("\\d+")&&(employeeID.startsWith("br"))) {
 			boolean nodata = false;
 			result.put("nodata", nodata);
@@ -435,142 +424,142 @@ public class PersonnelController {
 			HashMap<String, Object> hqInfo = service.gethqInfo(hqID);
 			result.put("hqInfo", hqInfo);
 		}
-		
-		
+
+
 		return result;
 	}
 	@PostMapping(value = "/personnel/updateRank.do")
 	@ResponseBody
 	public HashMap<String, Object> editRankInfo(@RequestParam String rankID,
 	                                       @RequestParam String rankName,
-	                                       @RequestParam Boolean isActive) {   
+	                                       @RequestParam Boolean isActive) {
 	    logger.info("직급 수정 요청 - rankID: " + rankID + ", rankName: " + rankName + ", isActive: " + isActive);
 
-	    HashMap<String, Object> response = new HashMap<String, Object>();
-	    
+	    HashMap<String, Object> response = new HashMap<>();
+
 	     Integer row = service.updateRank(rankID,rankName,isActive);
 
-	     response.put("message", "수정이 완료되었습니다."); 
-	    return response; 
+	     response.put("message", "수정이 완료되었습니다.");
+	    return response;
 	}
-	
+
 	@PostMapping(value = "/personnel/updatePosition.do")
 	@ResponseBody
 	public HashMap<String, Object> updatePosition(@RequestParam String positionID,
 	                                       @RequestParam String positionName,
-	                                       @RequestParam Boolean isActive) {   
+	                                       @RequestParam Boolean isActive) {
 	    logger.info("직급 수정 요청 - positionID: " + positionID + ", rankName: " + positionName + ", isActive: " + isActive);
 
-	    HashMap<String, Object> response = new HashMap<String, Object>();
-	     
+	    HashMap<String, Object> response = new HashMap<>();
+
 	    service.updatePosition(positionID,positionName,isActive);
 
-	     response.put("message", "수정이 완료되었습니다."); 
-	    return response; 
+	     response.put("message", "수정이 완료되었습니다.");
+	    return response;
 	}
 	@PostMapping(value = "/personnel/addPostion.do")
 	@ResponseBody
 	public HashMap<String, Object> addPostion(@RequestParam String positionID,
             @RequestParam String positionName,
-            @RequestParam Boolean isActive) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		
+            @RequestParam Boolean isActive) {
+
+		HashMap<String, Object> response = new HashMap<>();
+
 		service.addPostion(positionID,positionName,isActive);
-		
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
+
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
 		}
 	@PostMapping(value = "/personnel/addRank.do")
 	@ResponseBody
 	public HashMap<String, Object> addRank(@RequestParam String rankID,
             @RequestParam String rankName,
-            @RequestParam Boolean isActive) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		
+            @RequestParam Boolean isActive) {
+
+		HashMap<String, Object> response = new HashMap<>();
+
 		service.addRank(rankID,rankName,isActive);
-		
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
+
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
 		}
 	@PostMapping(value = "/personnel/addDepartment.do")
 	@ResponseBody
 	public HashMap<String, Object> addDepartment(
-			@RequestParam String hqID, 	@RequestParam String departmentName,	
+			@RequestParam String hqID, 	@RequestParam String departmentName,
 			@RequestParam Boolean isActive,
-            @RequestParam(value="responsibility[]") List<String> responsibility) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
+            @RequestParam(value="responsibility[]") List<String> responsibility) {
+
+		HashMap<String, Object> response = new HashMap<>();
 		departmentDTO dto = new departmentDTO();
 		dto.setHqID(hqID);
-		dto.setDepartmentName(departmentName); 
-		dto.setIsActive(isActive); 
+		dto.setDepartmentName(departmentName);
+		dto.setIsActive(isActive);
 		service.addDepartment(dto);
 		logger.info("dto아이디확인=="+dto.getDepartmentID());
-		String departmentID = dto.getDepartmentID(); 
+		String departmentID = dto.getDepartmentID();
 		for (String responName : responsibility) {
 			service.addResponsibiliy(departmentID,responName);
 		}
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
-		}   
-	@PostMapping(value = "/personnel/addhq.do") 
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
+		}
+	@PostMapping(value = "/personnel/addhq.do")
 	@ResponseBody
 	public HashMap<String, Object> addhq(@RequestParam String branchID,
             @RequestParam String hqName,
-            @RequestParam Boolean isActive) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		
+            @RequestParam Boolean isActive) {
+
+		HashMap<String, Object> response = new HashMap<>();
+
 		service.addhq(branchID,hqName,isActive);
-		
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
+
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
 		}
-	
+
 	@PostMapping(value = "/personnel/editHq.do")
 	@ResponseBody
 	public HashMap<String, Object> editHq( @RequestParam String hqID,
             @RequestParam String hqName,
-            @RequestParam Boolean isActive) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		
+            @RequestParam Boolean isActive) {
+
+		HashMap<String, Object> response = new HashMap<>();
+
 		service.editHq(hqID,hqName,isActive);
-		
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
+
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
 		}
-	
+
 	@PostMapping(value = "/personnel/editDp.do")
 	@ResponseBody
 	public HashMap<String, Object> editDp( @RequestParam String departmentID,
             @RequestParam String departmentName,
-            @RequestParam Boolean isActive) {   
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
-		
+            @RequestParam Boolean isActive) {
+
+		HashMap<String, Object> response = new HashMap<>();
+
 		service.editDp(departmentID,departmentName,isActive);
-		
-		response.put("message", "생성이 완료되었습니다."); 
-		return response; 
+
+		response.put("message", "생성이 완료되었습니다.");
+		return response;
 		}
 	@PostMapping(value="/personnel/annualLeave.do")
 	public ResponseEntity<String> annualLeave( @RequestBody List<HashMap<String, Integer>> dataList){
-			
+
 			List<HashMap<String,Object>> leaveYears = service.leaveYears();
 			logger.info("leaveYears =="+leaveYears);
 			SimpleDateFormat formmater = new SimpleDateFormat("yyyy-MM-dd");
-		
-		
+
+
 		for (HashMap<String, Integer> dataMap : dataList) {
 	        Integer year = dataMap.get("year");
 	        Integer value = dataMap.get("value");
 	        // year와 value를 활용한 로직 수행
-	        
-	        
-	     
+
+
+
 		}
 		service.saveAnnualLeave(dataList);
 		/* service.updateAnnual(dataList); */
@@ -580,68 +569,68 @@ public class PersonnelController {
 	@PostMapping(value="/personnel/delHistory.do")
 	@ResponseBody
 	public HashMap<String, Object> delHistory (@RequestParam String historyID) {
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
+
+		HashMap<String, Object> response = new HashMap<>();
 		int row = service.delHistory(historyID);
 		if(row>0) {
-			
+
 			response.put("message", "삭제 성공");
 		}else {
 			response.put("message", "삭제 실패");
 		}
-		
+
 		return response;
 	}
 	@PostMapping(value="/personnel/delscHistory.do")
 	@ResponseBody
 	public HashMap<String, Object> delscHistory (@RequestParam String historyID) {
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
+
+		HashMap<String, Object> response = new HashMap<>();
 		int row = service.delscHistory(historyID);
 		if(row>0) {
-			
+
 			response.put("message", "삭제 성공");
 		}else {
 			response.put("message", "삭제 실패");
 		}
-		
+
 		return response;
 	}
 	@PostMapping(value="/personnel/delDepartmentLog.do")
 	@ResponseBody
 	public HashMap<String, Object> delDepartmentLog (@RequestParam String logID) {
-		
-		HashMap<String, Object> response = new HashMap<String, Object>();
+
+		HashMap<String, Object> response = new HashMap<>();
 		int row = service.delDepartmentLog(logID);
 		if(row>0) {
-			
+
 			response.put("message", "삭제 성공");
 		}else {
 			response.put("message", "삭제 실패");
 		}
-		
+
 		return response;
 	}
 	// 매년 1월1일 00:01분 근속년수별 연차업데이트
 	@Scheduled(cron = "0 1 0 1 1 ?")
 	public void updateAnnual() {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		List<HashMap<String, Object>> getYearValue = service.getYearValue();
-		
+
 		for (HashMap<String, Object> hashMap : getYearValue) {
 			 String year = (String) hashMap.get("year");
 		        String value = (String) hashMap.get("value");
 		        logger.info("year =="+year +"// value ==" + value);
-		        service.updateAnnual(year,value); 
+		        service.updateAnnual(year,value);
 		}
-		
-	}	
+
+	}
 	// 매년 1월1일 모든사원 연차 0으로
 	@Scheduled(cron = "0 0 1 1 * ?")
 	public void calculateAnnualLeave() {
 
 		service.updateEmployeeAnnual();
-		
+
 	}
 
 }

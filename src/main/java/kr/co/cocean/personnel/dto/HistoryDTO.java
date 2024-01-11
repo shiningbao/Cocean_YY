@@ -2,15 +2,9 @@ package kr.co.cocean.personnel.dto;
 
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 
 import org.apache.ibatis.type.Alias;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Service;
 
 @Alias("history")
 public class HistoryDTO {
@@ -21,11 +15,11 @@ public class HistoryDTO {
 	private String remarks;
 	private String category;
 	private HistoryDTO[] historyArray;
-	private HistoryDTO[] schistoryArray;  
+	private HistoryDTO[] schistoryArray;
 
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-	
+
 	public String getStartDate() {
 		return startDate;
 	}
@@ -45,7 +39,7 @@ public class HistoryDTO {
 		this.formatter = formatter;
 	}
 
-	
+
 	public HistoryDTO[] getHistoryArray() {
 		return historyArray;
 	}
@@ -84,7 +78,7 @@ public class HistoryDTO {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
-	
-	
-	
+
+
+
 }

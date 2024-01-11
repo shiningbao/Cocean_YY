@@ -2,7 +2,6 @@ package kr.co.cocean.aquarium.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -42,7 +41,7 @@ public interface AnimalDAO {
 	HashMap<String, String> employeeInfo(int employeeID);
 
 	void inchargeDel(@Param("animalID") int animalID, @Param("delList") ArrayList<Integer> delList);
-	
+
 	void inchargeInsert(@Param("animalID") int animalID, @Param("insertList") ArrayList<Integer> insertList);
 
 	void statusChange(@Param("animalID") int animalID, @Param("status") String status);
@@ -54,6 +53,6 @@ public interface AnimalDAO {
 	void animalDel(int animalID);
 
 	void testalarm(int employeeID, String url, String category);
-	
+
 	AnimalDTO getAnimalTitle(int animalID);
 }
