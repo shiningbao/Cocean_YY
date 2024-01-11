@@ -326,6 +326,7 @@
             </div>
         </div>
     </div>
+
     
     
     <!-- 알림오면 생기는 창 -->
@@ -339,6 +340,8 @@
 <script	src="<c:url value='/resource/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resource/vendor/jquery-easing/jquery.easing.min.js'/>"></script>
 <script src="<c:url value='/resource/js/sb-admin-2.min.js'/>"></script>
+
+
 </body>
 
 <script>
