@@ -70,7 +70,7 @@ img {
 }
 
 img:hover {
-    transform: scale(3);
+    transform: scale(2);
     border: 1px solid #000;
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
@@ -338,9 +338,9 @@ new Promise((resolve, reject) => {
 							    '<td>' + product.productID + '</td>' +
 							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 							    '</tr>';
-
 
 	                     productListTable.append(productInfo);
 						}
@@ -407,7 +407,8 @@ new Promise((resolve, reject) => {
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.productName + '</td>' +
 					                '<td>' + product.price + '</td>' +
-					                '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+					    								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 					                '</tr>';
 
 					                productListTable.append(productInfo);
@@ -530,7 +531,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td class="productNameCell">' + product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 				    
                     searchedModalProduct.append(productInfo);
@@ -581,7 +583,8 @@ searchProduct(searchKeyword, currentBranchName);
 		    '<td>' + product.productID + '</td>' +
 		    '<td>' + product.productName + '</td>' +
 		    '<td>' + product.price + '</td>' +
-		    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.serverFileName + ' Image"/></td>' +
+		    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+						product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
@@ -603,7 +606,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td>'+ product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 		
 		        productListTable.append(productInfo);

@@ -99,9 +99,10 @@ ORDER BY
 	
 	<!-- 지점상품 등록 모달창에서 상품 리스트 보여주기 -->
 	<select id="modalProductList" resultType="branchProduct">
-	SELECT *
+	SELECT pi.productID, pi.productName, pi.category, pi.price, f.serverFileName
 	FROM productInformation pi
-	WHERE pi.category = "상품"
+	LEFT JOIN file f ON pi.productID = f.idx AND f.category = '상품'
+	WHERE pi.category = '상품'
 	  AND pi.productID NOT IN (
 	    SELECT bp.productID
 	    FROM branchProduct bp
