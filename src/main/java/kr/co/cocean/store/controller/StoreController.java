@@ -84,25 +84,6 @@ public class StoreController {
 	    return "store/store";
 	}
 
-	
-	@GetMapping("/store/storeProductDetail.do")
-	public ModelAndView storeProductDetail(@RequestParam int productID, @RequestParam (name="branchID", required = false)int branchID) {
-		logger.info("본사 상품 상세보기");
-		logger.info("productID : "+productID);
-		if(branchID>0) {
-			return service.storeProductDetail(productID, branchID);
-		}else {
-		return service.storeProductDetail(productID);
-		}
-	}
-	
-	@GetMapping(value="productInfoRegister.go")
-	@ResponseBody
-	public String productInfoRegister() {
-		logger.info("상품 등록 페이지 불러오기");
-		return "productInfoRegister.jsp";
-	}
-	
 	@PostMapping("/store/branchProductDelete.do")
 	@ResponseBody
 	public void branchProductDelete(@RequestParam int productID, @RequestParam int branchID) {

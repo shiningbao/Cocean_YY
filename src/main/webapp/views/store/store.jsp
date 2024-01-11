@@ -202,7 +202,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
+                <button type="submit" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
