@@ -133,11 +133,10 @@ public class TankController {
 	
 	@RequestMapping("tank/addPlan.ajax")
 	@ResponseBody
-	public String addPlan(@RequestParam HashMap<String, Object> params) {
+	public int addPlan(@RequestParam HashMap<String, Object> params) {
 		logger.info("params"+params); 
-		String ok = "ok";
-		service.addPlan(params);
-		return ok;
+		int chk = service.addPlan(params); 
+		return chk;
 	}
 	
 	@RequestMapping("tank/getPlan.ajax")
