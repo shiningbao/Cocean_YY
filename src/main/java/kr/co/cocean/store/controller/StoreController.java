@@ -2,6 +2,9 @@ package kr.co.cocean.store.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.store.dto.StoreDTO;
 import kr.co.cocean.store.dto.StoreProductDTO;
 import kr.co.cocean.store.service.StoreService;
@@ -56,7 +61,16 @@ public class StoreController {
 	
 	@GetMapping(value="/store/branchRegister.do")
 	@ResponseBody
-	public String brachRegister(@RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
+	public String brachRegister(HttpSession session,RedirectAttributes rAttr, @RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
+		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
+		String responseName = dto.getResponName();
+		logger.info("담당명 :  " + responseName);
+		// 해당 지점의 마케팅 담당자만 가능
+		if(responseName.equals("마케팅")) {
+			
+		}else {
+			rAttr.addAttribute("msg", "마케팅 담당자만 등록할 수 있습니다");
+		}
 		logger.info("지점 등록");
 		logger.info("branchName : "+branchName);
 		logger.info("branchLocation : "+branchLocation);

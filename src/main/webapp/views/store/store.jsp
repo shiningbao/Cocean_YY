@@ -775,6 +775,11 @@ searchProduct(searchKeyword, currentBranchName);
 	     } else {
 	     }
    	}
+   	
+   	var msg = "${msg}";
+   	if(msg!=""){
+   		alert(msg);
+   	}
 
 </script>
 </html>
