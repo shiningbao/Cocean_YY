@@ -19,14 +19,6 @@
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
 	
-
-
-<!-- 부트스트랩 CSS/favicon -->
-<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
-<script src="/resource/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resource/css/modal.css">
-<link rel="stylesheet" href="/resource/css/common.css"> -->
 </head>
 <style>
 .contentField {
@@ -78,7 +70,7 @@ img {
 }
 
 img:hover {
-    transform: scale(3);
+    transform: scale(2);
     border: 1px solid #000;
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
@@ -202,7 +194,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
+                <button type="submit" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
@@ -346,9 +338,9 @@ new Promise((resolve, reject) => {
 							    '<td>' + product.productID + '</td>' +
 							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 							    '</tr>';
-
 
 	                     productListTable.append(productInfo);
 						}
@@ -415,7 +407,8 @@ new Promise((resolve, reject) => {
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.productName + '</td>' +
 					                '<td>' + product.price + '</td>' +
-					                '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+					    								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 					                '</tr>';
 
 					                productListTable.append(productInfo);
@@ -538,7 +531,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td class="productNameCell">' + product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 				    
                     searchedModalProduct.append(productInfo);
@@ -589,7 +583,8 @@ searchProduct(searchKeyword, currentBranchName);
 		    '<td>' + product.productID + '</td>' +
 		    '<td>' + product.productName + '</td>' +
 		    '<td>' + product.price + '</td>' +
-		    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.serverFileName + ' Image"/></td>' +
+		    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+						product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
@@ -611,7 +606,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td>'+ product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 		
 		        productListTable.append(productInfo);
@@ -783,8 +779,11 @@ searchProduct(searchKeyword, currentBranchName);
 	     } else {
 	     }
    	}
-    	
-
+   	
+   	var msg = "${msg}";
+   	if(msg!=""){
+   		alert(msg);
+   	}
 
 </script>
 </html>

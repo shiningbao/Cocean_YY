@@ -35,7 +35,11 @@ public class StoreService {
 	
 	StoreDTO storedto = new StoreDTO();
 	// 상품 사진 경로
-	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
+	// mac 경로
+	//	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
+	
+	// window 경로
+	private String root = "C:/upload/cocean/";
 	
 	// 카카오 지도 api 사용
 	public JSONObject kakaoAPi(Model model) {
