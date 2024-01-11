@@ -148,7 +148,7 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 			dataType: 'JSON',
 			success: function(data){
 				if(data.length >= 1) {
-				console.log(data);
+				//console.log(data);
 				drawPlan(data);					
 				}else {
 					var text = '<h5 style="text-align: center; margin-top: 5%; color: darkgray;">등록된 관리 계획이 없습니다.</h5>';
@@ -178,7 +178,7 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 		index += '<a href="javascript:void(0);" onclick="removePlan(this);" class="btn btn-danger btn-circle" log="'+ list.logID +'"><i class="fas fa-trash"></i></a>';
 		index += '</div></div>';
 		index += '<div class="card-body">';
-		index += '<p class="card-text">'+list.content+'</p>';
+		index += '<p class="card-text" style="text-decoration:'+(list.status == "완료" ? "line-through":"none") +' ;">'+list.content+'</p>';
 		index += '</div></div></div>';
 
 	});
@@ -221,7 +221,7 @@ function removePlan(obj){
 	
 	swal({
 		title: "계획을 삭제하시겠습니까?",
-		text: "",
+		text: "삭제한 계획은 복구가 불가능합니다.",
 		icon: "warning",
 		buttons: ["취소","삭제"],
 	})
