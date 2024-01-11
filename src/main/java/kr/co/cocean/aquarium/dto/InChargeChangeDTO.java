@@ -6,7 +6,7 @@ public class InChargeChangeDTO {
 	int animalID;
 	ArrayList<Integer> inchargeList_before;
 	ArrayList<Integer> inchargeList_after;
-	
+
 	public int getAnimalID() {
 		return animalID;
 	}

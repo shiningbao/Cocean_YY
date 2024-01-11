@@ -10,7 +10,7 @@ public interface FacilityDAO {
 
 	List<HashMap<String, Object>> getCategory();
 
-	
+
 	List<HashMap<String, Object>> getfacilityInfo();
 
 	List<HashMap<String, Object>> getfacilityName(String category);
@@ -27,6 +27,6 @@ public interface FacilityDAO {
 
 	void delFacility(String deltxt);
 
- 
+
 	void addFacility(String category, String facilityName, String facilityInfo);
 }

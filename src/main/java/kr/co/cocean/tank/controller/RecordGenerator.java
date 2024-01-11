@@ -1,16 +1,9 @@
 package kr.co.cocean.tank.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import kr.co.cocean.tank.service.TankService;
@@ -18,11 +11,11 @@ import kr.co.cocean.tank.service.TankService;
 @Component
 @EnableScheduling
 public class RecordGenerator {
-	
+
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired
 	TankService service;
-	
+
 //	@Scheduled(fixedRate = 3600000) // 2시간(7,200,000 밀리초)마다 실행/일단 지금은 1시간으로 테스트 중
 //	public void recordGenerator() {
 //		logger.info("스케줄러 작동");
@@ -41,9 +34,9 @@ public class RecordGenerator {
 //				}
 //				logger.info("map"+map);
 //				service.recordData(map);
-//			// 이때 수치 비교 
+//			// 이때 수치 비교
 //		}
-//		
+//
 //	}
 
 }

@@ -11,7 +11,7 @@ import kr.co.cocean.facility.dao.FacilityDAO;
 @Service
 public class FacilityService {
 	@Autowired FacilityDAO dao;
-	
+
 	public List<HashMap<String, Object>> getCategory() {
 		// TODO Auto-generated method stub
 		return dao.getCategory();
@@ -37,17 +37,17 @@ public class FacilityService {
 	}
 
 	public void updateFacilityName(String facilityName, String facilityInfo, String facilityID) {
-		
+
 		dao.updateFacilityName(facilityName,facilityInfo,facilityID);
 	}
 
 	public void delFacility(String deltxt) {
-		
+
 		dao.delFacility(deltxt);
 	}
 
 	public void addFacility(String category, String facilityName, String facilityInfo) {
-		
+
 		dao.addFacility(category,facilityName,facilityInfo);
 	}
 

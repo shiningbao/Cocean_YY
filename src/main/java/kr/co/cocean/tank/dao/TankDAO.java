@@ -1,13 +1,11 @@
 package kr.co.cocean.tank.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 import kr.co.cocean.tank.dto.TankRecordDTO;
 
@@ -54,6 +52,6 @@ public interface TankDAO {
 
 	int donePlan(int logID);
 
-	
+
 
 }

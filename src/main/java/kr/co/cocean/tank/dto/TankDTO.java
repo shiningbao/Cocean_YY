@@ -4,15 +4,15 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("Tank")
 public class TankDTO {
-	
+
 	private int tankID;
 	private String tankName;
 	private String tankType;
 	private String branchName;
 	private String tankStatus;
 	private String name;
-	
-	
+
+
 	public int getTankID() {
 		return tankID;
 	}
@@ -49,8 +49,8 @@ public class TankDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
-	
+
+
+
 
 }

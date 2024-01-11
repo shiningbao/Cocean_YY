@@ -381,7 +381,7 @@
 		$('#alarmDiv').css({'display':'block'});
 		setTimeout(function () {
 			alarmHidden();
-        }, 5000);
+        }, (1000*60));
 		alarmList();
 	});
 

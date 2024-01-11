@@ -8,7 +8,7 @@ public class formDTO {
 	private String titleID;
 	private String formCategory;
 	private String formTitle;
-	
+
 	public String getTitleID() {
 		return titleID;
 	}

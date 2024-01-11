@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("alarm")
 public class AlarmDTO {
-	
+
 	private int historyID;
 	private int employeeID;
 	private Boolean isRead;
@@ -12,8 +12,8 @@ public class AlarmDTO {
 	private String content;
 	private String url;
 	private String form;
-	
-	
+
+
 	public int getHistoryID() {
 		return historyID;
 	}
@@ -56,8 +56,8 @@ public class AlarmDTO {
 	public void setForm(String form) {
 		this.form = form;
 	}
-	
-	
 
-	
+
+
+
 }

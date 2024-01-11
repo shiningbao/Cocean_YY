@@ -6,13 +6,13 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("animalfilter")
 public class AnimalListFilterDTO {
-	
+
 	private int inchargeEmployeeID;
 	private String searchName;
 	private ArrayList<String> statusValues;
 	private ArrayList<String> classifiValues;
-	
-	
+
+
 	public int getInchargeEmployeeID() {
 		return inchargeEmployeeID;
 	}
@@ -37,7 +37,7 @@ public class AnimalListFilterDTO {
 	public void setClassifiValues(ArrayList<String> classifiValues) {
 		this.classifiValues = classifiValues;
 	}
-	
-	
+
+
 
 }

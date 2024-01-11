@@ -21,9 +21,9 @@ public class SalesHistoryDTO {
 	private int monthlyTotalSales;
 	private String yearMonth;
 	private int monthlyVisitorsNumber;
-	
-	
-	
+
+
+
 	public int getMonthlyVisitorsNumber() {
 		return monthlyVisitorsNumber;
 	}
@@ -32,8 +32,8 @@ public class SalesHistoryDTO {
 	}
 	private Date salesRegDate;
 	private int salesNumber;
-	
-	
+
+
 	private Date entryDate;
 	private int visitorsNumber;
 	public int getBranchID() {
@@ -144,7 +144,7 @@ public class SalesHistoryDTO {
 	public void setVisitorsNumber(int visitorsNumber) {
 		this.visitorsNumber = visitorsNumber;
 	}
-	
-	
-	
+
+
+
 }

@@ -61,15 +61,15 @@
 				<c:forEach items="${commentList}" var="item">
 					<div class="card p-2">
 						<div class="d-inline">
-							<div class="float-left">
+							<div class="float-left mb-1">
 								<c:if test="${bt ne '익명게시판'}">
 									${item.name} / 
 								</c:if>
 								${item.creationDate}
 							</div>
 							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
 							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
+							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
 						</div>
 						<div class="mt-1 pl-2 splitCon">${item.content}</div>
 					</div>
@@ -96,9 +96,10 @@
 			</div>
 			</div>
 			<div>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2">삭제</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2">수정</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2">목록</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">숨김</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">삭제</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">수정</button>
+				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="location.href = 'list?searchCategory=&search=&page=1'">목록</button>
 			</div>
 		
 		</div>
@@ -168,16 +169,17 @@
 		});
 	}
 	
-	function resplit(con){
-		re	
-	}
-	
+	// 댓글 관련
 	function commentFunction(e,commentID){
 		var con = $(e).text();
-
+		var icon = 'info';
+		if(con == '삭제'){
+			icon = 'error';
+		}
+		
 		swal({
 			title:'댓글을 '+con+'하시겠습니까?',
-			icon:'info',
+			icon:icon,
 			buttons:['취소','확인']
 		}).then((isOkey) => {
 			if(isOkey){
@@ -192,24 +194,131 @@
 		});
 	}
 	
+	// 댓글 수정
 	function commentUpdate(e,commentID){
 		$('#comment').find('button').prop('disabled', true);
-		var $target = $(e).parent().next();
-		$target.removeClass('splitCon');
-		var content = $target.html();
+		var $target = $(e).parent().parent();
+		
+		var content = $target.find('.splitCon').html();
 		content = content.replace(/<br>/g, '\n');
-		var updateForm = '<textarea class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>';
-		updateForm +='<div class="float-right"><button onclick="location.href = location.href">취소</button>';
-		updateForm +='<button onclick="commentUpdateGo('+commentID+')">댓글 수정</button></div>';
-		$target.html(updateForm);
+		var updateForm = '<div class="commentUpdateForm mt-1 pl-2"><textarea class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>';
+		updateForm +='<div class="float-right"><button onclick="commnetUpdateReset(this)">취소</button>';
+		updateForm +='<button onclick="commentUpdateGo(this,'+commentID+')">댓글 수정</button></div></div>';
+		$target.append(updateForm);
 		$target.find('textarea').val(content).trigger('input');
-		$(e).parent().children('button').css({'display':'none'});
+		
+		$target.children().first().find('button').css({'display':'none'});
+		$target.find('.splitCon').css({'display':'none'});
 	}
 	
-	function commentUpdateGo(commentID){
-		// 댓글 수정
+	function commentUpdateGo(e,commentID){
+		var $target = $(e).parent().parent().parent();
+		var content = $target.find('textarea').val();
+		
+		$.ajax({
+			type:'post',
+			url:'commentUpdateGo',
+			data:{'commentID':commentID,'content':content},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				if(data.result == 1){
+					swal({
+						title:'댓글을 수정했습니다.',
+						button:'확인'
+					}).then((isOkey) => {
+						if(isOkey){
+							content = content.replace(/\n/g, '<br>');
+							$target.find('.splitCon').html(content);
+							console.log(content);
+						
+							commnetUpdateReset(e);	
+						}
+					});	
+				}else{
+					swal({
+						title:'실패',
+						button:'확인'
+					});
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}		
+		});
 	}
+	
+	function commnetUpdateReset(e){
+		var $target = $(e).parent().parent().parent();
+		$('#comment').find('button').prop('disabled', false);
+		$target.children().first().find('button').css({'display':'inline-block'});
+		$target.find('.splitCon').css({'display':'block'});
+		$target.find('.commentUpdateForm').remove();
+	}
+	
+
+	function boardDel(boardID){
+		swal({
+			title:'삭제하시겠습니까?',
+			icon:'error',
+			buttons:['취소','삭제']
+		}).then((isOkey) => {
+			if(isOkey){
+				location.href= "delete.do?boardID="+boardID;
+			}
+		});
+		
+		
+	}
+	
+	
+	
+	
+	function boardUpdate(){}
+	
+	
+	
+	function boardFunction(e){
+		var con = $(e).text();
+		var icon = 'info';
+		if(con == '삭제'){
+			icon = 'error';
+		}
+		
+		swal({
+			title:'게시글을 '+con+'하시겠습니까?',
+			icon:icon,
+			buttons:['취소','확인']
+		}).then((isOkey) => {
+			if(isOkey){
+				if(con == '삭제'){
+					location.href = 'boardDel?boardID=${detail.boardID}';
+				}else if(con == '수정'){
+					location.href = 'boardUpdate.Go?boardID=${detail.boardID}';
+				}else if(con == '숨김'){
+					location.href = 'boardHidden?boardID=${detail.boardID}';
+				}
+			}
+		});		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	
 
 </script>
 </html>
+
+
+
+
+
+
+
+

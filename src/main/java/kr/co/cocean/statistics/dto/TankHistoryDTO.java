@@ -64,9 +64,9 @@ public class TankHistoryDTO {
 	public void setLandTankNumber(int landTankNumber) {
 		this.landTankNumber = landTankNumber;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

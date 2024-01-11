@@ -1,9 +1,6 @@
 package kr.co.cocean.personnel.dto;
 
-import java.sql.Date;
-
 import org.apache.ibatis.type.Alias;
-import org.springframework.stereotype.Service;
 
 @Alias("personnel")
 public class PersonnelDTO {
@@ -13,14 +10,14 @@ public class PersonnelDTO {
 	private int positionID;
 	private int rankID;
 	private String password;
-	
+
 	private String status;
 	private String joinDate;
 	private String phoneNumber;
 	private String address;
 	private String responsibility;
-	
-	
+
+
 	public String getResponsibility() {
 		return responsibility;
 	}
@@ -28,7 +25,7 @@ public class PersonnelDTO {
 		this.responsibility = responsibility;
 	}
 	private int remainingAnnualLeave;
-	
+
 	public int getEmployeeID() {
 		return employeeID;
 	}
@@ -71,7 +68,7 @@ public class PersonnelDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getJoinDate() {
 		return joinDate;
 	}
@@ -96,6 +93,6 @@ public class PersonnelDTO {
 	public void setRemainingAnnualLeave(int remainingAnnualLeave) {
 		this.remainingAnnualLeave = remainingAnnualLeave;
 	}
-	
-	
+
+
 }

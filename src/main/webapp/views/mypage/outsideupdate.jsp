@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,16 +12,37 @@
         padding: 5px 10px;
     }
     
+  #addressupdate {
+        width: 30%; 
+        margin: 0 auto; 
+        border-collapse: collapse;
+    }
+
+    #addressupdate th,
+    #addressupdate td {
+        height: 70px;
+        padding: 10px; 
+ 
+    }
+ 
+   #addressupdate input{
+   	width:350px;
+   }
+    
    
 </style>
 </head>
 <body>
 
-<c:import url="/side"/>
+<c:import url="/side" />
 
 <div class="container-fluid contentField"> 
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">주소록 수정</h1>
+	</div>  
 
-<form action="outaddressupdate" method="post">
+<div class="card shadow p-3"> 
+<form action="outaddressupdate" method="post" id="out">
 <input type="hidden" name="addressNumber" value="${outaddress.addressNumber}"/>
 <table id="addressupdate">
 
@@ -57,14 +79,19 @@
          </tr>
     
          <tr>
-             <th colspan="2">
-                 <input type="submit" value="수정" />
-                 <input type="button" onclick="location.href='./list'" value="리스트"/><!-- 수정하기 주소 따로 가져오기 -->
-             </th> 
+
+             <th colspan="2"> 
+             <div class="update-con" style="text-align: center;">
+								<button type="button" id="info-del-btn"
+									class="btn btn-outline-primary" onclick="location.href='./list'" value="리스트">리스트</button>
+								<button type="submit" id="info-update-btn"
+									class="btn btn-primary">수정</button>
+							</div>
+   				</th>
      </table>
  </form>     
   </div>
-        
+        </div>
         
 </body>
 <script>

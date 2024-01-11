@@ -8,8 +8,8 @@ public class LineDTO {
 	 	private String approvalEmp;
 	    private String order;
 	    private String category;
-	    
-	    
+
+
 
 	    public String getApprovalEmp() {
 			return approvalEmp;

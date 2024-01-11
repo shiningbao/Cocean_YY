@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.store.dto.StoreDTO;
 import kr.co.cocean.store.dto.StoreProductDTO;
@@ -13,15 +12,15 @@ import kr.co.cocean.store.dto.StoreProductDTO;
 public interface StoreDAO {
 
 	ArrayList<StoreDTO> branchList();
-	
+
 	ArrayList<StoreProductDTO> branchProductList();
-	
+
 	ArrayList<StoreProductDTO> totalProductNumber();
-	
+
 	ArrayList<StoreProductDTO> branchTicketList();
 
 	ArrayList<StoreProductDTO> searchProduct( String searchKeyword,String branchName);
-	
+
 	int brachRegister(String branchName, String branchLocation, double branchLatitude, double branchLongitude);
 
 	int branchSelect(String branchName);
@@ -31,7 +30,7 @@ public interface StoreDAO {
 	ArrayList<StoreProductDTO> modalProductList(String currentBranchName);
 
 	ArrayList<StoreProductDTO> modalTicketList(String currentBranchName);
-	
+
 	int branchIDSearch(String currentBranchName);
 
 	int productIDSearch(String currentProductName);
@@ -49,7 +48,7 @@ public interface StoreDAO {
 	void branchProductDelete(int productID, int branchID);
 
 
-	
+
 
 
 

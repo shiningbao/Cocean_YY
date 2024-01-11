@@ -1,14 +1,10 @@
 package kr.co.cocean.mypage.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +19,10 @@ import kr.co.cocean.mypage.service.LoginService;
 public class LoginController {
 
 	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired LoginService service;
-	
-	
+
+
 	//접속
 	@GetMapping(value="/")
 	public String login(HttpServletRequest req, HttpSession session) {
@@ -34,13 +30,13 @@ public class LoginController {
 		session.setAttribute("path", url);
 		return "mypage/login";
 	}
-	
+
 	//로그인
 
 	@PostMapping(value="/logingo")
 	public ModelAndView logingo(HttpSession session , @RequestParam String password, String userNum){
 		logger.info("test");
-		String page = "mypage/login"; 
+		String page = "mypage/login";
 		logger.info("userNum : "+userNum+" / password :"+password);
 		ModelAndView mav = new ModelAndView();
 
@@ -59,13 +55,13 @@ public class LoginController {
 		mav.setViewName(page);
 		return mav;
 	}
-	
-	
+
+
 	/*
 	@PostMapping(value="/logingo")
 	public ModelAndView logingo(HttpSession session, @RequestParam String password, String userNum) {
 	    logger.info("test");
-	    String page = "mypage/login"; 
+	    String page = "mypage/login";
 	    logger.info("userNum: " + userNum + " / password: " + password);
 	    ModelAndView mav = new ModelAndView();
 
@@ -92,10 +88,10 @@ public class LoginController {
 	    mav.setViewName(page);
 	    return mav;
 	}*/
-	
-	
 
-	
+
+
+
 	//로그아웃
 	@GetMapping(value = "/mypage/logout")
 	public String logout(HttpSession session, HttpServletRequest req, RedirectAttributes rAttr) {
@@ -107,8 +103,8 @@ public class LoginController {
 	return "redirect: "+ctx;
 	}
 
-	
-	
-	
+
+
+
 
 }

@@ -14,11 +14,11 @@ public class LoginDTO {
 	private Date joinDate;//입사일
 	private String phoneNumber; //전화번호
 	private String address;//주소
-	private int remainingAnnualLeave;// 잔여연차	
+	private int remainingAnnualLeave;// 잔여연차
 	private int branchID;
 	private String departmentName; // 부서명
 	private String responName;
-	
+
 	public String getResponName() {
 		return responName;
 	}
@@ -26,13 +26,13 @@ public class LoginDTO {
 		this.responName = responName;
 	}
 	//부서 변경로그(d)
-	private int departmentID; //부서 
+	private int departmentID; //부서
 	private int rankID;//직급
 	private int positionID;//직책
-	
-	
-	
-	
+
+
+
+
 	public int getBranchID() {
 		return branchID;
 	}
@@ -112,16 +112,16 @@ public class LoginDTO {
 		this.departmentName = departmentName;
 	}
 
-	
-	
-	
-	
-	
 
 
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 }

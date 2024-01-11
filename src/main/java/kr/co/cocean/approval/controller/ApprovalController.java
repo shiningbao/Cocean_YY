@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,9 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.cocean.approval.dto.ApprovalDTO;
@@ -54,7 +50,7 @@ public class ApprovalController {
 	public ModelAndView formList(HttpSession session, RedirectAttributes rAttr) {
 		ModelAndView mav = new ModelAndView();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		
+
 		if (dto != null) {
 			ArrayList<formDTO> list = service.list();
 			mav.addObject("list", list);
@@ -65,11 +61,11 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/formSearch")
 	@ResponseBody
 	public HashMap<String, Object> formSearch(@RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		ArrayList<formDTO> fList = service.formSearch(keyword);
 		result.put("fList", fList);
 		return result;
@@ -91,11 +87,11 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/waitingSearch")
 	@ResponseBody
 	public HashMap<String, Object> waitingSearch(HttpSession session, @RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
 		ArrayList<ApprovalDTO> sList = service.waitingSearch(keyword,employeeID);
@@ -135,7 +131,7 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@GetMapping(value="/approval/tempSaveForm.go")
 	public ModelAndView updateForm(int idx, String employeeID, String date) {
 		ModelAndView mav = new ModelAndView("approval/tempSaveForm");
@@ -156,13 +152,13 @@ public class ApprovalController {
 		mav.setViewName("approval/tempSaveForm");
 		return mav;
 	}
-	
+
 
 	@RequestMapping(value = "/approval/drawSign")
 	@ResponseBody
 	public HashMap<String, Object> drawSign(@RequestParam String loginId, String idx) {
 		logger.info(loginId+"/"+idx);
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		ArrayList<ApprovalDTO> signList = service.signList(idx,loginId);
 		result.put("signList", signList);
 		ApprovalDTO order = service.getOrder(idx,loginId);
@@ -174,7 +170,7 @@ public class ApprovalController {
 	 * @PostMapping(value = "/approval/searchList.do") public ModelAndView
 	 * formSearch(HttpSession session, RedirectAttributes rAttr, @RequestParam
 	 * List<String> keyword) { logger.info("keyword : {}", keyword);
-	 * 
+	 *
 	 * return service.formSearch(session, rAttr, keyword); }
 	 */
 
@@ -213,12 +209,12 @@ public class ApprovalController {
 
 	        logger.info("params: {}", param);
 	        logger.info("files:"+files);
- 
+
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
 	            String lastLineJson = param.get("lastLine");
 	            List<Map<String, String>> lastLineList = objectMapper.readValue(lastLineJson, new TypeReference<List<Map<String, String>>>() {});
-	            
+
 	            List<LineDTO> lastLineInfoList = new ArrayList<>();
 
 	            for (int i = 0; i < lastLineList.size(); i++) {
@@ -231,9 +227,9 @@ public class ApprovalController {
 	                lastLineInfo.setApprovalEmp(approvalEmp);
 	                lastLineInfo.setOrder(order);
 	                lastLineInfo.setCategory(category);
-	                
-	                
-	                lastLineInfoList.add(lastLineInfo);  
+
+
+	                lastLineInfoList.add(lastLineInfo);
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
@@ -243,21 +239,21 @@ public class ApprovalController {
 	            		logger.info(param.get("idx"));
 	            		service.update(files,param,lastLineInfoList);
 	            	}
-	     
+
 	        	} catch (Exception e) {
 	        		e.printStackTrace();
-				} 
+				}
 	    		}else {
 			        rAttr.addFlashAttribute("msg", "로그인이 필요한 서비스입니다");
 			    }
-		    
-	
+
+
 		    return result;
 	}
 
 	/*
 	 * @GetMapping(value="/approval/employeeList")
-	 * 
+	 *
 	 * @ResponseBody public HashMap<String,Object> employeeSearch() {
 	 * HashMap<String,Object> result = new HashMap<String,Object>();
 	 * ArrayList<HashMap<String, Object>> list = service.employeeList();
@@ -268,19 +264,19 @@ public class ApprovalController {
 	@ResponseBody
 	public HashMap<String, Object> getEmployeeID(@RequestParam String employeeID) {
 		logger.info("employeeID===========" + employeeID);
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		ArrayList<ApprovalDTO> employeeInfo = service.employeeInfo(employeeID);
 		result.put("employeeInfo", employeeInfo);
 		return result;
 	}
-	
+
 	// 첨부파일 다운로드
 	@GetMapping(value="/approval/download.do")
 	public ResponseEntity<Resource> download(String file) throws IOException {
 		String path = root+"draft/"+file;
 		String ext = file.substring(file.lastIndexOf("."));
 		logger.info(path);
-		
+
 		// 본문(파일)
 		Resource resource = new FileSystemResource(path); // 파일시스템의 특정 파일을 읽어오는 기능
 		// 보여주기와 다운로드는 헤더 속성 값의 차이
@@ -293,9 +289,9 @@ public class ApprovalController {
 		String oriFileName = URLEncoder.encode("원본"+ext, "UTF-8");
 		// "attachment;fileName="원본.jpg""
 		header.add("content-Disposition", "attachment;fileName=\""+oriFileName+"\"");
-		
-		return new ResponseEntity<Resource>(resource, header , HttpStatus.OK);
-		
+
+		return new ResponseEntity<>(resource, header , HttpStatus.OK);
+
 	}
 
 	// 결재,반려
@@ -309,8 +305,8 @@ public class ApprovalController {
 		String idx=param.get("idx");
 		if(!param.get("ral").equals("")&&!param.get("usageTime").equals("")) {
 		double updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
-		
-		 if(param.get("action").equals("결재")) { 
+
+		 if(param.get("action").equals("결재")) {
 			 logger.info("결재!!!");
 			 if(!param.get("vacationCategory").equals("")) {
 			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
@@ -327,10 +323,10 @@ public class ApprovalController {
 				service.approveDraft(param); // draft update
 				service.approveApp(param); // approval update
 			 }
-		 }else if(param.get("action").equals("반려")){ 
+		 }else if(param.get("action").equals("반려")){
 			 logger.info("반려!!!");
 			 service.rejectDraft(param);
-			 service.rejectApp(param); 
+			 service.rejectApp(param);
 		 }else if(param.get("action").equals("합의")) {
 			 if(approvalOrder<lastOrder) {
 				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
@@ -347,12 +343,12 @@ public class ApprovalController {
 				 service.passDraft(idx); // draft update
 			 }else {
 			 service.rejectAgree(param);
-			 service.rejectDraft(param); 
+			 service.rejectDraft(param);
 			 }
 		 }
 		return mav;
 	}
-	
+
 	@GetMapping(value = "/approval/tempSaveList.go")
 	public ModelAndView tempSaveList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
@@ -369,13 +365,13 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/removeSave")
 	@ResponseBody
 	public HashMap<String, Object> removeSave(@RequestParam(value = "removeList") String removeList) throws Exception {
 
 	    List<HashMap<String, String>> selectedSave = new ObjectMapper().readValue(removeList, List.class);
-	    HashMap<String, Object> result = new HashMap<String, Object>();
+	    HashMap<String, Object> result = new HashMap<>();
 
 	    for (HashMap<String, String> entry : selectedSave) {
 	        String idx = entry.get("idx");
@@ -387,8 +383,8 @@ public class ApprovalController {
 
 	    return result;
 	}
-	
-	
+
+
 	@GetMapping(value = "/approval/myDraftList.go")
 	public ModelAndView myDraftList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
@@ -406,18 +402,18 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/mySearch")
 	@ResponseBody
 	public HashMap<String, Object> mySearch(HttpSession session, @RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
 		ArrayList<ApprovalDTO> myList = service.mySearch(keyword,employeeID);
 		result.put("myList", myList);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/approval/refList.go")
 	public ModelAndView refList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
@@ -434,18 +430,18 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/refSearch")
 	@ResponseBody
 	public HashMap<String, Object> refSearch(HttpSession session, @RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
 		ArrayList<ApprovalDTO> refList = service.refSearch(keyword,employeeID);
 		result.put("refList", refList);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/approval/myApprovalList.go")
 	public ModelAndView completeList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
@@ -462,18 +458,18 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/myAppSearch")
 	@ResponseBody
 	public HashMap<String, Object> myAppSearch(HttpSession session, @RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
 		ArrayList<ApprovalDTO> myAppList = service.myAppSearch(keyword,employeeID);
 		result.put("myAppList", myAppList);
 		return result;
 	}
-	
+
 	@GetMapping(value = "/approval/department.go")
 	public ModelAndView departmentList(HttpSession session, RedirectAttributes rAttr, Pager pager) {
 		ModelAndView mav = new ModelAndView();
@@ -490,18 +486,18 @@ public class ApprovalController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/approval/dpSearch")
 	@ResponseBody
 	public HashMap<String, Object> dpSearch(HttpSession session, @RequestParam String keyword) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
 		int employeeID = dto.getEmployeeID();
 		ArrayList<ApprovalDTO> dList = service.dpSearch(keyword,employeeID);
 		result.put("dList", dList);
 		return result;
 	}
-	
-	
+
+
 
 }

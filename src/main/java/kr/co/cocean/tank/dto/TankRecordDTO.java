@@ -1,13 +1,10 @@
 package kr.co.cocean.tank.dto;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
 import org.apache.ibatis.type.Alias;
 
 @Alias("Record")
 public class TankRecordDTO {
-	
+
 	private int tankRecordID;
 	private int tankID;
 	private String timeSet;
@@ -20,12 +17,12 @@ public class TankRecordDTO {
 	private String recordNitrites;
 	private String recordAmmonia;
 	private String recordPhosphates;
-	
-	
+
+
 	public String getTimeSet() {
 		return timeSet;
 	}
-	
+
 	public int getTankRecordID() {
 		return tankRecordID;
 	}
@@ -60,10 +57,10 @@ public class TankRecordDTO {
 	public String getRecordPhosphates() {
 		return recordPhosphates;
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 
 }
