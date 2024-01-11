@@ -89,11 +89,11 @@
 	</select>
 	
 	<select id="lineList" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("결재","합의") order by approvalOrder asc
+		select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("결재","합의") order by approvalOrder asc
 	</select>
 	
 	<select id="signList" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID JOIN position p ON e.positionID=p.positionID where idx=#{idx} and category="결재";
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID JOIN position p ON e.positionID=p.positionID where idx=#{idx} and a.category in("결재","합의") order by approvalOrder asc
 	</select>
 	
 	<select id="agrRef" resultType="approval">
@@ -152,7 +152,7 @@
 	
 	<update id="rejectDraft">
 		UPDATE draft SET draftStatus='완료', publicStatus=0 WHERE idx=#{idx}
-	</update>
+	</update> 
 	
 	<update id="rejectApp">
 		UPDATE approval SET approvalStatus='반려', opinion=#{opinionWrite} WHERE idx=#{idx} and employeeID=#{loginId}
@@ -378,13 +378,21 @@
 		SELECT CEIL(COUNT(*)/10) FROM draft WHERE employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY draftDate DESC
 	</select>
 	
-	<delete id="removeSave">
-		DELETE FROM attendanceDraft WHERE idx=#{selected};
-		DELETE FROM leaveDraft WHERE idx=#{selected};
-		DELETE FROM workDraft WHERE idx=#{selected};
-		DELETE FROM approval WHERE idx=#{selected};
-		DELETE FROM draft WHERE idx=#{selected};
-	</delete>
+	<delete id="removeList">
+    <choose>
+        <when test="titleID == 1">
+            DELETE FROM workDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 2">
+            DELETE FROM attendanceDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 3">
+            DELETE FROM leaveDraft WHERE idx=#{idx};
+        </when>
+    </choose>
+    DELETE FROM approval WHERE idx=#{idx};
+    DELETE FROM draft WHERE idx=#{idx};
+</delete>
 	
 	<select id="myList" resultType="approval">
 		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10
@@ -427,11 +435,11 @@
 	</select>
 	
 	<select id="departmentList" resultType="approval">
-		select d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
+		select a.approvalStatus,d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="dpCount" parameterType="map" resultType="Integer">
-		SELECT CEIL(COUNT(*)/10) FROM draft d LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName =(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료'ORDER BY a.approvalDate DESC
+		SELECT CEIL(COUNT(DISTINCT d.idx)/10) FROM draft d LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName =(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' ORDER BY a.approvalDate DESC
 	</select>
 	
 	<select id="dpSearch" resultType="approval">

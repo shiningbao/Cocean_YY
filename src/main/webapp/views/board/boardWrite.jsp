@@ -51,7 +51,7 @@
 	<c:import url="/footer"/>
 </body>
 <script>
-	
+	$('#details').trigger('input');
 	$('#summernote').summernote({
 		height: 200,
 		maxHeight: 200,

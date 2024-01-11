@@ -15,8 +15,10 @@ import kr.co.cocean.mypage.dto.OutAddressDTO;
 
 @Mapper
 public interface AddressDAO {
-
+	/*
    ArrayList<OutAddressDTO> list();
+   */
+   ArrayList<OutAddressDTO> list(int userId);
 
    int delete(String addressNumber);
   
@@ -57,6 +59,8 @@ ArrayList<InaddressDTO> inlistCall();
 
 //내부검색
 ArrayList<OutAddressDTO> inaddresssearch(String inname);
+
+
 
 
 

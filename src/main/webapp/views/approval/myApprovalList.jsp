@@ -17,6 +17,7 @@
 
 #comList{
 	text-align: center;
+	font-weight: normal;
 }
 
 #search input {
@@ -48,14 +49,14 @@
 	</div>
 </div>
 
-		 <nav class="navbar navbar" id="search">
-            <form class="form-inline" action="myApprovalList.go" method="get" id="frm">
+		 <div class="search d-flex flex-column">
+            <form class="form-inline ml-auto" action="myApprovalList.go" method="get" id="frm">
             <input type="hidden" name="startNum" value="1" id="startNum">
             <input type="hidden" name="pageNum" value="" id="pageNum">
               <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="myAppSearch()">검색</button>
             </form>
-          </nav>
+       	</div>
           
 <div class="card shadow mb-4">
 	<div id="comTable">
@@ -78,7 +79,10 @@
 		<td scope="row">${com.draftDate}</td>
 		<c:if test="${com.draftStatus eq '완료'}">
 			<td>${com.approvalDate}</td>
-			</c:if>
+		</c:if>
+		<c:if test="${com.draftStatus ne '완료'}">
+			<td></td>
+		</c:if>
 			<td>${com.formTitle}</td>
 			<td>${com.category}</td>
 			<td> 
@@ -94,7 +98,7 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-            <td>${com.name }</td>
+            <td>${com.name}</td>
 			<td>${com.draftStatus}</td>
 		</tr>	
 		</tbody>

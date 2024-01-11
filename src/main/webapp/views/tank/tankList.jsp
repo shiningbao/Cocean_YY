@@ -157,6 +157,7 @@ label {
     </div>
     </li>
     </c:if>
+    
     	<c:forEach begin="1" end="${pager.totalCount}" var="i">
     	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
       		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
@@ -184,7 +185,7 @@ label {
 <script>
 
 
-
+//페이징 처리 클릭 이벤트
 $(".p").click(function() {
 	const n= $(this).attr("data-list-pn");
 	$("#pageNum").val(n);
@@ -205,14 +206,14 @@ $(".p").click(function() {
 	resizeWidth();
 	
 	
-// 페이징 처리 클릭 이벤트
-$('.p').click(function(){
+
+// $('.p').click(function(){
 	
-	const no = $(this).attr("data-list-pn");
-	alert(no);
-	$("#pageNum").val(no);
-	$('#frm').submit();
-})
+// 	const no = $(this).attr("data-list-pn");
+// 	alert(no);
+// 	$("#pageNum").val(no);
+// 	$('#frm').submit();
+// });
 	
 
     

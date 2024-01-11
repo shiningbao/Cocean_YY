@@ -38,8 +38,11 @@
 				OR commonName LIKE CONCAT('%',#{keyword},'%')				
 	</select>
 	
-	<select id="tankList" parameterType="int" resultType="animal">
-		SELECT tankID, tankName FROM tankManagement WHERE branchID = #{param1}
+	<select id="tankList" resultType="map">
+		SELECT branchID, b.branchName, tm.tankID, tm.tankName
+			FROM tankManagement tm
+			NATURAL JOIN branch b
+			ORDER BY branchID, tm.tankName;
 	</select>
 	
 	<insert id="animalWrte" parameterType="animal" useGeneratedKeys="true" keyColumn="animalID" keyProperty="animalID">

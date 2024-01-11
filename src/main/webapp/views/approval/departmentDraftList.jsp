@@ -32,6 +32,34 @@
 		margin-bottom: 5px;
 	}
 }
+
+.rStatus{
+	background-color: #e33d6e87;
+    border: #e33d6e87;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 19px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.aStatus{
+	background-color: #61a8dba6;
+    border: #61a8dba6;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 19px;
+    font-size: 12px;
+    vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -44,14 +72,14 @@
 	</div>
 </div>
 	
-	<nav class="navbar navbar" id="search">
-            <form class="form-inline" action="department.go" method="get" id="frm">
+		<div class="search d-flex flex-column">
+            <form class="form-inline ml-auto" action="department.go" method="get" id="frm">
             <input type="hidden" name="startNum" value="1" id="startNum">
             <input type="hidden" name="pageNum" value="" id="pageNum">
               <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
               <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="dpSearch()">검색</button>
             </form>
-    </nav>
+    	</div>
     
 	<div class="card shadow mb-4">
 	<div id=dpTable>
@@ -62,6 +90,7 @@
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
 			<th scope="col">기안자</th>
+			<th scope="col">결재상태</th>
 		</tr>
 		
 		<tbody id=dpList>
@@ -83,6 +112,18 @@
 	            	</c:choose>
             </td>
             <td>${list.name}</td>
+            <c:choose> 
+            <c:when test="${list.approvalStatus eq'반려'}">
+            <td><span class="rStatus">${list.approvalStatus}</span></td>
+            </c:when>
+            <c:when test="${list.approvalStatus eq'결재'}">
+            <td><span class="aStatus">${list.approvalStatus}</span></td>
+            </c:when>
+            <c:otherwise>
+            <td></td>
+            </c:otherwise>
+            </c:choose>
+            
 		</tr>	
 		</c:forEach>
 		</tbody>

@@ -70,7 +70,7 @@
 		width: 280px;
 		right: 30px;
 		bottom: 10px;
-		z-index: 10;
+		z-index: 100;
 	}
 	#alarmText{
 		width: 220px;

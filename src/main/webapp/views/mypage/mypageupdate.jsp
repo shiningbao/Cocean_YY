@@ -13,8 +13,8 @@
     width: 400px; /* Adjust the width as needed */
     margin: 50px auto 50px auto; /* Adjust the top, bottom, left, and right margins as needed */
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 45%;
+    left: 55%;
     transform: translate(-50%, -50%);
 }
  
@@ -34,46 +34,31 @@
 } 
  
  
-#info-update-btn {
-    display: block;
-    margin: 20px auto; /* Adjust the top and bottom margin as needed */
-} 
- 
+.button-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center; /* 가로 정렬을 가운데로 설정합니다. */
+    margin-top: 20px; /* 필요에 따라 상단 여백을 조절할 수 있습니다. */
+}
 
 </style>
 
 
 </head>
 <body>
-<jsp:include page="../side.jsp"></jsp:include>
-<!--  
-<form action="/mypage/pwUpdate" method="post" id="pwUpdateForm" name="pwUpdateForm">
-                       <input type="hidden" id="memberId" name="memberId" value="${login.memberId}">
-    <div class="col-sm-8 col-sm-offset-2">
-        <div class="panel panel-default panel-margin-10">
-            <div class="panel-body panel-body-content text-center">
-                <p class="lead">변경하실 비밀번호를 입력해 주세요.</p>
-                <div class="form-group">
-                    <input type="password" name="memberPw" id="memberPw" class="form-control form-control-inline text-center" placeholder="현재 비밀번호" />
-                </div>
-                <div class="form-group">
-                    <input type="password" name="memberPw1" class="form-control form-control-inline text-center" placeholder="새 비밀번호" />
-                </div>
-                <div class="form-group">
-                    <input type="password" name="memberPw2" class="form-control form-control-inline text-center" placeholder="새 비밀번호 확인" />
-                </div>
-                <button type="button" id="pwUpdate" name="pwUpdate" class="btn btn-primary">수정</button> <a href="mypage/mypage" class="btn btn-default">취소</a>
-            </div>
-        </div>
-    </div>
-    </form>
- -->
- 
-   
+
+<c:import url="/side" />
+
+<div class="container-fluid contentField"> 
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">비밀번호 수정</h1>
+	</div>  
+
+
+
  <form action="changePw" method="post" name="mypage=form">
- 
- 
-  <h2 class="pwupadte">비밀번호 수정 </h2>
+
  <div class="update">
 
 		<div class="mypage-row">
@@ -93,18 +78,20 @@
        </th>
 
 
+	</div >
+	<div class="button-container">
+		<!--  
+		 <button class="btn btn-outline-primary detailCancleBtn" id="cancel" onclick="location.href='./mypageback'">취소</button>
+		-->
+		<button type="submit" id="info-update-btn" class="btn btn-primary">수정</button>
 	</div>
-
-		<button type="submit" id="info-update-btn">수정</button>
 	</div>
 
 	</form>
     
-    
-    	<!--  
-		<input type="button" onclick="location.href='./mypageback'" value="이전"/>
-	-->	
-    
+    </div>
+  
+   
     
 </body>
 
@@ -124,7 +111,7 @@ $('.pw').keyup(function(){
 	   if (pass1 !== "" || pass2 !== "") {
 	      if (pass1 === pass2) {
 	         checkPw.html("비밀번호가 일치합니다.");
-	         checkPw.css("color", "green");
+	         checkPw.css("color", "blue");
 	      } else {
 	         checkPw.html("비밀번호가 불일치합니다.");
 	         checkPw.css("color", "red");
@@ -136,71 +123,7 @@ $('.pw').keyup(function(){
 
 
 
-/*
-$('.pw').keyup(function(){
-   let pass1 =$("#password_1").val();
-   let pass2 =$("#password_2").val();
-   
-   if(pass1 != "" || pass2 !=""){
-      if(pass1 == pass2){
-         $("#checkPw").html("비밀번호가 일치합니다.");
-         $("#checkPw").attr("color","green");
-      }else{
-         $("#checkPw").html("비밀번호가 불일치합니다.");
-         $("#checkPw").attr("color","red");
-      }
-   }
-})*/
 
-
-/*
-$(document).ready(function(){
-	
-	$("#pwUpdate").on("click", function(){
-		if($("#memberPw").val==""){
-			alert("현재 비밀번호를 입력해주세요");
-			$("#memberPw").focus();
-			return false
-		}
-		if($("#memberPw1").val==""){
-			alert("변경비밀번호을를 입력해주세요");
-			$("#memberPw1").focus();
-			return false
-		}
-		if($("#memberPw2").val==""){
-			alert("변경비밀번호를 입력해주세요");
-			$("#memberPw2").focus();
-			return false
-		}
-		if ($("#memberPw").val() != $("#memberPw2").val()) {
-			alert("변경비밀번호가 일치하지 않습니다.");
-			$("#memberPw2").focus();
-			 
-		
-		$.ajax({
-			url : "pwCheck",
-			type : "POST",
-			dataType : "json",
-			data : $("#pwUpdateForm").serializeArray(),
-			success: function(data){
-				
-				if(data==0){
-					alert("패스워드가 틀렸습니다.");
-					return;
-				}else{
-					if(confirm("변경하시겠습니까?")){
-						$("#pwUpdateForm").submit();
-					}
-					
-				}
-			}
-		})
-		
-	});
-	
-		
-	
-})*/
 
 
 

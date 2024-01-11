@@ -38,10 +38,26 @@
 }
 
 .removeSave{
-	width:33px;
-	height:33px;
+	width:30px;
+	height:30px;
 	cursor:pointer;
 }
+
+.tempStatus{
+	background-color: #b3d3f6;
+    border: 1px solid #b3d3f6;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 19px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+
 
 
 </style>
@@ -62,17 +78,20 @@
 	</div>
 </div>
 
-	<div class="row">
-	<nav class="navbar navbar" id="search">
-          <img src="<c:url value='/resource/img/trashbin.png'/>" class="removeSave" alt="삭제 아이콘" onclick="removeSave()">
-          <form class="form-inline" action="tempSaveList.go" method="get" id="frm">
-          <input type="hidden" name="startNum" value="1" id="startNum">
-          <input type="hidden" name="pageNum" value="" id="pageNum">
-          <input class="form-control mr-sm-2" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
-          <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
-       </form>
-     </nav>
-     </div>
+	  <div class="row">
+      <div class="col-md-6 d-flex flex-column align-self-end">
+        <img src="<c:url value='/resource/img/trashbin.png'/>" class="removeSave" alt="삭제 아이콘" onclick="removeSave()">
+      </div>
+      <div class="col-md-6 text-right d-flex flex-column">
+          <form class="form-inline ml-auto mb-auto" action="tempSaveList.go" method="get" id="frm">
+            <input type="hidden" name="startNum" value="1" id="startNum">
+            <input type="hidden" name="pageNum" value="" id="pageNum">
+            <input class="form-control mr-sm-2" type="search" placeholder="제목/유형" aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
+          </form>
+    
+      </div>
+    </div>
      
 <div class="card shadow mb-4" style="margin-top:15px;">
          
@@ -107,7 +126,7 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-			<td>${save.draftStatus}<input type="hidden" name="idx" value="${save.idx}" id="idx"></td>
+			<td><span class="tempStatus">임시저장</span><input type="hidden" name="idx" value="${save.idx}" id="idx"></td>
 		</tr>	
 		</c:forEach>
 		</tbody>
@@ -194,13 +213,14 @@ function removeSave() {
         });
             console.log(selectedSave);
 
-        $.ajax({
-            type: "POST",
-            url: "removeSave", 
-            contentType: "application/json",
-            data: JSON.stringify({ 'selectedSave': selectedSave }),
+         $.ajax({
+            type: 'POST',
+            url: 'removeSave', 
+            data: {'removeList': JSON.stringify(selectedSave)},
+        	dataType: 'json',
             success: function(data) {
                 console.log(data);
+                location.reload();
             },
             error: function(e) {
                 console.error(e);

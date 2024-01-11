@@ -39,8 +39,16 @@ button{
 }
 
 #approvalSignature{
+	float:right;
 	margin-left : 20px;
-	width : 44%;
+	margin-bottom : 20px;
+}
+	
+
+
+
+#agrSignature{
+	float:left;
 }
 
 #approvalSignature td{
@@ -48,7 +56,7 @@ button{
 }
 
 #workDraftContent{
-	width : 99%;
+	width : 100%;
 }
 
 #attendanceDraftContent{
@@ -131,6 +139,34 @@ button{
 	/* overflow-y: auto; */
 }
 
+th {
+    background-color: #ededed;
+}
+
+.orderNum{
+	background-color: white;
+}
+
+.order{
+	background-color: white;
+}
+
+.appOpinion{
+	background: #fa5a5a;
+	color: #FFF;
+  	border-radius: 5px;
+  	transition: all 0.2s ;
+  	border:none;
+}
+
+.rejOpinion{
+	background: #86b0f3;
+	color: #FFF;
+  	border-radius: 5px;
+  	transition: all 0.2s ;
+  	border:none;
+}
+
 </style>
 </head>
 <body>
@@ -201,7 +237,7 @@ button{
 <div id="contentContainer">
 <div id="formTitle">${list.formTitle}</div>
 <div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
-<div id="agrSignature"><!-- 합의 서명 그려지는부분 --></div>	
+<!-- <div id="agrSignature">합의 서명 그려지는부분</div>	 -->
 <br/>
 <div id="detailInfoTop" style="display: flex;">
 	<table id="detailInfo">
@@ -256,10 +292,10 @@ button{
 	    </c:forEach>
 	</tr>
 	<tr>
-		<th>제목</th>
+		<th style="width: 82.25px; text-align: center;">제목</th>
 			<td>${list.title}</td>
 		</tr>
-		<tr>
+		<tr style="height:340px;">
 			<td colspan="2">${list.content}</td>
 	</tr>
 </table>
@@ -275,7 +311,7 @@ button{
 	<c:if test="${hTitle eq 'waiting'}">
 	<tr>
 		<th>잔여 연차</th>
-		<td>${vac.remainingAnnualLeave}일</td>
+		<td style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
 	</tr>
 	</c:if>
 	<tr>
@@ -338,33 +374,43 @@ button{
 </c:if>
 </div>
 <div id="rightContainer">
-	<div class="card shadow">
-	<div style="padding: 10px 30px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
+	<div class="card shadow" style="margin-left:10px;">
+	<div style="padding: 10px 15px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
+				<th class="img-profile rounded-circle"></th>
 				<td>상신</td>
 				<td>${list.hqName}/${list.departmentName}</td>
 				<td>${list.rankName}</td>
 				<td>${list.name}</td>
 			</tr>
 			<c:forEach items="${lineList}" var="lL">
-			<tr>
-				<td>${lL.category}</td>
-				<td>${lL.hqName}/${lL.departmentName}</td>
-				<td>${lL.rankName}</td>
-				<td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
-				<c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
-    			<td><input type="button" value="의견" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion"/></td>
-				</c:if>
-			</tr>
-			</c:forEach>
+    <tr>
+        <th class="img-profile rounded-circle"></th>
+        <td>${lL.category}</td>
+        <td>${lL.hqName}/${lL.departmentName}</td>
+        <td>${lL.rankName}</td>
+        <td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
+        <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
+            <td>
+                <c:choose>
+                    <c:when test="${lL.approvalStatus == '거부' or lL.approvalStatus == '반려'}">
+                        <input type="button" class="appOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
+                    </c:when>
+                    <c:otherwise>
+                        <input type="button" class="rejOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
+                    </c:otherwise>
+                </c:choose>
+            </td>
+        </c:if>
+    </tr>
+</c:forEach>
 		</table>
 	</div>
 	</div>
 	</div>
 </div>	
-
 
 <c:import url="/footer"/>	
 </body>
@@ -430,39 +476,35 @@ function updateModalContent(action) {
     $('.modal-footer button[type="submit"]').text(modalButtonText);
     
 }
+$('.modal-footer button[type="submit"]').click(function () {
+    var buttonText = $(this).text();
+    
+    var msg = "";
+    switch (buttonText) {
+        case '결재':
+            msg = "결재하시겠습니까?";
+            break;
+        case '반려':
+            msg = "반려하시겠습니까?";
+            break;
+        case '합의':
+            msg = "합의하시겠습니까?";
+            break;
+        case '거부':
+            msg = "거부하시겠습니까?";
+            break;
+        default:
+            break;
+    }
 
-$('.modal-footer button[type="submit"]').click(function(){
-	if($('.modal-footer button[type="submit"]').text()=='결재'){
-		var msg = "결재하시겠습니까?";
-		    if (window.confirm(msg)) {
-		        $('form').submit();
-		    } else {
-		    	return;
-	    }
-	}else if($('.modal-footer button[type="submit"]').text()=='반려'){
-		var msg = "반려하시겠습니까?";
-		    if (window.confirm(msg)) {
-		        $('form').submit();
-		    } else {
-		    	return;
-	    }
-	}else if($('.modal-footer button[type="submit"]').text()=='합의'){
-		var msg = "합의하시겠습니까?";
-	    if (window.confirm(msg)) {
-	        $('form').submit();
-	    } else {
-	    	return;
+    if (msg) {
+        var confirmed = confirm(msg);
+
+        if (confirmed) {
+            $('form').submit();
+        }
     }
-	}else if($('.modal-footer button[type="submit"]').text()=='거부'){
-		var msg = "거부하시겠습니까?";
-	    if (window.confirm(msg)) {
-	        $('form').submit();
-	    } else {
-	    	return;
-    }
-	}
 });
-
 var loginId = $('input[name="loginId"]').val()
 var idx = $('input[name="idx"]').val()
 // console.log(loginId);
@@ -476,13 +518,19 @@ var idx = $('input[name="idx"]').val()
          data:{'loginId':loginId, 'idx':idx},
          success: function (data) {
         	 var signList = data.signList;
-        	 signList.forEach(function(item,idx){
-        		 approvalSignature(item);
-        	 });
-        	 var approvalOrder = data.order.approvalOrder;
-             $('#order').val(approvalOrder);
+        	 console.log(signList);
+        	  if (signList.length > 0) {
+                      var firstItem = signList[0];
+                      approvalSignature(firstItem);
+                  for (var i = 1; i < signList.length; i++) {
+                	  var addItem = signList[i];
+                      appSign(addItem);
+                      // console.log(addItem.category);
+                  }
+        	  }
+        	 var order = signList.approvalOrder;
+             $('#order').val(order);
              
-             console.log(approvalOrder);
              
          },
          error: function (e) {
@@ -491,25 +539,80 @@ var idx = $('input[name="idx"]').val()
      });
  });
  
-function approvalSignature(item){
+ function approvalSignature(firstItem){
+	 var signTable = $("#approvalSignature");
 	
-	var frLastTd=$('#approvalSignature tr:first td:last');
-    var scLastTd=$('#approvalSignature tr:odd td:last');
-    var lastTd=$('#approvalSignature td:last');
-    if (item.rankName=='-') {
-    	 $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + item.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'></td>").insertAfter(frLastTd);
-    }else{
-    	 $("<td rowspan='3' style='width: 20px;'>결재<input type='hidden' class='empID' value='" + item.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" + item.rankName + "</td>").insertAfter(frLastTd);
+		var content=
+	        "<table class='signApp'>"+
+				"<tr>"+
+			        "<td rowspan='3' style='width: 20px; background-color:#ededed;'>"+firstItem.category+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
+			        "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+firstItem.positionName+"\u00A0"+firstItem.name+"</td>"+
+			    "</tr>"+
+			    "<tr>"+
+			    "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>" +
+		        (firstItem.approvalStatus != "대기" && firstItem.approvalStatus != "미대기" ?
+		            "<img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'>" : "") +
+		        "</td>"+
+			    "</tr>"+
+			    "<tr>" +
+			    "<td style='width: 80px; font-size:8px; background-color:#ededed;" +
+			    (firstItem.approvalStatus == "반려" || firstItem.approvalStatus == "거부" ? " color:red;'>" + (firstItem.approvalDate ? firstItem.approvalDate + " (거부)" : "") + "</td>" :
+			    "'>" + (firstItem.approvalDate ? firstItem.approvalDate + " (반려)" : "") + "</td>") +
+			    "</tr>"
+			"</table>"
+	
+	signTable.append(content);
+	
+ }
+ 
+
+/* function appSign(addItem) {
+    var frLastTd = $('#approvalSignature tr:first td:last');
+    var scLastTd = $('#approvalSignature tr:odd td:last');
+    var lastTd = $('#approvalSignature td:last');
+
+    $("<td rowspan='3' style='width: 20px; background-color:#ededed;'>"+addItem.category+"<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 38%; font-size:13px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>"+addItem.positionName+"\u00A0"+addItem.name+"</td>").insertAfter(frLastTd);
+    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'><img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'></td>").insertAfter(scLastTd);
+    $("<td style='width: 38%; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>"+addItem.approvalDate+"</td>").insertAfter(lastTd);
+}
+ */
+
+/* function approvalSignature(addItem){
+	var agrTable = $('#agrSignature');
+	if(addItem.category=="합의"){
+		var content =
+			  "<table class='agrSign'>"+
+				"<tr>"+
+			        "<td rowspan='3' style='width: 20px; background-color:#ededed;' >"+"합의"+"<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>"+
+			        "<td style='width: 80px; font-size:13px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>"+addItem.positionName+"\u00A0"+addItem.name+"</td>"+
+			    "</tr>"+
+			    "<tr>"+
+			        "<td style='width: 80px; font-size:10px; vertical-align: bottom;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>"+
+			    "</tr>"+
+			    "<tr>"+
+			        "<td style='width: 80px; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>"+
+			    "</tr>"+
+			"</table>"
+			agrTable.append(content);
+	}
+} */
+
+
+function appSign(addItem) {
+    var frLastTd = $('#approvalSignature tr:first td:last');
+    var scLastTd = $('#approvalSignature tr:odd td:last');
+    var lastTd = $('#approvalSignature td:last');
+
+    $("<td rowspan='3' style='width: 20px; background-color:#ededed;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
+    
+    if (addItem.approvalStatus != "대기" && addItem.approvalStatus != "미대기") {
+        $("<td style='width: 80px; font-size:10px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'><img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'></td>").insertAfter(scLastTd);
     }
-   
-    if (item.approvalStatus !== "대기" && item.approvalStatus !== "미대기") {
-    	if(item.approvalStatus == "결재" || item.approvalStatus == "합의"){
-	    $("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" +item.employeeID + "'><img src='/photo/cocean/signature/${sign.serverFileName}' width='40' height='40' class='signatureImg'>" +item.name + "</td>").insertAfter(scLastTd);
-        $("<td style='width: 38%;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
-    	}else if(item.approvalStatus =="반려" || item.approvalStatus =="거부"){
-    		$("<td style='width: 38%; font-size:10px;'><input type='hidden' class='empID' value='" + item.employeeID + "'>" + item.name + "</td>").insertAfter(scLastTd);
-    	        $("<td style='width: 38%; color:red;'><input type='hidden' name='order' class='approvalOrder' value='" + item.approvalOrder + "'><input type='hidden'>" + item.approvalDate + "</td>").insertAfter(lastTd);
-    	}
+    
+    if (addItem.approvalStatus == "반려" || addItem.approvalStatus == "거부") {
+        $("<td style='width: 80px; background-color:#ededed; font-size:8px; color:red;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.approvalDate + " (" + addItem.approvalStatus + ")</td>").insertAfter(lastTd);
+    } else if (addItem.approvalStatus == "결재" || addItem.approvalStatus == "합의") {
+        $("<td style='width: 80px; background-color:#ededed; font-size:8px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.approvalDate + "</td>").insertAfter(lastTd);
     }
 }
 

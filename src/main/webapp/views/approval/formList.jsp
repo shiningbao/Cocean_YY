@@ -45,12 +45,13 @@
 	</div>
 </div>
 
- <nav class="navbar navbar" id="search">
- <form class="form-inline">
+<div class="search d-flex flex-column">
+ <form class="form-inline ml-auto">
     <input class="form-control mr-sm-2" id="keyword" type="search" placeholder="문서양식을 입력하세요." aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="formSearch()">검색</button>
  </form>
-</nav>
+ </div>
+
 
 <div class="card shadow mb-4">
 
