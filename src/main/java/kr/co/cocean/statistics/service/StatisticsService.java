@@ -36,11 +36,6 @@ public class StatisticsService {
 		map.put("ticket", ticket);
 		map.put("visitors", visitors);
 		
-//		model.addAttribute("animal",animal);
-//		model.addAttribute("tank",tank);
-//		model.addAttribute("product",product);
-//		model.addAttribute("ticket",ticket);
-//		model.addAttribute("visitors",visitors);
 		return map;
 	}
 	
