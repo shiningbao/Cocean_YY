@@ -149,7 +149,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href='<c:url value="/personnel/orgManage.go"/>'>조직 관리</a>
-                        <a class="collapse-item" href='<c:url value="/personnel/personnelList.go"/>'>사원 관리</a>
+                        <a class="collapse-item" href='<c:url value="/personnel/personnelList.go?category=&inputSearch=&startNum=1&pageNum=1"/>'>사원 관리</a>
                         <a class="collapse-item" href='<c:url value="/personnel/annualManage.go"/>'>연차 관리</a>
                     </div>
                 </div>
