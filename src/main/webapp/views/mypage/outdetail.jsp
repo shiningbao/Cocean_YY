@@ -55,7 +55,7 @@
 		<h1 class="h3 mb-0 text-gray-800">주소록 상세보기</h1>
 	</div>  
  
- 
+ <div class="card shadow p-3"> 
  <div class="detail-container">  
  <table class="detail-out">
 
@@ -96,6 +96,7 @@
          </tr>
      </table>
      </div>
+</div>
 </div>
 </body>
 </html>
