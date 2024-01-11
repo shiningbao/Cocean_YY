@@ -139,6 +139,14 @@ public class TankController {
 		service.addPlan(params);
 		return ok;
 	}
+	
+	@RequestMapping("tank/getPlan")
+	@ResponseBody
+	public List<Map<String, Object>> getPlan(@RequestParam HashMap<String, Object> params, Model model){
+		List<Map<String, Object>> housePlan = service.getPlan(params);
+		model.addAttribute("housePlan",housePlan);
+		return housePlan;
+	}
 
 }
 

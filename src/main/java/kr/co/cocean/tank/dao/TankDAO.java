@@ -48,6 +48,8 @@ public interface TankDAO {
 
 	void addPlan(HashMap<String, Object> params);
 
+	List<Map<String, Object>> getPlan(HashMap<String, Object> params);
+
 	
 
 }

@@ -124,4 +124,9 @@ public class TankService {
 		
 	}
 
+
+	public List<Map<String, Object>> getPlan(HashMap<String, Object> params) {
+		return dao.getPlan(params);
+	}
+
 }

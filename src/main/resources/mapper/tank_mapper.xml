@@ -125,4 +125,9 @@
 		INSERT INTO logPlanTable VALUES (null,#{empolyeeID},'plan','house',#{tankID},now(),#{content},'진행')
 	</insert>
 	
+	<select id="getPlan" parameterType="map" resultType="map">
+		SELECT * FROM logPlanTable WHERE coceanCategory = 'house' AND manageCategory = 'plan' AND 
+		creationDate BETWEEN #{curDate} AND LAST_DAY(#{curDate}) AND idx = #{tankID} AND status LIKE CONCAT('%',#{planStat},'%')
+	</select>
+	
 </mapper>
