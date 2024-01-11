@@ -14,7 +14,7 @@ public class LogPlanDTO {
 	private String manageCategory;
 	private String coceanCategory;
 	private int idx;
-	private Date creationDate;
+	private String creationDate;
 	private String content;
 	private String status;
 	
@@ -61,10 +61,10 @@ public class LogPlanDTO {
 	public void setIdx(int idx) {
 		this.idx = idx;
 	}
-	public Date getCreationDate() {
+	public String getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(String creationDate) {
 		this.creationDate = creationDate;
 	}
 	public String getContent() {

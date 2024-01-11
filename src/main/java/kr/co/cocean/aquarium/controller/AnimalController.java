@@ -146,6 +146,18 @@ public class AnimalController {
 		return result;
 	}
 	
+	@PostMapping(value = "/animal/logplanUpdate.Do")
+	@ResponseBody
+	public HashMap<String, Object> logplanUpdateDo(@RequestParam int logID, @RequestParam String logplanUpdateContent){
+		
+		return service.logplanUpdateDo(logID,logplanUpdateContent);
+	}
+	
+	
+	
+	
+	
+	
 	@PostMapping(value = "/animal/logplanDel")
 	@ResponseBody
 	public HashMap<String, Object> logplanDel(@RequestParam int logID) {

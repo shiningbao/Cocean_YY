@@ -123,34 +123,7 @@ public class AnimalService {
 		return mav;
 	}
 	
-	public String animalDetailAjax(int animalID, String con, Model model) {
-		String page = "aquarium/animalDetail_"+con;
-		if(con.equals("base")) {
-			// 기본 정보
-			model.addAttribute("base", dao.animalDetail(animalID));
-			// 이미지
-			model.addAttribute("image", dao.animalImage(animalID));
-			// 담당자
-			model.addAttribute("incharge", dao.animalInCharge(animalID));
-		}else{
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-			String month = sdf.format(System.currentTimeMillis());
-			model.addAttribute("category", con);
-			model.addAttribute("content", dao.animalLogPlan(animalID, con,month));
-			model.addAttribute("month", month);
-		}
-		
-		return page;
-	}
 	
-	public String animalDetailAjax(int animalID, String con, String month, Model model) {
-		String page = "aquarium/animalDetail_"+con;
-		
-		model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
-		model.addAttribute("month", month);
-		
-		return page;
-	}
 
 	public void logplanWrite(LogPlanDTO param) {
 		dao.logplanWrite(param);
@@ -259,7 +232,7 @@ public class AnimalService {
 		
 		String change = equalsAnimalDTO(ori, param);
 		if(!change.equals("")) {
-			String log = "<p>코션 친구들구 변경 사항</p>"+change;
+			String log = "<p>코션 친구들 수정 사항</p>"+change+"<p>-- 수정 시 자동입력된 내용입니다 --</p>";
 			dao.animalUpdate(param);
 			
 			LogPlanDTO dto = new LogPlanDTO();
@@ -279,25 +252,25 @@ public class AnimalService {
 	private String equalsAnimalDTO(AnimalDTO ori, AnimalDTO param) {
 		String log = "";
 		if(!Objects.equals(ori.getTankID(),param.getTankID())){
-			log += "<p>코션하우스 변경 : "+ori.getTankName()+" -> "+param.getTankName()+"</p>";
+			log += "<p>코션하우스 : "+ori.getTankName()+" -> "+param.getTankName()+"</p>";
 		}
 		if(!Objects.equals(ori.getNickname(),param.getNickname())){
-			log += "<p>애칭 변경 : "+ori.getNickname()+" -> "+param.getNickname()+"</p>";
+			log += "<p>애칭 : "+ori.getNickname()+" -> "+param.getNickname()+"</p>";
 		}
 		if(!Objects.equals(ori.getIndividual(),param.getIndividual())){
-			log += "<p>개체수 변경 : "+ori.getIndividual()+" -> "+param.getIndividual()+"</p>";
+			log += "<p>개체수 : "+ori.getIndividual()+" -> "+param.getIndividual()+"</p>";
 		}
 		if(!Objects.equals(ori.getBirthDate(),param.getBirthDate())){
-			log += "<p>태어난 날 변경 : "+ori.getBirthDate()+" -> "+param.getBirthDate()+"</p>";
+			log += "<p>태어난 날 : "+ori.getBirthDate()+" -> "+param.getBirthDate()+"</p>";
 		}
 		if(!Objects.equals(ori.getEntryDate(),param.getEntryDate())){
-			log += "<p>들어온 날 변경 : "+ori.getEntryDate()+" -> "+param.getEntryDate()+"</p>";
+			log += "<p>들어온 날 : "+ori.getEntryDate()+" -> "+param.getEntryDate()+"</p>";
 		}
 		if(!Objects.equals(ori.getStatus(),param.getStatus())){
-			log += "<p>상태 변경 : "+ori.getStatus()+" -> "+param.getStatus()+"</p>";
+			log += "<p>상태 : "+ori.getStatus()+" -> "+param.getStatus()+"</p>";
 		}
 		if(!Objects.equals(ori.getDetails(),param.getDetails())){
-			log += "<p>세부정보 변경 : "+ori.getDetails()+" -> "+param.getDetails()+"</p>";
+			log += "<p>세부정보 : "+ori.getDetails()+" -> "+param.getDetails()+"</p>";
 		}
 		
 		return log;
@@ -306,6 +279,19 @@ public class AnimalService {
 	public void animalDel(int animalID) {
 		dao.animalDel(animalID);
 		
+	}
+
+	public HashMap<String, Object> logplanUpdateDo(int logID, String logplanUpdateContent) {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		String msg = "수정 실패";
+		int update = dao.logplanUpdateDo(logID,logplanUpdateContent);
+		
+		if(update == 1) {
+			msg = "수정을 완료했습니다";
+		}
+		result.put("msg", msg);
+		return result;
 	}
 
 

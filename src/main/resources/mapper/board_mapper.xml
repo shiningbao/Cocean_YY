@@ -102,7 +102,18 @@
 		UPDATE comment SET isHidden = 1 WHERE commentID =#{param1}
 	</update>
 	
-		
+	<update id="commentUpdateGo">
+		UPDATE comment SET content = #{param2} WHERE commentID =#{param1}
+	</update>
+	
+	<delete id="boardDel">
+		DELETE FROM board WHERE employeeID =#{param1} AND boardID = #{param2}
+	</delete>
+	
+	<update id="boardHidden">
+		UPDATE board SET isHidden = 1 WHERE boardID = #{param1}
+	</update>
+	
 </mapper>
 
 

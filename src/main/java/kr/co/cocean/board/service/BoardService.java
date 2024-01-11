@@ -70,6 +70,31 @@ public class BoardService {
 	public void commentHidden(int commentID) {
 		dao.commentHidden(commentID);
 	}
+
+	public HashMap<String, Object> commentUpdateGo(int commentID, String content) {
+		
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		result.put("result", dao.commentUpdateGo(commentID, content));
+		
+		return result;
+	}
+
+	public int boardDel(int employeeID, int boardID) {
+		return dao.boardDel(employeeID,boardID);
+	}
+
+	public int boardHidden(int boardID) {
+		return dao.boardHidden(boardID);
+	}
+
+	public ModelAndView boardUpdateGo(int boardID, String bt) {
+		ModelAndView mav = new ModelAndView("board/boardUpdate");
+		
+		mav.addObject("bt", bt);
+		mav.addObject("detail", dao.boardDetail(boardID));
+		return mav;
+	}
 	
 	
 	

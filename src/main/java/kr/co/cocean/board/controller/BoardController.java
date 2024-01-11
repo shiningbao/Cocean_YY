@@ -149,6 +149,65 @@ public class BoardController {
 		return service.boardDetail(boardID,category,bt);
 	}
 	
+	
+	@GetMapping(value = "/board/{boardTitle}/boardDel")
+	public String boardDel(@PathVariable String boardTitle, @RequestParam int boardID, RedirectAttributes rAttr, HttpSession session) {
+		
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID = userInfo.getEmployeeID();
+		int result = service.boardDel(employeeID, boardID);
+		String msg = "게시글 삭제 실패";
+		if(result > 0) {
+			msg = "게시글을 삭제했습니다";
+		}
+		rAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/board/"+boardTitle+"/list?searchCategory=&search=&page=1";
+	}
+	
+	@GetMapping(value = "/board/{boardTitle}/boardHidden")
+	public String boardHidden(@PathVariable String boardTitle, @RequestParam int boardID, RedirectAttributes rAttr, HttpSession session) {
+		
+		//LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		//int employeeID = userInfo.getEmployeeID();
+		int result = service.boardHidden(boardID);
+		String msg = "게시글 숨김 실패";
+		if(result > 0) {
+			msg = "게시글을 숨겼습니다";
+		}
+		rAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/board/"+boardTitle+"/list?searchCategory=&search=&page=1";
+	}
+	
+	@GetMapping(value = "/board/{boardTitle}/boardUpdate.Go")
+		public ModelAndView boardUpdateGo(@PathVariable String boardTitle, @RequestParam int boardID, HttpSession session) {
+		
+		String category = boardTitle;
+		String bt = "";
+		switch (boardTitle) {
+		case "notice":
+			bt = "공지사항";
+			break;
+		case "anony":
+			bt = "익명게시판";
+			break;
+		case "department":
+			bt = "부서게시판";
+			LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");	
+			category = "DE"+userInfo.getDepartmentID();
+			break;
+		case "program":
+			bt = "프로그램 일정";
+			break;
+		}
+		
+		return service.boardUpdateGo(boardID,bt);
+	}
+	
+	
+	
+	// 댓글 관련
 	@PostMapping(value = "/board/{boardTitle}/commentWrite")
 	@ResponseBody
 	public HashMap<String, Object> commentWrite(@PathVariable String boardTitle, @ModelAttribute BoardDTO param) {
@@ -189,5 +248,39 @@ public class BoardController {
 	}
 	
 	
+	@PostMapping(value = "/board/{boardTitle}/commentUpdateGo")
+	@ResponseBody
+	public HashMap<String, Object> commentUpdateGo(@RequestParam int commentID, @RequestParam String content) {
+		
+		return service.commentUpdateGo(commentID, content);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
