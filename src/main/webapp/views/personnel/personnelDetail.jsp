@@ -288,6 +288,7 @@ td{
 		</div>
 	</div>
 </div>
+
 		<div class="col-12" style="margin-top: 20px;">
 			<div class="card shadow">
 				<div class="card-body">

@@ -60,6 +60,7 @@
 		</div>
 		<c:import url="/footer" />
 	</div>
+	
 </body>
 <script>
 

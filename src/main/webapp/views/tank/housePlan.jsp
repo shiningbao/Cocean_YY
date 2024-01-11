@@ -157,8 +157,12 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 			data: {'tankID':tankID, 'curDate':curDate, 'planStat':planStat},
 			dataType: 'JSON',
 			success: function(data){
+				if(data.length >= 1) {
 				console.log(data);
-				drawPlan(data);
+				drawPlan(data);					
+				}else {
+					swal('등록된 계획이 없습니다.','새로운 관리 계획을 등록하세요','warning');
+				}
 			},
 			error: function(e){
 				console.log(e);

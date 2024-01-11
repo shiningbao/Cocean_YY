@@ -28,6 +28,14 @@ public interface MypageDAO {
 	//연차
 	HashMap<String, Object> getEmployeeAnnual(int userId);
 
+	List<HashMap<String, Object>> employeeHistory(int userId);
+
+	List<HashMap<String, Object>> workHistory(int userId);
+
+	List<HashMap<String, Object>> departmentChangeLog(int userId);
+
+	List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear);
+
 
 
 	
