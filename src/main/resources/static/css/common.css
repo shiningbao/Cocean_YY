@@ -35,27 +35,27 @@ body {
 
 
 /* 모달 */
-.modalBtn{
-  width: 100px;
-  height: 35px;
-  font-size: 15px;
-  color: #2F80ED;
-  border: 2px solid #2F80ED;
-  border-radius: 5px;
-  background-color: white;
-}
-.modalBtn:hover{
-  background-color: #2F80ED;
-  color: white;
-  border-color: #2F80ED;
-}
+/* .modalBtn{ */
+/*   width: 100px; */
+/*   height: 35px; */
+/*   font-size: 15px; */
+/*   color: #2F80ED; */
+/*   border: 2px solid #2F80ED; */
+/*   border-radius: 5px; */
+/*   background-color: white; */
+/* } */
+/* .modalBtn:hover{ */
+/*   background-color: #2F80ED; */
+/*   color: white; */
+/*   border-color: #2F80ED; */
+/* } */
 
-.modal {
-  -webkit-transform: translate(0,-50%);
-   -o-transform: translate(0,-50%);
-   transform: translate(0,-50%);
-   top: 50%;
-   margin: 0 auto;
-   height: 720px;
-   color: black;
-}
+/* .modal { */
+/*   -webkit-transform: translate(0,-50%); */
+/*    -o-transform: translate(0,-50%); */
+/*    transform: translate(0,-50%); */
+/*    top: 50%; */
+/*    margin: 0 auto; */
+/*    height: 720px; */
+/*    color: black; */
+/* } */

@@ -280,11 +280,11 @@
 							</a>
 							<a class="dropdown-item" href="<c:url value='/mypage/work'/>">
 								<i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-								주소록
+								근태기록
 							</a>
 							<a class="dropdown-item" href="<c:url value='/mypage/address'/>">
 								<i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-								근태기록
+								주소록
 							</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="#" data-toggle="modal"	data-target="#logoutModal">
@@ -326,6 +326,7 @@
             </div>
         </div>
     </div>
+
     
     
     <!-- 알림오면 생기는 창 -->
@@ -339,6 +340,8 @@
 <script	src="<c:url value='/resource/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resource/vendor/jquery-easing/jquery.easing.min.js'/>"></script>
 <script src="<c:url value='/resource/js/sb-admin-2.min.js'/>"></script>
+
+
 </body>
 
 <script>

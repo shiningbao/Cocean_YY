@@ -55,7 +55,7 @@
 			<input class="form-control" type="month" name="curDate" id="currentDate" value="" onchange="getRecord()" style="width:200px">
 			</div>
 
-			<div class="row" style="width: 100%; margin-left: 1px;">
+			<div class="row" style="width: 100%; height:80vh; margin-left: 1px;">
 			
 				<div class="card shadow mb-4" style="width: 100%; margin-top: 3%;">
 					<div class="card-header py-3">
@@ -88,18 +88,11 @@
 							</div>
 							</div>		
 						</div>
-
-
 					</div>
-
-
-
-
-
-
 				</div>
 				<c:import url="/footer" />
-			</div></body>
+			</div>
+	</body>
 <script>
 	$('#currentDate').val(new Date().toISOString().slice(0, 7));
 	// console.log(new Date().toISOString().slice(0, 7));

@@ -1,13 +1,11 @@
 package kr.co.cocean.tank.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import kr.co.cocean.tank.dto.Pager;
 import kr.co.cocean.tank.dto.TankDTO;
 import kr.co.cocean.tank.dto.TankRecordDTO;
 
@@ -46,10 +44,14 @@ public interface TankDAO {
 
 	Integer totalCount(HashMap<String, Object> params);
 
-	void addPlan(HashMap<String, Object> params);
+	int addPlan(HashMap<String, Object> params);
 
 	List<Map<String, Object>> getPlan(HashMap<String, Object> params);
 
-	
+	int removePlan(int logID);
+
+	int donePlan(int logID);
+
+
 
 }

@@ -14,7 +14,7 @@ public interface BoardDAO {
 	ArrayList<BoardDTO> boardList(@Param("category") String category
 			,@Param("perPage") int perPage, @Param("offset")Integer offset
 			,@Param("searchCategory")String searchCategory,@Param("search") String search);
-	
+
 	ArrayList<BoardDTO> boardList_pin(String category);
 
 	void boardWrite(BoardDTO param);

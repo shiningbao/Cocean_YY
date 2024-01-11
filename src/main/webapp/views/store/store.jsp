@@ -19,14 +19,6 @@
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
 	
-
-
-<!-- 부트스트랩 CSS/favicon -->
-<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
-<script src="/resource/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resource/css/modal.css">
-<link rel="stylesheet" href="/resource/css/common.css"> -->
 </head>
 <style>
 .contentField {
@@ -35,8 +27,8 @@
 }
 .listTable {
     overflow: auto;
-    width: 630px;
-    height: 377px;
+    width: 519px;
+    height: 355px
 }
 
 table, th, td{
@@ -49,7 +41,7 @@ text-align: center;
 .productList{
     left: 770px;
     top: 70px;
-    width: 500px;
+    width: 585px;
 }
 
 #modalSearch{
@@ -78,12 +70,12 @@ img {
 }
 
 img:hover {
-    transform: scale(3);
+    transform: scale(2);
     border: 1px solid #000;
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
 #deleteBtn{
-	margin-left: 250px;
+	margin-left: 335px;
 }
 
 </style>
@@ -95,7 +87,7 @@ img:hover {
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
     </div>
 </div>
-<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
+<div class="container" style="display: flex; margin-left: 33px; flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 <div class="row">
 <div class="branchLocation">지점
 </div>
@@ -151,18 +143,19 @@ img:hover {
 	상품 개수 :
 	</div>
 	</div>
-	<div class="row">
+	<div class="row" style="flex-wrap: nowrap;">
 		<div class="col">
 		<div id="productTable" class="listTable">
-		<table>
+		<table style="width: 100%;">
 		</table>
 		</div>
 		</div>
-	<div class="col">
-		<div id="productInfoRegisterPage">
+		
+		<div class="col">
+			<div id="productInfoRegisterPage">
+		 	</div>
 	 	</div>
  	</div>
-	</div>
  
  	</div>
 </div>
@@ -201,7 +194,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
+                <button type="submit" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
@@ -345,9 +338,9 @@ new Promise((resolve, reject) => {
 							    '<td>' + product.productID + '</td>' +
 							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 							    '</tr>';
-
 
 	                     productListTable.append(productInfo);
 						}
@@ -410,11 +403,13 @@ new Promise((resolve, reject) => {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
 					                var productInfo = '<tr>' +
+					                /* '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' + */
 					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.productName + '</td>' +
 					                '<td>' + product.price + '</td>' +
-					                '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+					    								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 					                '</tr>';
 
 					                productListTable.append(productInfo);
@@ -537,7 +532,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td class="productNameCell">' + product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 				    
                     searchedModalProduct.append(productInfo);
@@ -588,7 +584,8 @@ searchProduct(searchKeyword, currentBranchName);
 		    '<td>' + product.productID + '</td>' +
 		    '<td>' + product.productName + '</td>' +
 		    '<td>' + product.price + '</td>' +
-		    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.serverFileName + ' Image"/></td>' +
+		    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+						product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
@@ -610,7 +607,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td>'+ product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 		
 		        productListTable.append(productInfo);
@@ -751,7 +749,7 @@ searchProduct(searchKeyword, currentBranchName);
       // 체크박스를 클릭한 경우에만 처리
       if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
           // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('data-productID');
+          productID = event.target.getAttribute('ßID');
           branchID = event.target.getAttribute('data-branchID');
           console.log('Selected ProductID:', productID);
           console.log('Selected branchID:', branchID);
@@ -782,8 +780,11 @@ searchProduct(searchKeyword, currentBranchName);
 	     } else {
 	     }
    	}
-    	
-
+   	
+   	var msg = "${msg}";
+   	if(msg!=""){
+   		alert(msg);
+   	}
 
 </script>
 </html>

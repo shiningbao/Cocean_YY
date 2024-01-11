@@ -3,29 +3,26 @@ package kr.co.cocean.schedule.dto;
 
 
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.ibatis.type.Alias;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Alias("schedule")
 public class ScheduleDTO {
-	
+
 	private String callendarTitle;
 	private int scheduleID;
 	private int employeeID;
 	private String title;
-	
+
 	private String subCategory;
 	private String description;
 	private String remarks;
 	private String category;
 	private String backgroundColor;
 	private boolean publicCategory;
-	
+
 
 	public String getBackgroundColor() {
 		return backgroundColor;
@@ -54,7 +51,7 @@ public class ScheduleDTO {
 	private String end;
 
 
-	
+
 	public LocalDateTime getStart() {
 		return LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
 	}
@@ -88,7 +85,7 @@ public class ScheduleDTO {
 	}
 
 
-	
+
 	public boolean isPublicCategory() {
 		return publicCategory;
 	}
@@ -138,5 +135,5 @@ public class ScheduleDTO {
 	}
 
 
-	
+
 }

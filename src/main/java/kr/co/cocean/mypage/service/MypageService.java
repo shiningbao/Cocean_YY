@@ -1,59 +1,44 @@
 package kr.co.cocean.mypage.service;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.cocean.mypage.dao.MypageDAO;
-import kr.co.cocean.mypage.dto.LoginDTO;
-import kr.co.cocean.mypage.dto.MypageDTO;
 
 @Service
 public class MypageService {
 
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
+
 	@Autowired MypageDAO dao;
 	@Autowired PasswordEncoder encoder;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 /* 리스트
 	public HashMap<String, Object> myInfo(int userId) {
 		logger.info("서비스 받았다");
-		HashMap<String, Object> map = new HashMap<String, Object>();		
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		/*
 		Map<String, Object>  = new HashMap<String, Object>();
-		
-		
+
+
 		ArrayList<MypageDTO> myInfo = dao.myInfo(userId);
-		
+
 		/*
 		review = dao.(userId);
 		*/
@@ -62,9 +47,9 @@ public class MypageService {
 		map.put("myInfo", myInfo);
 		logger.info("dao로 보낸다");
 		*/
-		
-		
-		
+
+
+
 		//맵선언
 		/*
 		HashMap<String, Object> map1 = new HashMap<String, Object>();
@@ -74,34 +59,34 @@ public class MypageService {
 		review = dao.review(userId);
 		map1.put("review", review);
 		map1.put("myInfo", myInfo);
-		
+
 		return map1;
 	}*/
-	
-	
-	
-	
 
-	
+
+
+
+
+
 	//비밀번호 수정
-	
+
 	public int changePw(HashMap<String, Object> params, int employeeID) {
 		logger.info("비밀번호 변경 서비스 도착");
 		int success = 0;
 		logger.info("success :"+success);
 		logger.info("params :"+params);
 
-		
+
 		String encpw = dao.selectEncpw(employeeID);
-		
-	
+
+
 		String currentPw = (String) params.get("currentPw");
 		logger.info("currentpw :"+currentPw);
 		String newPw = (String) params.get("newPw");
 		logger.info("encpw :" +encpw,"currentPw :"+currentPw,"newPw :"+newPw );
-		
+
 		if(encoder.matches(currentPw,encpw)) {
-			
+
 			String newPass = encoder.encode(newPw);
 			dao.changePw(newPass,employeeID);
 			success = 1;
@@ -110,7 +95,7 @@ public class MypageService {
 			logger.info("실패");
 			success = 0;
 		}
-		
+
 		return success;
 	}
 
@@ -131,22 +116,61 @@ public class MypageService {
 
 	//내정보 리스트
 	public HashMap<String, Object> detail(int userId) {
-		
+
 		return dao.datail(userId);
 	}
 
 	//연차
 	public HashMap<String, Object> getEmployeeAnnual(int userId) {
-		return dao.getEmployeeAnnual(userId);	
+		return dao.getEmployeeAnnual(userId);
 	}
 
 
 
 
-	
-	
 
-	
+
+	public List<HashMap<String, Object>> employeeHistory(int userId) {
+		// TODO Auto-generated method stub
+		return dao.employeeHistory(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> workHistory(int userId) {
+		// TODO Auto-generated method stub
+		return dao.workHistory(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> departmentChangeLog(int userId) {
+		// TODO Auto-generated method stub
+		return dao.departmentChangeLog(userId);
+	}
+
+
+
+
+
+
+	public List<HashMap<String, Object>> findAttend(String employeeID, String startYear, String endYear) {
+		return dao.findAttend(employeeID,startYear,endYear);
+	}
+
+
+
+
+
+
+
+
 	//마이페이지 리스트 ajax
 	/*
 	public String animalDetailAjax(int animalID, String con, Model model) {
@@ -164,11 +188,11 @@ public class MypageService {
 			model.addAttribute(con, dao.animalLogPlan(animalID, con,month));
 			model.addAttribute("month", month);
 		}
-		
+
 		return page;
 	}*/
 
-	
+
 	/*
 	public int changePw(HashMap<String, Object> params) {
 	    String encpw = dao.selectEncpw(params.get("getEmployeeID"));
@@ -181,11 +205,11 @@ public class MypageService {
 
 	    return 0;
 	}*/
-	
-	
 
 
-	
+
+
+
 	//수정
 	/*
 	public boolean checkPassword(int member_id, String checkPassword) {
@@ -195,9 +219,9 @@ public class MypageService {
 		boolean matches = encoder.matches(checkPassword, realPassword);
 		return matches;
 	}*/
-	
-	
 
 
-	
+
+
+
 }

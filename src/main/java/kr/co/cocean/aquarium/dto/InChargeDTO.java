@@ -4,14 +4,14 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("incharge")
 public class InChargeDTO {
-	
+
 	private int idx;
 	private int employeeID;
 	private String hqName;
 	private String departmentName;
 	private String name;
-	
-	
+
+
 	public int getIdx() {
 		return idx;
 	}
@@ -42,5 +42,5 @@ public class InChargeDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

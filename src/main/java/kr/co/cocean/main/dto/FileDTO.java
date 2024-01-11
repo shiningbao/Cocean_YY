@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("file")
 public class FileDTO {
-	
+
 	private int imageID;
 	private String category;
 	private int idx;
@@ -14,8 +14,8 @@ public class FileDTO {
 	private String serverFileName;
 	private String oriFileName;
 	private Date fileCreationDate;
-	
-	
+
+
 	public int getImageID() {
 		return imageID;
 	}

@@ -100,4 +100,29 @@ SELECT password FROM employee WHERE employeeID = #{employeeID}
 update employee set password = #{newPass} where employeeID = #{employeeID}
 </update>
 
+	<select id="employeeHistory">
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='학력' AND employeeID =#{employeeID}
+	</select>
+	
+		<select id="workHistory">
+		SELECT historyID,startDate ,endDate ,organizationName ,remarks  FROM employeeHistory WHERE category ='이력' AND employeeID =#{employeeID}
+	</select>
+	
+		<select id="departmentChangeLog">
+	SELECT DATE_FORMAT(dcl.changeDate, '%Y-%m-%d') AS changeDate,
+	       beforeD.departmentName AS beforedpID,
+	       afterD.departmentName AS afterdpID,
+	       dcl.logID
+	FROM departmentChangeLog dcl
+	JOIN department beforeD ON beforeD.departmentID = dcl.beforedpID
+	JOIN department afterD ON afterD.departmentID = dcl.afterdpID
+	WHERE dcl.employeeID = #{employeeID};
+	</select>
+	
+		<select id="findAttend">
+		SELECT ad.category ,ad.vacationStartDate ,ad.vacationEndDate ,ad.usageTime  
+		FROM attendanceDraft ad JOIN draft d ON ad.idx =d.idx WHERE employeeID =#{employeeID}
+		AND ad.vacationStartDate BETWEEN #{startYear} AND #{endYear}
+	</select>
+
 </mapper>

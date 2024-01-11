@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("outaddress")
 public class OutAddressDTO {
-	
+
 	//기본키 넣기
 	private int addressNumber;
 	private int employeeID;
@@ -13,7 +13,7 @@ public class OutAddressDTO {
 	private String positionLevel;
 	private String rankLevel;
 	private String departmentName;
-	
+
 	public int getAddressNumber() {
 		return addressNumber;
 	}
@@ -56,8 +56,8 @@ public class OutAddressDTO {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	
-	
-	
+
+
+
 
 }

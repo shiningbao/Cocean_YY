@@ -937,7 +937,9 @@ $('#editSubmit').on('submit', function(e) {
         	, rankName:rankName
         	, isActive:isActive},
         success: function(response) {
-            alert('업데이트 성공: ' + response.message)
+        	console.log(response);
+            f(response>)
+        	
 		
             $('#editmodal').modal('hide');
             drawRank();
@@ -962,7 +964,10 @@ $('#editPositionSubmit').on('submit', function(e) {
         	, positionName:positionName
         	, isActive:isActive},
         success: function(response) {
-            alert('업데이트 성공: ' + response.message)
+            swal({
+            	title=response.message,
+            	button = '확인'
+            });
 		
             $('#editPositionmodal').modal('hide');
             drawPosition();

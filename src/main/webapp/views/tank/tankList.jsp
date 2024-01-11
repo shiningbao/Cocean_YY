@@ -115,7 +115,7 @@ label {
     </div>
     </div>
 
-
+<div class="mb-4" style="height: 60vh;">
 <div class="card shadow mb-4" style="margin-top:15px;">
 	<div id="tank_table">
 		<table class="table table-hover" >
@@ -146,38 +146,37 @@ label {
 	</div>	
 
 </div>
+</div>
 
 <!-- 페이징 처리 -->
-<div>
-  <ul class="pagination" id="paging">
-  <c:if test="${pager.pageNum > 1}">
+<div class="row" style="width: 100%; justify-content: end;">
+
+  <ul class="pagination" id="paging" style="width: 80%; justify-content: center;">
     <li class="page-item">
-  <div class="p" data-list-pn="${pager.pageNum-1}">
+  <div class="<c:if test="${pager.pageNum > 1}">p</c:if>" data-list-pn="${pager.pageNum-1}">
       <a class="page-link" data-list-pn="${pager.pageNum-1}">&laquo;</a>
     </div>
     </li>
-    </c:if>
-    
     	<c:forEach begin="1" end="${pager.totalCount}" var="i">
     	 <li class="${pager.pageNum == i ? "page-item active":"page-item"}">
       		<div class="p" data-list-pn="${i}"><a class="page-link" data-list-pn="${i}">${i}</a></div>
     	</li>
 		</c:forEach>
 	
-	<c:if test="${pager.pageNum < pager.totalCount}">
-	<li class="page-item">
-	<div class="p" data-list-pn="${pager.pageNum+1}">
+	
+	<li class="page-item" >
+	<div class="<c:if test="${pager.pageNum < pager.totalCount}">p</c:if>" data-list-pn="${pager.pageNum+1}" >
       <a class="page-link" >&raquo;</a>
       </div>
     </li>
-    </c:if>
+    
 	  </ul>
+<div style="width: 10%;"><button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary">등록</button></div>
 </div>
 <!-- 여기까지 페이징 -->
 
 
 
-	<button type="button" id="tankSubmit" onclick="location.href='write.go'" class="btn btn-primary" style="float: right; margin-right:13px;">등록</button>
 
 <c:import url="/footer"/>
 </div>

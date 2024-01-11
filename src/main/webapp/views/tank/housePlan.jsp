@@ -55,10 +55,10 @@
 
 			<div class="row" style="margin-top: 3%; margin-left: 1px;">
 			<form id="planFrm" style="display: flex; align-items: center;">
-				<input class="form-control" type="month" name="curDate" id="currentDate" value="" style="width: 200px">
+				<input class="form-control" type="month" name="curDate" onchange="getPlan()" id="currentDate" value="" style="width: 200px">
 				
 			    <div class="col-auto my-1">
-			      <select class="custom-select mr-sm-2" id="planStatus" name="planStatus">
+			      <select class="custom-select mr-sm-2" id="planStatus" name="planStatus" onchange="getPlan()">
 			        <option value="" selected>전체</option>
 			        <option value="진행">진행</option>
 			        <option value="완료">완료</option>
@@ -70,9 +70,9 @@
 				</div>
 			</div>
 
-<div id="plan">
+<div id="plan" style="height: 90vh; overflow: auto;">
 
-
+<!-- 관리 계획 표시영역 -->
 
 </div>
 
@@ -117,15 +117,9 @@
         </div>
       </div>
     </div>
-    
-    
-    
-
-
-
-
 		</div>
-</div>
+		<c:import url="/footer" />
+	</div>
 </body>
 <script>
 $('#currentDate').val(new Date().toISOString().slice(0, 7));
@@ -137,14 +131,10 @@ getPlan(curDate,tankID,planStat);
 
 
 $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
-// 모달창 작성자 자동 입력
 
 
 
-
-
-	
-	
+// 관리 계획 불러오기
 	function getPlan(curDate,tankID,planStat){
 		tankID = ${tankID};
 		curDate = $('#currentDate').val();
@@ -152,13 +142,19 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 		planStat = $('#planStatus').val();
 		
 		$.ajax({
-			url: 'getPlan',
+			url: 'getPlan.ajax',
 			method: 'POST',
 			data: {'tankID':tankID, 'curDate':curDate, 'planStat':planStat},
 			dataType: 'JSON',
 			success: function(data){
-				console.log(data);
-				drawPlan(data);
+				if(data.length >= 1) {
+				//console.log(data);
+				drawPlan(data);					
+				}else {
+					var text = '<h5 style="text-align: center; margin-top: 5%; color: darkgray;">등록된 관리 계획이 없습니다.</h5>';
+					$('#plan').empty();
+					$('#plan').append(text);
+				}
 			},
 			error: function(e){
 				console.log(e);
@@ -167,25 +163,24 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 		})
 	}
 	
+	
 	function drawPlan(data){
 		var index = '';
 		data.forEach(function(list){
-		index += '<div class="row" style="margin-top: 5%; width: 100%;  margin: 5px 0 0 1px;">';
-		index += '<div class="card mb-8 border-left-primary" style="width: 100%;">';
+		index += '<div class="row" style="margin-top: 5%; width: 99%;  margin: 5px 0 0 5px;">';
+		index += '<div class="card mb-8 border-left-'+(list.status == "진행" ? "warning":"success")+'" style="width: 100%;">';
 		index += '<div class="card-header">';
-		index += '<span class="badge">'+list.status+'</span> ';
-		index += '<a>'+list.creationDate.substring(0,16).replace("T", "/")+'</a>';
+		index += '<span class="'+(list.status == "진행" ? "badge badge-warning":"badge badge-success") +'">'+list.status+'</span> ';
+		index += '<a>'+list.creationDate.substring(5,10).replace("-",'월')+'일'+list.creationDate.substring(10,16).replace("T", "&nbsp;&nbsp;").replace(":","시")+'분'+'</a>';
 		index += '<div style="float: right;">'
-		index += '<a href="#" class="btn btn-success btn-circle" log="'+ list.logID +'">';
+		index += '<a href="javascript:void(0);" onclick="donePlan(this);" style="margin-right: 5px; display:'+(list.status == "완료" ? "none":"") +';" class="btn btn-success btn-circle" log="'+ list.logID +'">';
 		index += '<i class="fas fa-check"></i></a>';
-		index += '<a href="#" class="btn btn-danger btn-circle" log="'+ list.logID +'"><i class="fas fa-trash"></i></a>';
+		index += '<a href="javascript:void(0);" onclick="removePlan(this);" class="btn btn-danger btn-circle" log="'+ list.logID +'"><i class="fas fa-trash"></i></a>';
 		index += '</div></div>';
 		index += '<div class="card-body">';
-		index += '<p class="card-text">'+list.content+'</p>';
+		index += '<p class="card-text" style="text-decoration:'+(list.status == "완료" ? "line-through":"none") +' ;">'+list.content+'</p>';
 		index += '</div></div></div>';
-		if(list.status == "진행"){
-			$('.badge').addClass('badge badge-warning');
-		}
+
 	});
 		$('#plan').empty();
 		$('#plan').append(index);
@@ -193,10 +188,7 @@ $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 
 
 
-
-
-
-
+// 관리 계획 추가
 function addPlan(){
 	var params = $('#newPlan').serialize();
 	
@@ -208,7 +200,9 @@ function addPlan(){
 			data: params,
 			dataType: 'JSON',
 			success: function(data){
-
+				if(data > 0){
+					getPlan();
+				}
 			},
 			error: function(e){
 				console.log(e);
@@ -219,6 +213,71 @@ function addPlan(){
 	}else{
 		swal('내용을 입력하세요.','','warning');
 	}
+}
+
+// 관리 계획 삭제
+function removePlan(obj){
+	var logID = $(obj).attr('log');
+	
+	swal({
+		title: "계획을 삭제하시겠습니까?",
+		text: "삭제한 계획은 복구가 불가능합니다.",
+		icon: "warning",
+		buttons: ["취소","삭제"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+		$.ajax({
+			url: 'removePlan.ajax',
+			method: 'GET',
+			data: {'logID':logID},
+			dataType: 'JSON',
+			success: function(e){
+				if(e > 0){
+				swal('계획이 삭제되었습니다.','','success');
+				getPlan();	
+				
+				}
+			},
+			error: function(e){
+				console.log(e);
+			}
+		})	
+		}
+	});
+}
+
+// 관리 계획 완료
+function donePlan(obj){
+	var logID = $(obj).attr('log');
+	
+	swal({
+		title: "계획을 완료하시겠습니까?",
+		text: "",
+		icon: "info",
+		buttons: ["취소","완료"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+		$.ajax({
+			url: 'donePlan.ajax',
+			method: 'GET',
+			data: {'logID':logID},
+			dataType: 'JSON',
+			success: function(e){
+				if(e > 0){
+				swal('계획이 완료되었습니다.','','success');
+				getPlan();	
+				
+				}
+			},
+			error: function(e){
+				console.log(e);
+			}
+		})	
+		}
+	});
+	
 }
 	
 	
