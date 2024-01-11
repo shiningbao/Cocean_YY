@@ -121,4 +121,22 @@
 	</select>
 	
 	
+	<insert id="addPlan" parameterType="map">
+		INSERT INTO logPlanTable VALUES (null,#{empolyeeID},'plan','house',#{tankID},now(),#{content},'진행')
+	</insert>
+	
+	<select id="getPlan" parameterType="map" resultType="map">
+		SELECT * FROM logPlanTable WHERE coceanCategory = 'house' AND manageCategory = 'plan' AND 
+		creationDate BETWEEN #{curDate} AND LAST_DAY(#{curDate}) AND idx = #{tankID} AND status LIKE CONCAT('%',#{planStat},'%') ORDER BY status DESC
+	</select>
+	
+	<delete id="removePlan">
+		DELETE FROM logPlanTable WHERE logID = #{param}
+	</delete>
+	
+	<update id="donePlan">
+		UPDATE logPlanTable SET status = '완료' WHERE logID = #{param}
+	</update>
+	
+	
 </mapper>

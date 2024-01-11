@@ -51,12 +51,14 @@
 				</div>
 			</div>
 
+
+
 			<div class="row" style="margin-top: 3%; margin-left: 1px;">
 			<form id="planFrm" style="display: flex; align-items: center;">
-				<input class="form-control" type="month" name="curDate" id="currentDate" value="" style="width: 200px">
+				<input class="form-control" type="month" name="curDate" onchange="getPlan()" id="currentDate" value="" style="width: 200px">
 				
 			    <div class="col-auto my-1">
-			      <select class="custom-select mr-sm-2" id="planStatus" name="planStatus">
+			      <select class="custom-select mr-sm-2" id="planStatus" name="planStatus" onchange="getPlan()">
 			        <option value="" selected>전체</option>
 			        <option value="진행">진행</option>
 			        <option value="완료">완료</option>
@@ -68,26 +70,16 @@
 				</div>
 			</div>
 
-			<div class="row" style="margin-top: 5%; width: 100%;  margin: 5px 0 0 1px;">
-				<div class="card mb-8 border-left-primary" style="width: 100%;">
-					<div class="card-header">
-						<span class="badge badge-success">완료</span> 
-						<a>작성날짜</a>
-						<input type="hidden" id="planNo" value=""/>
-						<div style="float: right;">
-							<a href="#" class="btn btn-success btn-circle">
-								<i class="fas fa-check"></i>
-							</a> 
-							<a href="#" class="btn btn-danger btn-circle"> 
-							<i class="fas fa-trash"></i>
-							</a>
-						</div>
-					</div>
-					<div class="card-body">
-						<p class="card-text">본문 내용</p>
-					</div>
-				</div>
-			</div>
+<div id="plan">
+
+
+
+</div>
+
+
+
+
+
 
 
     <div class="modal fade" id="housePlanModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
@@ -106,6 +98,7 @@
                 <label>담당자</label>
                 <input type="text" id="manager" value="${sessionScope.userInfo.name}" readonly class="form-control">
                 <input type="hidden" id="empolyeeID" name="empolyeeID" value="${sessionScope.userInfo.employeeID}">
+                <input type="hidden"  name="tankID" value="${tankID}">
               </div>
               <div class="form-group">
                 <label>내용</label>
@@ -139,11 +132,63 @@ $('#currentDate').val(new Date().toISOString().slice(0, 7));
 
 let curDate = $('#currentDate').val();
 let tankID = ${tankID};
-let planStatus = $('#planStatus').val();
+let planStat = $('#planStatus').val();
+getPlan(curDate,tankID,planStat);
 
 
 $('#planDate').val(new Date().toISOString().substring(0, 10).toString());
 // 모달창 작성자 자동 입력
+
+
+
+
+
+	
+	
+	function getPlan(curDate,tankID,planStat){
+		tankID = ${tankID};
+		curDate = $('#currentDate').val();
+		curDate += '-01';
+		planStat = $('#planStatus').val();
+		
+		$.ajax({
+			url: 'getPlan.ajax',
+			method: 'POST',
+			data: {'tankID':tankID, 'curDate':curDate, 'planStat':planStat},
+			dataType: 'JSON',
+			success: function(data){
+				console.log(data);
+				drawPlan(data);
+			},
+			error: function(e){
+				console.log(e);
+			}
+			
+		})
+	}
+	
+	function drawPlan(data){
+		var index = '';
+		data.forEach(function(list){
+		index += '<div class="row" style="margin-top: 5%; width: 100%;  margin: 5px 0 0 1px;">';
+		index += '<div class="card mb-8 border-left-primary" style="width: 100%;">';
+		index += '<div class="card-header">';
+		index += '<span class="'+(list.status == "진행" ? "badge badge-warning":"badge badge-success") +'">'+list.status+'</span> ';
+		index += '<a>'+list.creationDate.substring(5,16).replace("T", "&nbsp;&nbsp;등록시간&nbsp;&nbsp;")+'</a>';
+		index += '<div style="float: right;">'
+		index += '<a href="javascript:void(0);" onclick="donePlan(this);" style="margin-right: 5px;" class="btn btn-success btn-circle" log="'+ list.logID +'">';
+		index += '<i class="fas fa-check"></i></a>';
+		index += '<a href="javascript:void(0);" onclick="removePlan(this);" class="btn btn-danger btn-circle" log="'+ list.logID +'"><i class="fas fa-trash"></i></a>';
+		index += '</div></div>';
+		index += '<div class="card-body">';
+		index += '<p class="card-text">'+list.content+'</p>';
+		index += '</div></div></div>';
+
+	});
+		$('#plan').empty();
+		$('#plan').append(index);
+	}
+
 
 
 function addPlan(){
@@ -157,7 +202,7 @@ function addPlan(){
 			data: params,
 			dataType: 'JSON',
 			success: function(data){
-
+				
 			},
 			error: function(e){
 				console.log(e);
@@ -165,12 +210,55 @@ function addPlan(){
 		})
 		$('#housePlanModal').modal('hide');
 		$('#content').val('');
+		getPlan();
 	}else{
 		swal('내용을 입력하세요.','','warning');
 	}
 }
+
+function removePlan(obj){
+	var logID = $(obj).attr('log');
+	
+	$.ajax({
+		url: 'removePlan.ajax',
+		method: 'GET',
+		data: {'logID':logID},
+		dataType: 'JSON',
+		success: function(e){
+			if(e > 0){
+			swal('삭제 되었습니다.','','success');
+			getPlan();				
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
+	})
+}
+
+function donePlan(obj){
+	var logID = $(obj).attr('log');
+	
+	$.ajax({
+		url: 'donePlan.ajax',
+		method: 'GET',
+		data: {'logID':logID},
+		dataType: 'JSON',
+		success: function(e){
+		if(e > 0){
+			swal('완료 처리 되었습니다.','','success');
+			getPlan();				
+			}
+		},
+		error: function(e){
+			console.log(e);
+		}
+	})
+	
+}
 	
 	
+
 
 
 
