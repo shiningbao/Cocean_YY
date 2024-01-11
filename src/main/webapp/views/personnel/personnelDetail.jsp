@@ -173,8 +173,7 @@ td{
 }
 
 #resetPassword{
-	position: absolute;
-    top: 78%;
+	float: right;
 }
 
 .psSelect {
@@ -224,7 +223,7 @@ td{
 									</div>
 								</div>
 							</div>
-			<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
+			
 			
 			<table class="table">
 				<tbody>
@@ -294,6 +293,7 @@ td{
 				<div class="card-body">
 
 		<div class="tab_menu_wrap">
+		<button class="btn btn-outline-primary" id="resetPassword" type="button">비밀번호 초기화 </button>
 			<input type="hidden" name="beforeDpID" value="${person.departmentID}">
 			<div>
 				<ul class="tab_menu">
@@ -538,7 +538,6 @@ td{
 
 	</div>
 	
-		</div>
 	
 		<div class="tab-content" id="infoTab" style="display: none;">
 		<table class ="table table-hover">
@@ -564,22 +563,26 @@ td{
 
 	</div>
 
-	<div class="tool_bar">
-        <span class="btn_wrap">
-            <span class="ic_classic ic_close" id="foldTab" style="display:none"></span>
-            <span class="ic_classic ic_open" id="unfoldTab"></span>
-        </span>
-    </div>
+		<div class="tool_bar">
+	        <span class="btn_wrap">
+	            <span class="ic_classic ic_close" id="foldTab" style="display:none"></span>
+	            <span class="ic_classic ic_open" id="unfoldTab"></span>
+	        </span>
+	    </div>
         <div class="formbtn">
+        
         <button class="btn btn-outline-primary detailCancleBtn">취소</button>
         <button class="btn btn-primary detailSaveBtn" type="submit">저장</button>
         </div>
-</form>
 
 		</div>
 		</div>
 		</div>
 	</div>
+	<div  style="float:right">
+	<button class="btn btn-primary" type="button" onclick="location.href='http://localhost:8080/Cocean/personnel/personnelList.go'">목록</button>
+	</div>
+</form>
 <c:import url="/footer"/>
 </body>
 
@@ -1007,9 +1010,9 @@ function ajaxDepartmentLog(){
             data.forEach(function(item) {
                 var row = $('<tr>');
                 row.append('<td style="display:none;"><input type="hidden" class="logID" value="' + item.logID + '"></td>');
+                row.append('<td>' + item.changeDate + '</td>');
                 row.append('<td>' + item.beforedpID + '</td>');
                 row.append('<td>' + item.afterdpID + '</td>');
-                row.append('<td>' + item.changeDate + '</td>');
                 row.append('<td><button onclick="delDepartmentLog()" type="button" class="delBtn">X</button></td>');
 
                 tableBody.append(row);

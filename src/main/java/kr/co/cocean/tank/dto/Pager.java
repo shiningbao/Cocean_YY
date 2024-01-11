@@ -5,14 +5,22 @@ import org.apache.ibatis.type.Alias;
 @Alias("Pager")
 public class Pager {
 
-
+	
 
 	private String search;
 	private Integer startNum;
 	private Integer pageNum;
 	private Integer totalCount;
-
-
+	private String category;
+	
+	
+	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public Integer getPageNum() {
 		if(this.pageNum==null || this.pageNum<1) {
 			this.pageNum=1;
@@ -31,7 +39,7 @@ public class Pager {
 	}
 	public Integer getStartNum() {
 		return startNum;
-
+		
 	}
 	public void setStartNum(Integer startNum) {
 		if(this.startNum == null || this.startNum < 1) {
@@ -52,6 +60,6 @@ public class Pager {
 
 
 
-
-
+	
+	
 }

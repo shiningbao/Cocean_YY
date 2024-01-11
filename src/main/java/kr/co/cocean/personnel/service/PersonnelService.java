@@ -1,20 +1,29 @@
 package kr.co.cocean.personnel.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.cocean.main.dto.FileDTO;
 import kr.co.cocean.personnel.dao.PersonnelDAO;
+import kr.co.cocean.personnel.dto.HistoryDTO;
+import kr.co.cocean.personnel.dto.PersonnelDTO;
 import kr.co.cocean.personnel.dto.TreeDTO;
 import kr.co.cocean.personnel.dto.departmentDTO;
 import kr.co.cocean.tank.dto.Pager;
@@ -37,24 +46,24 @@ public class PersonnelService {
 			UploadContext(file,employeeID);
 		}
 		if(fileSignature.getSize()!=0) {
-
+			
 			UploadSgniture(fileSignature,employeeID);
 		}
-
+		
 		return dao.join(params);
 	}
     private void UploadSgniture(MultipartFile fileSignature, int employeeID) {
     	FileDTO dto = new FileDTO();
     	String oriFileName = fileSignature.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;
+		String newFileName = System.currentTimeMillis()+ext;	
 		dto.setCategory("사원관리");
 		dto.setIdx(employeeID);
 		dto.setPath("signature");
 		dto.setServerFileName(newFileName);
 		dto.setOriFileName(oriFileName);
 		dao.upload(dto);
-
+		
 		try {
 			byte[] bytes = fileSignature.getBytes();
 			Path path = Paths.get(root+"signature/"+newFileName);
@@ -67,14 +76,14 @@ public class PersonnelService {
     	FileDTO dto = new FileDTO();
     	String oriFileName = file.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;
+		String newFileName = System.currentTimeMillis()+ext;	
 		dto.setCategory("사원관리");
 		dto.setIdx(employeeID);
 		dto.setPath("profile");
 		dto.setServerFileName(newFileName);
 		dto.setOriFileName(oriFileName);
 		dao.upload(dto);
-
+		
 		try {
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(root+"profile/"+newFileName);
@@ -83,30 +92,30 @@ public class PersonnelService {
 			e.printStackTrace();
 		}
 	}
-
+	
 
 	public void updateEmployeeImg(int employeeID, MultipartFile fileSignature, MultipartFile file) {
 		if(file.getSize()!=0) {
 			updateContext(file,employeeID);
 		}
 		if(fileSignature.getSize()!=0) {
-
+			
 			updateSgniture(fileSignature,employeeID);
 		}
-
+		
 	}
 	private void updateSgniture(MultipartFile fileSignature, int employeeID) {
     	FileDTO dto = new FileDTO();
     	String oriFileName = fileSignature.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;
+		String newFileName = System.currentTimeMillis()+ext;	
 		dto.setCategory("사원관리");
 		dto.setIdx(employeeID);
 		dto.setPath("signature");
 		dto.setServerFileName(newFileName);
 		dto.setOriFileName(oriFileName);
 		dao.update(dto);
-
+		
 		try {
 			byte[] bytes = fileSignature.getBytes();
 			Path path = Paths.get(root+"signature/"+newFileName);
@@ -119,14 +128,14 @@ public class PersonnelService {
 		FileDTO dto = new FileDTO();
     	String oriFileName = file.getOriginalFilename();
 		String ext = oriFileName.substring(oriFileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis()+ext;
+		String newFileName = System.currentTimeMillis()+ext;	
 		dto.setCategory("사원관리");
 		dto.setIdx(employeeID);
 		dto.setPath("profile");
 		dto.setServerFileName(newFileName);
 		dto.setOriFileName(oriFileName);
 		dao.update(dto);
-
+		
 		try {
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(root+"profile/"+newFileName);
@@ -140,7 +149,7 @@ public class PersonnelService {
     }
 
 	public int updateEmployee(int employeeID, HashMap<String, Object> params) {
-
+		
 		String positionID =(String) params.get("positionID");
 		String status =(String) params.get("status");
 		String departmentID =(String) params.get("departmentID");
@@ -149,8 +158,8 @@ public class PersonnelService {
 
 		return dao.updateEmployeeInfo(employeeID,positionID,status,departmentID,rankID,responID);
 	}
-
-
+	
+	
 	public List<HashMap<String, Object>> getBranchID(String branchID) {
 		// TODO Auto-generated method stub
 		return dao.getBranchID(branchID);
@@ -166,28 +175,32 @@ public class PersonnelService {
 	}
 
 
-	public List<HashMap<String, Object>> personnelList(Pager pager) {
-
-		HashMap<String, Object> params = new HashMap<>();
+	public List<HashMap<String, Object>> personnelList(Pager pager, HashMap<String, Object> params) {
+		pager.setSearch((String) params.get("inputSearch"));
 		params.put("pageNum", (pager.getPageNum()-1)*10);
-		Integer total = dao.totalCount(params);
+		params.put((String) params.get("category"), pager.getCategory());
+		params.put((String) params.get("inputSearch"), pager.getSearch());
+		Integer total = dao.totalCountSearch(params);
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);
+			pager.setTotalCount(total);			
 		}
+		
+		logger.info("getPageNum=="+pager.getPageNum());
+		logger.info("getSearch=="+pager.getSearch());
+		logger.info("getgetCategory=="+pager.getCategory());
+		
 		return dao.personnelList(params);
 	}
+
 	public List<HashMap<String, Object>> getSelectOptionBranch(String selectedBranchValue) {
 		if(selectedBranchValue.equals("지점")) {
 		}
 		return dao.getSelectOptionBranch(selectedBranchValue);
 	}
 
-	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption) {
-		// TODO Auto-generated method stub
-		return dao.searchPerson(searchValue,selectedOption);
-	}
+
 	public Boolean checkDuplicateEmployeeID(String employeeID) {
 		return dao.checkDuplicateEmployeeID(employeeID);
 	}
@@ -220,12 +233,12 @@ public class PersonnelService {
 		return dao.schistorySave(employeeID,startDate,endDate,organizationName,remarks,sccategory);
 	}
 	public void writeDepartmentChangeLog(int employeeID, String beforedpID, String afterdpID) {
-
+		
 		dao.writeDepartmentChangeLog(employeeID,beforedpID,afterdpID);
-
+		
 	}
 	public void resetPassword(String password, String employeeID) {
-
+		
 		dao.resetPassword(password,employeeID);
 	}
 	public HashMap<String, Object> getdepartmentInfo(String departmentID) {
@@ -238,12 +251,12 @@ public class PersonnelService {
 		return dao.updateRank(rankID,rankName,isActive);
 	}
 	public void updatePosition(String positionID, String positionName, Boolean isActive) {
-
+		
 		dao.updatePosition(positionID,positionName,isActive);
-
+		
 	}
 	public void addPostion(String positionID, String positionName, Boolean isActive) {
-
+			
 		dao.addPostion(positionID,positionName,isActive);
 	}
 	public Boolean checkDuplicateAddpositionID(String addpositionID) {
@@ -251,9 +264,9 @@ public class PersonnelService {
 		return dao.checkDuplicateAddpositionID(addpositionID);
 	}
 	public void addRank(String rankID, String rankName, Boolean isActive) {
-
+		
 		dao.addRank(rankID,rankName,isActive);
-
+		
 	}
 	public Boolean checkDuplicateAddRankID(String addRankID) {
 		// TODO Auto-generated method stub
@@ -268,19 +281,19 @@ public class PersonnelService {
 	}
 	public int addDepartment(departmentDTO dto) {
 		// TODO Auto-generated method stub
-
+		
 		return dao.addDepartment(dto);
-
+		
 	}
 	public List<HashMap<String, Object>> getBranchOrgID(String branchID) {
 		return dao.getBranchOrgID(branchID);
 	}
 	public void addhq(String branchID, String hqName, Boolean isActive) {
-
+		
 		dao.addhq(branchID,hqName,isActive);
 	}
 	public void updateinfo(int employeeID, HashMap<String, Object> params) {
-
+		
 		String name =(String) params.get("name");
 		String phoneNumber =(String) params.get("phoneNumber");
 		String address =(String) params.get("address");
@@ -289,7 +302,7 @@ public class PersonnelService {
 	public void editHq(String hqName, String hqID, Boolean isActive) {
 		// TODO Auto-generated method stub
 		dao.editHq(hqID,hqName,isActive);
-
+		
 	}
 	public void editDp(String departmentName, String departmentID, Boolean isActive) {
 		dao.editDp(departmentID,departmentName,isActive);
@@ -299,30 +312,30 @@ public class PersonnelService {
 	}
 	public void addResponsibiliy(String departmentID, String responName) {
 
-
+		
 		dao.addResponsibiliy(departmentID,responName);
 	}
-	public void updateEmployeeAnnual() {
-
+	public void updateEmployeeAnnual() { 
+		
 		dao.updateEmployeeAnnual();
 	}
 	public List<HashMap<String, Object>> leaveYears() {
-		return dao.leaveYears();
+		return dao.leaveYears(); 
 	}
 	public void updateAnnual(List<HashMap<String, Integer>> dataList) {
-
+		
 		dao.updateAnnual(dataList);
 	}
 	public void saveAnnualLeave(List<HashMap<String, Integer>> dataList) {
-
+		
 		dao.saveAnnualLeave(dataList);
-
+		
 	}
 	public List<HashMap<String, Object>> getYearValue() {
 		return dao.getYearValue();
 	}
 	public void updateAnnual(String year, String value) {
-
+			
 		dao.updateAnnual(year,value);
 	}
 	public HashMap<String, Object> getEmployeeAnnual(int employeeID) {
@@ -356,12 +369,12 @@ public class PersonnelService {
 		// TODO Auto-generated method stub
 		return dao.ajaxGetscHistory(employeeID);
 	}
+	
+	
+	
+	
 
 
-
-
-
-
-
+	
 
 }

@@ -98,22 +98,22 @@
 			<h1 class="h3 mb-0 text-gray-800">사원리스트</h1>
 		</div>
 		
-		<div class="row"style="display:flex;">
-			<form class="form-inline" action="personnelList.go" method="get"
-				id="frm">
-				<select id="emName" class="psSelect2">
+		<div class="row">
+		<div class="form-inline ml-auto">
+
+				<select id="emName" name="category" class="psSelect2">
 					<option value="employeeID">사번</option>
 					<option value="name">이름</option>
 				</select> 
-				<input class="form-control mr-sm-2" id="inputSearch" type="search"
+				<input class="form-control mr-sm-2" name="inputSearch" type="search"
 					placeholder="사원명이나 사번을 입력하세요." aria-label="Search"> 
 					<input type="hidden" name="startNum" value="1" id="startNum">
 					<input type="hidden" name="pageNum" value="1" id="pageNum">
-			</form>
-			<button class="btn btn-outline-primary" id="psSchBtn"
-				type="button">검색</button>
+					<button class="btn btn-outline-primary" id="psSchBtn"
+				onclick="searchGo()">검색</button>
 		</div>
-		
+			
+		</div>
 		<div class="card shadow mb-4">
               <div class="card-body">
                                    
@@ -220,7 +220,11 @@ $('.p').click(function(){
 	
 	const no = $(this).attr("data-list-pn");
 	$("#pageNum").val(no);
-	$('#frm').submit();
+	var href = location.href;
+	if(href.length != 0){
+		href = href.slice(0, -1) + no;
+	}
+	location.href = href;
 })
 
     var tableHTML = '';
@@ -258,46 +262,105 @@ $('.p').click(function(){
             }
         });
     });
-	
-    $('#psSchBtn').on('click',function(){
-    	var select = $('select');
-    	var selectedOption = $("#emName option:selected").text();
-    	 
-    	 var searchInput = $('.form-control');
-    	 var searchValue = $('#inputSearch').val();
-    	 console.log(selectedOption);
-    	 console.log(searchValue);
-    		 $.ajax({
-    			 url:'searchPerson.do',
-    			 method:'GET',
-    			 data:{searchValue:searchValue,
-    				 selectedOption:selectedOption},
-    			 success:function(data){
-    				 console.log(data);
-    				 fillTable(data);
-    			 },
-    			 error:function(e){}
-    		 });
-    	 
-    })
     
-    function fillTable(data) {
+	function searchGo(){
+		var category = $('#category').val();
+		var psSchBtn = $('#psSchBtn').val();
+		if(search != ''){
+			location.href='list?category='+category+'&search='+psSchBtn+'&page=1';		
+		}else{
+			swal({
+				title: '검색어를 입력해주세요',
+				button: '확인'
+			});
+		}
+	}
+    
+//     function linkClick(){
 
-    data.forEach(function(item) {
-        tableHTML += '<tr>';
-        tableHTML += '<td>' + item.employeeID + '</td>';
-        tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
-        tableHTML += '<td>' + item.departmentName + '</td>';
-        tableHTML += '<td>' + item.rankName + '</td>';
-        tableHTML += '<td>' + item.positionName + '</td>';
-        tableHTML += '<td>' + item.status + '</td>';
-        tableHTML += '<td>' + item.branchName + '</td>';
-        tableHTML += '</tr>';
-    });
+    	
+// 		$('.page-link').on('click',function(){
+// 	    	var no = $(this).attr("data-list-pn");
+// 	    	var pageNum = $("#pageNum").val(no);
+//    		 $.ajax({
+// 			 url:'searchPerson.do',
+// 			 method:'GET',
+// 			 data:{
+// 				 pageNum:pageNum
+// 			dataType:'JSON',
+// 			 success:function(data){
+// 				 console.log(data);
+//  				 fillTable(data.list);
+//   				updatePagination(data.pager)
+// 			 },
+// 			 error:function(e){}
+// 		 });
+// 		})
+//     }
+    
+//     $('#psSchBtn').on('click',function(){
+//     	var select = $('select');
+//     	var selectedOption = $("#emName option:selected").text();
+//     	 var startNum = $('#startNum').val();
+//     	 var pageNum = $('#pageNum').val();
+//     	 var searchInput = $('.form-control');
+//     	 var searchValue = $('#inputSearch').val();
+//     	 console.log(selectedOption);
+//     	 console.log(searchValue);
+//     		 $.ajax({
+//     			 url:'searchPerson.do',
+//     			 method:'GET',
+//     			 data:{
+//     				 startNum:startNum,
+//     				 pageNum:pageNum,
+//     				 searchValue:searchValue,
+//     				 selectedOption:selectedOption},
+//     			dataType:'JSON',
+//     			 success:function(data){
+//     				 console.log(data);
+//      				 fillTable(data.list);
+//      				updatePagination(data.pager)
+//     			 },
+//     			 error:function(e){}
+//     		 });
+    	 
+//     })
+    
+//     function fillTable(data) {
 
-    tableHTML += '</tbody>';
-    $('#personnelList').html(tableHTML);
-}
+//     data.forEach(function(item) {
+//         tableHTML += '<tr>';
+//         tableHTML += '<td>' + item.employeeID + '</td>';
+//         tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
+//         tableHTML += '<td>' + item.departmentName + '</td>';
+//         tableHTML += '<td>' + item.rankName + '</td>';
+//         tableHTML += '<td>' + item.positionName + '</td>';
+//         tableHTML += '<td>' + item.status + '</td>';
+//         tableHTML += '<td>' + item.branchName + '</td>';
+//         tableHTML += '</tr>';
+//     });
+
+//     tableHTML += '</tbody>';
+//     $('#personnelList').html(tableHTML);
+// }
+    
+//     function updatePagination(pager) {
+//         var pagingUl = $('#paging');
+//         pagingUl.empty(); // 기존 페이징 제거
+
+//         if (pager.pageNum > 1) {
+//             pagingUl.append('<li class="page-item"><div class="p" data-list-pn="' + (pager.pageNum - 1) + '"><a class="page-link" data-list-pn="' + (pager.pageNum - 1) + '">&laquo;</a></div></li>');
+//         }
+
+//         for (var i = 1; i <= pager.totalCount; i++) {
+//             var liClass = pager.pageNum == i ? 'page-item active' : 'page-item';
+//             pagingUl.append('<li class="' + liClass + '"><div class="p" data-list-pn="' + i + '"><a class="page-link" data-list-pn="' + i + '">' + i + '</a></div></li>');
+//         }
+
+//         if (pager.pageNum < pager.totalCount) {
+//             pagingUl.append('<li class="page-item"><div class="p" data-list-pn="' + (pager.pageNum + 1) + '"><a class="page-link" data-list-pn="' + (pager.pageNum + 1) + '">&raquo;</a></div></li>');
+//         }
+//     }
 
 </script>
 </html>
