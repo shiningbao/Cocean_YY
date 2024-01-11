@@ -8,12 +8,19 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
+.cocean{
+	width: 250px;
+	height: 250px;
+}
+.sales{
+	width: 450px;
+	height: 350px;
+}
 </style>
 </head>
 <body>
     <c:import url="/side"/>
 <div class="container-fluid contentField">
-<div class="row">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">통계</h1>
     </div>
@@ -22,30 +29,41 @@
 <div>
   <label>지점: </label>
   <select id="selectType"></select>
-  <select id="selectsalesYearMonth"></select>
-  <input type="button" id="branchChange" value="확인">
+  <input type="button" class="btn btn-primary" id="branchChange" value="확인">
 
   <div class="row">
     <div class="col">
-      <canvas id="coceanFriends"></canvas>
+      <canvas class="cocean" id="coceanFriends"></canvas>
     </div>
     <div class="col">
-      <canvas id="coceanHouse"></canvas>
+      <canvas class="cocean" id="coceanHouse"></canvas>
     </div>
   </div>
-
+  
+  
   <div class="row">
     <div class="col">
-      <canvas id="sales"></canvas>
+      <canvas class="sales" id="sales"></canvas>
     </div>
     <div class="col">
-      <canvas id="visitors"></canvas>
+      <canvas class="sales" id="visitors"></canvas>
     </div>
   </div>
+  
+  
+  <div class="row">
+    <div class="col">
+      <canvas class="sales" id="salesLine"></canvas>
+    </div>
+    <div class="col">
+      <canvas class="sales" id="visitorsLine"></canvas>
+    </div>
+  </div>
+  
+  
 </div>
+  </div>
 
-</div>
-</div>
 <c:import url="/footer"/>
 </div>
 
@@ -56,8 +74,9 @@
 var now = new Date();
 var year = now.getFullYear();
 var month = now.getMonth() + 1;
-var nowsalesYearMonth = year + "-" + month;
-console.log("현재 년월 : "+nowsalesYearMonth);
+var day = now.getDay();
+var nowYearMonth = year + "-" + month + "-" + day;
+console.log("현재 년월 : "+nowYearMonth);
 
 
 //6개월 이전 날짜 계산
@@ -65,12 +84,11 @@ var sixMonthsAgo = new Date();
 sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 var sixMonthsAgoYear = sixMonthsAgo.getFullYear();
 var sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 2;
-var sixMonthsAgosalesYearMonth = sixMonthsAgoYear + "-" + sixMonthsAgoMonth;
-console.log("6개월 이전 년월 : "+sixMonthsAgosalesYearMonth);
-
+var sixMonthsAgoYearMonth = sixMonthsAgoYear + "-" + sixMonthsAgoMonth;
+console.log("6개월 이전 년월 : "+sixMonthsAgoYearMonth);
 
 $(document).ready(function(){
-	chart();
+	chart(nowYearMonth);
 });
 
 function chart() {
@@ -176,20 +194,6 @@ function chart() {
 				monthlyProductSales.push(productSales[i].monthlyTotalSales);
 			} 
 			
-		// 6개월 이전까지의 데이터만 push
-			/* for (var i = 0; i < ticketSales.length; i++) {
-			  if (ticketSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && ticketSales[i].salesYearMonth <= nowsalesYearMonth) {
-			    salesYearMonth.push(ticketSales[i].salesYearMonth);
-			    monthlyTicketSales.push(ticketSales[i].monthlyTotalSales);
-			  }
-			}
-			for (var i = 0; i < ticketSales.length; i++) {
-			  if (productSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && productSales[i].salesYearMonth <= nowsalesYearMonth) {
-			    salesYearMonth.push(productSales[i].salesYearMonth);
-			    monthlyProductSales.push(productSales[i].monthlyTotalSales);
-			  }
-			} */
-			
           var barChartSales = document.querySelector('#sales').getContext('2d');
           const sales = new Chart(barChartSales, {
             type: 'bar',
@@ -213,12 +217,66 @@ function chart() {
                 },
                 title: {
                   display: true,
-                  text: '매출 그래프'
+                  text: '매출'
                 }
               }
             }
           });
           
+       	  // 매출 선그래프 그리기
+          console.log("매출 선그래프 그리기");
+		  
+          let salesLineYearMonth = [];
+          let monthlyLineTicketSales = [];
+          let monthlyLineProductSales = [];
+          
+          var ticketSales = data.ticket.filter(function (ticket) {
+		        return ticket.branchName === "가산점";
+		    });
+          console.log("티켓 매출");
+          console.log(ticketSales);
+          
+          var productSales = data.product.filter(function (product) {
+		        return product.branchName === "가산점";
+		    });
+          console.log("상품 매출");
+          console.log(productSales);
+		 for (var i = 0; i < 6; i++) {
+			 salesLineYearMonth.push(ticketSales[i].yearMonth);
+			 monthlyLineTicketSales.push(ticketSales[i].monthlyTotalSales);
+			} 
+		 for (var i = 0; i < 6; i++) {
+			 monthlyLineProductSales.push(productSales[i].monthlyTotalSales);
+			} 
+			
+          var lineChartSales = document.querySelector('#salesLine').getContext('2d');
+          const salesLine = new Chart(lineChartSales, {
+            type: 'line',
+            data: {
+              labels: salesYearMonth,
+              datasets: [
+              	{	
+              		label : '상품 매출',
+              		data : monthlyProductSales
+              	},
+              	{	
+              		label : '티켓 매출',
+              		data : monthlyTicketSales
+              	}],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: '매출'
+                }
+              }
+            }
+          });
           
        	  // 관람객 차트 그리기
           console.log("관람객 그래프 그리기");
@@ -236,20 +294,6 @@ function chart() {
 			 visitorsYearMonth.push(visitorsData[i].yearMonth);
 			 monthlyVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
 			} 
-			
-		// 6개월 이전까지의 데이터만 push
-			/* for (var i = 0; i < ticketSales.length; i++) {
-			  if (ticketSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && ticketSales[i].salesYearMonth <= nowsalesYearMonth) {
-			    salesYearMonth.push(ticketSales[i].salesYearMonth);
-			    monthlyTicketSales.push(ticketSales[i].monthlyTotalSales);
-			  }
-			}
-			for (var i = 0; i < ticketSales.length; i++) {
-			  if (productSales[i].salesYearMonth >= sixMonthsAgosalesYearMonth && productSales[i].salesYearMonth <= nowsalesYearMonth) {
-			    salesYearMonth.push(productSales[i].salesYearMonth);
-			    monthlyProductSales.push(productSales[i].monthlyTotalSales);
-			  }
-			} */
 			
           var barChartVisitors = document.querySelector('#visitors').getContext('2d');
           const visitors = new Chart(barChartVisitors, {
@@ -270,11 +314,55 @@ function chart() {
                 },
                 title: {
                   display: true,
-                  text: '매출 그래프'
+                  text: '관람객'
                 }
               }
             }
           });
+          
+       // 관람객 선그래프 그리기
+          console.log("매출 선그래프 그리기");
+		  
+          let visitorsLineYearMonth = [];
+          let monthlyLineVisitorsNumber = [];
+          
+          var visitorsData = data.visitors.filter(function (visitors) {
+		        return visitors.branchName === "가산점";
+		    });
+          console.log("관람객");
+          console.log(visitorsData);
+          
+		 for (var i = 0; i < 6; i++) {
+			 visitorsLineYearMonth.push(visitorsData[i].yearMonth);
+			 monthlyLineVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
+			} 
+			
+          var lineChartVisitors = document.querySelector('#visitorsLine').getContext('2d');
+          const visitorsLine = new Chart(lineChartVisitors, {
+            type: 'line',
+            data: {
+              labels: visitorsLineYearMonth,
+              datasets: [
+              	{	
+              		label : '관람객수',
+              		data : monthlyLineVisitorsNumber
+              	}],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: '관람객'
+                }
+              }
+            }
+          });
+          
+       
           // 지점 변경 버튼 클릭시
           $('#branchChange').click(function () {
             // 선택된 지점의 이름
@@ -359,6 +447,60 @@ function chart() {
                 	visitors.data.datasets[0].data[i] = branchVisitorsData[i].monthlyVisitorsNumber;
 			} 
                 visitors.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+            ///
+            
+            // 선택된 지점 티켓 선그래프로 데이터 업데이트
+            var branchTicketLineData = data.ticket.filter(function (ticket) {
+                return ticket.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 티켓 데이터");
+           console.log(branchTicketLineData);
+		   console.log(salesLine.data.datasets[1]);
+            if (branchTicketLineData) {
+                // 티켓 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	salesLine.data.datasets[1].data[i] = branchTicketLineData[i].monthlyTotalSales;
+			} 
+                salesLine.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+         // 선택된 지점 상품 선그래프로 데이터 업데이트
+            var branchProductLineData = data.product.filter(function (product) {
+                return product.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 상품 데이터");
+           console.log(branchProductLineData);
+		   console.log(salesLine.data.datasets[0]);
+            if (branchProductLineData) {
+                // 상품 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	salesLine.data.datasets[0].data[i] = branchProductLineData[i].monthlyTotalSales;
+			}
+                salesLine.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+            
+         // 선택된 지점 관람객 선그래프로 데이터 업데이트
+            var branchVisitorsLineData = data.visitors.filter(function (visitors) {
+                return visitors.branchName === selectedBranch;
+            });
+           console.log("선택된 지점 관람객 데이터");
+           console.log(branchVisitorsLineData);
+		   console.log(visitors.data.datasets[0]);
+            if (branchVisitorsLineData) {
+                // 관람객 차트 데이터 업데이트
+                for (var i = 0; i < 6; i++) {
+                	visitorsLine.data.datasets[0].data[i] = branchVisitorsLineData[i].monthlyVisitorsNumber;
+			} 
+                visitorsLine.update();
             } else {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
             }

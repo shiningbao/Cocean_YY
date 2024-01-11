@@ -40,9 +40,7 @@
 	}
 	.imgChange{
 		width: 100%;
-	}
-	.imgChange i{
-		font-size: 10px;
+		z-index: 1;
 	}
 	.imgChange:hover{
 		cursor: pointer;
@@ -75,30 +73,36 @@
 				<div class="col-md-6">
 					<div class="card shadow pt-4 p-2 mx-2">
 						<div class="row">
-							<div class="imgChange col-md-1 mb-2" onclick="imgChange(-1)">
-								<i class="fi fi-sr-angle-left"></i>
+						
+							<div class="imgChange col-md-1 mb-2 pr-0" onclick="imgChange(-1)">
+								<div class="d-flex align-items-center text-center" style="height: 100%;">
+									<i class="fi fi-sr-angle-left display-3"></i>
+								</div>
 							</div>
 							<div class="col-md-10 mb-2 text-center">
 								<div style="height:100%; width:100%; margin:0 auto; ">
 									<img class="img-fluid img-thumbnail" id="mainPic" alt="#" src="#" style="max-height: 500px; min-height: 100%;min-width: 80%;">
 								</div>
 							</div>
-							<div class="imgChange col-md-1 mb-2" onclick="imgChange(1)">
-								<i class="fi fi-sr-angle-right"></i>
+							<div class="imgChange col-md-1 mb-2 pl-0" onclick="imgChange(1)">
+								<div class="d-flex align-items-center text-center" style="height: 100%;">
+									<i class="fi fi-sr-angle-right display-3"></i>
+								</div>
 							</div>
+							
 							<div class="col-md-4 mb-2 pl-4">
 								<div class="animalImg">
-									<img class="img-fluid img-thumbnail" alt="#" src="#">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="#">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2 pr-4">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="#">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
 								</div>
 							</div>
 						</div>
@@ -149,7 +153,7 @@
 							</tr>
 							<tr>
 								<th class="text-center" scope="col">세부 정보</th>
-								<td>${base.details}</td>
+								<td class="splitCon">${base.details}</td>
 							</tr>
 							<tr>
 								<th class="text-center" scope="col">
@@ -466,6 +470,17 @@
 			}
 		});
 	}
+	
+	
+	function split(){
+		$('.splitCon').each(function(con){
+			var c = $(this).html();
+			var s = c.replace(/\n/g, '<br>');
+			$(this).html(s);
+		});
+	}
+	split();
+	
 	
 </script>
 </html>

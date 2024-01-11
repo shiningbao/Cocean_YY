@@ -25,6 +25,8 @@
 
 .cancel{
 	cursor:pointer;
+	width:15px;
+	height:15px;
 }
 
 </style>
@@ -151,7 +153,7 @@ function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
 	                content += '<label class="rank">' + item.rankName + '</label>' + '\u00A0' + '\u00A0';
 	            }
-	            content += '<label class="name">' + item.name + '</label>' + '<label class="cancel">' + '\u00A0' + '\u00A0' + '\u00A0' + 'x' + '</label>' + '<br/>';
+	            content += '<label class="name">' + item.name + '</label>' + '<img src="<c:url value='/resource/img/cancel.png'/>" class="cancel" alt="삭제 아이콘">' + '<br/>';
 	            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
 	            content += '<input type="hidden" class="positionName" value="' + item.positionName + '"/>';
 	            content += '</div>';

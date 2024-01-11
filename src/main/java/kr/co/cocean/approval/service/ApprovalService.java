@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
@@ -85,7 +86,7 @@ public class ApprovalService {
 		}}
 		String content = param.get("content");
 		if(titleID.equals("1")) {
-		dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+			dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
 		}else if(titleID.equals("2")) {
 			logger.info(param.get("textArea"));
 			dao.writeattendenceDraft(dto); // 휴가신청서 insert
@@ -96,6 +97,24 @@ public class ApprovalService {
 			dao.writeReincrement(dto); // 복직원 insert
 		}
 		if(tempSave==0) {
+			/*
+			 * List<LineDTO> agreementLines = new ArrayList<>(); String category = null; for
+			 * (LineDTO lineDTO : lastLineInfoList) { category = lineDTO.getCategory();
+			 * if(category.equals("합의")) { agreementLines.add(lineDTO); } } if
+			 * (!agreementLines.isEmpty()) { LineDTO minOrderLine =
+			 * Collections.min(agreementLines, Comparator.comparing(LineDTO::getOrder)); int
+			 * minOrder = Integer.parseInt(minOrderLine.getOrder());
+			 * 
+			 * for (LineDTO lineDTO : agreementLines) {
+			 * lineDTO.setOrder(String.valueOf(minOrder)); if
+			 * ("결재".equals(lineDTO.getCategory())) {
+			 * 
+			 * break;
+			 * 
+			 * } }
+			 * 
+			 * }
+			 */
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 			if(param.get("publicStatus").equals("1")) {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
@@ -420,10 +439,13 @@ public class ApprovalService {
 		return dao.myAppSearch(keyword,employeeID);
 	}
 
-	public HashMap<String, Object> removeSave(String selected) {
-		return dao.removeSave(selected);
-	}
 
+	public int removeList(String idx, String titleID) {
+		int cnt = 0;
+		cnt = dao.removeList(idx,titleID);
+		return cnt;
+		
+	}
 	
 
 	/*

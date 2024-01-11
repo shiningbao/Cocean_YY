@@ -22,6 +22,7 @@ public class StatisticsService {
 	Logger logger = LoggerFactory.getLogger(getClass());
 	@Autowired StatisticsDAO dao;
 	public Map<String, Object> statisticsChart() {
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<AnimalHistoryDTO> animal = dao.animalHistory();
  		ArrayList<TankHistoryDTO> tank = dao.tankHistory();

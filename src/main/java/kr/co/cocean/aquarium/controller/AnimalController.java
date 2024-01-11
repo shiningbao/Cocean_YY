@@ -64,7 +64,7 @@ public class AnimalController {
 		
 		ModelAndView mav = new ModelAndView("/aquarium/animalWrite");
 		
-		mav.addObject("tankList", service.tankList(branchID));
+		mav.addObject("tankList", service.tankList());
 		return mav;
 	}
 	
@@ -105,7 +105,7 @@ public class AnimalController {
 		
 		service.animalUpdate(files,param,employeeID);
 		
-		String page = "redirect: detail.go?animalID="+param.getAnimalID();
+		String page = "redirect: detailBase?animalID="+param.getAnimalID();
 		rAttr.addFlashAttribute("msg", "코션친구들을 수정했습니다.");
 		
 		return page;

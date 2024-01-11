@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,6 +30,7 @@ public class StatisticsController {
 	@ResponseBody
 	public Map<String, Object> statisticsChart(){
 		logger.info("통계 데이터 가져오기");
+//		logger.info("현재 년월 : "+nowYearMonth);
 		return service.statisticsChart();
 	}
 }

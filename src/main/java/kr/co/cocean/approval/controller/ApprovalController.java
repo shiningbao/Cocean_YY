@@ -30,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.cocean.approval.dto.ApprovalDTO;
@@ -305,13 +307,18 @@ public class ApprovalController {
 		int lastOrder = Integer.parseInt((param).get("lastOrder"));
 		logger.info(param.get("action"));
 		String idx=param.get("idx");
+		if(!param.get("ral").equals("")&&!param.get("usageTime").equals("")) {
 		double updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
+		
 		 if(param.get("action").equals("결재")) { 
 			 logger.info("결재!!!");
+			 if(!param.get("vacationCategory").equals("")) {
 			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
 				 service.updateRAL(updateRAL,param);
 				 logger.info("잔여연차:"+updateRAL);
 			 }
+		 }
+		 }
 			 if(approvalOrder<lastOrder) {
 				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
 				 service.myStatus(param); // 내 상태 완료로 변경
@@ -334,8 +341,14 @@ public class ApprovalController {
 				service.approveApp(param); // approval update
 			 }
 		 }else { // 거부
+			 if(approvalOrder<lastOrder) {
+				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
+				 service.rejectAgree(param);
+				 service.passDraft(idx); // draft update
+			 }else {
 			 service.rejectAgree(param);
 			 service.rejectDraft(param); 
+			 }
 		 }
 		return mav;
 	}
@@ -359,14 +372,20 @@ public class ApprovalController {
 	
 	@RequestMapping(value = "/approval/removeSave")
 	@ResponseBody
-	public HashMap<String, Object> removeSave(@RequestBody List<HashMap<String,String>> selectedSave) {
-		HashMap<String, Object> result = new HashMap<String, Object>();
-		logger.info("선택된 애들:"+selectedSave);
-		for (HashMap<String, String> selected : selectedSave) {
-			 // service.removeSave(selected);
-			logger.info("뽑기:"+selected);
-		}
-		return result;
+	public HashMap<String, Object> removeSave(@RequestParam(value = "removeList") String removeList) throws Exception {
+
+	    List<HashMap<String, String>> selectedSave = new ObjectMapper().readValue(removeList, List.class);
+	    HashMap<String, Object> result = new HashMap<String, Object>();
+
+	    for (HashMap<String, String> entry : selectedSave) {
+	        String idx = entry.get("idx");
+	        String titleID = entry.get("titleID");
+	        logger.info("idx: " + idx + ", titleID: " + titleID);
+	        int cnt = service.removeList(idx,titleID);
+	        result.put("cnt", cnt);
+	    }
+
+	    return result;
 	}
 	
 	

@@ -17,6 +17,7 @@
 
 #refList{
 	text-align: center;
+	
 }
 
 
@@ -45,16 +46,16 @@
 	</div>
 </div>
 
-	<nav class="navbar navbar" id="search">
-        <form class="form-inline" action="refList.go" method="get" id="frm">
+	<div class="search d-flex flex-column">
+        <form class="form-inline ml-auto" action="refList.go" method="get" id="frm">
          <input type="hidden" name="startNum" value="1" id="startNum">
          <input type="hidden" name="pageNum" value="" id="pageNum">
          <input id="keyword" class="form-control mr-sm-2" type="search" placeholder="제목/기안자" aria-label="Search">
          <button class="btn btn-outline-primary my-2 my-sm-0" type="button" onclick="refSearch()">검색</button>
         </form>
-     </nav>
+  	</div>
 
-<div class="card shadow mb-4" style="margin-top:15px;"> 
+<div class="card shadow mb-4"> 
 	<div id="refTable">
 		<table class="table table-hover">
 		<thead id="refTableHead">

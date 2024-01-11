@@ -8,32 +8,28 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
-	textarea {
-		height: 8em;
-		border: none;
+	.resizeAuto {
 		resize: none;
+		overflow-y: hidden;
 	}
 </style>
 
 </head>
 <body>
 	<c:import url="/side"/>
+	<div class="container-fluid contentField">
 	
-	<main>
-		<div class="content">
-	
-			<div class="hTitle">
-				<a>코션친구들 수정</a>
-			</div>
-	<div class="animalContent">
-
-		<div class="row">
-			<div class="col-md-6 m-auto">
-				<form action="update.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">코션친구들 수정</h1>
+		</div>
+		
+		<div>
+			<form action="update.do" method="post" enctype="multipart/form-data" onsubmit="return writeSubmit()">
+				<div class="card shadow col-md-12 m-auto p-2">
 					<table class="table">
 						<colgroup>
-							<col style="width:30%">
-							<col style="width:70%">
+							<col style="width:25%">
+							<col style="width:75%">
 						</colgroup>
 						<tr>
 							<th class="text-center align-middle" scope="col">분류</th>
@@ -61,13 +57,14 @@
 						<tr>
 							<th class="text-center align-middle" scope="col">코션하우스</th>
 							<td>
-								<input type="text" class="form-control" name="branchID" style="display: none;" value="${content.branchID}" readonly/>
-								<select class="form-control" name="tankID" id="tankID">
+								<select class="form-control" id="tank">
 									<c:forEach items="${tankList}" var="item" varStatus="idx">
-										<option value="${item.tankID}">${item.tankName}</option>
+										<option value="${idx.index}">${item.branchName} - ${item.tankName}</option>
 									</c:forEach>
 								</select>
-								<input type="text" class="form-control" id="tankName" name="tankName" value="${item.tankName}" style="display: none;" readonly/>
+								<input type="text" class="form-control" id="branchID" name="branchID" style="display: none;" value="${content.branchID}" readonly/>
+								<input type="text" class="form-control" id="tankID" name="tankID" value="${content.tankID}" style="display: none;" readonly/>
+								<input type="text" class="form-control" id="tankName" name="tankName" value="${content.tankName}" style="display: none;" readonly/>
 							</td>
 						</tr>
 						<tr>
@@ -95,33 +92,57 @@
 						</tr>
 						<tr>
 							<th class="text-center align-middle" scope="col">세부 정보</th>
-							<td><textarea class="form-control" name="details" required>${content.details}</textarea></td>
+							<td><textarea class="form-control resizeAuto" id="details" name="details" oninput="resizeAuto(this)" required>${content.details}</textarea></td>
 						</tr>
+<!-- 						<tr> -->
+<!-- 							<th class="text-center align-middle" scope="col">사진</th> -->
+<!-- 							<td><input type="file" class="form-control" name="files" multiple="multiple" required/></td> -->
+<!-- 						</tr> -->
 						<tr>
-							<th class="text-center align-middle" scope="col">사진</th>
-							<td><input type="file" class="form-control" name="files" multiple="multiple" required/></td>
+							<td colspan="2">
+								<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+									<button type="button" class="btn btn-secondary mr-2" onclick="animaList()">취소</button>
+									<button type="submit" class="btn btn-primary mr-2">수정</button>
+								</div>
+							</td>
 						</tr>
 					</table>
-					
-					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-						<button type="button" class="btn btn-secondary mr-2" onclick="animaList()">취소</button>
-						<button type="submit" class="btn btn-primary mr-2">수정</button>
-					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
-		
-		<c:import url="/animal/classifi"/>
-
-	</div>
-	</div>
-	</main>
+	</div>	
+	<c:import url="/animal/classifi"/>
+	<c:import url="/footer"/>
 </body>
 
 <script>
 
+var branchIDList = [];
+var tankIDList = [];
+var tankNameList = [];
+var index;
+<c:forEach items="${tankList}" var="item" varStatus="idx">
+	branchIDList.push('${item.branchID}');
+	tankIDList.push('${item.tankID}');
+	tankNameList.push('${item.tankName}');
+	if('${item.tankID}' =='${content.tankID}'){
+		index = '${idx.index}';
+	}
+</c:forEach>
 $('select[name="status"]').val('${content.status}').prop("selected",true);
-$('select[name="tankID"]').val('${content.tankID}').prop("selected",true);
+$('#tank').val(index).prop("selected",true);
+$('#details').trigger('input');
+
+$('#tank').on('change',function(){
+	var i = $('#tank').val();
+	//console.log(branchIDList[i]);
+	//console.log(tankIDList[i])
+	//console.log(tankNameList[i]);
+	$('#branchID').val(branchIDList[i]);
+	$('#tankID').val(tankIDList[i]);
+	$('#tankName').val(tankNameList[i]);
+});
+
 
 // 분류체계 모달 관련
 function drawClassifi(sp,ta,cl,sc,co){
@@ -132,18 +153,9 @@ function drawClassifi(sp,ta,cl,sc,co){
 	$('#common').val(co);	
 }
 
-resizeWidth();
-
-
 function getClassifi(){
 	$("#classifiModal").modal('show');
 }
-
-$('#tankID').on('change',function(){
-	var tankName = $('#tankID option:checked').text();
-	$('#tankName').val(tankName);
-	console.log($('input[name="tankName"]').val());
-});
 
 function writeSubmit(){
 	var result = false;
@@ -157,6 +169,11 @@ function writeSubmit(){
 
 function animaList(){
 	location.href = "list.go"
+}
+
+function resizeAuto(e){
+	e.style.height = 'auto';
+	e.style.height = (e.scrollHeight) + 'px';
 }
 
 </script>
