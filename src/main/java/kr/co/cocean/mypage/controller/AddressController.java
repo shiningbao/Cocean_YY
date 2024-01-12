@@ -216,15 +216,21 @@ public class AddressController {
             }
 
          //수정
-          @PostMapping(value="mypage/outaddressupdate")
-          public String outaddressupdate(OutAddressDTO dto,Model model) {
-      		logger.info("update실행");
-      		logger.info(dto.getName()+"/"+dto.getAddressNumber());
-      		service.outaddressupdate(dto);
-      		logger.info("service 들어가기전");
-      		return "/mypage/outsideaddressBook";
-      	}
+            @PostMapping(value="mypage/outaddressupdate")
+            public String outaddressupdate(OutAddressDTO dto, Model model) {
+                logger.info("update 실행");
+                logger.info(dto.getName() + "/" + dto.getAddressNumber());
 
+                // 서비스에서 데이터 업데이트
+                service.outaddressupdate(dto);
+
+                logger.info("service 들어가기 전");
+
+                // 메시지 추가
+                model.addAttribute("msg", "주소록이 성공적으로 수정되었습니다.");
+
+                return "/mypage/outsideaddressBook";
+            }
 
 
           //디테일,수정,저장 리스트로 돌아가기

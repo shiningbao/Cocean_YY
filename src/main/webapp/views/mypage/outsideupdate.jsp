@@ -96,7 +96,10 @@
 </body>
 <script>
 
-
+var msg = "${msg}";
+if(msg != ""){
+   swal(msg,'','success');
+}
 
 
 

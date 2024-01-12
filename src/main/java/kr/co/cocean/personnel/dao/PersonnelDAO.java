@@ -26,7 +26,7 @@ public interface PersonnelDAO {
 
 
 
-	List<TreeDTO> getChart();
+	List<TreeDTO> getChart(int isActive);
 
 	void joinTree(HashMap<String, Object> params);
 
@@ -112,7 +112,7 @@ public interface PersonnelDAO {
 
 	void editDp(String departmentName, String departmentID, Boolean isActive);
 
-	List<HashMap<String, Object>> getDepartmentMembers(String departmentID);
+	int getDepartmentMembers(String departmentID);
 
 	void addResponsibiliy(String departmentID, String responName);
 
@@ -145,6 +145,8 @@ public interface PersonnelDAO {
 	List<HashMap<String, Object>> ajaxGetHistory(String employeeID);
 
 	List<HashMap<String, Object>> ajaxGetscHistory(String employeeID);
+
+	int getHqMembers(String hqID);
 
 
 }

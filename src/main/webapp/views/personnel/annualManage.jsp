@@ -237,28 +237,42 @@ function delRow() {
 }
 
 $('.annualSaveBtn').on('click', function() {
-	if(confirm("연차 설정을 저장하시겠습니까? ")){
-		
-    var dataToSend = [];
-    $('.tb_content').each(function() {
-        var year = $(this).find('span.txt').text().split(' ')[0];
-        var value = $(this).find('input').val();
-        dataToSend.push({ year: year, value: value });
-    });
-	console.log(dataToSend);
-    $.ajax({
-        type: 'POST',
-        url: 'annualLeave.do', // 실제 서버 URL
-        contentType: 'application/json',
-        data: JSON.stringify(dataToSend),
-        success: function(response) {
-            // 성공적으로 서버에 데이터를 보냈을 때 처리하는 코드
-        },
-        error: function(err) {
-            // 에러 발생 시 처리하는 코드
-        }
-    });
-	}
+	
+	swal({
+		title: "연차 설정을 저장하시겠습니까??",
+		text: "매년 1월1일 등록",
+		icon: "success",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('저장 되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+				    var dataToSend = [];
+				    $('.tb_content').each(function() {
+				        var year = $(this).find('span.txt').text().split(' ')[0];
+				        var value = $(this).find('input').val();
+				        dataToSend.push({ year: year, value: value });
+				    });
+					console.log(dataToSend);
+				    $.ajax({
+				        type: 'POST',
+				        url: 'annualLeave.do', // 실제 서버 URL
+				        contentType: 'application/json',
+				        data: JSON.stringify(dataToSend),
+				        success: function(response) {
+				            // 성공적으로 서버에 데이터를 보냈을 때 처리하는 코드
+				        },
+				        error: function(err) {
+				            // 에러 발생 시 처리하는 코드
+				        }
+				    });			
+				}
+			})
+		}
+	});
+
 });
 
 

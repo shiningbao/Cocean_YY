@@ -6,11 +6,18 @@
   font-style: normal;
 }
 
+@font-face {
+     font-family: 'SOYOMapleRegularTTF';
+     src: url('https://cdn.jsdelivr.net/gh/fontbee/font@main/Ddc/SOYOMapleRegularTTF.woff2') format('woff2');
+     font-weight: 400;
+     font-style: normal;
+}
+
 h1, h2, h3, h4 {
   font-family: 'SOYOMapleBoldTTF';
 }
 body {
-  font-family: 'SOYOMapleBoldTTF';
+  font-family: 'SOYOMapleRegularTTF';
 }
 
 #modalBtn{
