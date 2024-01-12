@@ -80,9 +80,7 @@ img:hover {
 
 </style>
 <body>
-<%-- <%
-  String responName = (String)session.getAttribute("userInfo.responName");
-%> --%>
+
 <c:import url="/side"/>
 <div class="container-fluid contentField">
 <div class="row">
