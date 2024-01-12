@@ -198,9 +198,9 @@ margin-top:1%;
       <thead>
       <tr>
          <th><input type="checkbox" id="all"/></th>
-         <!--  
+<!--  
          <th>번호</th>
-         -->
+  --> 
          <th>이름</th>
          <th>전화번호</th>
          <th>직급</th>
@@ -290,7 +290,7 @@ $('#outsidejoin').on('click',function(){
 
 
 
-//외부주소록
+//외부주소록(체크박스)
 $('#all').on('click',function(){
    var $chk = $('input[type="checkbox"]');
    console.log($chk);
@@ -301,6 +301,9 @@ $('#all').on('click',function(){
    }
    
 });
+
+
+
 
 //외부주소록
 function del(){
@@ -321,7 +324,7 @@ function del(){
       success:function(data){
          console.log(data);
          if(data.del_cnt>0){
-            alert('선택한'+data.del_cnt+' 개의 주소록이 삭제 되었습니다.');
+        	 swal('선택한' + data.del_cnt + ' 개의 주소록이 삭제 되었습니다.', '', 'success');
             listCall();
          }
       },
@@ -422,13 +425,6 @@ $('#reserch').on('click', function () {
 
     $('input[name="name"]').val('');
 });
-
-
-
-
-
-
-
 
 
 
