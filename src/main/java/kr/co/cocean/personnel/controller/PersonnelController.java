@@ -532,7 +532,7 @@ public class PersonnelController {
 		
 		service.editHq(hqID,hqName,isActive);
 		
-		response.put("message", "생성이 완료되었습니다."); 
+		response.put("message", "수정이 완료되었습니다."); 
 		return response; 
 		}
 	
@@ -546,7 +546,7 @@ public class PersonnelController {
 		
 		service.editDp(departmentID,departmentName,isActive);
 		
-		response.put("message", "생성이 완료되었습니다."); 
+		response.put("message", "수정이 완료되었습니다."); 
 		return response; 
 		}
 	@PostMapping(value="/personnel/annualLeave.do")

@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="getHqID">
-		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID}
+		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID} and isActive = 1
 	</select>
 	
 	<select id="getDepartmentText">
@@ -81,13 +81,13 @@ fa-building' AS 'icon'
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r  ON e.rankID = r.rankID
     <where>
-        <if test="inputSearch != null and !inputSearch.equals('')">
+        <if test="search != null and !search.equals('')">
             <choose>
                 <when test="category != null and category.equals('name')">
-                    AND e.name LIKE CONCAT('%', #{inputSearch}, '%')
+                    AND e.name LIKE CONCAT('%', #{search}, '%')
                 </when>
                 <when test="category != null and category.equals('employeeID')">
-                    AND e.employeeID LIKE CONCAT(#{inputSearch}, '%')
+                    AND e.employeeID LIKE CONCAT(#{search}, '%')
                 </when>
             </choose>
         </if>
@@ -117,13 +117,13 @@ fa-building' AS 'icon'
     JOIN `position` p ON e.positionID = p.positionID 
     JOIN `rank` r ON e.rankID = r.rankID
     <where>
-        <if test="inputSearch != null and !inputSearch.equals('')">
+        <if test="search != null and !search.equals('')">
             <choose>
                 <when test="category != null and category.equals('name')">
-                    AND e.name LIKE CONCAT('%', #{inputSearch}, '%')
+                    AND e.name LIKE CONCAT('%', #{search}, '%')
                 </when>
                 <when test="category != null and category.equals('employeeID')">
-                    AND e.employeeID LIKE CONCAT(#{inputSearch}, '%')
+                    AND e.employeeID LIKE CONCAT(#{search}, '%')
                 </when>
             </choose>
         </if>

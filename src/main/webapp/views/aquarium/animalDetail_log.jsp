@@ -111,7 +111,7 @@
 								<button class="btn btn-outline-primary btn-sm mr-1 ml-1 float-right" onclick="logplanDel('${item.logID}')">삭제</button>
 								<div class="float-right">상태: ${item.status}</div>
 							</div>
-							<div class="mt-1 pl-2">${item.content}</div>
+							<div class="logcontent mt-1 pl-2">${item.content}</div>
 								
 								<div id="log_${item.logID}"></div>
 						</div>
@@ -126,14 +126,6 @@
 </body>
 <script>	
 	var category = '${category}';
-	
-	var msg = "${msg}";
-	if(msg != ""){
-		swal({
-			title: msg,
-			button: '확인'
-		});
-	}
 
 	function detailPage(c){
 		var month = getMonth();
@@ -169,7 +161,7 @@
 	function monthchange(){
 		var month = $('input[name="month"]').val();
 		console.log(month);
-		location.href='detailLogPlan?animalID='+${animalID}+'&category=log&month='+month;
+		location.href='detailLogPlan?animalID='+${animalID}+'&category=log&month='+month+'&page=1';
 	}
 	
 	function logplanWrite(){
@@ -240,12 +232,52 @@
 	}
 	
 	
-	function logplanUpdateGo(e,${item.logID}){
+	function logplanUpdateGo(e,logID){
 		
+		var $find = $(e).parent().parent();
+		var content = $find.find('.logcontent').html();
+		console.log(content);
+		var $updateSummerNote = $find.find('#log_'+logID);
+		$updateSummerNote.summernote({
+			height: 200,
+			maxHeight: 500,
+			minHeight: 200,
+			focus: true,
+			toolbar:['picture']
+		});
+		var insertButton = '<button onclick="location.href = location.href">취소</button><button onclick="logplanUpdateDo(this,'+logID+')">수정 완료</button>';
+		$find.append(insertButton);
 	}
 	
 	
-	
+	function logplanUpdateDo(e,logID){
+		var logplanUpdateContent = $('#log_'+logID).summernote('code');
+		console.log(logplanUpdateContent);
+		
+		$.ajax({
+			type:'post',
+			url:'logplanUpdate.Do',
+			data:{'logID':logID, 'logplanUpdateContent':logplanUpdateContent},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				swal({
+					title: data.msg,
+					button: '확인'
+				}).then((isOkey) => {
+					if(isOkey){
+						location.href = location.href;
+					}
+				});
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+		
+		
+		
+	}
 	
 	
 	

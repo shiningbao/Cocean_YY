@@ -105,7 +105,7 @@
 					<option value="employeeID">사번</option>
 					<option value="name">이름</option>
 				</select> 
-				<input class="form-control mr-sm-2" name="inputSearch" type="search"
+				<input class="form-control mr-sm-2" name="inputSearch" type="text" id="inputSearch"
 					placeholder="사원명이나 사번을 입력하세요." aria-label="Search"> 
 					<input type="hidden" name="startNum" value="1" id="startNum">
 					<input type="hidden" name="pageNum" value="1" id="pageNum">
@@ -264,10 +264,11 @@ $('.p').click(function(){
     });
     
 	function searchGo(){
-		var category = $('#category').val();
-		var psSchBtn = $('#psSchBtn').val();
-		if(search != ''){
-			location.href='list?category='+category+'&search='+psSchBtn+'&page=1';		
+		var category = $('#emName').val();
+		var inputSearch = $('#inputSearch').val();
+		console.log(inputSearch);
+		if(inputSearch != ''){
+			location.href='personnelList.go?category='+category+'&search='+inputSearch+'&pageNum=1';		
 		}else{
 			swal({
 				title: '검색어를 입력해주세요',

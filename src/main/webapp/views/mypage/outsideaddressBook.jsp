@@ -25,7 +25,7 @@ table, th, td{
 }*/
 .outaddress{
 margin-top:-25px;
-margin-left:363px;
+margin-left:400px;
 }
 
  .outaddress th {
@@ -107,7 +107,7 @@ margin-top:3px;
 /*검색창*/
 .form-inline {
 	position: absolute;
-	left: 107px;
+	left: 142px;
 	top: 20px;
 }
 
@@ -126,7 +126,7 @@ margin-right:20px;
 
 /*버튼 나머지 버튼들 사이 조절*/
 .button-container  {
-    margin-left: 477px;
+    margin-left: 373px;
 }
 
 #reserch {
@@ -184,7 +184,7 @@ margin-top:1%;
             <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
         </form>
    <div class="button-container">
-    <button type="submit" id="outreturn" class="btn btn-primary" >외부리스트</button>
+    <button type="submit" id="outreturn" class="btn btn-primary" >필터 초기화</button>
     <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
     <button type="submit" id="del" class="btn btn-primary" onclick="del()" >삭제</button>
 </div>
@@ -198,7 +198,9 @@ margin-top:1%;
       <thead>
       <tr>
          <th><input type="checkbox" id="all"/></th>
+         <!--  
          <th>번호</th>
+         -->
          <th>이름</th>
          <th>전화번호</th>
          <th>직급</th>
@@ -219,7 +221,7 @@ margin-top:1%;
     <div style="display: flex; margin-top:7px;">
     <input class="form-control mr-sm-2" type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="width: 240px; margin-left: -1px;" aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="inreserch" style="width: 60px; margin-left: 5px; margin-right: 5px;">검색</button>
-    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:580px">내부리스트</button>
+    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:580px">필터 초기화</button>
     </div>
 
     <table class="address">
@@ -273,10 +275,10 @@ $(function(){
 	  });
 
 
-
+// 이렇게 해야 alert이 중복이 안됨
 var msg = "${msg}";
 if(msg != ""){
-   alert(msg);
+   swal(msg,'','success');
 }
 
      
@@ -362,7 +364,7 @@ function drawList(list){
    list.forEach(function(item, addressNumber){
       content += '<tr>';
       content += '<td><input type="checkbox" value="'+item.addressNumber+'"/></td>';
-      content += '<td>'+item.addressNumber+'</td>';   
+     /* content += '<td>'+item.addressNumber+'</td>';*/   
       content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
       content += '<td>'+item.phoneNumber+'</td>';
       content += '<td>'+item.rankLevel+'</td>';
@@ -392,8 +394,8 @@ $('#reserch').on('click', function () {
             $('#list').empty();
 
             if (data.size == 0) {
-                content = '<tr>';
-                content += '<td style="text-align: center; color: red;">' + name + '이 존재하지 않습니다.</td>';
+                content = '<tr >';
+                content += '<td style="text-align: center; color: red;" colspan="6">' + name + '이 존재하지 않습니다.</td>';
                 content += '</tr>';
                 $('#list').append(content);
             } else {
@@ -401,7 +403,7 @@ $('#reserch').on('click', function () {
                     var item = data.list[i];
                     content += '<tr>';
                     content += '<td><input type="checkbox" value="' + item.addressNumber + '"/></td>';
-                    content += '<td>' + item.addressNumber + '</td>';
+                  /*  content += '<td>' + item.addressNumber + '</td>';*/
                     content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
                     content += '<td>' + item.phoneNumber + '</td>';
                     content += '<td>' + item.rankLevel + '</td>';
@@ -495,7 +497,7 @@ $('#inreserch').on('click', function () {
 
             if (data1.size == 0) {
                 content = '<tr>';
-                content += '<td style="text-align: center; color: red;">' + name + '가 존재하지 않습니다.</td>';
+                content += '<td style="text-align: center; color: red;"  colspan="6">' + name + '이 존재하지 않습니다.</td>';
                 content += '</tr>';
                 $('#inlist').append(content);
             } else {

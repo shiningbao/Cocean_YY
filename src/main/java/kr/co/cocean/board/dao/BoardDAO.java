@@ -35,4 +35,10 @@ public interface BoardDAO {
 
 	void commentHidden(int commentID);
 
+	int commentUpdateGo(int commentID, String content);
+
+	int boardDel(int employeeID, int boardID);
+
+	int boardHidden(int boardID);
+
 }

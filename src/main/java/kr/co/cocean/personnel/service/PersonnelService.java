@@ -180,6 +180,7 @@ public class PersonnelService {
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put((String) params.get("category"), pager.getCategory());
 		params.put((String) params.get("inputSearch"), pager.getSearch());
+		logger.info("검색값"+params.get("search"));
 		Integer total = dao.totalCountSearch(params);
 		if(total == 0) {
 			pager.setTotalCount(1);
