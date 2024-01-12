@@ -369,7 +369,7 @@ th {
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" style="display:none;"/>
+<input type="file" id="input-file" name="files" style="display:none;"/>
 <br/>
 
 
@@ -422,7 +422,7 @@ th {
 
 
 
-<c:import url="/footer"/>	
+<%-- <c:import url="/footer"/>	 --%>
 </body>
 <script>
 
@@ -916,17 +916,22 @@ function calculateDays() {
 	
 	
      function getApprovalLine(lineData){
- 		console.log(lineData);
-              var firstItem = lineData[0];
-              approvalSignature(firstItem);
- 		 for (var i = 0; i < lineData.length; i++) {
-              addLineToTable(lineData[i]);
-          }
+		 console.log(lineData);
+		 for (var i = 0; i < lineData.length; i++) {
+             addLineToTable(lineData[i]);
+         }
+		  	var firstItem = lineData[0];
+	    	 approvalSignature(firstItem);
+
+	    	 
  		 for (var i=1; i<lineData.length; i++){
  			 var addItem = lineData[i];
- 			 appSign(addItem);
- 			 console.log(addItem.category);
+ 			 if(addItem.category!=='참조'){
+	 			 appSign(addItem);
+	 			 console.log(addItem.category);
+	 			 }
  		 }
+	  
  	}
      
      function addLineToTable(lineData) {    	 
@@ -1011,6 +1016,26 @@ function calculateDays() {
 					    "</tr>"+
 					    "<tr>"+
 					    "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+
+				        "</td>"
+					    "</tr>"+
+				        "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
+					"</table>"
+			
+			signTable.append(content);
+			
+		 }
+		
+		function approvalSignature(lineData){
+			 var signTable = $("#approvalSignature");
+			
+				var content=
+			        "<table class='signApp'>"+
+						"<tr>"+
+					        "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+lineData.category+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					    "</tr>"+
+					    "<tr>"+
+					    "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+
 				        "</td>"
 					    "</tr>"+
 				        "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+

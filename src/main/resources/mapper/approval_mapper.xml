@@ -422,7 +422,7 @@
 	
 	<select id="comList" resultType="approval">
 		SELECT a.approvalDate, a.approvalStatus, e.employeeID, a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,d.draftDate FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND NOT a.approvalStatus IN('미대기','대기') LIMIT #{pageNum},10
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND NOT a.approvalStatus IN('미대기','대기') ORDER BY a.approvalDate DESC LIMIT #{pageNum},10 
 	</select>
 	
 	<select id="MaCount" parameterType="map" resultType="Integer">

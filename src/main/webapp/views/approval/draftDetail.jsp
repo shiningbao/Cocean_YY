@@ -21,6 +21,10 @@ input[type="text"]{
 	width : 100%;
 }
 
+input[type="date"]{
+	width : 30%;
+}
+
 button{
 	margin : 5px 0;
 }
@@ -60,11 +64,11 @@ button{
 }
 
 #attendanceDraftContent{
-	width : 50%;
+	width : 100%;
 }
 
 #leaveDraftContent{
-	width : 50%;
+	width : 100%;
 }
 
 #leaveDraftContent th{
@@ -166,6 +170,11 @@ th {
   	transition: all 0.2s ;
   	border:none;
 }
+
+ #startFac, #endFac {
+        display: inline-block;
+        margin-right: 10px;
+    }
 
 </style>
 </head>
@@ -325,7 +334,7 @@ th {
 	</tr>
 	<tr>
 		<th>사유</th>
-		<td colspan="2">${vac.vacationReason}</td>
+		<td colspan="2" style="height:300px;" >${vac.vacationReason}</td>
 	</tr>
 </table>
 </c:if>
@@ -390,7 +399,7 @@ th {
         <th class="img-profile rounded-circle"></th>
         <td>${lL.category}</td>
         <td>${lL.hqName}/${lL.departmentName}</td>
-        <td>${lL.rankName}</td>
+        <td>${lL.rankName}<input type='hidden' id='order' value=''></td>
         <td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
         <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
             <td>
@@ -412,7 +421,7 @@ th {
 	</div>
 </div>	
 
-<c:import url="/footer"/>	
+<%-- <c:import url="/footer"/>	 --%>
 </body>
 <script>
 
@@ -420,25 +429,28 @@ $('input[value="결재"]').click(function () {
     updateModalContent('approve');
     $('#approvalAction').val('결재');
     $('#lastOrder').val($('#approvalLine tr:last').index()+1);
+    $('#order').val($('#approvalLine tr:last').index()+1);
 });
 
 $('input[value="반려"]').click(function () {
     updateModalContent('reject');
     $('#approvalAction').val('반려'); 
     $('#lastOrder').val($('#approvalLine tr:last').index()+1);
-    
+    $('#order').val($('#approvalLine tr:last').index()+1);
 });
 
 $('input[value="합의"]').click(function () {
     updateModalContent('agreement');
     $('#approvalAction').val('합의');
     $('#lastOrder').val($('#approvalLine tr:last').index()+1);
+    $('#order').val($('#approvalLine tr:last').index()+1);
 });
 
 $('input[value="거부"]').click(function () {
     updateModalContent('rejection');
     $('#approvalAction').val('거부'); 
     $('#lastOrder').val($('#approvalLine tr:last').index()+1);
+    $('#order').val($('#approvalLine tr:last').index()+1);
     
 });
 
@@ -511,7 +523,7 @@ var idx = $('input[name="idx"]').val()
 // console.log(idx); 
 
  $(function () {
-	var order;
+
      $.ajax({
          url: "drawSign",
          type: "GET",
@@ -541,11 +553,11 @@ var idx = $('input[name="idx"]').val()
  
  function approvalSignature(firstItem){
 	 var signTable = $("#approvalSignature");
-	
+	console.log(firstItem.approvalStatus);
 		var content=
 	        "<table class='signApp'>"+
 				"<tr>"+
-			        "<td rowspan='3' style='width: 20px; background-color:#ededed;'>"+firstItem.category+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
+			        "<td rowspan='3' style='width: 20px;  height:90px; background-color:#ededed;'>"+firstItem.category+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
 			        "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+firstItem.positionName+"\u00A0"+firstItem.name+"</td>"+
 			    "</tr>"+
 			    "<tr>"+
