@@ -81,9 +81,8 @@
 	</select>
 	
 	<select id="animalLogPlan" resultType="logplan">
-		SELECT lpt.logID, lpt.content ,em.*
+		SELECT lpt.logID, lpt.content, lpt.status, em.*
 			,DATE_FORMAT(lpt.creationDate, '%Y-%m-%d %H:%i') AS creationDate
-			<if test="param2.equals('log')">,lpt.status</if>
 			FROM
 				logPlanTable lpt
 			NATURAL JOIN

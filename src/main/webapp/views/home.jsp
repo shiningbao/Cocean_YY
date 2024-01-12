@@ -141,11 +141,39 @@ function formatDateTimeFromTimestamp(timestamp) {
 
 
 
+var attendanceChecked, leaveChecked, canClick;
 
-// 출근 퇴근 버튼
-var attendanceChecked = false;
-var leaveChecked = false;
-var canClick = true;
+//초기화 함수
+function initializeValues() {
+    attendanceChecked = JSON.parse(sessionStorage.getItem('attendanceChecked'));
+    leaveChecked = JSON.parse(sessionStorage.getItem('leaveChecked'));
+    canClick = JSON.parse(sessionStorage.getItem('canClick'));
+
+    // Debugging
+    console.log("Raw values from sessionStorage:");
+    console.log("attendanceChecked:", sessionStorage.getItem('attendanceChecked'));
+    console.log("leaveChecked:", sessionStorage.getItem('leaveChecked'));
+    console.log("canClick:", sessionStorage.getItem('canClick'));
+
+    // 기본값 설정
+    if (attendanceChecked === null || attendanceChecked === undefined) {
+        attendanceChecked = false;
+    }
+
+    if (leaveChecked === null || leaveChecked === undefined) {
+        leaveChecked = false;
+    }
+
+    if (canClick === null || canClick === undefined) {
+        canClick = true;
+    }
+}
+
+//페이지 로드 시 초기화
+$(document).ready(function () {
+    initializeValues();
+    updateButtonState();
+});
 
 function resetClickPermission() {
     console.log("클릭 권한 재설정 중.");
@@ -159,20 +187,46 @@ function resetClickPermission() {
     }
 }
 
+function updateButtonState() {
+    console.log("updateButtonState 호출됨");
+
+    console.log("attendanceChecked:", attendanceChecked);
+    console.log("leaveChecked:", leaveChecked);
+    console.log("canClick:", canClick);
+
+    // 출근 버튼 상태 업데이트
+    if (attendanceChecked) {
+        console.log("출근 체크됨");
+        $("#attendanceButton").prop("disabled", true);
+    } else {
+        console.log("출근 체크 안 됨");
+        $("#attendanceButton").prop("disabled", !canClick);
+    }
+
+    // 퇴근 버튼 상태 업데이트
+    if (leaveChecked) {
+        console.log("퇴근 체크됨");
+        $("#leaveButton").prop("disabled", true);
+    } else {
+        console.log("퇴근 체크 안 됨");
+        $("#leaveButton").prop("disabled", false); // 항상 활성화
+    }
+}
+
 function sendAttendanceData() {
     if (!canClick) {
-        alert("아침 6시이후에 다시 출근 체크를 할 수 있습니다.");
+        swal('아침 6시이후에 다시 출근 체크를 할 수 있습니다.', '', 'success');
         return;
     }
 
     if (attendanceChecked) {
-        alert("이미 출근 체크 하셨습니다.");
+        swal('이미 출근 체크 하셨습니다.', '', 'success');
         return;
     }
 
     var currentTimestamp = Date.now();
-    var formattedTime = formatTimeFromTimestamp(currentTimestamp); // 시간
-    var formattedDate = formatDateFromTimestamp(currentTimestamp); // 년월일
+    var formattedTime = formatTimeFromTimestamp(currentTimestamp);
+    var formattedDate = formatDateFromTimestamp(currentTimestamp);
 
     var url = "gocheck";
 
@@ -187,34 +241,38 @@ function sendAttendanceData() {
         dataType: "json",
         success: function (data) {
             console.log("서버 응답: " + data);
-            alert("출근이 되었습니다.");
+            swal('출근이 되었습니다', '', 'success');
             attendanceChecked = true;
-            canClick = false; // 출근 클릭 후에는 다시 클릭하지 못하게 설정
+            leaveChecked = false; // 퇴근 체크 초기화
+            canClick = false;
+            updateButtonState();
+            sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
+            sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
+            sessionStorage.setItem('canClick', JSON.stringify(canClick));
         },
         error: function (error) {
             console.error(error);
         }
     });
 }
-
 $("#attendanceButton").click(function () {
     sendAttendanceData();
 });
 
 function leaveAttendanceData() {
     if (leaveChecked) {
-        alert(" 아침 6시이후에 다시 퇴근체크를 할 수 있습니다.");
+        swal('아침 6시 이후에 다시 퇴근 체크를 할 수 있습니다.', '', 'success');
         return;
     }
 
     if (!attendanceChecked) {
-        alert("출근 체크를 먼저 해주세요.");
+        swal('출근 체크를 먼저 해주세요.', '', 'success');
         return;
     }
 
     var currentTimestamp = Date.now();
-    var formattedTime = formatTimeFromTimestamp(currentTimestamp); // 시간
-    var formattedDate = formatDateFromTimestamp(currentTimestamp); // 년월일
+    var formattedTime = formatTimeFromTimestamp(currentTimestamp);
+    var formattedDate = formatDateFromTimestamp(currentTimestamp);
 
     var url = "leavecheck";
 
@@ -229,10 +287,14 @@ function leaveAttendanceData() {
         dataType: "json",
         success: function (data) {
             console.log("서버 응답: " + data);
-            alert("퇴근이 되었습니다.");
-            leaveChecked = true; // 퇴근 체크 후 플래그 설정
-            attendanceChecked = false; // 출근 체크 여부 초기화
-            canClick = false; // 퇴근 클릭 후에는 다시 클릭하지 못하게 설정
+            swal('퇴근이 되었습니다', '', 'success');
+            leaveChecked = true;
+            attendanceChecked = false;
+            canClick = false;
+            updateButtonState();
+            sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
+            sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
+            sessionStorage.setItem('canClick', JSON.stringify(canClick));
         },
         error: function (error) {
             console.error(error);
@@ -246,6 +308,30 @@ $("#leaveButton").click(function () {
 
 // 1분마다 클릭 여부 초기화 확인
 setInterval(resetClickPermission, 60000);
+
+//로그아웃 시 초기화
+function logout() {
+    console.log("세션 스토리지 초기화 전 attendanceChecked:", attendanceChecked);
+    sessionStorage.clear(); // 세션 스토리지 초기화
+    initializeValues();  // 값 초기화
+    updateButtonState(); // 버튼 상태 초기화
+    console.log("세션 스토리지 초기화 후 attendanceChecked:", attendanceChecked);
+}
+
+// 새로운 사용자로 로그인 시 초기화
+function loginUser() {
+    console.log("새로운 사용자로 로그인");
+    initializeValues();  // 값 초기화
+    updateButtonState(); // 버튼 상태 초기화
+    sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
+    sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
+    sessionStorage.setItem('canClick', JSON.stringify(canClick));
+}
+
+// 페이지 로드 시 버튼 상태 업데이트
+$(document).ready(function () {
+    updateButtonState();
+});
 
 </script>
 </html>
