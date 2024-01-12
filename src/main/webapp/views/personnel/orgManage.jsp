@@ -169,7 +169,7 @@ td{
 					</div>
 					
 
-					<c:import url="/personnel/organization"/>
+					<c:import url="/personnel/organization/0"/>
 				</div>
 			</div>
 		</div>	
@@ -654,6 +654,9 @@ function drawloadDp(){
     $(".infoClass").empty();
     $(".infoClass").append(content);
 }
+var member;
+var thisHqMembers;
+
 function get1EmployeeID(employeeID, nodeText) {
     $.ajax({
         url: 'getEmployeeInfo.do',
@@ -669,6 +672,9 @@ function get1EmployeeID(employeeID, nodeText) {
             var dpInfo = data.dpInfo;
             var hqInfo = data.hqInfo;
             var nodata = data.nodata;
+            var member = data.thisDepartmentMembers;
+            var thisHqMembers = data.thisHqMembers;
+            console.log('@@@@@@@@@@@@@@@ =='+thisHqMembers);
             $('.tab').removeClass('active');
             $('.tab-content').removeClass('active');
             $('li[data-tab="depart"]').addClass('active');
@@ -726,6 +732,78 @@ function get1EmployeeID(employeeID, nodeText) {
                 $(".infoClass").empty();
                 $(".infoClass").append(content);
             }
+            
+            $('#edithqSubmit').on('submit', function(e) {
+                e.preventDefault();
+                console.log(thisHqMembers);
+                if(thisHqMembers==0){
+                	
+                var hqID = $('#edithqID').val();
+                var hqName = $('#edithqName').val();
+                var isActive = $('#edithqisActive').is(':checked');
+                $.ajax({
+                    url: 'editHq.do',
+                    type: 'post',
+                    data: { hqID:hqID,
+                    	 hqName:hqName
+                    	, isActive:isActive},
+                    success: function(response) {
+            			swal({
+            				title: response.message,
+            				button: "확인"
+            			}).then((isOkey) => {
+            				if(isOkey){
+            					location.href=location.href;
+            				}
+            			});
+            		
+                    },
+                    error: function(error) {
+                    	alert('업데이트 실패: ' + error);
+                    }
+                });
+                }else{
+                	swal('소속 부서와 부서원을 옮겨주세요','','warning');
+                }
+            });
+
+            $('#editdpSubmit').on('submit', function(e) {
+            	e.preventDefault();
+            	console.log(member);
+            	if(member==0){
+            		
+            	var departmentID = $('#departmentID').val();
+                var departmentName = $('#departmentName').val();
+                var isActive = $('#editdpisActive').is(':checked');
+                    $.ajax({
+                        url: 'editDp.do',
+                        type: 'post',
+                        data: { departmentID:departmentID,
+                        	departmentName:departmentName
+                        	, isActive:isActive},
+                        success: function(response) {
+            				console.log(response);
+            				swal({
+            					title: response.message,
+            					button: "확인"
+            				}).then((isOkey) => {
+            					if(isOkey){
+            						location.href=location.href;
+            					}
+            				});
+                		
+                        },
+                        error: function(error) {
+                        	alert('업데이트 실패: ' + error);
+                        }
+                    });
+            	}else{
+            		swal('소속 부서원을 옮겨주세요','','warning');
+            	}
+
+
+            });
+
 
 
 
@@ -1015,7 +1093,7 @@ $('#addRankSubmit').on('submit', function(e) {
         	, rankName:rankName
         	, isActive:isActive},
         success: function(response) {
-        	swal('생성완료');
+        	swal('생성완료','','success');
 		
             $('#addRankmodal').modal('hide');
             drawRank();
@@ -1127,64 +1205,6 @@ $('#addhqSubmit').on('submit', function(e) {
 });
 
 
-$('#edithqSubmit').on('submit', function(e) {
-    e.preventDefault();
-    var hqID = $('#edithqID').val();
-    var hqName = $('#edithqName').val();
-    var isActive = $('#edithqisActive').is(':checked');
-    $.ajax({
-        url: 'editHq.do',
-        type: 'post',
-        data: { hqID:hqID,
-        	 hqName:hqName
-        	, isActive:isActive},
-        success: function(response) {
-			swal({
-				title: response.message,
-				button: "확인"
-			}).then((isOkey) => {
-				if(isOkey){
-					location.href=location.href;
-				}
-			});
-		
-        },
-        error: function(error) {
-        	alert('업데이트 실패: ' + error);
-        }
-    });
-});
-
-$('#editdpSubmit').on('submit', function(e) {
-	e.preventDefault();
-	var departmentID = $('#departmentID').val();
-    var departmentName = $('#departmentName').val();
-    var isActive = $('#editdpisActive').is(':checked');
-        $.ajax({
-            url: 'editDp.do',
-            type: 'post',
-            data: { departmentID:departmentID,
-            	departmentName:departmentName
-            	, isActive:isActive},
-            success: function(response) {
-				console.log(response);
-				swal({
-					title: response.message,
-					button: "확인"
-				}).then((isOkey) => {
-					if(isOkey){
-						location.href=location.href;
-					}
-				});
-    		
-            },
-            error: function(error) {
-            	alert('업데이트 실패: ' + error);
-            }
-        });
-
-
-});
 
 
 

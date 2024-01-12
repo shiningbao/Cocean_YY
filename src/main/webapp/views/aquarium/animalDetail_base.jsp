@@ -199,7 +199,7 @@
 					<div class="row">
 						<div class="col-md-6" style="border-right:1px solid #EDEDED">
 							<div id="oraganizationDiv">
-								<c:import url="/animal/organization" />
+								<c:import url="/personnel/organization/1"/>
 							</div>
 						</div>
 	

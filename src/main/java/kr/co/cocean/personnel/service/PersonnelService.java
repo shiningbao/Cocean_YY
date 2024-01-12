@@ -170,8 +170,8 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> getDepartmentText(String departmentText) {
 		return dao.getDepartmentText(departmentText);
 	}
-	public List<TreeDTO> getChart() {
-		return dao.getChart();
+	public List<TreeDTO> getChart(int isActive) {
+		return dao.getChart(isActive);
 	}
 
 
@@ -308,7 +308,7 @@ public class PersonnelService {
 	public void editDp(String departmentName, String departmentID, Boolean isActive) {
 		dao.editDp(departmentID,departmentName,isActive);
 	}
-	public List<HashMap<String, Object>> getDepartmentMembers(String departmentID) {
+	public int getDepartmentMembers(String departmentID) {
 		return dao.getDepartmentMembers(departmentID);
 	}
 	public void addResponsibiliy(String departmentID, String responName) {
@@ -369,6 +369,10 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> ajaxGetscHistory(String employeeID) {
 		// TODO Auto-generated method stub
 		return dao.ajaxGetscHistory(employeeID);
+	}
+	public int getHqMembers(String hqID) {
+		// TODO Auto-generated method stub
+		return dao.getHqMembers(hqID);
 	}
 	
 	
