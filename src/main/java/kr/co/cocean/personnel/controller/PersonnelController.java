@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,18 +103,19 @@ public class PersonnelController {
 		
 		return getDepartmentText;
 	}
-	@RequestMapping(value="/personnel/organization")
-	public String goChart() {
+	@RequestMapping(value="/personnel/organization/{isActive}")
+	public String goChart(@PathVariable int isActive, Model model) {
 		
+		model.addAttribute("isActive", isActive);
 		return "personnel/organization";
 	}
 	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value="/personnel/getChart.do" ,produces= {org.springframework.http.MediaType.APPLICATION_XML_VALUE, org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity getChart() {
+	@RequestMapping(value="/personnel/getChart.do/{isActive}" ,produces= {org.springframework.http.MediaType.APPLICATION_XML_VALUE, org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE})
+	public ResponseEntity getChart(@PathVariable int isActive) {
 		
-		return new ResponseEntity(service.getChart(),HttpStatus.OK); 
+		return new ResponseEntity(service.getChart(isActive),HttpStatus.OK); 
 	}
 	 
 	@RequestMapping(value="/personnel/getEmployeeID.do")
@@ -417,15 +419,16 @@ public class PersonnelController {
 		}else if(employeeID.startsWith("de")) {
 			String departmentID =employeeID.substring(2);
 			HashMap<String, Object> dpInfo = service.getdepartmentInfo(departmentID);
-			/*
-			 * List<HashMap<String, Object>> thisDepartmentMembers =
-			 * service.getDepartmentMembers(departmentID);
-			 * result.put("thisDepartmentMembers", thisDepartmentMembers);
-			 */
+			
+			 int  thisDepartmentMembers =service.getDepartmentMembers(departmentID);
+			 result.put("thisDepartmentMembers", thisDepartmentMembers);
+			 
 			result.put("dpInfo", dpInfo);
 		}else if(employeeID.startsWith("hq")) {
 			String hqID =employeeID.substring(2);
 			HashMap<String, Object> hqInfo = service.gethqInfo(hqID);
+			int  thisHqMembers =service.getHqMembers(hqID);
+			 result.put("thisHqMembers", thisHqMembers);
 			result.put("hqInfo", hqInfo);
 		}
 		

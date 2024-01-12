@@ -196,10 +196,10 @@ ul.mylist{
 <!-- 				        </div> -->
 				        
 				        <input type="hidden" class="form-control" name="facilityID"  id="facilityID" required>
-				        
-				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
+				        <div class="float-right">
+				        <button class="btn btn-outline-primary cancleEditfacility" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
-				        
+				        </div>
 				        
             </form>
           </div>
@@ -238,10 +238,10 @@ ul.mylist{
 				            <label for="">시설정보:</label>
 				           <div id="summernote1"></div>
 				        </div>
-				        
-				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
+				        <div class="float-right">
+				        <button class="btn btn-outline-primary cancleAddfacility" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
-				        
+				        </div>
 				        
             </form>
           </div>
@@ -318,7 +318,13 @@ $(document).on('click','.editButton',function(){
     $('#editFacilityModal').modal('show');
 });
 
+$('.cancleEditfacility').on('click',function(){
+	 $('#editFacilityModal').modal('hide');
+})
 
+$('.cancleAddfacility').on('click',function(){
+	 $('#addFacility').modal('hide');
+})
 
 $(document).on('click','.text', drawInfo);
 
@@ -393,23 +399,36 @@ function drawFacility(category, clickItem) {
 }
 $(document).on('click','.deleteButton',function(){
 	console.log('click');
-	var deltxt = $(this).parent().text(); // 수정된 부분
-	console.log(deltxt);
-	if(confirm("삭제하시겠습니까?")){
-	    $.ajax({
-	        url: 'delFacility.do',
-	        type: 'post',
-	        data: {deltxt: deltxt}, // 수정된 부분
-	        success: function(response) {
-	        	
-	        		alert('삭제 성공: ' + response.message);
-	        		location.href= location.href;
-	        },
-	        error: function(error) {
-	        	alert('삭제 실패: ' + error);
-	        }
-	    });
-	}
+
+	swal({
+		title: "삭제 하시겠습니까?",
+		text: "",
+		icon: "warning",
+		buttons: ["취소","삭제"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('식제가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+					var deltxt = $(this).closest('.facilityMainInfo').text().trim(); // 수정된 부분
+					console.log('@@@@@@@@'+deltxt);	
+				    $.ajax({
+				        url: 'delFacility.do',
+				        type: 'post',
+				        data: {deltxt: deltxt}, // 수정된 부분
+				        success: function(response) {
+				        	location.href=location.href;
+				        },
+				        error: function(error) {
+				        	alert('삭제 실패: ' + error);
+				        }
+				    });				
+				}
+			})
+		}
+	});
+
 });
 
 $('#plusButton').on('click',function(){
@@ -429,7 +448,7 @@ $('#addFacilitySubmit').on('submit', function(e) {
         	facilityInfo: facilityInfo
         },
         success: function(response) {
-            alert('업데이트 성공: ' + response.message);
+            swal('추가 되었습니다.','','success');
         },
         error: function(error) {
             alert('업데이트 실패: ' + error);
@@ -439,27 +458,46 @@ $('#addFacilitySubmit').on('submit', function(e) {
 
 $('#facilitySubmit').on('submit', function(e) {
     e.preventDefault();
-    var facilityName = $('#facilityName').val();
-    var facilityInfo = $("#summernote").summernote('code')
-    var facilityID = $('#facilityID').val();
-    console.log('@@@' + facilityID);
     
-    $.ajax({
-        url: 'updateFacilityName.do',
-        type: 'post',
-        data: {
-            facilityName: facilityName,
-            facilityInfo: facilityInfo,
-            facilityID: facilityID
-        },
-        success: function(response) {
-            alert('업데이트 성공: ' + response.message);
-            location.href=location.href;
-        },
-        error: function(error) {
-            alert('업데이트 실패: ' + error);
-        }
-    });
+	swal({
+		title: "시설을 수정하시겠습니까?",
+		text: "수정된 내용은 즉시 반영됩니다.",
+		icon: "success",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('수정이 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+				    var facilityName = $('#facilityName').val();
+				    var facilityInfo = $("#summernote").summernote('code')
+				    var facilityID = $('#facilityID').val();
+				    console.log('@@@' + facilityID);
+				    
+				    $.ajax({
+				        url: 'updateFacilityName.do',
+				        type: 'post',
+				        data: {
+				            facilityName: facilityName,
+				            facilityInfo: facilityInfo,
+				            facilityID: facilityID
+				        },
+				        success: function(response) {
+				            location.href=location.href;
+				        },
+				        error: function(error) {
+				            alert('업데이트 실패: ' + error);
+				        }
+				    });
+					
+				}
+			})
+		}
+	});
+    
+    
+
 });
 
 </script>

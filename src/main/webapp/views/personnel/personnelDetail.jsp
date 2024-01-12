@@ -570,8 +570,7 @@ td{
 	        </span>
 	    </div>
         <div class="formbtn">
-        
-        <button class="btn btn-outline-primary detailCancleBtn">취소</button>
+        	<button class="btn btn-outline-primary" type="button" onclick="location.href='http://localhost:8080/Cocean/personnel/personnelList.go'">이전</button>
         <button class="btn btn-primary detailSaveBtn" type="submit">저장</button>
         </div>
 
@@ -580,7 +579,7 @@ td{
 		</div>
 	</div>
 	<div  style="float:right">
-	<button class="btn btn-primary" type="button" onclick="location.href='http://localhost:8080/Cocean/personnel/personnelList.go'">목록</button>
+
 	</div>
 </form>
 <c:import url="/footer"/>
@@ -1154,7 +1153,7 @@ $('#detailSave').on('submit', function(e) {
         success: function(response) {
             // 성공적으로 응답을 받았을 때
             console.log(response);
-            alert('저장 성공');
+            swal('저장 되었습니다.','','success');
             if(response.tabID=='workHistory'){
             	drawHistoryTable();
             }else if(response.tabID=='history'){
@@ -1175,21 +1174,34 @@ $('#detailSave').on('submit', function(e) {
 });
 
 $('#resetPassword').on('click',function(){
-	if(confirm("비밀번호를 초기화 하시겠습니까?")){
-		$.ajax({
-			url:'resetPassword.do',
-			data:{employeeID:employeeID},
-			type:'post',
-			success:function(data){
-				console.log(data);
-			},
-			error:function(e){
-				console.log(e);
-			}
-		})
-	}else{
-		
-	}
+	
+	swal({
+		title: "비밀번호를 초기화 하시겠습니까??",
+		text: "( *초기 비밀번호 : cocean1111* )",
+		icon: "success",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('초기화가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+					$.ajax({
+						url:'resetPassword.do',
+						data:{employeeID:employeeID},
+						type:'post',
+						success:function(data){
+							console.log(data);
+						},
+						error:function(e){
+							console.log(e);
+						}
+					})				
+				}
+			})
+		}
+	});
+
 
 });
 $('#vacation_term_list').on('change', function () {
