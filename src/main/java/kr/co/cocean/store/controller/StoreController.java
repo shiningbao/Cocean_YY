@@ -55,50 +55,41 @@ public class StoreController {
 
 	@GetMapping(value="/store/branchRegister.do")
 	@ResponseBody
-	public String brachRegister(HttpSession session,RedirectAttributes rAttr, @RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
-		LoginDTO dto = (LoginDTO) session.getAttribute("userInfo");
-		String responseName = dto.getResponName();
-		logger.info("담당명 :  " + responseName);
-		// 해당 지점의 마케팅 담당자만 가능
-		if(responseName.equals("마케팅")) {
-
-		}else {
-			rAttr.addAttribute("msg", "마케팅 담당자만 등록할 수 있습니다");
-		}
-		logger.info("지점 등록");
-		logger.info("branchName : "+branchName);
-		logger.info("branchLocation : "+branchLocation);
-		logger.info("branchLatitude : "+branchLatitude);
-		logger.info("branchLongitude : "+branchLongitude);
-		return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
+	public String brachRegister(@RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
+			logger.info("지점 등록");
+			logger.info("branchName : "+branchName);
+			logger.info("branchLocation : "+branchLocation);
+			logger.info("branchLatitude : "+branchLatitude);
+			logger.info("branchLongitude : "+branchLongitude);
+			return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
 	}
 
 	@GetMapping(value="/store/productInfoRegister.go")
 	public String productInfoRegisterLoad() {
-		logger.info("상품 등록 페이지 이동");
-		return "store/productInfoRegister";
+			logger.info("상품 등록 페이지 이동");
+			return "store/productInfoRegister";
 	}
 
 	@PostMapping(value="/store/productInfoRegister.do")
 	public String productInfoRegister(@RequestParam Map<String, String>params, @RequestParam(name = "photo", required = false) MultipartFile photo) {
-	    logger.info("본사상품 등록");
-	    logger.info("상품 정보 : "+params);
-	    logger.info("사진 : "+photo);
-	    if(photo!=null) {
-	        service.productInfoRegister(params, photo);
-	    }else{
-	        service.productTicketInfoRegister(params);
-	    }
-	    return "store/store";
+			 logger.info("본사상품 등록");
+		    logger.info("상품 정보 : "+params);
+		    logger.info("사진 : "+photo);
+		    if(photo!=null) {
+		        service.productInfoRegister(params, photo);
+		    }else{
+		        service.productTicketInfoRegister(params);
+		    }
+		    return "store/store";
 	}
 
 	@PostMapping("/store/branchProductDelete.do")
 	@ResponseBody
 	public void branchProductDelete(@RequestParam int productID, @RequestParam int branchID) {
-		logger.info("지점 상품 삭제");
-		logger.info("productID : "+productID);
-		logger.info("branchID : "+branchID);
-		service.branchProductDelete(productID, branchID);
+			logger.info("지점 상품 삭제");
+			logger.info("productID : "+productID);
+			logger.info("branchID : "+branchID);
+			service.branchProductDelete(productID, branchID);
 	}
 
 	@GetMapping(value="/store/modalProductList.do")
@@ -111,10 +102,10 @@ public class StoreController {
 	@PostMapping(value="/store/branchProductRegister.do")
 	@ResponseBody
 	public int branchProductRegister(@RequestParam String currentBranchName, @RequestParam String currentProductName) {
-		logger.info("지점 상품 등록");
-		logger.info("currentBranchName : "+currentBranchName);
-		logger.info("currentProductName : "+currentProductName);
-		return service.branchProductRegister(currentBranchName, currentProductName);
+			logger.info("지점 상품 등록");
+			logger.info("currentBranchName : "+currentBranchName);
+			logger.info("currentProductName : "+currentProductName);
+			return service.branchProductRegister(currentBranchName, currentProductName);
 	}
 
 

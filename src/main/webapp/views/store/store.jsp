@@ -80,6 +80,9 @@ img:hover {
 
 </style>
 <body>
+<%-- <%
+  String responName = (String)session.getAttribute("userInfo.responName");
+%> --%>
 <c:import url="/side"/>
 <div class="container-fluid contentField">
 <div class="row">
@@ -134,11 +137,18 @@ img:hover {
 	<div class="row">
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
-	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px">본사상품 등록</button>
+	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
+	<!-- <button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px">본사상품 등록</button> -->
+	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>본사상품 등록</button>
+	
 	</div>
 	<div class="row" id="deleteBtn">
-	<button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()">삭제</button>
+	<!-- <button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()">삭제</button> -->
+	<button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()" 
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
+	
 	<div id="totalProductNumber">
 	상품 개수 :
 	</div>
@@ -243,6 +253,9 @@ img:hover {
  	</div>
 </body>
 <script>
+const responName = '${sessionScope.userInfo.responName}';
+console.log("담당명 : " + responName);
+
 var matchedProductList;
 var productListTable = $('.productList table');
 productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
@@ -322,7 +335,11 @@ new Promise((resolve, reject) => {
     				   // 지점 버튼들 오른쪽에 + 버튼(지점 추가)
     				   var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="margin-left: 6px;">&#43;</button>');
     		       	   $('.branchLocation').append(registerButton);
-    		       		
+    		       	   // 세션 검사
+    		       	   if (responName !== '마케팅') {
+    		           	registerButton.prop('disabled', true);
+    		        		} 
+    		       	   
    		       		  // 총 상품 개수 추가
    		       		  $('#totalProductNumber').append(data.totalProductNumber[0].totalProductNumber);
    		       		  
@@ -667,7 +684,7 @@ searchProduct(searchKeyword, currentBranchName);
 
        // 주소 검색 요청을 수행합니다.
        geocoder.addressSearch(branchLocation, callback);
-       alert("등록되었습니다!");
+       /* alert("등록되었습니다!"); */
        closeModal();
    }
 
@@ -687,6 +704,7 @@ searchProduct(searchKeyword, currentBranchName);
                 console.log("성공");
             },
             error: function(error) {
+            	alert("담당자만 가능합니다");
                 console.error(error);
             }
         });
@@ -720,8 +738,7 @@ searchProduct(searchKeyword, currentBranchName);
         success: function(data) {
             console.log(data);
             console.log("성공");
-           alert("등록되었습니다!");
-           /* swal("등록되었습니다!", "", "success"); */
+           /* alert("등록되었습니다!"); */
            console.log(currentBranchName);
         },
         error: function(error) {
@@ -771,7 +788,7 @@ searchProduct(searchKeyword, currentBranchName);
 	    			type: "POST",
 	    			success: function(data){
 	    				console.log("지점상품 삭제 성공");
-	    				alert("상품이 삭제되었습니다!");
+	    				/* alert("상품이 삭제되었습니다!"); */
 	    			},
 	    			error: function(e){
 	    				console.log(e);
