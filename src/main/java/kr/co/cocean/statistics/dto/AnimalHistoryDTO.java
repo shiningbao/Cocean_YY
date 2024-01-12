@@ -43,8 +43,8 @@ public class AnimalHistoryDTO {
 	public void setDeadNumber(int deadNumber) {
 		this.deadNumber = deadNumber;
 	}
-	
-	
-	
-	
+
+
+
+
 }

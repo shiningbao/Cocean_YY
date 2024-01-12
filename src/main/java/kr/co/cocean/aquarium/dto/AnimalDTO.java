@@ -1,25 +1,24 @@
 package kr.co.cocean.aquarium.dto;
 
 import java.sql.Date;
-import java.util.Objects;
 
 import org.apache.ibatis.type.Alias;
 
 @Alias("animal")
 public class AnimalDTO {
-	
+
 	private int animalID;
 	private int speciesID;
 	private int tankID;
 	private String tankName;
 	private int branchID;
 	private String branchName;
-	private String classificationCode;	
+	private String classificationCode;
 	private int CodeNumber;
 	private String nickname;
 	private int individual;
 	private Date birthDate;
-	private Date entryDate;	
+	private Date entryDate;
 	private String status;
 	private String details;
 	private String commonName;
@@ -27,7 +26,7 @@ public class AnimalDTO {
 	private String taxonomy;
 	private String animalCode;
 	private String serverFileName;
-	
+
 	public String getServerFileName() {
 		return serverFileName;
 	}
@@ -143,5 +142,5 @@ public class AnimalDTO {
 		this.animalCode = animalCode;
 	}
 
-	
+
 }

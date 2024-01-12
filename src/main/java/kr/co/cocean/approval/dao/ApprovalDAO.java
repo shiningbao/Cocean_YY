@@ -151,13 +151,13 @@ public interface ApprovalDAO {
 
 	/*
 	 * void update(ApprovalDTO dto);
-	 * 
+	 *
 	 * void updateWd(String title, String content, int idx);
-	 * 
+	 *
 	 * void updateAd(ApprovalDTO dto);
-	 * 
+	 *
 	 * void updateLd(ApprovalDTO dto);
-	 * 
+	 *
 	 * void updateRd(ApprovalDTO dto);
 	 */
 

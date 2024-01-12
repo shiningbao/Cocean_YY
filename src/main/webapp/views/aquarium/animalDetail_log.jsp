@@ -99,21 +99,34 @@
 				<hr>
 				<div>
 					<c:if test="${empty content}">
-					<div class="card p-2">작성된 내용이 없습니다</div>
+					<div class="card mb-8 border-left-warning">작성된 내용이 없습니다</div>
 					</c:if>
 					<c:forEach items="${content}" var="item" varStatus="st">
-						<div class="card p-2">
-							<div class="d-inline">
-								<div class="float-left" id="${item.employeeID}">
-									${item.departmentName}_${item.name} / ${item.creationDate}
-								</div>
-								<button class="btn btn-outline-primary btn-sm mr-1 ml-1 float-right" onclick="logplanUpdateGo(this,${item.logID})">수정</button>
-								<button class="btn btn-outline-primary btn-sm mr-1 ml-1 float-right" onclick="logplanDel('${item.logID}')">삭제</button>
-								<div class="float-right">상태: ${item.status}</div>
+						<div class="status card mb-8">
+							<div class="card-header">
+								<span class="badge">${item.status}</span>
+								${item.departmentName}_${item.name} / ${item.creationDate}
+								<div class="float-right">
+									<!-- 계획 완료 변경 -->
+								<c:if test="${category eq 'plan'}">
+									<a class="btn btn-success btn-circle mr-1" onclick="aa(this,${item.logID})">
+										<i class="fas fa-check text-white"></i>
+									</a>
+								</c:if>
+									<!-- 수정 -->
+									<a class="btn btn-warning btn-circle mr-1" onclick="logplanUpdateGo(this,${item.logID})">
+										<i class="fi fi-sr-pencil text-white"></i>
+									</a>
+									<!-- 삭제 -->
+									<a class="btn btn-danger btn-circle mr-1" onclick="logplanDel('${item.logID}')">
+										<i class="fas fa-trash text-white"></i>
+									</a>
+								</div>		
 							</div>
-							<div class="mt-1 pl-2">${item.content}</div>
-								
+							<div class="card-body">
+								<p class="card-text logcontent">${item.content}</p>
 								<div id="log_${item.logID}"></div>
+							</div>
 						</div>
 					</c:forEach>
 				</div>
@@ -126,14 +139,6 @@
 </body>
 <script>	
 	var category = '${category}';
-	
-	var msg = "${msg}";
-	if(msg != ""){
-		swal({
-			title: msg,
-			button: '확인'
-		});
-	}
 
 	function detailPage(c){
 		var month = getMonth();
@@ -169,7 +174,7 @@
 	function monthchange(){
 		var month = $('input[name="month"]').val();
 		console.log(month);
-		location.href='detailLogPlan?animalID='+${animalID}+'&category=log&month='+month;
+		location.href='detailLogPlan?animalID='+${animalID}+'&category=log&month='+month+'&page=1';
 	}
 	
 	function logplanWrite(){
@@ -189,7 +194,7 @@
 			if(category == 'log'){
 				data.status = $('#status').val();	
 			}else{
-				data.status = '-';
+				data.status = '진행';
 			}
 			$.ajax({
 				type:'post',
@@ -240,15 +245,66 @@
 	}
 	
 	
-	function logplanUpdateGo(e,${item.logID}){
+	function logplanUpdateGo(e,logID){
 		
+		var $find = $(e).parent().parent().parent();
+		var content = $find.find('.logcontent').html();
+		console.log(content);
+		var $updateSummerNote = $find.find('#log_'+logID);
+		$updateSummerNote.summernote({
+			height: 200,
+			maxHeight: 500,
+			minHeight: 200,
+			focus: true,
+			toolbar:['picture']
+		});
+		var insertButton = '<button onclick="location.href = location.href">취소</button><button onclick="logplanUpdateDo(this,'+logID+')">수정 완료</button>';
+		$find.append(insertButton);
 	}
 	
 	
+	function logplanUpdateDo(e,logID){
+		var logplanUpdateContent = $('#log_'+logID).summernote('code');
+		console.log(logplanUpdateContent);
+		
+		$.ajax({
+			type:'post',
+			url:'logplanUpdate.Do',
+			data:{'logID':logID, 'logplanUpdateContent':logplanUpdateContent},
+			dataType:'JSON',
+			success:function(data){
+				console.log(data);
+				swal({
+					title: data.msg,
+					button: '확인'
+				}).then((isOkey) => {
+					if(isOkey){
+						location.href = location.href;
+					}
+				});
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});	
+	}
 	
-	
-	
-	
+	$('.status').each(function(index, element){
+		var status = $(element).find('span').first().html();
+		if(status == '정상' || status == '완료'){
+			$(element).addClass('border-left-success');
+			$(element).find('span').addClass('badge-success');
+		}else if(status == '질병' || status == '진행'){
+			$(element).addClass('border-left-warning');
+			$(element).find('span').addClass('badge-warning');
+		}else if(status == '격리'){
+			$(element).addClass('border-left-danger');
+			$(element).find('span').addClass('badge-danger');
+		}else if(status == '폐사'){
+			$(element).addClass('border-left-dark');
+			$(element).find('span').addClass('badge-dark');
+		}
+	})
 	
 	
 	

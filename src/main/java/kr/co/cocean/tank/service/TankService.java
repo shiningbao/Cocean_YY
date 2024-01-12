@@ -1,6 +1,5 @@
 package kr.co.cocean.tank.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,24 +17,24 @@ import kr.co.cocean.tank.dto.TankRecordDTO;
 
 @Service
 public class TankService {
-	
+
 	@Autowired
 	TankDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	
-	
+
+
 	// 전체 수조 리스트
 	public List<TankDTO> tankList(Pager pager) {
-		
-		HashMap<String, Object> params = new HashMap<String, Object>();
+
+		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
-		
+
 		Integer total = dao.totalCount(params);
 		if(total == 0) {
 			pager.setTotalCount(1);
 		}else {
-			pager.setTotalCount(total);			
+			pager.setTotalCount(total);
 		}
 		logger.info("totalCount: "+pager.getTotalCount());
 		List<TankDTO> list = dao.tankList(params);
@@ -49,7 +48,7 @@ public class TankService {
 	}
 
 
-	// 수조 등록 1-1 
+	// 수조 등록 1-1
 	@Transactional
 	public void tankWrite(Map<String, Object> params) {
 		int key = dao.tankReg(params);
@@ -57,7 +56,7 @@ public class TankService {
 		if(key != 0) {
 			mngItem(params);
 			inChargeTank(params);
-		}		
+		}
 	}
 	// 수조 관리항목 등록 1-2
 	private void inChargeTank(Map<String, Object> params) {
@@ -67,7 +66,7 @@ public class TankService {
 	private void mngItem(Map<String, Object> params) {
 		dao.mngItem(params);
 	}
- 
+
 	// 수조 상세보기
 	public HashMap<String, Object> tankDetail(int tankID) {
 		HashMap<String, Object> map = dao.tankDetail(tankID);
@@ -84,7 +83,7 @@ public class TankService {
 
 	public void tankSet(Map<String, Object> params) {
 		dao.tankSet(params);
-		
+
 	}
 
 
@@ -100,7 +99,7 @@ public class TankService {
 
 	public void recordData(Map<String, Integer> map) {
 		dao.recordData(map);
-		
+
 	}
 
 
@@ -116,6 +115,27 @@ public class TankService {
 
 	public List<Map<String, Object>> getRecord(String tankID, String curDate) {
 		return dao.recordList(tankID,curDate);
+	}
+
+
+	public int addPlan(HashMap<String, Object> params) {
+		return dao.addPlan(params);
+
+	}
+
+
+	public List<Map<String, Object>> getPlan(HashMap<String, Object> params) {
+		return dao.getPlan(params);
+	}
+
+
+	public int removePlan(int logID) {
+		return dao.removePlan(logID);
+	}
+
+
+	public int donePlan(int logID) {
+		return dao.donePlan(logID);
 	}
 
 }

@@ -528,7 +528,7 @@ td{
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
-				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
+				        <button class="btn btn-outline-primary cancleEditDp" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
 				        
 				        
@@ -669,7 +669,6 @@ function get1EmployeeID(employeeID, nodeText) {
             var dpInfo = data.dpInfo;
             var hqInfo = data.hqInfo;
             var nodata = data.nodata;
-            var dmdata = data.thisDepartmentMembers;
             $('.tab').removeClass('active');
             $('.tab-content').removeClass('active');
             $('li[data-tab="depart"]').addClass('active');
@@ -930,6 +929,7 @@ $('#editSubmit').on('submit', function(e) {
     var rankID = $('input[name="rankID"]').val();
     var rankName = $('input[name="rankName"]').val();
     var isActive = $('input[name="isActive"]').is(':checked');
+    
     $.ajax({
         url: 'updateRank.do',
         type: 'post',
@@ -937,7 +937,9 @@ $('#editSubmit').on('submit', function(e) {
         	, rankName:rankName
         	, isActive:isActive},
         success: function(response) {
-            alert('업데이트 성공: ' + response.message)
+        	console.log(response);
+            swal('수정완료','','success');
+        	
 		
             $('#editmodal').modal('hide');
             drawRank();
@@ -962,7 +964,7 @@ $('#editPositionSubmit').on('submit', function(e) {
         	, positionName:positionName
         	, isActive:isActive},
         success: function(response) {
-            alert('업데이트 성공: ' + response.message)
+        	swal('수정완료','','success');
 		
             $('#editPositionmodal').modal('hide');
             drawPosition();
@@ -988,7 +990,7 @@ $('#addPositionSubmit').on('submit', function(e) {
         	, positionName:positionName
         	, isActive:isActive},
         success: function(response) {
-            alert('생성 성공: ' + response.message)
+        	swal('생성완료','','success');
 		
             $('#addPositionmodal').modal('hide');
             drawPosition();
@@ -1013,7 +1015,7 @@ $('#addRankSubmit').on('submit', function(e) {
         	, rankName:rankName
         	, isActive:isActive},
         success: function(response) {
-            alert('생성 성공: ' + response.message)
+        	swal('생성완료');
 		
             $('#addRankmodal').modal('hide');
             drawRank();
@@ -1078,8 +1080,15 @@ $('#addDepartmentSubmit').on('submit', function(e) {
         	, isActive:isActive
         	,responsibility:responsibility},
         success: function(response) {
-            alert('생성 성공: ' + response.message)
-			location.href=location.href;
+			swal({
+				title: response.message,
+				button: "확인"
+			}).then((isOkey) => {
+				if(isOkey){
+					location.href=location.href;
+				}
+			});
+        	
 		
         },
         error: function(error) {
@@ -1101,8 +1110,14 @@ $('#addhqSubmit').on('submit', function(e) {
         	, hqName:hqName
         	, isActive:isActive},
         success: function(response) {
-            alert('생성 성공: ' + response.message)
-			location.href=location.href;
+			swal({
+				title: response.message,
+				button: "확인"
+			}).then((isOkey) => {
+				if(isOkey){
+					location.href=location.href;
+				}
+			});
 		
         },
         error: function(error) {
@@ -1124,8 +1139,14 @@ $('#edithqSubmit').on('submit', function(e) {
         	 hqName:hqName
         	, isActive:isActive},
         success: function(response) {
-            alert('생성 성공: ' + response.message)
-			location.href=location.href;
+			swal({
+				title: response.message,
+				button: "확인"
+			}).then((isOkey) => {
+				if(isOkey){
+					location.href=location.href;
+				}
+			});
 		
         },
         error: function(error) {
@@ -1135,12 +1156,10 @@ $('#edithqSubmit').on('submit', function(e) {
 });
 
 $('#editdpSubmit').on('submit', function(e) {
-	console.log('!!!!!!!@!@!'+thisDepartmentMembers);
-    e.preventDefault();
+	e.preventDefault();
 	var departmentID = $('#departmentID').val();
     var departmentName = $('#departmentName').val();
     var isActive = $('#editdpisActive').is(':checked');
-    if(thisDepartmentMembers==0){
         $.ajax({
             url: 'editDp.do',
             type: 'post',
@@ -1148,17 +1167,22 @@ $('#editdpSubmit').on('submit', function(e) {
             	departmentName:departmentName
             	, isActive:isActive},
             success: function(response) {
-                alert('생성 성공: ' + response.message)
-    			location.href=location.href;
+				console.log(response);
+				swal({
+					title: response.message,
+					button: "확인"
+				}).then((isOkey) => {
+					if(isOkey){
+						location.href=location.href;
+					}
+				});
     		
             },
             error: function(error) {
             	alert('업데이트 실패: ' + error);
             }
         });
-    }else{
-    	alert('소속 부서구성원을 다른부서로 옮겨주세요.');
-    }
+
 
 });
 
@@ -1223,6 +1247,12 @@ $('.addDepartment').on('click',function(){
 })
 $('.addhq').on('click',function(){
 	$('#addhqModal').modal('show');
+})
+
+
+$('.cancleEditDp').on('click',function(){
+	console.log('aaaa');
+	$('#editdpModal').modal('hide');
 })
 
 $("#jstree").on('click', '.jstree-anchor', function (e) {

@@ -125,10 +125,11 @@ public class PersonnelController {
 	}
 	
 	@RequestMapping(value="/personnel/personnelList.go")
-	public ModelAndView personnelList(TankDTO tankDTO,Pager pager) {
+	public ModelAndView personnelList(@RequestParam HashMap<String, Object> params,Pager pager) {
 		
 		ModelAndView mav = new ModelAndView("personnel/personnelList");
-		 List<HashMap<String, Object>> list = service.personnelList(pager);
+		logger.info("params!@!@!@!"+params);
+		 List<HashMap<String, Object>> list = service.personnelList(pager,params);
 		 for (HashMap<String, Object> hashMap : list) {
 			 if(hashMap.get("departmentName").equals("-가산")) {
 				 hashMap.put("departmentName", "-");
@@ -137,11 +138,13 @@ public class PersonnelController {
 				 hashMap.put("departmentName", "-");
 			 } 
 		}
+		 logger.info("pager =="+pager.getCategory());
 		 mav.addObject("pager", pager);
 		 mav.addObject("list", list);
 		logger.info("list=="+list);
 		return mav;
 	} 
+
 	
 	@GetMapping(value="/personnel/detail.go")
 	public ModelAndView detail(@RequestParam int employeeID) {
@@ -205,17 +208,7 @@ public class PersonnelController {
 		}
 		return list;
 	}
-	
-	@GetMapping(value="/personnel/searchPerson.do")
-	@ResponseBody
-	public List<HashMap<String, Object>> searchPerson(String searchValue, String selectedOption){
-		List<HashMap<String, Object>> list = new ArrayList<HashMap<String,Object>>();
-		logger.info("aaa==="+selectedOption);
-			 list= service.searchPerson(searchValue,selectedOption);
-		 
-		
-		return list; 
-	}
+
 	
 	@PostMapping(value="/personnel/checkDuplicateEmployeeID.do")
 	@ResponseBody
@@ -539,7 +532,7 @@ public class PersonnelController {
 		
 		service.editHq(hqID,hqName,isActive);
 		
-		response.put("message", "생성이 완료되었습니다."); 
+		response.put("message", "수정이 완료되었습니다."); 
 		return response; 
 		}
 	
@@ -553,7 +546,7 @@ public class PersonnelController {
 		
 		service.editDp(departmentID,departmentName,isActive);
 		
-		response.put("message", "생성이 완료되었습니다."); 
+		response.put("message", "수정이 완료되었습니다."); 
 		return response; 
 		}
 	@PostMapping(value="/personnel/annualLeave.do")

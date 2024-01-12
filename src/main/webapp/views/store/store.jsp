@@ -19,14 +19,6 @@
 	integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 	crossorigin="anonymous"></script>
 	
-
-
-<!-- 부트스트랩 CSS/favicon -->
-<!-- <link rel="icon" href="resource/img/favi.png" type="image/x-icon">
-<script src="/resource/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="/resource/css/bootstrap.min.css">
-<link rel="stylesheet" href="/resource/css/modal.css">
-<link rel="stylesheet" href="/resource/css/common.css"> -->
 </head>
 <style>
 .contentField {
@@ -35,8 +27,8 @@
 }
 .listTable {
     overflow: auto;
-    width: 630px;
-    height: 377px;
+    width: 519px;
+    height: 355px
 }
 
 table, th, td{
@@ -49,7 +41,7 @@ text-align: center;
 .productList{
     left: 770px;
     top: 70px;
-    width: 500px;
+    width: 585px;
 }
 
 #modalSearch{
@@ -78,16 +70,17 @@ img {
 }
 
 img:hover {
-    transform: scale(3);
+    transform: scale(2);
     border: 1px solid #000;
     /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
 }
 #deleteBtn{
-	margin-left: 250px;
+	margin-left: 335px;
 }
 
 </style>
 <body>
+
 <c:import url="/side"/>
 <div class="container-fluid contentField">
 <div class="row">
@@ -95,7 +88,7 @@ img:hover {
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
     </div>
 </div>
-<div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
+<div class="container" style="display: flex; margin-left: 33px; flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 <div class="row">
 <div class="branchLocation">지점
 </div>
@@ -142,24 +135,35 @@ img:hover {
 	<div class="row">
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
-	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;">등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px">본사상품 등록</button>
+	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
+	<!-- <button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px">본사상품 등록</button> -->
+	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>본사상품 등록</button>
+	
 	</div>
 	<div class="row" id="deleteBtn">
-	<button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()">삭제</button>
+	<!-- <button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()">삭제</button> -->
+	<button id="branchProductDelete" class="btn btn-primary" onclick="branchProductDelete()" 
+	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
+	
 	<div id="totalProductNumber">
 	상품 개수 :
 	</div>
 	</div>
-	<div class="row">
-	<div id="productTable" class="listTable col-10">
-	<table>
-	</table>
-	</div>
-	<div id="productInfoRegisterPage" class="col-2">
- 	
+	<div class="row" style="flex-wrap: nowrap;">
+		<div class="col">
+		<div id="productTable" class="listTable">
+		<table style="width: 100%;">
+		</table>
+		</div>
+		</div>
+		
+		<div class="col">
+			<div id="productInfoRegisterPage">
+		 	</div>
+	 	</div>
  	</div>
-</div>
  
  	</div>
 </div>
@@ -198,7 +202,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
+                <button type="submit" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
@@ -247,6 +251,9 @@ img:hover {
  	</div>
 </body>
 <script>
+const responName = '${sessionScope.userInfo.responName}';
+console.log("담당명 : " + responName);
+
 var matchedProductList;
 var productListTable = $('.productList table');
 productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
@@ -326,7 +333,11 @@ new Promise((resolve, reject) => {
     				   // 지점 버튼들 오른쪽에 + 버튼(지점 추가)
     				   var registerButton = $('<button id="modalBtn" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstBranchModal" style="margin-left: 6px;">&#43;</button>');
     		       	   $('.branchLocation').append(registerButton);
-    		       		
+    		       	   // 세션 검사
+    		       	   if (responName !== '마케팅') {
+    		           	registerButton.prop('disabled', true);
+    		        		} 
+    		       	   
    		       		  // 총 상품 개수 추가
    		       		  $('#totalProductNumber').append(data.totalProductNumber[0].totalProductNumber);
    		       		  
@@ -342,9 +353,9 @@ new Promise((resolve, reject) => {
 							    '<td>' + product.productID + '</td>' +
 							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 							    '</tr>';
-
 
 	                     productListTable.append(productInfo);
 						}
@@ -407,11 +418,13 @@ new Promise((resolve, reject) => {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
 					                var productInfo = '<tr>' +
+					                /* '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' + */
 					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.productName + '</td>' +
 					                '<td>' + product.price + '</td>' +
-					                '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product/' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+					    								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 					                '</tr>';
 
 					                productListTable.append(productInfo);
@@ -534,7 +547,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td class="productNameCell">' + product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 				    
                     searchedModalProduct.append(productInfo);
@@ -585,7 +599,8 @@ searchProduct(searchKeyword, currentBranchName);
 		    '<td>' + product.productID + '</td>' +
 		    '<td>' + product.productName + '</td>' +
 		    '<td>' + product.price + '</td>' +
-		    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.serverFileName + ' Image"/></td>' +
+		    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+						product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
@@ -607,7 +622,8 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td>' + product.productID + '</td>' +
 				    '<td>'+ product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
-				    '<td><img src="/Users/chajaeho/Desktop/upload/cocean/product' + product.serverFileName + '" alt="' + product.productName + ' Image"/></td>' +
+				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
 				    '</tr>';
 		
 		        productListTable.append(productInfo);
@@ -666,7 +682,7 @@ searchProduct(searchKeyword, currentBranchName);
 
        // 주소 검색 요청을 수행합니다.
        geocoder.addressSearch(branchLocation, callback);
-       alert("등록되었습니다!");
+       /* alert("등록되었습니다!"); */
        closeModal();
    }
 
@@ -686,6 +702,7 @@ searchProduct(searchKeyword, currentBranchName);
                 console.log("성공");
             },
             error: function(error) {
+            	alert("담당자만 가능합니다");
                 console.error(error);
             }
         });
@@ -719,8 +736,7 @@ searchProduct(searchKeyword, currentBranchName);
         success: function(data) {
             console.log(data);
             console.log("성공");
-           alert("등록되었습니다!");
-           /* swal("등록되었습니다!", "", "success"); */
+           /* alert("등록되었습니다!"); */
            console.log(currentBranchName);
         },
         error: function(error) {
@@ -748,7 +764,7 @@ searchProduct(searchKeyword, currentBranchName);
       // 체크박스를 클릭한 경우에만 처리
       if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
           // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('data-productID');
+          productID = event.target.getAttribute('ßID');
           branchID = event.target.getAttribute('data-branchID');
           console.log('Selected ProductID:', productID);
           console.log('Selected branchID:', branchID);
@@ -770,7 +786,7 @@ searchProduct(searchKeyword, currentBranchName);
 	    			type: "POST",
 	    			success: function(data){
 	    				console.log("지점상품 삭제 성공");
-	    				alert("상품이 삭제되었습니다!");
+	    				/* alert("상품이 삭제되었습니다!"); */
 	    			},
 	    			error: function(e){
 	    				console.log(e);
@@ -779,8 +795,11 @@ searchProduct(searchKeyword, currentBranchName);
 	     } else {
 	     }
    	}
-    	
-
+   	
+   	var msg = "${msg}";
+   	if(msg!=""){
+   		alert(msg);
+   	}
 
 </script>
 </html>

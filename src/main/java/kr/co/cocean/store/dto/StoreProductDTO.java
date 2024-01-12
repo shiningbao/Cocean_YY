@@ -18,7 +18,7 @@ public class StoreProductDTO {
 	private int idx;
 	private String serverFileName;
 	private int totalProductNumber;
-	
+
 	public int getTotalProductNumber() {
 		return totalProductNumber;
 	}
@@ -103,7 +103,7 @@ public class StoreProductDTO {
 	public void setServerFileName(String serverFileName) {
 		this.serverFileName = serverFileName;
 	}
-	
-	
-	
+
+
+
 }

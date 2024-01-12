@@ -99,37 +99,12 @@ margin-left:-20px;
     	<tbody id="worklist">
     	</tbody>
 	</table>
-
+<!--  
 	<button type="submit" id="attendanceButton" class="btn btn-primary">출근</button>
 	<button type="submit" id="leaveButton" class="btn btn-primary">퇴근</button>
-	
+-->	
 </div>
-<!--  
-<div>
-    <ul class="pagination" id="paging">
-        <!-- 이전 페이지 
-        <li class="page-item">
-            <div class="p" data-list-pn="0">
-                <a class="page-link" data-list-pn="0">&laquo;</a>
-            </div>
-        </li>
-        <!-- 페이지 번호 
-        <c:forEach begin="1" end="${pager.totalPage}" var="i">
-            <li class="${pager.pageNum == i ? 'page-item active' : 'page-item'}">
-                <div class="p" data-list-pn="${i}">
-                    <a class="page-link" data-list-pn="${i}">${i}</a>
-                </div>
-            </li>
-        </c:forEach>
-        <!-- 다음 페이지 
-        <li class="page-item">
-            <div class="p" data-list-pn="${pager.totalPage + 1}">
-                <a class="page-link" data-list-pn="${pager.totalPage + 1}">&raquo;</a>
-            </div>
-        </li>
-    </ul>
-</div>
--->
+
 
 
 
@@ -216,129 +191,7 @@ document.getElementById('psearchButton').addEventListener('click', function () {
 	});
 
 
-
-
-
-
-
-
-
 /*
-const pfirstSearchDateInput = document.getElementById('pfirstsearchdate');
-const plastSearchDateInput = document.getElementById('plastsearchdate');
-let pageNum = 1; // 페이지 초기값
-
-pfirstSearchDateInput.value = firstDayOfMonth;
-plastSearchDateInput.value = formattedYesterday;
-
-// drawWork 함수에 pageNum 파라미터 추가
-function drawWork(pfirstSearchDate, plastSearchDate, pageNum) {
-  $.ajax({
-    type: 'GET',
-    url: 'worklist',
-    data: {
-      'pfirstsearchdate': pfirstSearchDate,
-      'plastsearchdate': plastSearchDate,
-      'pageNum': pageNum,
-    },
-    dataType: 'json',
-    success: function (data) {
-      console.log(data);
-
-      var content = '';
-      if (data.work instanceof Array) {
-        data.work.forEach(function (item, idx) {
-          idx += 1;
-          content += '<tr>';
-          content += '<td>' + item.workID + '</td>';
-          content += '<td>' + item.workDate + '</td>';
-          content +=
-            '<td>' + (item.gowork ? item.gowork.substring(11, 19) : '') + '</td>';
-          content +=
-            '<td>' + (item.leavework ? item.leavework.substring(11, 19) : '') + '</td>';
-          content += '</tr>';
-        });
-      } else {
-        console.error('Data.work is not an array:', data.work);
-        content = '<tr><td colspan="4">No data available</td></tr>';
-      }
-
-      $('#worklist').empty();
-      $('#worklist').append(content);
-
-      drawPaging(data.pager, pageNum); // pageNum 전달
-    },
-    error: function (error) {
-      console.error(error);
-    },
-  });
-}
-
-// 초기 호출 시 pageNum 전달
-drawWork(pfirstSearchDateInput.value, plastSearchDateInput.value, pageNum);
-
-// 출퇴근 날짜 검색
-document.getElementById('psearchButton').addEventListener('click', function () {
-  const pfirstSearchDate = pfirstSearchDateInput.value;
-  const plastSearchDate = plastSearchDateInput.value;
-  drawWork(pfirstSearchDate, plastSearchDate, pageNum); // pageNum 전달
-});
-
-// 페이징 클릭 이벤트
-$(document).on('click', '.p', function () {
-  const pn = $(this).attr('data-list-pn');
-  const currentNum = parseInt(pn);
-
-  // 페이지 번호가 "prev" 또는 "next"일 경우에 대한 처리
-  if (pn === 'prev') {
-    pageNum = Math.max(currentNum - 1, 1);
-  } else if (pn === 'next') {
-    pageNum = currentNum + 1;
-  } else {
-    pageNum = parseInt(pn);
-  }
-
-  drawWork(pfirstSearchDateInput.value, plastSearchDateInput.value, pageNum); // pageNum 전달
-});
-
-function drawPaging(pager, pageNum) {
-  var pagingContent = '';
-  if (pager) {
-    pagingContent += '<li class="page-item">';
-    pagingContent +=
-      '<div class="p" data-list-pn="prev"><a class="page-link" data-list-pn="prev">&laquo;</a></div>';
-    pagingContent += '</li>';
-
-    for (var i = 1; i <= pager.totalPage; i++) {
-      pagingContent +=
-        '<li class="' + (pageNum == i ? 'page-item active' : 'page-item') + '">';
-      pagingContent +=
-        '<div class="p" data-list-pn="' +
-        i +
-        '"><a class="page-link" data-list-pn="' +
-        i +
-        '">' +
-        i +
-        '</a></div>';
-      pagingContent += '</li>';
-    }
-
-    pagingContent += '<li class="page-item">';
-    pagingContent +=
-      '<div class="p" data-list-pn="next"><a class="page-link" data-list-pn="next">&raquo;</a></div>';
-    pagingContent += '</li>';
-  }
-
-  $('#paging').empty();
-  $('#paging').append(pagingContent);
-}
-*/
-
-
-
-
-
-
 function formatDateFromTimestamp(timestamp) {
     var date = new Date(timestamp);
     var year = date.getFullYear();
@@ -495,130 +348,19 @@ $("#leaveButton").click(function () {
 // 1분마다 클릭 여부 초기화 확인
 setInterval(resetClickPermission, 60000);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-//페이지 로드 시 초기 작업 수행
-$(document).ready(function () {
-    // 초기 날짜 설정
-    const pfirstSearchDateInput = $('#pfirstsearchdate');
-    const plastSearchDateInput = $('#plastsearchdate');
-    const today = new Date().toISOString().split('T')[0];
-    pfirstSearchDateInput.val(today);
-    plastSearchDateInput.val(today);
-
-    // 페이지 로드 시 최초 데이터 그리기
-    drawWork(pfirstSearchDateInput.val(), plastSearchDateInput.val());
-
-    // 검색 버튼 클릭 시
-    $('#psearchButton').on('click', function () {
-        const pfirstSearchDate = pfirstSearchDateInput.val();
-        const plastSearchDate = plastSearchDateInput.val();
-        drawWork(pfirstSearchDate, plastSearchDate);
-    });
-});
-
-// 출퇴근 데이터를 서버에서 가져와서 테이블에 그리는 함수
-function drawWork(pfirstSearchDate, plastSearchDate) {
-    $.ajax({
-        type: 'GET',
-        url: 'worklist',
-        data: { 'pfirstsearchdate': pfirstSearchDate, 'plastsearchdate': plastSearchDate },
-        dataType: 'json',
-        success: function (data) {
-            console.log(data);
-            var content = '';
-            data.work.forEach(function (item, idx) {
-                idx += 1;
-                content += '<tr>';
-                content += '<td>' + item.workID + '</td>';
-                content += '<td>' + item.workDate + '</td>';
-                content += '<td>' + (item.gowork ? item.gowork.substring(11, 19) : '') + '</td>';
-                content += '<td>' + (item.leavework ? item.leavework.substring(11, 19) : '') + '</td>';
-                content += '</tr>';
-            });
-            $('#worklist').empty();
-            $('#worklist').append(content);
-
-            // 페이징 버튼 생성 및 이벤트 등록
-            createPagination(data.totalPages, data.currentPage);
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
-}
-
-// 페이징 버튼 생성 및 이벤트 등록 함수
-function createPagination(totalPages, currentPage) {
-    var pagination = $('#paging');
-    pagination.empty();
-
-    if (currentPage > 1) {
-        pagination.append('<li class="page-item"><div class="p" data-list-pn="' + (currentPage - 1) + '"><a class="page-link" data-list-pn="' + (currentPage - 1) + '">&laquo;</a></div></li>');
-    }
-
-    for (var i = 1; i <= totalPages; i++) {
-        var liClass = (currentPage == i) ? "page-item active" : "page-item";
-        pagination.append('<li class="' + liClass + '"><div class="p" data-list-pn="' + i + '"><a class="page-link" data-list-pn="' + i + '">' + i + '</a></div></li>');
-    }
-
-    if (currentPage < totalPages) {
-        pagination.append('<li class="page-item"><div class="p" data-list-pn="' + (currentPage + 1) + '"><a class="page-link" data-list-pn="' + (currentPage + 1) + '">&raquo;</a></div></li>');
-    }
-
-    // 페이징 버튼에 클릭 이벤트 추가
-    $('.p').on('click', function () {
-        drawWorkWithPage($(this).data('list-pn'));
-    });
-}
-
-// 페이지에 따라 출퇴근 데이터를 다시 가져와서 테이블을 갱신하는 함수
-function drawWorkWithPage(page) {
-    const pfirstSearchDate = $('#pfirstsearchdate').val();
-    const plastSearchDate = $('#plastsearchdate').val();
-
-    $.ajax({
-        type: 'GET',
-        url: 'worklist',
-        data: { 'pfirstsearchdate': pfirstSearchDate, 'plastsearchdate': plastSearchDate, 'page': page },
-        dataType: 'json',
-        success: function (data) {
-            console.log(data);
-            var content = '';
-            data.work.forEach(function (item, idx) {
-                idx += 1;
-                content += '<tr>';
-                content += '<td>' + item.workID + '</td>';
-                content += '<td>' + item.workDate + '</td>';
-                content += '<td>' + (item.gowork ? item.gowork.substring(11, 19) : '') + '</td>';
-                content += '<td>' + (item.leavework ? item.leavework.substring(11, 19) : '') + '</td>';
-                content += '</tr>';
-            });
-            $('#worklist').empty();
-            $('#worklist').append(content);
-
-            // 페이징 버튼 생성 및 이벤트 등록
-            createPagination(data.totalPages, data.currentPage);
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
-}
-
 */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

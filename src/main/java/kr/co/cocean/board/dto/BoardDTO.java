@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 @Alias("board")
 public class BoardDTO {
-	
+
 	private int boardID;
 	private int commentID;
 	private int employeeID;
@@ -15,8 +15,8 @@ public class BoardDTO {
 	private String creationDate;
 	private int isPinned;
 	private int isHidden;
-	
-	
+
+
 	public int getBoardID() {
 		return boardID;
 	}
@@ -77,5 +77,5 @@ public class BoardDTO {
 	public void setIsHidden(int isHidden) {
 		this.isHidden = isHidden;
 	}
-	
+
 }

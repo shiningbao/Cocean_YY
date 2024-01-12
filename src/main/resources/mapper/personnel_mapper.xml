@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="getHqID">
-		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID}
+		select  departmentName ,departmentID FROM department d WHERE hqID=#{hqID} and isActive = 1
 	</select>
 	
 	<select id="getDepartmentText">
@@ -70,10 +70,7 @@ fa-building' AS 'icon'
 fa-building' AS 'icon'
 		FROM branch b;
 			</select>
-	
-	<select id="totalCount" parameterType="map" resultType="Integer">
-		SELECT CEIL(COUNT(*)/10) FROM employee e;
-	</select>
+
 	
 	<select id="personnelList">
 		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
@@ -83,6 +80,18 @@ fa-building' AS 'icon'
 		JOIN branch b  ON h.branchID = b.branchID 
 		JOIN `position` p ON e.positionID = p.positionID 
 		JOIN `rank` r  ON e.rankID = r.rankID
+    <where>
+        <if test="search != null and !search.equals('')">
+            <choose>
+                <when test="category != null and category.equals('name')">
+                    AND e.name LIKE CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category != null and category.equals('employeeID')">
+                    AND e.employeeID LIKE CONCAT(#{search}, '%')
+                </when>
+            </choose>
+        </if>
+    </where>
 		ORDER BY e.employeeID ASC LIMIT #{pageNum},10
 	</select>
 	
@@ -99,24 +108,29 @@ fa-building' AS 'icon'
 		</if>
 		ORDER BY e.employeeID ASC ;
 	</select>
-	
-	<select id="searchPerson">
-		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
-		FROM employee e
-		JOIN department d ON e.departmentID = d.departmentID
-		JOIN headquarters h ON d.hqID =h.hqID 
-		JOIN branch b  ON h.branchID = b.branchID 
-		JOIN `position` p ON e.positionID = p.positionID 
-		JOIN `rank` r  ON e.rankID = r.rankID
-		<if test="selectedOption == '이름'">
-			WHERE e.name LIKE #{searchValue}
-		</if>
-		 <if test="selectedOption == '사번'">
-        	WHERE e.employeeID = #{searchValue}
-		 </if>
-		ORDER BY e.employeeID ASC ;
-	</select>
-	
+<select id="totalCountSearch" resultType="java.lang.Integer">
+    SELECT CEIL(COUNT(*)/10)
+    FROM employee e
+    JOIN department d ON e.departmentID = d.departmentID
+    JOIN headquarters h ON d.hqID = h.hqID 
+    JOIN branch b ON h.branchID = b.branchID 
+    JOIN `position` p ON e.positionID = p.positionID 
+    JOIN `rank` r ON e.rankID = r.rankID
+    <where>
+        <if test="search != null and !search.equals('')">
+            <choose>
+                <when test="category != null and category.equals('name')">
+                    AND e.name LIKE CONCAT('%', #{search}, '%')
+                </when>
+                <when test="category != null and category.equals('employeeID')">
+                    AND e.employeeID LIKE CONCAT(#{search}, '%')
+                </when>
+            </choose>
+        </if>
+    </where>
+    ORDER BY e.employeeID;
+</select>
+
 	<select id="checkDuplicateEmployeeID">
 		select (COUNT(employeeID))  from employee e WHERE employeeID =#{employeeID}
 	</select>

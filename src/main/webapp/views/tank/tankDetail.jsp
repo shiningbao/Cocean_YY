@@ -98,8 +98,9 @@ button {
 		</div>
 		</div>
 
-<div class="row" style="display: flex;padding-top: 5%;flex-direction: row;align-content: space-around;align-items: center;">
-	<div id="hTitle" class="mb-auto" style="display: flex; flex-direction: colum; justify-content: space-around; align-items: center;">
+<div class="row" style="display: flex;padding-top: 5%;flex-direction: row;align-content: space-around; align-items: flex-start; justify-content: space-evenly;">
+	<div id="hTitle" class="row" style="display: flex; flex-direction: colum; align-items: center;">
+	<div style="width: 90%; text-align: center; margin-left: 1.5%;" role="alert" class="alert alert-${map.tankStatus == '정상' ? "primary":"danger"}">${map.tankStatus}</div>
 		 <div class="card border-secondary mb-3" style="max-width: 20rem;">
   <div class="card-header"><h5 style="text-align: center;">${map.tankName}</br>[${map.branchName}]</h5></div>
   <div class="card-body">

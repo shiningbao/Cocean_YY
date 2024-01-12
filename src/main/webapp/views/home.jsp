@@ -60,6 +60,7 @@
 		</div>
 		<c:import url="/footer" />
 	</div>
+	
 </body>
 <script>
 
@@ -107,11 +108,8 @@ function formatDateFromTimestamp(timestamp) {
 // 타임스탬프를 시간 형식으로 변환하는 함수
 function formatTimeFromTimestamp(timestamp) {
     var date = new Date(timestamp);
-
-    // 로컬 시간대와 UTC 시간과의 차이를 계산
     var timezoneOffsetInMinutes = date.getTimezoneOffset();
 
-    // UTC 기준 시간에서 로컬 시간대와의 차이를 뺀 후, 시간 형식으로 변환
     date.setMinutes(date.getMinutes() - timezoneOffsetInMinutes);
 
     var year = date.getFullYear();
