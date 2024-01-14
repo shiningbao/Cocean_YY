@@ -67,9 +67,13 @@
 								</c:if>
 								${item.creationDate}
 							</div>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
+							<c:if test="${userInfo.departmentID eq 5}">
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
+							</c:if>
+							<c:if test="${item.employeeID eq userInfo.employeeID}">
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
+							</c:if>
 						</div>
 						<div class="mt-1 pl-2 splitCon">${item.content}</div>
 					</div>
@@ -96,9 +100,13 @@
 			</div>
 			</div>
 			<div>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">숨김</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">삭제</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">수정</button>
+				<c:if test="${userInfo.departmentID eq 5}">
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">숨김</button>
+				</c:if>
+				<c:if test="${detail.employeeID eq userInfo.employeeID}">
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">삭제</button>
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">수정</button>
+				</c:if>
 				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="location.href = 'list?searchCategory=&search=&page=1'">목록</button>
 			</div>
 		

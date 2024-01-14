@@ -21,15 +21,17 @@
 			<h1 class="h3 mb-0 text-gray-800">${bt}
 			</h1>
 		</div>
-		<div>
-			<select id="searchCategory" class="form-control">
-				<option value="title">제목</option>
-				<c:if test="${bt ne '익명게시판'}">
-					<option value="name">작성자</option>
-				</c:if>
-			</select>
-			<input id="search" type="text" class="form-control"/>
-			<button class="btn btn-outline-primary" onclick="searchGo()">검색</button>
+		<div class="d-flex">
+			<div class="form-inline ml-auto mb-2">
+				<select id="searchCategory" class="form-control mr-2">
+					<option value="title">제목</option>
+					<c:if test="${bt ne '익명게시판'}">
+						<option value="name">작성자</option>
+					</c:if>
+				</select>
+				<input id="search" type="text" class="form-control mr-2"/>
+				<button class="btn btn-outline-primary" onclick="searchGo()">검색</button>
+			</div>
 		</div>
 		
 		<div class="card shadow p-3">
