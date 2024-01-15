@@ -57,7 +57,7 @@
 			
 			<div>
 			<h5>댓글</h5>
-			<div id="comment" class="mb-4">
+			<div id="commentDiv" class="mb-4">
 				<c:forEach items="${commentList}" var="item">
 					<div class="card p-2">
 						<div class="d-inline">
@@ -67,9 +67,13 @@
 								</c:if>
 								${item.creationDate}
 							</div>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
-							<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
+							<c:if test="${userInfo.departmentID eq 5}">
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">숨김</button>
+							</c:if>
+							<c:if test="${item.employeeID eq userInfo.employeeID}">
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">삭제</button>
+								<button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,'${item.commentID}')">수정</button>
+							</c:if>
 						</div>
 						<div class="mt-1 pl-2 splitCon">${item.content}</div>
 					</div>
@@ -96,9 +100,13 @@
 			</div>
 			</div>
 			<div>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">숨김</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">삭제</button>
-				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">수정</button>
+				<c:if test="${userInfo.departmentID eq 5}">
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">숨김</button>
+				</c:if>
+				<c:if test="${detail.employeeID eq userInfo.employeeID}">
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">삭제</button>
+					<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="boardFunction(this)">수정</button>
+				</c:if>
 				<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="location.href = 'list?searchCategory=&search=&page=1'">목록</button>
 			</div>
 		
@@ -142,15 +150,21 @@
 						dataType: 'JSON',
 						success: function(data){
 							console.log(data);
-							var con = '<div class="card p-2"><div><c:if test="${bt ne \'익명게시판\'}">';
+							var con = '<div class="card p-2"><div class="d-inline"><div class="float-left mb-1"><c:if test="${bt ne \'익명게시판\'}">';
 							con += data.newcomment.name;
 							con += ' / </c:if>';
 							con += data.newcomment.creationDate;
-							con += '</div><div class="mt-1 pl-2 splitCon">';
+							con += '</div><button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,';
+							con += data.newcomment.commentID;
+							con += ')">삭제</button><button class="btn btn-outline-primary btn-sm float-right ml-2" onclick="commentFunction(this,';
+							con += data.newcomment.commentID;
+							con += ')">수정</button></div><div class="mt-1 pl-2 splitCon">';
 							con += data.newcomment.content;
 							con += '</div></div>';
-							$('#comment').append(con);
+							$('#commentDiv').append(con);
 							split();
+							$('#commnet').val('');
+							
 						},
 						error: function(e){
 							console.log(e);
@@ -202,8 +216,8 @@
 		var content = $target.find('.splitCon').html();
 		content = content.replace(/<br>/g, '\n');
 		var updateForm = '<div class="commentUpdateForm mt-1 pl-2"><textarea class="resizeAuto" oninput="resizeAuto(this)" placeholder="댓글을 남겨보세요" style="width: 100%"></textarea>';
-		updateForm +='<div class="float-right"><button onclick="commnetUpdateReset(this)">취소</button>';
-		updateForm +='<button onclick="commentUpdateGo(this,'+commentID+')">댓글 수정</button></div></div>';
+		updateForm +='<div class="float-right"><button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="commentUpdateGo(this,'+commentID+')">댓글 수정</button>';
+		updateForm +='<button class="btn btn-outline-primary float-right mt-4 ml-2" onclick="commnetUpdateReset(this)">취소</button></div></div>';
 		$target.append(updateForm);
 		$target.find('textarea').val(content).trigger('input');
 		

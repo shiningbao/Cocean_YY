@@ -45,6 +45,7 @@
 	.imgChange:hover{
 		cursor: pointer;
 	}
+	
 
 </style>
 </head>
@@ -59,7 +60,11 @@
 		</div>
 		
 		<div class="col-12 mx-auto">
-			<div><h4>${title.status} / ${title.nickname} / ${title.commonName} / ${title.animalCode}</h4></div>
+			<div id="animalTitle" class="mb-2">
+				<span id="animalStatus" class="badge mr-1" style="font-size: 1.4rem">${title.status}</span>
+				<span style="font-size: 1.8rem; font-weight: 600">${title.nickname}</span>
+				<span style="font-size: 1.3rem">&nbsp${title.commonName}-${title.animalCode} </span>
+			</div>
 			<div class="detailBar">
 				<div class="detailBar_item" id="base" onclick="detailPage('base')">친구들 정보</div>
 				<div class="detailBar_item" id="log" onclick="detailPage('log')">친구들 기록</div>
@@ -158,19 +163,29 @@
 							<tr>
 								<th class="text-center" scope="col">
 									<p>담당자</p>
-									<button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#inchargeModal">담당자 지정</button>
+									<c:if test="${(userInfo.departmentName eq '사육팀' or userInfo.departmentName eq '질병관리팀') and (userInfo.positionID eq 2)}">
+										<button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#inchargeModal">담당자 지정</button>
+									</c:if>
 								</th>
 								<td>
-									<c:if test="${empty incharge}">담당자 없음</c:if> <c:forEach
-										items="${incharge}" var="ic"><p>${ic.departmentName} ${ic.name}</p>
+									<c:if test="${empty incharge}">담당자 없음</c:if>
+									<c:forEach items="${incharge}" var="ic">
+										<p>${ic.departmentName} ${ic.name}</p>
 									</c:forEach>
 								</td>
 							</tr>
 						</table>
 						<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 							<button class="btn btn-secondary mr-2 mb-2" onclick="animaList()">이전</button>
-							<button class="btn btn-primary mr-2 mb-2" onclick="animalUpdate(${base.animalID})">수정</button>
-							<button class="btn btn-primary mr-2 mb-2" onclick="animalDel(${base.animalID})">삭제</button>
+							<c:forEach items="${incharge}" var="item">
+								<c:if test="${item.employeeID eq userInfo.employeeID}">
+									<button class="btn btn-primary mr-2 mb-2" onclick="animalUpdate(${base.animalID})">수정</button>
+								</c:if>
+							</c:forEach>
+							<c:if test="${(userInfo.departmentName eq '사육팀' or userInfo.departmentName eq '질병관리팀') and (userInfo.positionID eq 2)}">
+								<button class="btn btn-primary mr-2 mb-2" onclick="animalDel(${base.animalID})">삭제</button>
+							</c:if>
+							
 						</div>
 					</div>
 				</div>
@@ -369,7 +384,7 @@
 					}else{
 						var info = data.info
 						var con = '<tr><th>'+info.hqName+'</th><th>'+info.departmentName+'</th><th>'+info.name+'</th>';
-						con += '<th><button onclick="inchargeDel(this,'+emp+')">삭제</button></th>';
+						con += '<th><button class="close" onclick="inchargeDel(this,'+emp+')"><span aria-hidden="true">&times;</span></button></th>';
 						con += '<th class="inchargeEmployeeID" style="display:none">'+emp+'</th></tr>';
 						$('#inchargeTable').append(con);
 						inchargeList_after.push(emp);
@@ -382,7 +397,7 @@
 			});	
 		}
 	}
-	
+
 	// 담당자 삭제
 	function inchargeDel(button,emp){
 		$(button).closest('tr').remove();
@@ -427,10 +442,11 @@
 								button: "확인"
 							}).then((isOkey) => {
 								if(isOkey){
-									console.log('aaaa');
-									$("#inchargeModal").modal('hide');
-									$('.modal-backdrop').remove();
-									getContents('base');
+// 									console.log('aaaa');
+// 									$("#inchargeModal").modal('hide');
+// 									$('.modal-backdrop').remove();
+// 									getContents('base');
+									location.href = location.href;
 								}
 							});
 						},
@@ -480,6 +496,18 @@
 		});
 	}
 	split();
+	
+	var animalStatus = $('#animalStatus').html();
+	if(animalStatus == '정상'){
+		$('#animalStatus').addClass('badge-success');
+	}else if(animalStatus == '질병'){
+		$('#animalStatus').addClass('badge-warning');
+	}else if(animalStatus == '격리'){
+		$('#animalStatus').addClass('badge-danger');
+	}else if(animalStatus == '폐사'){
+		$('#animalStatus').addClass('badge-dark');
+	}
+
 	
 	
 </script>

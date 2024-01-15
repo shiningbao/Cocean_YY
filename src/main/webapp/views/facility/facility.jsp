@@ -401,8 +401,8 @@ $(document).on('click','.deleteButton',function(){
 	console.log('click');
 
 	swal({
-		title: "삭제 하시겠습니까?",
-		text: "",
+		title: "시설을 삭제 하시겠습니까?",
+		text: "삭제된 내용은 즉시 반영됩니다.",
 		icon: "warning",
 		buttons: ["취소","삭제"],
 	})
@@ -418,7 +418,6 @@ $(document).on('click','.deleteButton',function(){
 				        type: 'post',
 				        data: {deltxt: deltxt}, // 수정된 부분
 				        success: function(response) {
-				        	location.href=location.href;
 				        },
 				        error: function(error) {
 				        	alert('삭제 실패: ' + error);
@@ -436,24 +435,43 @@ $('#plusButton').on('click',function(){
 })
 $('#addFacilitySubmit').on('submit', function(e) {
     e.preventDefault();
-    var category = $('#category').val();
-    var facilityName = $('#addfacilityName').val();
-    var facilityInfo = $("#summernote1").summernote('code')
-    $.ajax({
-        url: 'addFacility.do',
-        type: 'post',
-        data: {
-        	category: category,
-        	facilityName: facilityName,
-        	facilityInfo: facilityInfo
-        },
-        success: function(response) {
-            swal('추가 되었습니다.','','success');
-        },
-        error: function(error) {
-            alert('업데이트 실패: ' + error);
-        }
-    });
+    
+	swal({
+		title:"시설을 추가하시겠습니까?",
+		text: "추가된 내용은 즉시 반영됩니다.",
+		icon: "success",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('추가가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+				    var category = $('#category').val();
+				    var facilityName = $('#addfacilityName').val();
+				    var facilityInfo = $("#summernote1").summernote('code')
+				    $.ajax({
+				        url: 'addFacility.do',
+				        type: 'post',
+				        data: {
+				        	category: category,
+				        	facilityName: facilityName,
+				        	facilityInfo: facilityInfo
+				        },
+				        success: function(response) {
+				        	$('#addFacility').modal('hide');
+				        },
+				        error: function(error) {
+				            alert('업데이트 실패: ' + error);
+				        }
+				    });
+					
+				}
+			})
+		}
+	});
+    
+
 });
 
 $('#facilitySubmit').on('submit', function(e) {
@@ -484,7 +502,7 @@ $('#facilitySubmit').on('submit', function(e) {
 				            facilityID: facilityID
 				        },
 				        success: function(response) {
-				            location.href=location.href;
+				        	$('#editFacilityModal').modal('hide');
 				        },
 				        error: function(error) {
 				            alert('업데이트 실패: ' + error);

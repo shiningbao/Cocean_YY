@@ -52,7 +52,11 @@
 		</div>
 		
 		<div class="col-12 mx-auto">
-			<div><h4>${title.status} / ${title.nickname} / ${title.commonName} / ${title.animalCode}</h4></div>
+			<div id="animalTitle" class="mb-2">
+				<span id="animalStatus" class="badge mr-1" style="font-size: 1.4rem">${title.status}</span>
+				<span style="font-size: 1.8rem; font-weight: 600">${title.nickname}</span>
+				<span style="font-size: 1.3rem">&nbsp${title.commonName}-${title.animalCode} </span>
+			</div>
 			<div class="detailBar">
 				<div class="detailBar_item" id="base" onclick="detailPage('base')">친구들 정보</div>
 				<div class="detailBar_item" id="log" onclick="detailPage('log')">친구들 기록</div>
@@ -63,68 +67,75 @@
 			
 			<div class="card shadow pt-4 p-2 mx-2">
 				<input class="form-control mx-2" type="month" name="month" value="${month}" onchange="monthchange()" style="width:200px"/>
-				<br/>
-				<div id="logPlanWriteForm">
-					<h5>
-						<c:if test="${category eq 'log'}">
-							친구들 기록 작성
-						</c:if>
-						<c:if test="${category eq 'plan'}">
-							친구들 관리 계획 작성
-						</c:if>
-					</h5>
-					<div class="row">
-						<div class="col-md-6 align-items-center">
-							${userInfo.departmentName} ${userInfo.name}
+<!-- 				<br/> -->
+				<c:forEach items="${incharge}" var="item">
+					<c:if test="${item.employeeID eq userInfo.employeeID}">
+						<div id="logPlanWriteForm">
+							<h5>
+								<c:if test="${category eq 'log'}">
+									친구들 기록 작성
+								</c:if>
+								<c:if test="${category eq 'plan'}">
+									친구들 관리 계획 작성
+								</c:if>
+							</h5>
+							<div class="row">
+								<div class="col-md-6 align-items-center">
+									${userInfo.departmentName} ${userInfo.name}
+								</div>
+								<div class="col-md-6 d-flex  mb-2 justify-content-end align-items-center">
+								<c:if test="${category eq 'log'}">
+								<div class="float-rigth">현재 상태:</div>
+		
+									<select id="status" class="form-control mx-2" style="width: 200px">
+										<option value="정상">정상</option>
+										<option value="질병">질병</option>
+										<option value="격리">격리</option>
+										<option value="폐사">폐사</option>
+									</select>
+		
+									</c:if>
+									<button class="btn btn-primary mr-1 ml-2"
+										type="button" name="logWrite" onclick="logplanWrite()">등록</button>
+								</div>
+							</div>
+							<div id="summernote"></div>
 						</div>
-						<div class="col-md-6 d-flex  mb-2 justify-content-end align-items-center">
-						<c:if test="${category eq 'log'}">
-						<div class="float-rigth">현재 상태:</div>
-
-							<select id="status" class="form-control mx-2" style="width: 200px">
-								<option value="정상">정상</option>
-								<option value="질병">질병</option>
-								<option value="격리">격리</option>
-								<option value="폐사">폐사</option>
-							</select>
-
-							</c:if>
-							<button class="btn btn-primary mr-1 ml-2"
-								type="button" name="logWrite" onclick="logplanWrite()">등록</button>
-						</div>
-					</div>
-				</div>
-					<div id="summernote"></div>
-
+					</c:if>
+				</c:forEach>
 				<hr>
-				<div>
+				<div id="logplanBody">
 					<c:if test="${empty content}">
-					<div class="card mb-8 border-left-warning">작성된 내용이 없습니다</div>
+					<div class="card mb-4">
+						<div class="text-center my-3">-- 작성된 내용이 없습니다 --</div>
+					</div>
 					</c:if>
 					<c:forEach items="${content}" var="item" varStatus="st">
-						<div class="status card mb-8">
+						<div class="status card mb-2">
 							<div class="card-header">
 								<span class="badge">${item.status}</span>
 								${item.departmentName}_${item.name} / ${item.creationDate}
-								<div class="float-right">
-									<!-- 계획 완료 변경 -->
-								<c:if test="${category eq 'plan'}">
-									<a class="btn btn-success btn-circle mr-1" onclick="aa(this,${item.logID})">
-										<i class="fas fa-check text-white"></i>
-									</a>
-								</c:if>
-									<!-- 수정 -->
-									<a class="btn btn-warning btn-circle mr-1" onclick="logplanUpdateGo(this,${item.logID})">
-										<i class="fi fi-sr-pencil text-white"></i>
-									</a>
-									<!-- 삭제 -->
-									<a class="btn btn-danger btn-circle mr-1" onclick="logplanDel('${item.logID}')">
-										<i class="fas fa-trash text-white"></i>
-									</a>
-								</div>		
+								<c:if test="${item.employeeID eq userInfo.employeeID}">
+									<div class="float-right">
+										<!-- 계획 완료 변경 -->
+									<c:if test="${category eq 'plan'}">
+										<a class="btn btn-success btn-circle mr-1" onclick="aa(this,${item.logID})">
+											<i class="fas fa-check text-white"></i>
+										</a>
+									</c:if>
+										<!-- 수정 -->
+										<a class="btn btn-warning btn-circle mr-1" onclick="logplanUpdateGo(this,${item.logID})">
+											<i class="fi fi-sr-pencil text-white"></i>
+										</a>
+										<!-- 삭제 -->
+										<a class="btn btn-danger btn-circle mr-1" onclick="logplanDel('${item.logID}')">
+											<i class="fas fa-trash text-white"></i>
+										</a>
+									</div>
+								</c:if>		
 							</div>
-							<div class="card-body">
-								<p class="card-text logcontent">${item.content}</p>
+							<div class="card-body pb-1">
+								<div class="card-text logcontent">${item.content}</div>
 								<div id="log_${item.logID}"></div>
 							</div>
 						</div>
@@ -159,18 +170,20 @@
 		return year + '-' + month;
 	}
 	
-	if($('input[name="month"]').val() != getMonth()){
-		$('#logPlanWriteForm').css({'display':'none'});
-	}else{
-		$('#summernote').summernote({
-			height: 200,
-			maxHeight: 500,
-			minHeight: 200,
-			focus: true,
-			toolbar:['picture']
-		});
+	if($('#logPlanWriteForm').length > 0){
+		if($('input[name="month"]').val() != getMonth()){
+			$('#logPlanWriteForm').css({'display':'none'});
+		}else{
+			$('#summernote').summernote({
+				height: 200,
+				maxHeight: 500,
+				minHeight: 200,
+				focus: true,
+				toolbar:['picture']
+			});
+		}	
 	}
-
+	
 	function monthchange(){
 		var month = $('input[name="month"]').val();
 		console.log(month);
@@ -248,18 +261,26 @@
 	function logplanUpdateGo(e,logID){
 		
 		var $find = $(e).parent().parent().parent();
-		var content = $find.find('.logcontent').html();
-		console.log(content);
+		console.log($find);
+		var content = $find.find('.logcontent').first().html();
+		$find.find('.logcontent').first().html('');
+		
 		var $updateSummerNote = $find.find('#log_'+logID);
 		$updateSummerNote.summernote({
-			height: 200,
+			height: 60,
 			maxHeight: 500,
-			minHeight: 200,
+			minHeight: 40,
 			focus: true,
 			toolbar:['picture']
 		});
-		var insertButton = '<button onclick="location.href = location.href">취소</button><button onclick="logplanUpdateDo(this,'+logID+')">수정 완료</button>';
-		$find.append(insertButton);
+		$updateSummerNote.summernote('code',content);
+		
+		var insertButton = '<div clss="d-inline my-2">';
+		insertButton += '<button class="btn btn-primary btn-sm float-right my-2" onclick="logplanUpdateDo(this,'+logID+')">수정 완료</button>';
+		insertButton += '<button class="btn btn-secondary btn-sm float-right mr-2 my-2" onclick="location.href = location.href">취소</button>';
+		insertButton += '</div>';
+		$find.find('.card-body').first().append(insertButton);
+		$('#logplanBody').find('.btn-circle').css({'display':'none'});
 	}
 	
 	
@@ -306,7 +327,16 @@
 		}
 	})
 	
-	
+	var animalStatus = $('#animalStatus').html();
+	if(animalStatus == '정상'){
+		$('#animalStatus').addClass('badge-success');
+	}else if(animalStatus == '질병'){
+		$('#animalStatus').addClass('badge-warning');
+	}else if(animalStatus == '격리'){
+		$('#animalStatus').addClass('badge-danger');
+	}else if(animalStatus == '폐사'){
+		$('#animalStatus').addClass('badge-dark');
+	}
 	
 	
 
