@@ -185,7 +185,7 @@ tbody tr {
                      <tr>
                         <th>연차</th>
                         <td>
-                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="\d{2}" title="두자리숫자만 입력해주세요" required/>
+                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="[0-9]{1,2}" title="숫자만 입력해주세요" required/>
                         </td>
                     </tr>
                     
@@ -272,6 +272,8 @@ tbody tr {
 var departmentSelect = $('#departmentSelect');
 var resSelect = $('#resSelect');
 var branchSelect = $('#branchSelect');
+
+
 
 function getPositionName() {
     $.ajax({
@@ -457,13 +459,33 @@ $(document).ready(function() {
     $('#deSelect').empty();
     
     $('#submitBtn').click(function(event) {
-        var fileInput = $('#fileInput');
-        var fileSignatureInput = $('#fileSignatureInput');
+        event.preventDefault();
 
-        if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
-            event.preventDefault();
-            alert('이미지를 선택해주세요.');
-        }
+        swal({
+            title: "사원을 등록하시겠습니까??",
+            text: "",
+            icon: "info",
+            buttons: ["취소","등록"],
+        })
+        .then((isOkey) => {
+            if (isOkey) {
+                var fileInput = $('#fileInput');
+                var fileSignatureInput = $('#fileSignatureInput');
+
+                if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
+                    swal('이미지를 선택해주세요.', '', 'warning');
+                } else {
+                    swal('등록이 완료되었습니다.', '', 'success')
+                    .then((isOkey) => {
+                        if (isOkey) {
+                            // 이 부분에서 서브밋 후 이동 로직을 처리
+                            $('#joinForm').submit();
+                            // location.href = 'personnelList.go?category=&search=&branch=&pageNum=1';
+                        }
+                    });
+                }
+            }
+        });
     });
 });
 

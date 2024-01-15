@@ -13,6 +13,8 @@
 		GROUP BY tankID 
 		HAVING
 		e.name like CONCAT('%',#{search},'%')
+<!-- 		AND tm.tankStatus like CONCAT('%',#{status},'%') -->
+<!-- 		AND tc.tankType  like CONCAT('%',#{type},'%') -->
 		ORDER BY tankID ASC LIMIT #{pageNum},10
 	</select>
 	
@@ -96,11 +98,7 @@
 		SELECT e.name FROM employee e 
 		WHERE employeeID = (SELECT ic.employeeID FROM inCharge ic WHERE ic.category = 'tank' AND ic.idx = #{param1})
 	</select>
-	
-<!-- 	<select id="logForm" resultType="map"> -->
-<!-- 		SELECT tm.tankStatus , tr.* FROM tankManagement tm ,tankRecord tr  -->
-<!-- 		WHERE tr.recordDate = CURDATE() AND tr.tankID = #{param} AND tm.tankID = #{param} ORDER BY recordTime DESC LIMIT 1 -->
-<!-- 	</select> -->
+	 
 	
 	<select id="recentRecord" resultType="map">
 		SELECT * FROM tankRecord tr WHERE recordDate = CURDATE() AND tankID = #{param} ORDER BY recordTime DESC LIMIT 1 
@@ -120,6 +118,11 @@
 		WHERE tankID = #{param1} GROUP BY recordDate HAVING recordDate BETWEEN #{param2} AND LAST_DAY(#{param2}) ORDER BY recordTime DESC
 	</select>
 	
+	<select id="getAbNomal" parameterType="String" resultType="map">
+		SELECT creationDate ,content  FROM logPlanTable WHERE idx = #{param1} AND coceanCategory = 'house' AND manageCategory = 'log' AND creationDate BETWEEN #{param2} AND LAST_DAY(#{param2})
+	</select>
+	
+	
 	
 	<insert id="addPlan" parameterType="map">
 		INSERT INTO logPlanTable VALUES (null,#{empolyeeID},'plan','house',#{tankID},now(),#{content},'진행')
@@ -137,6 +140,24 @@
 	<update id="donePlan">
 		UPDATE logPlanTable SET status = '완료' WHERE logID = #{param}
 	</update>
+	
+	
+	<select id="getStandard" resultType="map">
+		SELECT * FROM managementItemsTable WHERE tankID = #{param}
+	</select>
+	
+	<insert id="abNormal" parameterType="map">
+		INSERT INTO logPlanTable VALUES (NULL, 240002, 'log', 'house', #{tankID}, NOW(), CONCAT('이상수치 발생', ':', SPACE(1), #{item}, SPACE(1), #{value}), '이상')
+	</insert>
+
+	<update id="tankStatus" parameterType="map">
+		UPDATE tankManagement SET tankStatus = '이상' WHERE tankID = #{tankID}
+	</update>
+	
+	<update id="nomal">
+		UPDATE tankManagement SET tankStatus = '정상' WHERE tankID = #{tankID}
+	</update>
+	
 	
 	
 </mapper>

@@ -18,7 +18,8 @@
 	width: 290px;
 }
 .sales{
-	width: 420px;
+	width: 860px;
+	margin-left: 29px;
 }
 .branchType span{
 	font-size: 18px;
@@ -63,25 +64,8 @@
  
  <div class="card shadow mb-2 col-12 mx-auto">
  <div class="title">매출 추이</div>
-  <div class="row">
-    <div class="col">
-      <canvas class="sales" id="sales"></canvas>
-    </div>
-    <div class="col">
-      <canvas class="sales" id="visitors"></canvas>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col">
-      <canvas class="sales" id="salesLine"></canvas>
-    </div>
-    <div class="col">
-      <canvas class="sales" id="visitorsLine"></canvas>
-    </div>
-  </div>
+      <canvas class="sales" id="salesVisitors"></canvas>
 </div>
-  
 </div>
   </div>
 
@@ -109,7 +93,7 @@ var sixMonthsAgoYearMonth = sixMonthsAgoYear + "-" + sixMonthsAgoMonth;
 console.log("6개월 이전 년월 : "+sixMonthsAgoYearMonth);
 
 $(document).ready(function(){
-	chart(nowYearMonth);
+	chart();
 });
 
 // chart js 폰트 크기 조정
@@ -127,7 +111,7 @@ function chart() {
           console.log(data);
           
           // 지점 셀렉트 박스 추가
-          var branchs = data.animal.filter(function (branch) {
+          var branchs = data.branchList.filter(function (branch) {
 		        return branch.branchName;
 		    });
           for (var i = 0; i < branchs.length; i++) {
@@ -257,373 +241,215 @@ function chart() {
 		 for (var i = 0; i < 6; i++) {
 				monthlyProductSales.push(productSales[i].monthlyTotalSales);
 			} 
-			
-          var barChartSales = document.querySelector('#sales').getContext('2d');
-          const sales = new Chart(barChartSales, {
-            type: 'bar',
-            data: {
-              labels: salesYearMonth,
-              datasets: [
-              	{	
-              		label : '상품 매출',
-              		data : monthlyProductSales
-              	},
-              	{	
-              		label : '티켓 매출',
-              		data : monthlyTicketSales
-              	}],
-            },
-            options: {
-              responsive: false,
-              scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
-                        callback: function(value, index, values) {
-                            return value / 10000;
-                        }
-                    }
-                }
-            },
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-                title: {
-                  display: true,
-                  text: ["매출", "단위 : 만원"],
-                  	font: {
-                      size: 17
-                    }
-                }
-              }
-            }
-          });
           
-       	  // 매출 선그래프 그리기
-          console.log("매출 선그래프 그리기");
-		  
-          let salesLineYearMonth = [];
-          let monthlyLineTicketSales = [];
-          let monthlyLineProductSales = [];
-          
-          var ticketSales = data.ticket.filter(function (ticket) {
-		        return ticket.branchName === "가산점";
-		    });
-          console.log("티켓 매출");
-          console.log(ticketSales);
-          
-          var productSales = data.product.filter(function (product) {
-		        return product.branchName === "가산점";
-		    });
-          console.log("상품 매출");
-          console.log(productSales);
-		 for (var i = 0; i < 6; i++) {
-			 salesLineYearMonth.push(ticketSales[i].yearMonth);
-			 monthlyLineTicketSales.push(ticketSales[i].monthlyTotalSales);
-			} 
-		 for (var i = 0; i < 6; i++) {
-			 monthlyLineProductSales.push(productSales[i].monthlyTotalSales);
-			} 
-			
-          var lineChartSales = document.querySelector('#salesLine').getContext('2d');
-          const salesLine = new Chart(lineChartSales, {
-            type: 'line',
-            data: {
-              labels: salesYearMonth,
-              datasets: [
-              	{	
-              		label : '상품 매출',
-              		data : monthlyProductSales
-              	},
-              	{	
-              		label : '티켓 매출',
-              		data : monthlyTicketSales
-              	}],
-            },
-            options: {
-              responsive: false,
-              scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
-                        callback: function(value, index, values) {
-                            return value / 10000;
-                        }
-                    }
-                }
-            },
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-                /* title: {
-                  display: true,
-                  text: '매출',
-                  	font: {
-                      size: 17
-                    }
-                } */
-              }
-            }
-          });
-          
-       	  // 관람객 차트 그리기
+          // 매출/관람객
           console.log("관람객 그래프 그리기");
-		  
-          let visitorsYearMonth = [];
-          let monthlyVisitorsNumber = [];
-          
-          var visitorsData = data.visitors.filter(function (visitors) {
-		        return visitors.branchName === "가산점";
-		    });
-          console.log("관람객");
-          console.log(visitorsData);
-          
-		 for (var i = 0; i < 6; i++) {
-			 visitorsYearMonth.push(visitorsData[i].yearMonth);
-			 monthlyVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
-			} 
+
+			let salesVisitorsYearMonth = [];
+			let monthlySalesTicket = [];
+			let monthlySalesProduct = [];
+			let monthlySalesVisitorsNumber = [];
 			
-          var barChartVisitors = document.querySelector('#visitors').getContext('2d');
-          const visitors = new Chart(barChartVisitors, {
-            type: 'bar',
-            data: {
-              labels: visitorsYearMonth,
-              datasets: [
-              	{	
-              		label : '관람객 수',
-              		data : monthlyVisitorsNumber
-              	}],
-            },
-            options: {
-              responsive: false,
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-                title: {
-                  display: true,
-                  text: ["관람객", "최근 6개월 관람객 : " + data.totalVisitors[0].totalVisitors +"명"],
-	                  font: {
-	                    size: 17
-	                  }
-                }
-              }
-            }
-          });
-          
-       // 관람객 선그래프 그리기
-          console.log("매출 선그래프 그리기");
-		  
-          let visitorsLineYearMonth = [];
-          let monthlyLineVisitorsNumber = [];
-          
-          var visitorsData = data.visitors.filter(function (visitors) {
-		        return visitors.branchName === "가산점";
-		    });
-          console.log("관람객");
-          console.log(visitorsData);
-          
-		 for (var i = 0; i < 6; i++) {
-			 visitorsLineYearMonth.push(visitorsData[i].yearMonth);
-			 monthlyLineVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
-			} 
+			var ticketSales = data.ticket.filter(function (ticket) {
+			    return ticket.branchName === "가산점";
+			});
+			console.log("티켓 매출");
+			console.log(ticketSales);
 			
-          var lineChartVisitors = document.querySelector('#visitorsLine').getContext('2d');
-          const visitorsLine = new Chart(lineChartVisitors, {
-            type: 'line',
-            data: {
-              labels: visitorsLineYearMonth,
-              datasets: [
-              	{	
-              		label : '관람객수',
-              		data : monthlyLineVisitorsNumber
-              	}],
-            },
-            options: {
-              responsive: false,
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-/*                 title: {
-                  display: true,
-                  text: ["관람객"],
-                  font: {
-                    size: 17
-                  }
-                }
- */              }
-            }
-          });
-          
-       
+			var productSales = data.product.filter(function (product) {
+			    return product.branchName === "가산점";
+			});
+			console.log("상품 매출");
+			console.log(productSales);
+			
+			for (var i = 0; i < 6; i++) {
+			    salesVisitorsYearMonth.push(ticketSales[i].yearMonth);
+			    monthlySalesTicket.push(ticketSales[i].monthlyTotalSales);
+			    monthlySalesProduct.push(productSales[i].monthlyTotalSales);
+			}
+			
+			var visitorsData = data.visitors.filter(function (visitors) {
+			    return visitors.branchName === "가산점";
+			});
+			console.log("관람객");
+			console.log(visitorsData);
+			
+			for (var i = 0; i < 6; i++) {
+			    monthlySalesVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
+			}
+			
+			    var salesVisitorsBarLine = document.querySelector('#salesVisitors').getContext('2d');
+			    const salesVisitors = new Chart(salesVisitorsBarLine, {
+			    	type:'line',
+		        data: {
+		            labels: salesVisitorsYearMonth,
+		            datasets: [
+		                {
+		                    label: '상품 매출',
+		                    data: monthlySalesProduct,
+		                    yAxisID: 'y',
+		                    type: 'bar',
+		                },
+		                {
+		                    label: '티켓 매출',
+		                    data: monthlySalesTicket,
+		                    yAxisID: 'y',
+		                    type: 'bar',
+		                },
+		                {
+		                    label: '관람객 수',
+		                    data: monthlySalesVisitorsNumber,
+		                    yAxisID: 'y2',
+		                    stacked: true,
+		                }
+		            ],
+		        },
+		        options: {
+		            responsive: false,
+		            scales: {
+		                y: {
+		                    stack: 'combined',
+		                    position: 'left',
+		                    beginAtZero: true,
+		                    ticks: {
+		                        callback: function (value, index, values) {
+		                            return value / 1000000 +'백만원';
+		                        }
+		                    }
+		                },
+		                y2: {
+		                    stacked: true,
+		                    position: 'right',
+		                    ticks: {
+		                      callback: function (value, index, values) {
+		                          return value +'명';
+		                      }
+                  			},
+		                    grid: {
+		                        drawOnChartArea: false,
+		                    }
+		                }
+		            },
+		            plugins: {
+		                legend: {
+		                    position: 'top',
+		                },
+		                title: {
+		                    display: true,
+		                    text: ["매출/관람객", "최근 6개월 관람객 : " + data.totalVisitors[0].totalVisitors + "명"],
+		                    font: {
+		                        size: 17
+		                    }
+		                }
+		            }
+		        }
+			    });
           // 지점 변경 버튼 클릭시
           $('#branchChange').click(function () {
-            // 선택된 지점의 이름
-            var selectedBranch = $('#selectType').val();
-            console.log("클릭된 지점명: " + selectedBranch);
-
-            // 선택된 지점 동물 데이터로 차트 업데이트
-            var branchAnimalData = data.animal.find(function (animal) {
-                return animal.branchName === selectedBranch;
-            });
-            console.log("선택된 지점 동물 데이터");
-            console.log(branchAnimalData);
-            if (branchAnimalData) {
-                // 코션친구들 차트 데이터 업데이트
-                coceanFriends.data.datasets[0].data = [branchAnimalData.normalNumber, branchAnimalData.isolatedNumber, branchAnimalData.illedNumber];
-                coceanFriends.options.plugins.title.text = ["코션친구들", "총 개체 수 : " + branchAnimalData.totalNumber];
-                coceanFriends.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-         // 선택된 지점 수조차트1 데이터로 차트 업데이트
-            var branchTankData = data.tank.find(function (tank) {
-                return tank.branchName === selectedBranch;
-            });
-            console.log("선택된 지점 수조 데이터");
-            console.log(branchTankData);
-            if (branchTankData) {
-                // 코션하우스 차트 데이터 업데이트
-                coceanHouse.data.datasets[0].data = [branchTankData.normalNumber, branchTankData.abnormalNumber];
-                coceanHouse.options.plugins.title.text = ["코션하우스 상태", "총 수조 수 : " + branchTankData.totalNumber];
-                coceanHouse.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-         // 선택된 지점 수조차트2 데이터로 차트 업데이트
-            var branchTankData = data.tank.find(function (tank) {
-                return tank.branchName === selectedBranch;
-            });
-            console.log("선택된 지점 수조 데이터");
-            console.log(branchTankData);
-            if (branchTankData) {
-                // 코션하우스 차트 데이터 업데이트
-                coceanHouseType.data.datasets[0].data = [branchTankData.seaWaterTankNumber, branchTankData.freshWaterTankNumber,
-                											branchTankData.semiAquaticTankNumber, branchTankData.landTankNumber];
-                coceanHouseType.options.plugins.title.text = ["코션하우스 종류", "총 수조 수 : " + branchTankData.totalNumber];
-                coceanHouseType.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-         // 선택된 지점 티켓 데이터로 차트 업데이트
-            var branchTicketData = data.ticket.filter(function (ticket) {
-                return ticket.branchName === selectedBranch;
-            });
-           console.log("선택된 지점 티켓 데이터");
-           console.log(branchTicketData);
-		   console.log(sales.data.datasets[1]);
-            if (branchTicketData) {
-                // 티켓 차트 데이터 업데이트
-                for (var i = 0; i < 6; i++) {
-                	sales.data.datasets[1].data[i] = branchTicketData[i].monthlyTotalSales;
-			} 
-                sales.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-         // 선택된 지점 상품 데이터로 차트 업데이트
-            var branchProductData = data.product.filter(function (product) {
-                return product.branchName === selectedBranch;
-            });
-           console.log("선택된 지점 상품 데이터");
-           console.log(branchProductData);
-		   console.log(sales.data.datasets[0]);
-            if (branchTicketData) {
-                // 상품 차트 데이터 업데이트
-                for (var i = 0; i < 6; i++) {
-                	sales.data.datasets[0].data[i] = branchProductData[i].monthlyTotalSales;
-			} 
-                sales.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-            
-         // 선택된 지점 관람객 데이터로 차트 업데이트
-            var branchVisitorsData = data.visitors.filter(function (visitors) {
-                return visitors.branchName === selectedBranch;
-            });
-            var branchTotalVisitorsData = data.totalVisitors.filter(function (totalVisitors) {
-              return totalVisitors.branchName === selectedBranch;
-          });
-           console.log("선택된 지점 관람객 데이터");
-           console.log(branchVisitorsData);
-           console.log(branchTotalVisitorsData);
-		   console.log(visitors.data.datasets[0]);
-            if (branchVisitorsData) {
-                // 관람객 차트 데이터 업데이트
-                	visitors.options.plugins.title.text = ["관람객", "최근 6개월 관람객 : " + branchTotalVisitorsData[0].totalVisitors + "명"];
-                for (var i = 0; i < 6; i++) {
-                	visitors.data.datasets[0].data[i] = branchVisitorsData[i].monthlyVisitorsNumber;
-			} 
-                visitors.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-            ///
-            
-            // 선택된 지점 티켓 선그래프로 데이터 업데이트
-            var branchTicketLineData = data.ticket.filter(function (ticket) {
-                return ticket.branchName === selectedBranch;
-            });
-           console.log("선택된 지점 티켓 데이터");
-           console.log(branchTicketLineData);
-		   console.log(salesLine.data.datasets[1]);
-            if (branchTicketLineData) {
-                // 티켓 차트 데이터 업데이트
-                for (var i = 0; i < 6; i++) {
-                	salesLine.data.datasets[1].data[i] = branchTicketLineData[i].monthlyTotalSales;
-			} 
-                salesLine.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-         // 선택된 지점 상품 선그래프로 데이터 업데이트
-            var branchProductLineData = data.product.filter(function (product) {
-                return product.branchName === selectedBranch;
-            });
-           console.log("선택된 지점 상품 데이터");
-           console.log(branchProductLineData);
-		   console.log(salesLine.data.datasets[0]);
-            if (branchProductLineData) {
-                // 상품 차트 데이터 업데이트
-                for (var i = 0; i < 6; i++) {
-                	salesLine.data.datasets[0].data[i] = branchProductLineData[i].monthlyTotalSales;
-			}
-                salesLine.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-            
-            
-         // 선택된 지점 관람객 선그래프로 데이터 업데이트
-            var branchVisitorsLineData = data.visitors.filter(function (visitors) {
-                return visitors.branchName === selectedBranch;
-            });
-           console.log("선택된 지점 관람객 데이터");
-           console.log(branchVisitorsLineData);
-		   console.log(visitors.data.datasets[0]);
-            if (branchVisitorsLineData) {
-                // 관람객 차트 데이터 업데이트
-                for (var i = 0; i < 6; i++) {
-                	visitorsLine.data.datasets[0].data[i] = branchVisitorsLineData[i].monthlyVisitorsNumber;
-			} 
-                visitorsLine.update();
-            } else {
-                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
-            }
-        });
+		    // 선택된 지점의 이름
+		    var selectedBranch = $('#selectType').val();
+		    console.log("클릭된 지점명: " + selectedBranch);
+		
+		    // 선택된 지점 동물 데이터로 차트 업데이트
+		    var branchAnimalData = data.animal.find(function (animal) {
+		        return animal.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 동물 데이터");
+		    console.log(branchAnimalData);
+		    console.log(coceanFriends.data.datasets[0]);
+		    if (branchAnimalData) {
+		        // 코션친구들 차트 데이터 업데이트
+		        coceanFriends.data.datasets[0].data = [branchAnimalData.normalNumber, branchAnimalData.isolatedNumber, branchAnimalData.illedNumber];
+		        coceanFriends.options.plugins.title.text = ["코션친구들", "총 개체 수 : " + branchAnimalData.totalNumber];
+		        coceanFriends.update();
+		    } else {
+		        console.log("선택된 지점 동물 데이터를 찾을 수 없습니다.");
+		        alert("선택된 지점 동물 데이터를 찾을 수 없습니다.");
+		    }
+		
+		    // 선택된 지점 수조차트1 데이터로 차트 업데이트
+		    var branchTankData1 = data.tank.find(function (tank) {
+		        return tank.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 수조 데이터1");
+		    console.log(branchTankData1);
+		    if (branchTankData1) {
+		        // 코션하우스 차트 데이터 업데이트
+		        coceanHouse.data.datasets[0].data = [branchTankData1.normalNumber, branchTankData1.abnormalNumber];
+		        coceanHouse.options.plugins.title.text = ["코션하우스 상태", "총 수조 수 : " + branchTankData1.totalNumber];
+		        coceanHouse.update();
+		    } else {
+		        console.log("선택된 지점 수조 데이터1를 찾을 수 없습니다.");
+		    }
+		
+		    // 선택된 지점 수조차트2 데이터로 차트 업데이트
+		    var branchTankData2 = data.tank.find(function (tank) {
+		        return tank.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 수조 데이터2");
+		    console.log(branchTankData2);
+		    if (branchTankData2) {
+		        // 코션하우스 차트 데이터 업데이트
+		        coceanHouseType.data.datasets[0].data = [branchTankData2.seaWaterTankNumber, branchTankData2.freshWaterTankNumber,
+		            branchTankData2.semiAquaticTankNumber, branchTankData2.landTankNumber];
+		        coceanHouseType.options.plugins.title.text = ["코션하우스 종류", "총 수조 수 : " + branchTankData2.totalNumber];
+		        coceanHouseType.update();
+		    } else {
+		        console.log("선택된 지점 수조 데이터2를 찾을 수 없습니다.");
+		    }
+		
+		    // 선택된 지점 상품 데이터로 차트 업데이트
+		    var branchProductData = data.product.filter(function (product) {
+		        return product.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 상품 데이터");
+		    console.log(branchProductData);
+		    if (branchProductData) {
+		        // 상품 차트 데이터 업데이트
+		        for (var i = 0; i < 6; i++) {
+		            salesVisitors.data.datasets[0].data[i] = branchProductData[i].monthlyTotalSales;
+		        }
+		        salesVisitors.update();
+		    } else {
+		        console.log("선택된 지점 상품 데이터를 찾을 수 없습니다.");
+		    }
+		
+		    // 선택된 지점 티켓 데이터로 차트 업데이트
+		    var branchTicketData = data.ticket.filter(function (ticket) {
+		        return ticket.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 티켓 데이터");
+		    console.log(branchTicketData);
+		    if (branchTicketData) {
+		        // 티켓 차트 데이터 업데이트
+		        for (var i = 0; i < 6; i++) {
+		            salesVisitors.data.datasets[1].data[i] = branchTicketData[i].monthlyTotalSales;
+		        }
+		        salesVisitors.update();
+		    } else {
+		        console.log("선택된 지점 티켓 데이터를 찾을 수 없습니다.");
+		    }
+		
+		    // 선택된 지점 관람객 데이터로 차트 업데이트
+		    var branchVisitorsData = data.visitors.filter(function (visitors) {
+		        return visitors.branchName === selectedBranch;
+		    });
+		    var branchTotalVisitorsData = data.totalVisitors.filter(function (totalVisitors) {
+		        return totalVisitors.branchName === selectedBranch;
+		    });
+		    console.log("선택된 지점 관람객 데이터");
+		    console.log(branchVisitorsData);
+		    if (branchVisitorsData && branchTotalVisitorsData) {
+		        // 관람객 차트 데이터 업데이트
+		        salesVisitors.options.plugins.title.text = ["매출/관람객", "최근 6개월 관람객 : " + branchTotalVisitorsData[0].totalVisitors + "명"];
+		        for (var i = 0; i < 6; i++) {
+		            salesVisitors.data.datasets[2].data[i] = branchVisitorsData[i].monthlyVisitorsNumber;
+		        }
+		        salesVisitors.update();
+		    } else {
+		        console.log("선택된 지점 관람객 데이터를 찾을 수 없습니다.");
+		    }
+		});
       },
       error: function (e) {
           console.log(e);
@@ -631,7 +457,6 @@ function chart() {
   });
 }
 
-  
   
   
 

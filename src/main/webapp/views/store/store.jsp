@@ -296,7 +296,7 @@ var currentBranchName;
 var currentProductCategory;
 var currentProductName;
 var currentProductPrice;
-
+var totalProductNumber;
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
     // 첫 번째 Ajax 호출
@@ -377,8 +377,9 @@ new Promise((resolve, reject) => {
     		       	   
    		       		  // 총 상품 개수 추가
    		       		  $('#totalProductNumber').append(data.totalProductNumber[0].totalProductNumber);
-   		       		  
-    				// 상품 리스트 추가
+   		       		totalProductNumber = data.totalProductNumber[0].totalProductNumber;
+
+   		       		// 상품 리스트 추가
     				console.log("------------------");
     				console.log(data);
     				for (var i = 0; i < data.branchProductList.length; i++) {
@@ -452,7 +453,7 @@ new Promise((resolve, reject) => {
 					        
 					     	// 총 상품 개수 추가
    		       		  		$('#totalProductNumber').html('상품 개수 : ' + matchedTotalProduct.totalProductNumber);
-					     	
+   		       		  	totalProductNumber = matchedTotalProduct.totalProductNumber;
 					        // 상품 데이터를 테이블에 추가
 					        if (matchedProducts.length > 0) {
 					            for (var j = 0; j < matchedProducts.length; j++) {
@@ -816,41 +817,54 @@ searchProduct(searchKeyword, currentBranchName);
    }
    	
    	var productID;
-    document.getElementById('productTable').addEventListener('click', function (event) {
-      // 체크박스를 클릭한 경우에만 처리
-      if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
-          // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('data-productID');
-          branchID = event.target.getAttribute('data-branchID');
-          console.log('Selected ProductID:', productID);
-          console.log('Selected branchID:', branchID);
-      }
-  });
     
-   	// 지점 상품 삭제
-   	function branchProductDelete(){
-   		console.log(productID);
-   		console.log(branchID);
-	   	 var isConfirmed = confirm("삭제하시겠습니까?");
-	     if (isConfirmed) {
-	    	 $.ajax({
-	    			url: "branchProductDelete.do",
-	 	   		data: {
-	 	        'productID': productID,
-	 	        'branchID' : branchID
-	 	     	},
-	    			type: "POST",
-	    			success: function(data){
-	    				console.log("지점상품 삭제 성공");
-	    				/* alert("상품이 삭제되었습니다!"); */
-	    			},
-	    			error: function(e){
-	    				console.log(e);
-	    			}
-	    		});
-	     } else {
-	     }
-   	}
+   	
+   	
+   	
+   	$(document).ready(function() {
+   	    $('#productTable').on('click', function(event) {
+   	        if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
+   	            var parentRow = $(event.target).closest('tr');
+
+   	            var productID = $(event.target).data('productid');
+   	            var branchID = $(event.target).data('branchid');
+   	            console.log("productID : "+ productID);
+   	            
+   	           $('#branchProductDelete').click(function () {
+   	          	var isConfirmed = confirm("삭제하시겠습니까?");
+   	            if (isConfirmed) {
+   	                $.ajax({
+   	                    url: "branchProductDelete.do",
+   	                    data: {
+   	                        'productID': productID,
+   	                        'branchID': branchID
+   	                    },
+   	                    type: "POST",
+   	                    success: function(data) {
+   	                        parentRow.remove();
+   	                        // 삭제후 총 상품 개수 -1
+   	                       totalProductNumber = totalProductNumber -1 ; // 또는 totalProductNumber += 1; 또는 totalProductNumber++;
+							console.log(totalProductNumber);
+							
+							// 업데이트된 값으로 HTML에 추가
+							$('#totalProductNumber').empty();
+							$('#totalProductNumber').html('상품 개수 : ' + totalProductNumber);
+   	                        console.log("지점상품 삭제 성공");
+   	                    },
+   	                    error: function(e) {
+   	                        console.log(e);
+   	                    }
+   	                });
+   	            
+   	           }
+   						}); 
+   	           
+   	            
+   	        }
+   	    });
+   	});
+
+   	
    	
    	var msg = "${msg}";
    	if(msg!=""){

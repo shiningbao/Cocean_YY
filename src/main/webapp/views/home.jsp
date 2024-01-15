@@ -51,7 +51,41 @@
 				<div class="card border-secondary mb-5" style="width:100%;">
 				  <div class="card-body">
 				    <h4 class="card-title">공지사항</h4>
-				    <p class="card-text">게시판 배치</p>
+				    
+					    <table class="table table-hover">
+						<colgroup>
+							<col width="20%">
+							<col width="40%">
+							<col width="20%">
+							<col width="20%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">글 번호</th>
+								<th scope="col">제목</th>
+								<th scope="col">작성자</th>
+								<th scope="col">작성일</th>
+							</tr>
+						</thead>
+						<tr>
+						<c:if test="${empty notice}">
+							<tr>
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
+						<c:forEach items="${notice}" var="item">
+							<tr>
+								<td>
+									<c:if test="${item.isPinned eq 1}">공지</c:if>
+									<c:if test="${item.isPinned ne 1}">${item.boardID}</c:if>
+								</td>
+								<td><a href="board/notice/detail?boardID=${item.boardID}">${item.title}</a></td>
+								<td>${item.name}</td>
+								<td>${item.creationDate}</td>
+							</tr>
+						</c:forEach>
+					</table>
+				
 				    <p class="card-text"></p>
 				  </div>
 				</div>

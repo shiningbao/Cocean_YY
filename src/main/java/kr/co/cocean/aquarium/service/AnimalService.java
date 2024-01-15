@@ -111,13 +111,14 @@ public class AnimalService {
 	}
 
 	public ModelAndView animalDetailLogPlan(int animalID, String category, String month) {
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail_log");
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_logPlan");
 
 		mav.addObject("category", category);
 		mav.addObject("content", dao.animalLogPlan(animalID, category, month));
 		mav.addObject("month",month);
 		mav.addObject("animalID", animalID);
 		mav.addObject("title", dao.getAnimalTitle(animalID));
+		mav.addObject("incharge", dao.animalInCharge(animalID));
 
 		return mav;
 	}
@@ -318,6 +319,16 @@ public class AnimalService {
 			msg = "수정을 완료했습니다";
 		}
 		result.put("msg", msg);
+		return result;
+	}
+
+	public HashMap<String, Object> logplanComplete(int logID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		int update = dao.logplanComplete(logID);
+		
+		result.put("update", update);
+		
 		return result;
 	}
 

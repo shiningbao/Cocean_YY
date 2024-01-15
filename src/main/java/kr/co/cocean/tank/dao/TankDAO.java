@@ -52,6 +52,16 @@ public interface TankDAO {
 
 	int donePlan(int logID);
 
+	HashMap<String, Object> getStandard(Integer tankID);
+
+	int abNormal(HashMap<String, Object> chkValue);
+
+	int tankStatus(HashMap<String, Object> chkValue);
+
+	int nomal(Integer tankID);
+
+	List<Map<String, Object>> getAbNomal(String tankID, String curDate);
+
 
 
 }

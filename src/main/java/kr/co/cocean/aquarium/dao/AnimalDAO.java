@@ -57,4 +57,6 @@ public interface AnimalDAO {
 	AnimalDTO getAnimalTitle(int animalID);
 
 	int logplanUpdateDo(int logID, String logplanUpdateContent);
+
+	int logplanComplete(int logID);
 }

@@ -29,6 +29,8 @@ public class TankService {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
+		params.put("status", pager.getStatus());
+		params.put("type", pager.getType());
 
 		Integer total = dao.totalCount(params);
 		if(total == 0) {
@@ -98,14 +100,14 @@ public class TankService {
 
 
 	public void recordData(Map<String, Integer> map) {
-		dao.recordData(map);
-
+		dao.recordData(map); // 난수 수치 기록
+	
 	}
 
+	public void nomal(Integer tankID) {
+		dao.nomal(tankID);
+	}
 
-//	public HashMap<String, Object> logForm(int tankID) {
-//		return dao.logForm(tankID);
-//	}
 
 
 	public HashMap<String, Object> recentRecord(int tankID) {
@@ -136,6 +138,23 @@ public class TankService {
 
 	public int donePlan(int logID) {
 		return dao.donePlan(logID);
+	}
+
+
+	public HashMap<String, Object> getStandard(Integer tankID) {
+		return dao.getStandard(tankID);
+	}
+
+
+	public void abNormal(HashMap<String, Object> chkValue) {
+		dao.abNormal(chkValue);
+		dao.tankStatus(chkValue);
+		
+	}
+
+
+	public List<Map<String, Object>> getAbNomal(String tankID, String curDate) {
+		return dao.getAbNomal(tankID, curDate);
 	}
 
 }

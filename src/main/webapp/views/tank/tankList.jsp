@@ -62,48 +62,25 @@ label {
 	<div class="row">
 	<div class="col-md">
 		<div id="checkBox" style="margin-top: 20px;">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked name="selectAll"  value="selectAll" id="option1" onclick="selectAll(this)">
-            <label class="form-check-label" for="option1">전체&nbsp;&nbsp;</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="${sessionScope.userInfo.employeeID}" id="option2" name="empolyeeID">
-            <label class="form-check-label" for="option2">담당하우스</label>
-        </div>
-
-            <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="정상" name="tankStatus" id="option3">
-            <label class="form-check-label" for="option3">정상&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        </div>
-            <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="이상" name="tankStatus" id="option4">
-            <label class="form-check-label" for="option4">이상&nbsp;&nbsp;</label>
-        </div>
-    
-    
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="1" name="tankType" id="option5">
-            <label class="form-check-label" for="option5">해수&nbsp;&nbsp;</label>
-        </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="2" name="tankType" id="option6">
-            <label class="form-check-label" for="option6">담수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        </div>
-            <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="3" name="tankType" id="option7">
-            <label class="form-check-label" for="option7">반수생&nbsp;</label>
-        </div>
-            <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" checked value="4" name="tankType" id="option8">
-            <label class="form-check-label" for="option8">육상&nbsp;&nbsp;</label>
-        </div>
-    
-
-        
-        <nav class="navbar navbar" id="search">
-            <form class="form-inline" action="list.go" method="get" id="frm">
+        <nav class="navbar navbar" id="search" style="width: 100%;">
+            <form class="form-inline" action="list.go" method="get" id="frm" style="width: 100%;">
+<!--     		<div style="display: flex; align-items: center; width: 75%;"> -->
+<!--     		<text style="font-size: 16px; margin-right: 1%;">타입</text> -->
+<!-- 				<select class="custom-select" id="type" name="type" style="color: black;  margin-right: 1%;"> -->
+<!-- 				<option selected>전체</option> -->
+<!-- 				<option value="해수">해수</option> -->
+<!-- 				<option value="담수">담수</option> -->
+<!-- 				<option value="반수생">반수생</option> -->
+<!-- 				<option value="육상">육상</option> -->
+<!-- 				</select> -->
+<!--     		<text style="font-size: 16px; margin-right: 1%;">상태</text> -->
+<!-- 				<select class="custom-select" id="type" name="status" style="color: black;"> -->
+<!-- 				<option selected>전체</option> -->
+<!-- 				<option value="정상">정상</option> -->
+<!-- 				<option value="이상">이상</option> -->
+<!-- 				<option value="폐쇄">폐쇄</option> -->
+<!-- 				</select> -->
+<!-- 			</div>             -->
               <input class="form-control mr-sm-2" type="search" name="search" placeholder="담당자명을 입력하세요." aria-label="Search">
               <input type="hidden" name="startNum" value="1" id="startNum">
               <input type="hidden" name="pageNum" value="" id="pageNum">
@@ -191,6 +168,7 @@ $(".p").click(function() {
 	$('#frm').submit();
 			
 });
+
 
 
 	
