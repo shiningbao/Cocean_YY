@@ -249,8 +249,8 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-	                int idx=service.write(files, param, lastLineInfoList);
-	                result.put("idx",idx);
+	                service.write(files, param, lastLineInfoList);
+	                // result.put("idx",idx);
 	            	}else { // 임시저장
 	            		logger.info(param.get("idx"));
 	            		service.update(files,param,lastLineInfoList);

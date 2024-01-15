@@ -55,6 +55,7 @@ button{
 
 #workDraftContent{
 	width : 50%;
+	
 }
 
 #attendanceDraftContent{
@@ -88,7 +89,7 @@ button{
 }
 
 #approvalLine td{
-	padding : 2px;
+	padding : 1px;
 	font-size : 12px;
 }
 
@@ -122,7 +123,7 @@ button{
     padding: 4% 2% 2% 2%;
     border: 5px solid #e8e8e8;
     width: 73%;
-    height: 94%;
+    height: 145%;
 }
 
 #bottom{
@@ -139,6 +140,7 @@ button{
 #formTitle{
     text-align: center;
     font-size: 41px;
+    font-family:Dotum;
 }
 
 .topTitle{
@@ -160,13 +162,6 @@ button{
 	float:right;
 }
 
-
-#agrSignature{
-	float:left;
-}
-.signAgr{
-	float:left;
-}
 
 .input-file-button{
     padding: 3px 10px;
@@ -208,9 +203,36 @@ th {
     }
     
     .delArea{
-    	margin:59%;
-    	width: 17px;
+		    margin: 62% 20% 0% -38%;
+    padding: 0px 11px;
+    width: 22px;
     }
+    
+    #draftInfo tr, #draftInfo th, #draftInfo td{
+    	    font-family: Dotum;
+    }
+    
+    #workDraftContent tr, #workDraftContent th, #workDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #attendanceDraftContent tr, #attendanceDraftContent th, #attendanceDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #leaveDraftContent tr, #leaveDraftContent th, #leaveDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #approvalSignature tr, #approvalSignature th, #approvalSignature td{
+    	font-family:Dotum;
+    	font-weight:bold;
+    }
+    
+    
+    
+    
+
 </style>
 </head>
 <body>
@@ -253,15 +275,15 @@ th {
 	
 <div id="rightContainer">
 <div class="card shadow" style="width:300px;">
-	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재라인</span>
     <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
 	<hr/>
 		<table id="approvalLine">
 			<tr>
 				<th style="background-color:white;"><img src='/photo/cocean/profile/${draftInfo.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
-				<td><span class="appStatus">상신</span></td>
+				<td><span class="appStatus" style="font-weight : bold;">상신</span></td>
 				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
-				<td>${draftInfo.rankName}</td>
+				<td>${draftInfo.positionName}</td>
 				<td>${draftInfo.name}</td>
 			</tr>
 		</table>
@@ -710,7 +732,7 @@ function calculateDays() {
 		        data: formData,
 		        cache: false,
 		        success: function (data) {
-		            console.log(data);
+		            // console.log(data);
 		            location.href = './myDraftList.go';
 		
 		        },
@@ -968,14 +990,14 @@ function calculateDays() {
 		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
 		        	row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
 		        } */
-		        row.append("<td class='category'>" +"<span class='appStatus'>"+ lineData.category +"</span>"+ "</td>");
+		        row.append("<td class='category'>" +"<span class='appStatus' style='font-weight : bold;'>"+ lineData.category +"</span>"+ "</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
+		            row.append("<td>" + lineData.positionName + lineData.name + "</td>");
 		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } 
 		        else {
 		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
-		            row.append("<td>" + lineData.rank + "</td>");
+		            row.append("<td>" + lineData.positionName + "</td>");
 		            row.append("<td>" + lineData.name + "</td>");
 		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
@@ -992,9 +1014,9 @@ function calculateDays() {
 		            row.append(row);
 		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        } else {
-		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
+		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.positionName + lineData.name + "</td>");
 		            row.append(row);
-		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
+		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);

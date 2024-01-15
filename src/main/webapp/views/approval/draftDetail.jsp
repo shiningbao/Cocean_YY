@@ -99,7 +99,8 @@ button{
 
 #formTitle{
   text-align: center;
-    font-size: 41px;
+  font-size: 41px;
+  font-family:Dotum;
 }
 
 #bottom{
@@ -173,6 +174,27 @@ th {
     text-decoration-thickness: 3px;
     text-decoration-color: #4480e9;
     }
+    
+     #detailInfo tr, #detailInfo th, #detailInfo td{
+    	    font-family: Dotum;
+    }
+    
+    #workDraftContent tr, #workDraftContent th, #workDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #attendanceDraftContent tr, #attendanceDraftContent th, #attendanceDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #leaveDraftContent tr, #leaveDraftContent th, #leaveDraftContent td{
+    	font-family:Dotum;
+    }
+    
+    #approvalSignature tr, #approvalSignature th, #approvalSignature td{
+    	font-family:Dotum;
+    	font-weight:bold;
+    }
 
 </style>
 </head>
@@ -238,14 +260,14 @@ th {
 	
 	<div id="rightContainer">
 	<div class="card shadow" style="width: 354px;padding: 3%;">
-	<div style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재정보</span>
+	<div style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
 				<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
-				<td><span class="appStatus">상신</span></td>
+				<td><span class="appStatus" style="font-weight : bold;">상신</span></td>
 				<td>${list.hqName}/${list.departmentName}</td>
-				<td>${list.rankName}</td>
+				<td>${list.positionName}</td>
 				<td>${list.name}</td>
 			</tr>
 			<c:forEach items="${lineList}" var="lL">
@@ -260,9 +282,9 @@ th {
         </c:otherwise>
     </c:choose>
     </th>
-        <td><span class="appStatus">${lL.category}</span></td>
+        <td><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
         <td>${lL.hqName}/${lL.departmentName}</td>
-        <td>${lL.rankName}<input type='hidden' id='order' value=''></td>
+        <td>${lL.positionName}<input type='hidden' id='order' value=''></td>
         <td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
         <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
             <td>
@@ -325,7 +347,7 @@ th {
                 <c:if test="${ref.category eq '참조'}">
                     <label>${ref.hqName}</label>
                     <label>${ref.departmentName}</label>
-                    <label>${ref.rankName}</label>
+                    <label>${ref.positionName}</label>
                     <label>${ref.name}</label>
                 </c:if>
             </c:forEach>
@@ -558,7 +580,7 @@ var idx = $('input[name="idx"]').val()
 	var content =
 	    "<table class='signApp'>" +
 	    "<tr>" +
-	    "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>" + firstItem.category + "<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>" +
+	    "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed; font-weight:bold;'>" + firstItem.category + "<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>" +
 	    "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>" + firstItem.positionName + "\u00A0" + firstItem.name + "</td>" +
 	    "</tr>" +
 	    "<tr>" +
@@ -625,7 +647,7 @@ function appSign(addItem) {
     var scLastTd = $('#approvalSignature tr:odd td:last');
     var lastTd = $('#approvalSignature td:last');
 
-    $("<td rowspan='3' style='width: 20px; background-color:#ededed;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
+    $("<td rowspan='3' style='width: 20px; background-color:#ededed; font-weight:bold;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
     
     if (addItem.approvalStatus != "대기" && addItem.approvalStatus != "미대기") {
         $("<td style='width: 80px; font-size:10px; '><input type='hidden' class='empID' value='" + addItem.employeeID + "'><img src='/photo/cocean/signature/" + addItem.serverFileName + "' width='40' height='40' class='signatureImg'></td>").insertAfter(scLastTd);

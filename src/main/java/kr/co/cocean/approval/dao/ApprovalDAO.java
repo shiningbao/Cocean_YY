@@ -34,7 +34,7 @@ public interface ApprovalDAO {
 
 	void saveApprovalLine(int employeeID, String category);
 
-	ArrayList<ApprovalDTO> approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
+	void approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
 
 	formDTO formTitle(int titleID);
 
@@ -158,9 +158,9 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> signImg(int idx);
 
-	void draftAlarm(List<String> waitingEmp, int idx);
+	List<ApprovalDTO> getWaitingEmp(int idx);
 
-	List<String> getWaitingEmp(int idx);
+	void draftAlarm(List<ApprovalDTO> waitingEmp, int idx);
 
 
 	/*

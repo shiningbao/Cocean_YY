@@ -52,7 +52,7 @@ public class ApprovalService {
 		return dao.draftInfo(employeeID);
 	}
 
-	public int write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+	public void write(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
 		ApprovalDTO dto = new ApprovalDTO();
 		int writerID = Integer.parseInt(param.get("writerID"));
 		int publicStatus = Integer.parseInt(param.get("publicStatus"));
@@ -120,9 +120,14 @@ public class ApprovalService {
 			 * }
 			 */
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
-			List<String> waitingEmp = dao.getWaitingEmp(idx);
-			// dao.draftAlarm(waitingEmp,idx);
-			SseService sse = new SseService();
+			List<ApprovalDTO> waitingEmp = dao.getWaitingEmp(idx);
+			logger.info("결재대기:"+waitingEmp);
+			
+			/*
+			 * dao.draftAlarm("/approval/draftDetail.go?idx="+idx+
+			 * "&employeeID=180001&category=결재&hTitle=waiting",idx); SseService sse = new
+			 * SseService();
+			 */
 			if(param.get("publicStatus").equals("1")) {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
 			}
@@ -141,13 +146,12 @@ public class ApprovalService {
 		 * new SseService(); sseService.alarm(category,Integer.parseInt(employeeID),
 		 * idx, form); }
 		 */
-		for (LineDTO lineInfo : lastLineInfoList) {
-			 lineInfo.getCategory(); String employeeID = lineInfo.getApprovalEmp(); dto =
-			 dao.getForm(idx); String form = dto.getFormTitle();
-			 }
-	
-		
-		 return idx;
+		/*
+		 * for (LineDTO lineInfo : lastLineInfoList) { lineInfo.getCategory(); String
+		 * employeeID = lineInfo.getApprovalEmp(); dto = dao.getForm(idx); String form =
+		 * dto.getFormTitle(); }
+		 */
+
 
 	}
 
