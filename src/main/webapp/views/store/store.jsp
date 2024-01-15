@@ -39,11 +39,12 @@
 .listTable th {
     position: sticky;
     top: 0;
-    background-color: #f2f2f2;
+   	/* color: white; */
+    background-color: #86B0F3;
 }
 
 .listTable td {
-    word-break: break-word;
+   /*  word-break: break-word; */
 }
 
 
@@ -60,7 +61,18 @@ text-align: center;
     top: 70px;
     width: 585px;
 }
-
+.searchedModalProduct{
+ height: 490px;
+  overflow-y: scroll;
+}
+.modalTable thead th {
+  position: sticky;
+  top: 0;
+  background-color: #86B0F3;
+}
+.modalInput{
+	margin-bottom: 7px;
+}
 #modalSearch{
 	width: 300px;
 }
@@ -76,7 +88,6 @@ text-align: center;
 }
 #secondProductModal{
 	height: 650px;
-	overflow: auto;
 }
 #totalProductNumber{
 	text-align: right;
@@ -206,7 +217,7 @@ img:hover {
                 <label>카테고리</label>
                 <input type="text" readonly class="form-control" id="currentProductCategory">
               </div>
-              <div class="form-group">
+              <div class="modalInput form-group">
                 <label>상품명</label>
                  <!-- 두번째 모달 창 열기 버튼 -->
         		 <button type="button" id="firstProductSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondProductModal">검색</button>
@@ -238,15 +249,20 @@ img:hover {
         </button>
       </div>
       <div class="modal-body">
-        <div>
+        <div class="row modalInput">
+        	<div class="col">
 	        <input type="text" id="secondProductModalSearch" class="form-control">
-	        <button class="secondProductModalSearch" class="btn btn-primary">검색</button>
+	        </div>
+	        <div class="col">
+	        <button class="btn btn-primary secondProductModalSearch" >검색</button>
+	        </div>
 	        </div>
 	        <div class="searchedModalProduct" >
-	               <table class="table">
+	               <table class="modalTable">
 	                   <thead>
 	                       <tr>
 	                           <th>상품번호</th>
+	                           <th>카테고리</th>
 	                           <th>상품명</th>
 	                           <th>가격</th>
 	                           <th>사진</th>
@@ -375,7 +391,7 @@ new Promise((resolve, reject) => {
 							    '<td>' + product.category + '</td>' +
 							    '<td>' + product.productName + '</td>' +
 							    '<td>' + product.price + '</td>' +
-							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+							    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 65px;" src="/photo/cocean/product/' +
 								product.serverFileName + '" alt=""/>' : '') + '</td>' +
 							    '</tr>';
 
@@ -385,6 +401,8 @@ new Promise((resolve, reject) => {
     				$('#selectType').on('change', function() {
     			    // 선택된 옵션의 값을 가져와서 출력 또는 사용
     			    var branchName = $(this).val();
+    			    $("#productInfoRegisterPage").hide();
+
     			    console.log("------------------");
 					    console.log("지점 버튼 클릭");
 					    console.log("선택된 지점 : " + branchName);
@@ -440,17 +458,20 @@ new Promise((resolve, reject) => {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
 					                var productInfo = '<tr>' +
-					                /* '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' + */
 					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
 					                '<td>' + product.productID + '</td>' +
 					                '<td>' + product.category + '</td>' +
 					                '<td>' + product.productName + '</td>' +
 					                '<td>' + product.price + '</td>' +
 					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-					    								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
+					    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
 					                '</tr>';
 
 					                productListTable.append(productInfo);
+					                $('input[name="productCheckbox"]').change(function() {
+					                  // 모든 productCheckbox 체크 해제
+					                  $('input[name="productCheckbox"]').not(this).prop('checked', false);
+					              });
 					            }
 					        } else {
 					            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
@@ -482,6 +503,7 @@ new Promise((resolve, reject) => {
 }).catch((error) => {
     console.log("에러 발생: " + error);
 });
+
 
 // 상품 리스트 등록 버튼 클릭시 상품명, 가격 value 값 비우기
 $('#modalProductRegister').click(function () {
@@ -578,7 +600,7 @@ searchProduct(searchKeyword, currentBranchName);
 				    '<td class="productNameCell">' + product.productName + '</td>' +
 				    '<td>' + product.price + '</td>' +
 				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
+								product.serverFileName + '" alt=""/>' : '') + '</td>' +
 				    '</tr>';
 				    
                     searchedModalProduct.append(productInfo);
@@ -597,8 +619,8 @@ searchProduct(searchKeyword, currentBranchName);
     $(document).on('click', '.productNameCell', function() {
       // 클릭한 행의 productName과 price 값을 가져와 변수에 저장
       var clickedRow = $(this).closest('tr');
-      currentProductName = clickedRow.find('td:eq(1)').text();
-      currentProductPrice = clickedRow.find('td:eq(2)').text();
+      currentProductName = clickedRow.find('td:eq(2)').text();
+      currentProductPrice = clickedRow.find('td:eq(3)').text();
       $('#currentProductName').val(currentProductName);
       $('#currentProductPrice').val(currentProductPrice);
       console.log("선택한 상품명: " + currentProductName);
@@ -631,7 +653,8 @@ searchProduct(searchKeyword, currentBranchName);
 		    '<td>' + product.productName + '</td>' +
 		    '<td>' + product.price + '</td>' +
 		    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-						product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
+						product.serverFileName + '" alt=""/>' : '') + '</td>' +
+						
 		    '</tr>';
             searchedModalProduct.append(productInfo);
         }
@@ -640,7 +663,7 @@ searchProduct(searchKeyword, currentBranchName);
         // 검색된 결과에 따라 상품 또는 티켓을 보여주는 테이블
         var productListTable = $('.productList table');
 		productListTable.empty();
-		productListTable.html('<tr><th>상품번호</th><th>상품명</th><th>카테고리</th><th>가격</th><th>사진</th></tr>');
+		productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>카테고리</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
 		
 		for (var i = 0; i < data.searchedList.length; i++) {
 		    var product = data.searchedList[i];
@@ -650,13 +673,14 @@ searchProduct(searchKeyword, currentBranchName);
 		        console.log(product);
 		
 		        var productInfo = '<tr>' +
-				    '<td>' + product.productID + '</td>' +
-				    '<td>' + product.category + '</td>' +
-				    '<td>'+ product.productName + '</td>' +
-				    '<td>' + product.price + '</td>' +
-				    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-								product.serverFileName + '" alt="티켓은 사진이 없습니다"/>' : '티켓은 사진이 없습니다') + '</td>' +
-				    '</tr>';
+		     '<td><input type="checkbox" onclick="return false"></td>' + 
+            '<td>' + product.productID + '</td>' +
+            '<td>' + product.category + '</td>' +
+            '<td>' + product.productName + '</td>' +
+            '<td>' + product.price + '</td>' +
+            '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								product.serverFileName + '" alt=""/>' : '') + '</td>' +
+            '</tr>';
 		
 		        productListTable.append(productInfo);
 		    }
@@ -759,7 +783,7 @@ searchProduct(searchKeyword, currentBranchName);
     function branchProductRegister(currentBranchName, currentProductName){
    		console.log("모달 상품등록 버튼");
     	$.ajax({
-        type: 'post',
+        type: 'POST',
         url: 'branchProductRegister.do',
         data: {
         	currentBranchName: currentBranchName,
@@ -796,7 +820,7 @@ searchProduct(searchKeyword, currentBranchName);
       // 체크박스를 클릭한 경우에만 처리
       if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
           // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('ßID');
+          productID = event.target.getAttribute('data-productID');
           branchID = event.target.getAttribute('data-branchID');
           console.log('Selected ProductID:', productID);
           console.log('Selected branchID:', branchID);
