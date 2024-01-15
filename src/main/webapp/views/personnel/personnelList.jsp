@@ -137,7 +137,7 @@
 			                	지점
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			                    <a class="dropdown-item" href="#" data-value="지점">지점</a>
+			                    <a class="dropdown-item" onclick="selectGO(e)" href="#" data-value="0">전체</a>
 			                </div>
 			            </div>
 			            </th>
@@ -236,47 +236,72 @@ $('.p').click(function(){
         success: function(response) {
             // 성공적으로 데이터를 받아온 경우 드롭다운 메뉴 생성
         	 response.forEach(function(branch) {
-                 $('.dropdown-menu').append('<a class="dropdown-item" href="#" data-value="' + branch.branchID + '">' + branch.branchName + '</a>');
+                 $('.dropdown-menu').append('<a class="dropdown-item" onclick="selectGO()" href="#" data-value="' + branch.branchID + '">' + branch.branchName + '</a>');
              });
         },
         error: function(xhr, status, error) {
             console.error(error);
         }
     });
+    
+    $('.dropdown-item').on('change',function(){
+    	
+//     	location.href='personnelList.go?category='+category+'&search='+inputSearch+'&pageNum=1';
+    	
+    });
 
     // 드롭다운 메뉴의 항목을 클릭했을 때 테이블을 그리도록 이벤트 핸들러를 등록합니다.
-    $('.dropdown-menu').on('click', '.dropdown-item', function(event) {
-        console.log('click');
-        var selectedBranchValue = $(this).data('value');
+//     $('.dropdown-menu').on('click', '.dropdown-item', function(event) {
+//         console.log('click');
+//         var selectedBranchValue = $(this).data('value');
 		
-        $.ajax({
-            url: 'getSelectOptionBranch.do',
-            method: 'GET',
-            data: { selectedBranchValue: selectedBranchValue },
-            success: function(data) {
-            	console.log(data);
-            	 fillTable(data);
-            },
-            error: function(e) {
-                console.error(e);
-            }
+//         $.ajax({
+//             url: 'getSelectOptionBranch.do',
+//             method: 'GET',
+//             data: { selectedBranchValue: selectedBranchValue },
+//             success: function(data) {
+//             	console.log(data);
+//             	 fillTable(data);
+//             },
+//             error: function(e) {
+//                 console.error(e);
+//             }
+//         });
+//     });
+    
+var category = '';  // 초기값을 빈 문자열로 설정
+var inputSearch = '';  // 초기값을 빈 문자열로 설정
+
+function selectGO(e) {
+
+    // 이전 검색 조건 가져오기
+    var currentCategory = category;
+    var currentInputSearch = inputSearch;
+
+    // 새로운 branchID 가져오기
+    var branchID = $(event.target).data('value');
+    console.log(branchID);
+
+
+        location.href = 'personnelList.go?category=&search=&branch=' + branchID + '&pageNum=1';
+  
+}
+
+function searchGo() {
+    category = $('#emName').val();
+    inputSearch = $('#inputSearch').val();
+    console.log(inputSearch);
+
+    if (inputSearch !== '') {
+        location.href = 'personnelList.go?category=' + category + '&search=' + inputSearch + '&branch=0&pageNum=1';
+    } else {
+        swal({
+            title: '검색어를 입력해주세요',
+            button: '확인'
         });
-    });
-    
-	function searchGo(){
-		var category = $('#emName').val();
-		var inputSearch = $('#inputSearch').val();
-		console.log(inputSearch);
-		if(inputSearch != ''){
-			location.href='personnelList.go?category='+category+'&search='+inputSearch+'&pageNum=1';		
-		}else{
-			swal({
-				title: '검색어를 입력해주세요',
-				button: '확인'
-			});
-		}
-	}
-    
+    }
+}
+
 //     function linkClick(){
 
     	

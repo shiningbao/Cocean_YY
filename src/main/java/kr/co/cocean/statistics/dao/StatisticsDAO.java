@@ -21,4 +21,8 @@ public interface StatisticsDAO {
 
 	ArrayList<SalesHistoryDTO> visitorsHistory();
 
+	ArrayList<SalesHistoryDTO> totalVisitors();
+
+	ArrayList<AnimalHistoryDTO> branchList();
+
 }

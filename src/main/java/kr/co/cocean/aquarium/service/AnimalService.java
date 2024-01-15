@@ -111,13 +111,14 @@ public class AnimalService {
 	}
 
 	public ModelAndView animalDetailLogPlan(int animalID, String category, String month) {
-		ModelAndView mav = new ModelAndView("aquarium/animalDetail_log");
+		ModelAndView mav = new ModelAndView("aquarium/animalDetail_logPlan");
 
 		mav.addObject("category", category);
 		mav.addObject("content", dao.animalLogPlan(animalID, category, month));
 		mav.addObject("month",month);
 		mav.addObject("animalID", animalID);
 		mav.addObject("title", dao.getAnimalTitle(animalID));
+		mav.addObject("incharge", dao.animalInCharge(animalID));
 
 		return mav;
 	}

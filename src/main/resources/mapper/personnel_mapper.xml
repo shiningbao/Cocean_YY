@@ -15,7 +15,7 @@
 	
 
 	<select id="getBranchID">
-		SELECT hqName,hqID FROM headquarters h WHERE branchID =#{branchID}
+		SELECT hqName,hqID FROM headquarters h WHERE branchID =#{branchID} and isActive = 1
 	</select>
 	
 	<select id="getBranchOrgID">
@@ -45,6 +45,7 @@
 		    LEFT JOIN department d ON e.departmentID = d.departmentID
 		    LEFT JOIN headquarters h ON d.hqID = h.hqID
 		    WHERE e.status = '재직'
+		    <if test="isActive == 0">  AND NOT employeeID REGEXP '^[0-9]+$' </if>
 		) AS data
 		UNION ALL
 		SELECT CONCAT('de',departmentID) AS id, 
@@ -84,30 +85,23 @@ fa-building' AS 'icon'
         <if test="search != null and !search.equals('')">
             <choose>
                 <when test="category != null and category.equals('name')">
-                    AND e.name LIKE CONCAT('%', #{search}, '%')
+                    AND e.name LIKE CONCAT('%', #{search}, '%') 
                 </when>
                 <when test="category != null and category.equals('employeeID')">
                     AND e.employeeID LIKE CONCAT(#{search}, '%')
                 </when>
             </choose>
         </if>
+        <if test="!(branch == 0)">
+		    AND b.branchID = #{branch}
+		</if>
     </where>
 		ORDER BY e.employeeID ASC LIMIT #{pageNum},10
 	</select>
+
 	
-	<select id="getSelectOptionBranch">
-		SELECT e.employeeID,e.name,d.departmentName, r.rankName,p.positionName,e.status ,b.branchName
-		FROM employee e
-		JOIN department d ON e.departmentID = d.departmentID
-		JOIN headquarters h ON d.hqID =h.hqID 
-		JOIN branch b  ON h.branchID = b.branchID 
-		JOIN `position` p ON e.positionID = p.positionID 
-		JOIN `rank` r  ON e.rankID = r.rankID
-		<if test="selectedBranchValue !='지점'">
-		where b.branchID =#{selectedBranchValue}
-		</if>
-		ORDER BY e.employeeID ASC ;
-	</select>
+	
+	
 <select id="totalCountSearch" resultType="java.lang.Integer">
     SELECT CEIL(COUNT(*)/10)
     FROM employee e
@@ -126,7 +120,11 @@ fa-building' AS 'icon'
                     AND e.employeeID LIKE CONCAT(#{search}, '%')
                 </when>
             </choose>
-        </if>
+                 </if>   
+         <if test="!(branch == 0)">
+		    AND b.branchID = #{branch}
+		</if>
+
     </where>
     ORDER BY e.employeeID;
 </select>
@@ -195,7 +193,7 @@ fa-building' AS 'icon'
 	</select>
 	
 	<select id="getPositionName">
-		SELECT positionID ,positionName,isActive  from `position` p
+		SELECT positionID ,positionName,isActive  from `position` p where isActive = 1
 	</select>
 	
 	<select id="getPositionNameActive">
@@ -203,7 +201,7 @@ fa-building' AS 'icon'
 	</select>
 	
 	<select id="getRankName">
-		SELECT rankID,rankName,isActive from rank
+		SELECT rankID,rankName,isActive from rank where isActive = 1
 	</select>
 	
 	<select id="getRankNameActive">

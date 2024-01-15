@@ -3,12 +3,17 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
+
+<select id="branchList" resultType="branch">
+		SELECT * FROM branch
+	</select>
 	<!-- 통계 데이터 가져오기 -->
 	<select id="animalHistory" resultType="AnimalHistoryDTO">
 		SELECT am.branchID, b.branchName,
 		COUNT(CASE WHEN am.status != '폐사' THEN 1 END) AS totalNumber,
 	    COUNT(CASE WHEN am.status = '정상' THEN 1 END) AS normalNumber,
 	    COUNT(CASE WHEN am.status = '질병' THEN 1 END) AS illedNumber,
+	    COUNT(CASE WHEN am.status = '격리' THEN 1 END) AS isolatedNumber,
 	    COUNT(CASE WHEN am.status = '폐사' THEN 1 END) AS deadNumber
 		FROM animalManagement am
 		JOIN branch b ON b.branchID = am.branchID
@@ -56,50 +61,61 @@
 	</select>
 
 	<select id="ticketHistory" resultType="sales">
-    SELECT yearMonth, salesYear, salesMonth, branchName,
-    SUM(totalSalesAmount) AS monthlyTotalSales
-	FROM (
-	    SELECT 
-	        DATE_FORMAT(th.salesRegDate, '%Y-%m') AS yearMonth,
-	        YEAR(th.salesRegDate) AS salesYear,
-	        MONTH(th.salesRegDate) AS salesMonth,
-	        bp.productID,
-	        b.branchName,
-	        SUM(th.salesNumber * pi.price) AS totalSalesAmount
-	    FROM ticketHistory th
-	    JOIN branchProduct bp ON th.productIndex = bp.productIndex
-	    JOIN productInformation pi ON bp.productID = pi.productID
-	    JOIN branch b ON bp.branchID = b.branchID
-	    WHERE DATE_FORMAT(th.salesRegDate, '%Y-%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m')
-	    GROUP BY yearMonth, bp.productID, b.branchName
-	) AS subquery
-	WHERE yearMonth >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m')
-	GROUP BY yearMonth, salesYear, salesMonth, branchName
-	ORDER BY yearMonth, branchName
+	    SELECT yearMonth, salesYear, salesMonth, branchName,
+	    SUM(totalSalesAmount) AS monthlyTotalSales
+		FROM (
+		    SELECT 
+		        DATE_FORMAT(th.salesRegDate, '%Y-%m') AS yearMonth,
+		        YEAR(th.salesRegDate) AS salesYear,
+		        MONTH(th.salesRegDate) AS salesMonth,
+		        bp.productID,
+		        b.branchName,
+		        SUM(th.salesNumber * pi.price) AS totalSalesAmount
+		    FROM ticketHistory th
+		    JOIN branchProduct bp ON th.productIndex = bp.productIndex
+		    JOIN productInformation pi ON bp.productID = pi.productID
+		    JOIN branch b ON bp.branchID = b.branchID
+		    WHERE DATE_FORMAT(th.salesRegDate, '%Y-%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m')
+		    GROUP BY yearMonth, bp.productID, b.branchName
+		) AS subquery
+		WHERE yearMonth >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m')
+		GROUP BY yearMonth, salesYear, salesMonth, branchName
+		ORDER BY yearMonth, branchName
 	
 	</select>
 	
 	<select id="visitorsHistory" resultType="sales">
-    SELECT yearMonth, entryYear, entryMonth, branchName,
-    SUM(visitorsNumber) AS monthlyVisitorsNumber
-	FROM (
-	    SELECT 
-	        DATE_FORMAT(vh.entryDate, '%Y-%m') AS yearMonth,
-	        YEAR(vh.entryDate) AS entryYear,
-	        MONTH(vh.entryDate) AS entryMonth,
-	        bp.productID,
-	        b.branchName,
-	        vh.visitorsNumber
-	    FROM visitorsHistory vh
-	    JOIN branchProduct bp ON vh.productIndex = bp.productIndex
-	    JOIN productInformation pi ON bp.productID = pi.productID
-	    JOIN branch b ON bp.branchID = b.branchID
-	    WHERE DATE_FORMAT(vh.entryDate, '%Y-%m') >= DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MONTH), '%Y-%m')
-	    GROUP BY yearMonth, bp.productID, b.branchName
-	) AS subquery
-	WHERE yearMonth >= DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MONTH), '%Y-%m')
-	GROUP BY yearMonth, entryYear, entryMonth, branchName
-	ORDER BY yearMonth, branchName
+	    SELECT yearMonth, entryYear, entryMonth, branchName,
+	    SUM(visitorsNumber) AS monthlyVisitorsNumber
+		FROM (
+		    SELECT 
+		        DATE_FORMAT(vh.entryDate, '%Y-%m') AS yearMonth,
+		        YEAR(vh.entryDate) AS entryYear,
+		        MONTH(vh.entryDate) AS entryMonth,
+		        bp.branchID,
+		        b.branchName,
+		        SUM(vh.visitorsNumber) AS visitorsNumber
+		    FROM visitorsHistory vh
+		    JOIN branchProduct bp ON vh.productIndex = bp.productIndex
+		    JOIN productInformation pi ON bp.productID = pi.productID
+		    JOIN branch b ON bp.branchID = b.branchID
+		    WHERE DATE_FORMAT(vh.entryDate, '%Y-%m') >= DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MONTH), '%Y-%m')
+		    GROUP BY yearMonth, bp.branchID
+		) AS subquery
+		WHERE yearMonth >= DATE_FORMAT(DATE_SUB(now(), INTERVAL 5 MONTH), '%Y-%m')
+		GROUP BY yearMonth, entryYear, entryMonth, branchName
+		ORDER BY yearMonth, branchName
 	</select>
+	
+	<select id="totalVisitors" resultType="sales">
+		SELECT bp.branchID, b.branchName,
+	    SUM(vh.visitorsNumber) AS totalVisitors
+		FROM visitorsHistory vh
+		JOIN branchProduct bp ON vh.productIndex = bp.productIndex
+		JOIN branch b ON bp.branchID = b.branchID
+		WHERE DATE_FORMAT(vh.entryDate, '%Y-%m') >= DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 5 MONTH), '%Y-%m')
+		GROUP BY bp.branchID, b.branchName
 
+	
+	</select>
 </mapper>

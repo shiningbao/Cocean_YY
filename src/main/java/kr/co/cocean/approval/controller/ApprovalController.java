@@ -19,7 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -106,14 +108,28 @@ public class ApprovalController {
 		if (dto != null) {
 			int loginId = dto.getEmployeeID();
 			ApprovalDTO list = service.draftDetail(idx);
+			int empID = list.getEmployeeID();
 			ApprovalDTO vac = service.vacDetail(idx);
 			ApprovalDTO lv = service.lvDetail(idx);
-			ApprovalDTO sign = service.getSign(idx,loginId);
+			ApprovalDTO sign = service.getSign(empID);
+			ApprovalDTO photo = service.getPhoto(loginId);
 			ArrayList<ApprovalDTO> lineList = service.lineList(idx);
+			ArrayList<ApprovalDTO> signImg = service.signImg(idx);
+			int employeeId = 0;
+			ArrayList<ApprovalDTO> profile = null;
+			for (ApprovalDTO adto : lineList) {
+				employeeId = adto.getEmployeeID();
+			    logger.info("Employee ID: {}", employeeId);
+			    profile = service.profile(employeeId);
+			}
+			
 			ArrayList<ApprovalDTO> agrRef = service.agrRef(idx);
 			ArrayList<ApprovalDTO> fileList = service.fileList(idx);
 			logger.info("idx:"+idx);
 			logger.info("hTitle:"+hTitle);
+			mav.addObject("profile",profile);
+			mav.addObject("signImg", signImg);
+			mav.addObject("photo",photo);
 			mav.addObject("category",category);
 			mav.addObject("sign",sign);
 			mav.addObject("vac",vac);
@@ -299,30 +315,33 @@ public class ApprovalController {
 	public ModelAndView approvalDo(HttpSession session, @RequestParam Map<String, String> param) {
 		ModelAndView mav = new ModelAndView("redirect:/approval/waitingList.go");
 		logger.info("param:{}",param);
-		int approvalOrder = Integer.parseInt((param).get("order"));
+		int approvalOrder = Integer.parseInt((param).get("approvalOrder"));
 		int lastOrder = Integer.parseInt((param).get("lastOrder"));
 		logger.info(param.get("action"));
 		String idx=param.get("idx");
+		double updateRAL = 0;
 		if(!param.get("ral").equals("")&&!param.get("usageTime").equals("")) {
-		double updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
+		updateRAL = (Double.parseDouble(param.get("ral")))-(Double.parseDouble(param.get("usageTime")));
+		}
 
 		 if(param.get("action").equals("결재")) {
 			 logger.info("결재!!!");
 			 if(!param.get("vacationCategory").equals("")) {
 			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
-				 service.updateRAL(updateRAL,param);
+				 // service.updateRAL(updateRAL,param);
 				 logger.info("잔여연차:"+updateRAL);
 			 }
 		 }
-		 }
+		 
 			 if(approvalOrder<lastOrder) {
-				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
-				 service.myStatus(param); // 내 상태 완료로 변경
-				 service.passDraft(idx); // draft update
+				service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
+				service.myStatus(param); // 내 상태 완료로 변경
+				service.passDraft(idx); // draft update
 			 }else {
 				service.approveDraft(param); // draft update
 				service.approveApp(param); // approval update
 			 }
+		 
 		 }else if(param.get("action").equals("반려")){
 			 logger.info("반려!!!");
 			 service.rejectDraft(param);
@@ -333,20 +352,20 @@ public class ApprovalController {
 				 service.myAgree(param); // 내 상태 완료로 변경
 				 service.passDraft(idx); // draft update
 			 }else {
-				service.approveDraft(param); // draft update
-				service.approveApp(param); // approval update
+				// service.approveDraft(param); // draft update
+				// service.approveApp(param); // approval update
 			 }
 		 }else { // 거부
 			 if(approvalOrder<lastOrder) {
-				 service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
-				 service.rejectAgree(param);
-				 service.passDraft(idx); // draft update
+				 // service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
+				 // service.rejectAgree(param);
+				 // service.passDraft(idx); // draft update
 			 }else {
-			 service.rejectAgree(param);
-			 service.rejectDraft(param);
+			//  service.rejectAgree(param);
+			 // service.rejectDraft(param);
 			 }
 		 }
-		return mav;
+		 return mav;
 	}
 
 	@GetMapping(value = "/approval/tempSaveList.go")
@@ -497,6 +516,14 @@ public class ApprovalController {
 		result.put("dList", dList);
 		return result;
 	}
+	
+	@RequestMapping(value="/approval/appOrganization/{isActive}")
+	public String goChart(@PathVariable int isActive, Model model) {
+		
+		model.addAttribute("isActive", isActive);
+		return "approval/organization";
+	}
+	
 
 
 

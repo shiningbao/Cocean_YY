@@ -21,9 +21,15 @@ public class SalesHistoryDTO {
 	private int monthlyTotalSales;
 	private String yearMonth;
 	private int monthlyVisitorsNumber;
+	private int totalVisitors;
 
 
-
+	public int getTotalVisitors() {
+		return totalVisitors;
+	}
+	public void setTotalVisitors(int totalVisitors) {
+		this.totalVisitors = totalVisitors;
+	}
 	public int getMonthlyVisitorsNumber() {
 		return monthlyVisitorsNumber;
 	}

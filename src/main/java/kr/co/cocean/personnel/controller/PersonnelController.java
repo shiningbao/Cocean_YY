@@ -146,7 +146,23 @@ public class PersonnelController {
 		logger.info("list=="+list);
 		return mav;
 	} 
+//
+//	@GetMapping(value="/personnel/getSelectOptionBranch.do")
+//	@ResponseBody
+//	public List<HashMap<String, Object>> getSelectOptionBranch(@RequestParam String selectedBranchValue){
+//		List<HashMap<String, Object>> list = service.getSelectOptionBranch(selectedBranchValue);
+//		for (HashMap<String, Object> hashMap : list) {
+//			 if(hashMap.get("departmentName").equals("-가산")) {
+//				 hashMap.put("departmentName", "-");
+//			 }
+//			 if(hashMap.get("departmentName").equals("-제주")) {
+//				 hashMap.put("departmentName", "-");
+//			 }
+//		}
+//		return list;
+//	}
 
+	
 	
 	@GetMapping(value="/personnel/detail.go")
 	public ModelAndView detail(@RequestParam int employeeID) {
@@ -196,20 +212,6 @@ public class PersonnelController {
 		return list;
 	}
 	
-	@GetMapping(value="/personnel/getSelectOptionBranch.do")
-	@ResponseBody
-	public List<HashMap<String, Object>> getSelectOptionBranch(@RequestParam String selectedBranchValue){
-		List<HashMap<String, Object>> list = service.getSelectOptionBranch(selectedBranchValue);
-		for (HashMap<String, Object> hashMap : list) {
-			 if(hashMap.get("departmentName").equals("-가산")) {
-				 hashMap.put("departmentName", "-");
-			 }
-			 if(hashMap.get("departmentName").equals("-제주")) {
-				 hashMap.put("departmentName", "-");
-			 }
-		}
-		return list;
-	}
 
 	
 	@PostMapping(value="/personnel/checkDuplicateEmployeeID.do")
@@ -300,9 +302,9 @@ public class PersonnelController {
 		
 		if(row>0) {
 			String perNum = (String) params.get("employeeID");
-			mav.setViewName("redirect:/personnel/personnelList.go");
+			mav.setViewName("redirect:/personnel/personnelList.go?category=&inputSearch=&branch=0&pageNum=1");
 		}else {
-			mav.setViewName("redirect:/personnel/personnelList.go");
+			mav.setViewName("redirect:/personnel/personnelList.go?category=&inputSearch=&branch=0&pageNum=1");
 		}
 		return mav;
 	}

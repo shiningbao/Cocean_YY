@@ -21,17 +21,21 @@ public class StatisticsService {
 	public Map<String, Object> statisticsChart() {
 
 		HashMap<String, Object> map = new HashMap<>();
+		ArrayList<AnimalHistoryDTO> branchList = dao.branchList();
 		ArrayList<AnimalHistoryDTO> animal = dao.animalHistory();
  		ArrayList<TankHistoryDTO> tank = dao.tankHistory();
 		ArrayList<SalesHistoryDTO> product = dao.productHistory();
 		ArrayList<SalesHistoryDTO> ticket = dao.ticketHistory();
 		ArrayList<SalesHistoryDTO> visitors = dao.visitorsHistory();
-
+		ArrayList<SalesHistoryDTO> totalVisitors = dao.totalVisitors();
+		
+		map.put("branchList", branchList);
 		map.put("animal", animal);
 		map.put("tank", tank);
 		map.put("product", product);
 		map.put("ticket", ticket);
 		map.put("visitors", visitors);
+		map.put("totalVisitors", totalVisitors);
 
 		return map;
 	}
