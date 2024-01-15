@@ -179,12 +179,11 @@ margin-top:1%;
 
 <div class="row">
 <form class="form-inline ">
-            <input class="form-control mr-sm-2" type="text" name="name" value="" placeholder="이름을 입력해주세요." 
-            aria-label="Search" >
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
+         <input class="form-control mr-sm-2" type="text" name="query" id="query" placeholder="이름 또는 부서를 입력해주세요." aria-label="이름 또는 부서 검색">
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
         </form>
    <div class="button-container">
-    <button type="submit" id="outreturn" class="btn btn-primary" >필터 초기화</button>
+    <button type="submit" id="outreturn" class="btn btn-primary" >검색 초기화</button>
     <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
     <button type="submit" id="del" class="btn btn-primary" onclick="del()" >삭제</button>
 </div>
@@ -219,9 +218,9 @@ margin-top:1%;
       
      <div style="display: flex; flex-direction: column; align-items: center;">
     <div style="display: flex; margin-top:7px;">
-    <input class="form-control mr-sm-2" type="text" name="inname" value="" placeholder="이름을 입력해주세요." style="width: 240px; margin-left: -1px;" aria-label="Search">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="inreserch" style="width: 60px; margin-left: 5px; margin-right: 5px;">검색</button>
-    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:580px">필터 초기화</button>
+    <input class="form-control mr-sm-2" type="text" name="mul" id="mul" placeholder="이름 또는 부서를 입력해주세요." aria-label="이름 또는 부서 검색">
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="inreserch">검색</button>
+    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:615px">검색 초기화</button>
     </div>
 
     <table class="address">
@@ -291,15 +290,20 @@ $('#outsidejoin').on('click',function(){
 
 
 //외부주소록(체크박스)
-$('#all').on('click',function(){
-   var $chk = $('input[type="checkbox"]');
-   console.log($chk);
-   if($(this).is(":checked")){
-      $chk.prop("checked",true);
-   }else{
-      $chk.prop("checked",false);
-   }
-   
+$('#all').on('click', function (event) {
+    var $chk = $('input[type="checkbox"]');
+    console.log($chk);
+    if ($(this).is(":checked")) {
+        $chk.prop("checked", true);
+    } else {
+        $chk.prop("checked", false);
+    }
+    event.stopPropagation();
+});
+
+// 헤더의 <th>에 대한 클릭 이벤트 추가
+$('th').on('click', function () {
+    $('#all').trigger('click');
 });
 
 
@@ -361,34 +365,41 @@ function listCall(){
 }
 
 //외부주소록
-function drawList(list){
-   console.log(list);
-   var content = '';
-   list.forEach(function(item, addressNumber){
-      content += '<tr>';
-      content += '<td><input type="checkbox" value="'+item.addressNumber+'"/></td>';
-     /* content += '<td>'+item.addressNumber+'</td>';*/   
-      content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
-      content += '<td>'+item.phoneNumber+'</td>';
-      content += '<td>'+item.rankLevel+'</td>';
-      content += '<td>'+item.positionLevel+'</td>';
-      content += '<td>'+item.departmentName+'</td>';
-      content += '</tr>';
-   });
-	   $('#list').empty();
-	   $('#list').append(content);
-}
+function drawList(list) {
+    console.log(list);
 
+    var content = '';
+
+    if (list.length === 0) {
+        content = '<tr>';
+        content += '<td colspan="6" style="text-align: center; color: red;">저장된 주소록이 없습니다.</td>';
+        content += '</tr>';
+    } else {
+        list.forEach(function (item, addressNumber) {
+            content += '<tr>';
+            content += '<td><input type="checkbox" value="' + item.addressNumber + '"/></td>';
+            /* content += '<td>'+item.addressNumber+'</td>'; */
+            content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
+            content += '<td>' + item.phoneNumber + '</td>';
+            content += '<td>' + item.rankLevel + '</td>';
+            content += '<td>' + item.positionLevel + '</td>';
+            content += '<td>' + item.departmentName + '</td>';
+            content += '</tr>';
+        });
+    }
+
+    $('#list').empty();
+    $('#list').append(content);
+}
 
 //외부 주소록 검색
 $('#reserch').on('click', function () {
-    var name = $('input[name="name"]').val();
-    console.log(name);
+    var query = $('input[name="query"]').val(); 
 
     $.ajax({
         type: 'get',
         url: 'addresssearch',
-        data: { 'name': name },
+        data: { 'query': query }, 
         dataType: 'JSON',
         success: function (data) {
             console.log(data);
@@ -398,7 +409,7 @@ $('#reserch').on('click', function () {
 
             if (data.size == 0) {
                 content = '<tr >';
-                content += '<td style="text-align: center; color: red;" colspan="6">' + name + '이 존재하지 않습니다.</td>';
+                content += '<td style="text-align: center; color: red;" colspan="6">' + query + '이 존재하지 않습니다.</td>';
                 content += '</tr>';
                 $('#list').append(content);
             } else {
@@ -406,7 +417,6 @@ $('#reserch').on('click', function () {
                     var item = data.list[i];
                     content += '<tr>';
                     content += '<td><input type="checkbox" value="' + item.addressNumber + '"/></td>';
-                  /*  content += '<td>' + item.addressNumber + '</td>';*/
                     content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
                     content += '<td>' + item.phoneNumber + '</td>';
                     content += '<td>' + item.rankLevel + '</td>';
@@ -423,9 +433,8 @@ $('#reserch').on('click', function () {
         }
     });
 
-    $('input[name="name"]').val('');
+    $('input[name="query"]').val(''); // 'name'을 'query'로 변경
 });
-
 
 
 
@@ -477,13 +486,12 @@ function addressdrawList(list1){
 
 //내부 주소록 서치
 $('#inreserch').on('click', function () {
-    var inname = $('input[name="inname"]').val();
-    console.log(inname);
+    var mul = $('input[name="mul"]').val();
 
     $.ajax({
         type: 'get',
         url: 'inaddresssearch',
-        data: { 'inname': inname },
+        data: { 'mul': mul },
         dataType: 'JSON',
         success: function (data1) {
             console.log(data1);
@@ -491,19 +499,19 @@ $('#inreserch').on('click', function () {
             var content = '';
             $('#inlist').empty();
 
-            if (data1.size == 0) {
+            if (data1.size === 0) {
                 content = '<tr>';
-                content += '<td style="text-align: center; color: red;"  colspan="6">' + name + '이 존재하지 않습니다.</td>';
+                content += '<td style="text-align: center; color: red;" colspan="5">' + mul + '에 대한 결과가 없습니다.</td>';
                 content += '</tr>';
                 $('#inlist').append(content);
             } else {
-                for (var i = 0; i < data1.size; i++) {
+                for (var i = 0; i < data1.list1.length; i++) {
                     var item1 = data1.list1[i];
                     content += '<tr>';
                     content += '<td>' + item1.name + '</td>';
                     content += '<td>' + item1.phoneNumber + '</td>';
-                    content += '<td>' + item1.rankLevel + '</td>';
-                    content += '<td>' + item1.positionLevel + '</td>';
+                    content += '<td>' + item1.rankName + '</td>';
+                    content += '<td>' + item1.positionName + '</td>';
                     content += '<td>' + item1.departmentName + '</td>';
                     content += '</tr>';
                 }
@@ -516,7 +524,7 @@ $('#inreserch').on('click', function () {
         }
     });
 
-    $('input[name="inname"]').val('');
+    $('input[name="mul"]').val('');
 });
 
 

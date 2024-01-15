@@ -78,12 +78,12 @@ public class AddressService {
    }
 
    //외부검색
-public ArrayList<OutAddressDTO> reserch(String name) {
+   public ArrayList<OutAddressDTO> search(String query) {
+	    ArrayList<OutAddressDTO> relist = dao.searchUser(query);
+	    return relist;
+	}
 
-	ArrayList<OutAddressDTO> relist = dao.reserchuser(name);
 
-	return relist;
-}
 
 //내부 리스트
 public ArrayList<InaddressDTO> inlistCall() {
@@ -92,12 +92,12 @@ public ArrayList<InaddressDTO> inlistCall() {
 }
 
 //내부 검색
-public ArrayList<OutAddressDTO> inaddresssearch(String inname) {
-
-	ArrayList<OutAddressDTO> relist1 = dao.inaddresssearch(inname);
-
-	return relist1;
+public ArrayList<OutAddressDTO> inaddresssearch(String mul) {
+    ArrayList<OutAddressDTO> relist1 = dao.inaddresssearch(mul);
+    return relist1;
 }
+
+
 
 
 
