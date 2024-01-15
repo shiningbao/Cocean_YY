@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
@@ -8,13 +9,25 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <style>
+.title {
+	text-align: center;
+	font-size: 17px;
+	color: #4E73DF;
+}
 .cocean{
-	width: 250px;
-	height: 250px;
+	width: 290px;
 }
 .sales{
-	width: 450px;
-	height: 350px;
+	width: 420px;
+}
+.branchType span{
+	font-size: 18px;
+}
+.branchType{
+	margin-bottom: 5px;
+}
+.branchType input{
+	margin-left: 2px;
 }
 </style>
 </head>
@@ -27,10 +40,14 @@
 <div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 
 <div>
-  <label>지점: </label>
+<div class="branchType">
+  <label><span>지점 : </span></label>
   <select id="selectType"></select>
   <input type="button" class="btn btn-primary" id="branchChange" value="확인">
+ </div>
 
+<div class="card shadow mb-2 col-12 mx-auto">
+<div class="title">코션친구들, 하우스 현황</div>
   <div class="row">
     <div class="col">
       <canvas class="cocean" id="coceanFriends"></canvas>
@@ -38,9 +55,14 @@
     <div class="col">
       <canvas class="cocean" id="coceanHouse"></canvas>
     </div>
+    <div class="col">
+      <canvas class="cocean" id="coceanHouseType"></canvas>
+    </div>
   </div>
-  
-  
+ </div>
+ 
+ <div class="card shadow mb-2 col-12 mx-auto">
+ <div class="title">매출 추이</div>
   <div class="row">
     <div class="col">
       <canvas class="sales" id="sales"></canvas>
@@ -50,7 +72,6 @@
     </div>
   </div>
   
-  
   <div class="row">
     <div class="col">
       <canvas class="sales" id="salesLine"></canvas>
@@ -59,7 +80,7 @@
       <canvas class="sales" id="visitorsLine"></canvas>
     </div>
   </div>
-  
+</div>
   
 </div>
   </div>
@@ -91,6 +112,11 @@ $(document).ready(function(){
 	chart(nowYearMonth);
 });
 
+// chart js 폰트 크기 조정
+Chart.defaults.font.size = 13
+// 총 수조 수 data.tank[0].totalNumber
+// 총 동물 수 data.animal[0].totalNumber
+
 function chart() {
   $.ajax({
       type: 'get',
@@ -117,52 +143,90 @@ function chart() {
 			
           var doughnutChartCoceanFriends = document.querySelector('#coceanFriends').getContext('2d');
           const coceanFriends = new Chart(doughnutChartCoceanFriends, {
-            type: 'doughnut',
-            data: {
-              labels: ['동물 개체수', '정상', '질병', '폐사'],
-              datasets: [{
-                data: [data.animal[0].totalNumber, data.animal[0].normalNumber, data.animal[0].illedNumber, data.animal[0].deadNumber],
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'top',
-                },
-                title: {
-                  display: true,
-                  text: '코션친구들'
-                }
+              type: 'doughnut',
+              data: {
+                  labels: ['정상', '격리', '질병'],
+                  datasets: [{
+                      data: [data.animal[0].normalNumber, data.animal[0].isolatedNumber, data.animal[0].illedNumber],
+                  }]
+              },
+              options: { 
+                  responsive: false,
+                  plugins: {
+                      legend: {
+                          position: 'top',
+                      },
+                      title: {
+                          display: true,
+                          text: ["코션친구들", "총 개체 수 : " + data.animal[0].totalNumber],
+                          font: {
+                              size: 16
+                          }
+                      },
+                  }
               }
-            }
           });
 
+
+
           // 코션하우스 차트 그리기
-          console.log("코션하우스 그래프 그리기");
+          console.log("코션하우스 그래프1 그리기");
           console.log(data.tank);
 			
           var doughnutChartCoceanHouse = document.querySelector('#coceanHouse').getContext('2d');
           const coceanHouse = new Chart(doughnutChartCoceanHouse, {
             type: 'doughnut',
             data: {
-              labels: ['수조 수', '정상', '이상', '해수', '담수', '반수생', '육상'],
+              labels: ['정상', '이상'],
               datasets: [{
-                data: [data.tank[0].totalNumber, data.tank[0].normalNumber, data.tank[0].abnormalNumber, 
-                			data.tank[0].seaWaterTankNumber, data.tank[0].freshWaterTankNumber, data.tank[0].semiAquaticTankNumber, 
-                			data.tank[0].landTankNumber],
+                data: [data.tank[0].normalNumber, data.tank[0].abnormalNumber],
               }]
             },
             options: {
-              responsive: true,
+              responsive: false,
               plugins: {
                 legend: {
                   position: 'top',
                 },
                 title: {
                   display: true,
-                  text: '코션하우스'
-                }
+                  text: ["코션하우스 상태", "총 수조 수 : " + data.tank[0].totalNumber],
+                  font: {
+                      size: 16
+                  }
+              },
+                
+              }
+            }
+          });
+          
+          // 수조 종류 차트 그래프
+          console.log("코션하우스 그래프2 그리기");
+          console.log(data.tank);
+          
+          var doughnutChartCoceanHouseType = document.querySelector('#coceanHouseType').getContext('2d');
+          const coceanHouseType = new Chart(doughnutChartCoceanHouseType, {
+            type: 'doughnut',
+            data: {
+              labels: ['해수', '담수', '반수생', '육상'],
+              datasets: [{
+                data: [ data.tank[0].seaWaterTankNumber, data.tank[0].freshWaterTankNumber, 
+                			data.tank[0].semiAquaticTankNumber, data.tank[0].landTankNumber],
+              }]
+            },
+            options: {
+              responsive: false,
+              plugins: {
+                legend: {
+                  position: 'top',
+                },
+                title: {
+                  display: true,
+                  text: ["코션하우스 종류", "총 수조 수 : " + data.tank[0].totalNumber],
+                  font: {
+                      size: 16
+                  }
+              },
               }
             }
           });
@@ -210,14 +274,28 @@ function chart() {
               	}],
             },
             options: {
-              responsive: true,
+              responsive: false,
+              scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
+                        callback: function(value, index, values) {
+                            return value / 10000;
+                        }
+                    }
+                }
+            },
               plugins: {
                 legend: {
                   position: 'top',
                 },
                 title: {
                   display: true,
-                  text: '매출'
+                  text: ["매출", "단위 : 만원"],
+                  	font: {
+                      size: 17
+                    }
                 }
               }
             }
@@ -265,15 +343,29 @@ function chart() {
               	}],
             },
             options: {
-              responsive: true,
+              responsive: false,
+              scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
+                        callback: function(value, index, values) {
+                            return value / 10000;
+                        }
+                    }
+                }
+            },
               plugins: {
                 legend: {
                   position: 'top',
                 },
-                title: {
+                /* title: {
                   display: true,
-                  text: '매출'
-                }
+                  text: '매출',
+                  	font: {
+                      size: 17
+                    }
+                } */
               }
             }
           });
@@ -307,14 +399,17 @@ function chart() {
               	}],
             },
             options: {
-              responsive: true,
+              responsive: false,
               plugins: {
                 legend: {
                   position: 'top',
                 },
                 title: {
                   display: true,
-                  text: '관람객'
+                  text: ["관람객", "최근 6개월 관람객 : " + data.totalVisitors[0].totalVisitors +"명"],
+	                  font: {
+	                    size: 17
+	                  }
                 }
               }
             }
@@ -349,16 +444,19 @@ function chart() {
               	}],
             },
             options: {
-              responsive: true,
+              responsive: false,
               plugins: {
                 legend: {
                   position: 'top',
                 },
-                title: {
+/*                 title: {
                   display: true,
-                  text: '관람객'
+                  text: ["관람객"],
+                  font: {
+                    size: 17
+                  }
                 }
-              }
+ */              }
             }
           });
           
@@ -377,24 +475,40 @@ function chart() {
             console.log(branchAnimalData);
             if (branchAnimalData) {
                 // 코션친구들 차트 데이터 업데이트
-                coceanFriends.data.datasets[0].data = [branchAnimalData.totalNumber, branchAnimalData.normalNumber, branchAnimalData.illedNumber, branchAnimalData.deadNumber];
+                coceanFriends.data.datasets[0].data = [branchAnimalData.normalNumber, branchAnimalData.isolatedNumber, branchAnimalData.illedNumber];
+                coceanFriends.options.plugins.title.text = ["코션친구들", "총 개체 수 : " + branchAnimalData.totalNumber];
                 coceanFriends.update();
             } else {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
             }
             
-         // 선택된 지점 수조 데이터로 차트 업데이트
+         // 선택된 지점 수조차트1 데이터로 차트 업데이트
             var branchTankData = data.tank.find(function (tank) {
                 return tank.branchName === selectedBranch;
             });
             console.log("선택된 지점 수조 데이터");
             console.log(branchTankData);
             if (branchTankData) {
-                // 코션친구들 차트 데이터 업데이트
-                coceanHouse.data.datasets[0].data = [branchTankData.totalNumber, branchTankData.normalNumber, branchTankData.abnormalNumber, 
-                										branchTankData.seaWaterTankNumber, branchTankData.freshWaterTankNumber, branchTankData.semiAquaticTankNumber,
-                										branchTankData.landTankNumber];
+                // 코션하우스 차트 데이터 업데이트
+                coceanHouse.data.datasets[0].data = [branchTankData.normalNumber, branchTankData.abnormalNumber];
+                coceanHouse.options.plugins.title.text = ["코션하우스 상태", "총 수조 수 : " + branchTankData.totalNumber];
                 coceanHouse.update();
+            } else {
+                console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+            }
+            
+         // 선택된 지점 수조차트2 데이터로 차트 업데이트
+            var branchTankData = data.tank.find(function (tank) {
+                return tank.branchName === selectedBranch;
+            });
+            console.log("선택된 지점 수조 데이터");
+            console.log(branchTankData);
+            if (branchTankData) {
+                // 코션하우스 차트 데이터 업데이트
+                coceanHouseType.data.datasets[0].data = [branchTankData.seaWaterTankNumber, branchTankData.freshWaterTankNumber,
+                											branchTankData.semiAquaticTankNumber, branchTankData.landTankNumber];
+                coceanHouseType.options.plugins.title.text = ["코션하우스 종류", "총 수조 수 : " + branchTankData.totalNumber];
+                coceanHouseType.update();
             } else {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
             }
@@ -438,11 +552,16 @@ function chart() {
             var branchVisitorsData = data.visitors.filter(function (visitors) {
                 return visitors.branchName === selectedBranch;
             });
+            var branchTotalVisitorsData = data.totalVisitors.filter(function (totalVisitors) {
+              return totalVisitors.branchName === selectedBranch;
+          });
            console.log("선택된 지점 관람객 데이터");
            console.log(branchVisitorsData);
+           console.log(branchTotalVisitorsData);
 		   console.log(visitors.data.datasets[0]);
             if (branchVisitorsData) {
                 // 관람객 차트 데이터 업데이트
+                	visitors.options.plugins.title.text = ["관람객", "최근 6개월 관람객 : " + branchTotalVisitorsData[0].totalVisitors + "명"];
                 for (var i = 0; i < 6; i++) {
                 	visitors.data.datasets[0].data[i] = branchVisitorsData[i].monthlyVisitorsNumber;
 			} 
