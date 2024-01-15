@@ -296,7 +296,7 @@ var currentBranchName;
 var currentProductCategory;
 var currentProductName;
 var currentProductPrice;
-
+var totalProductNumber;
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
     // 첫 번째 Ajax 호출
@@ -377,8 +377,9 @@ new Promise((resolve, reject) => {
     		       	   
    		       		  // 총 상품 개수 추가
    		       		  $('#totalProductNumber').append(data.totalProductNumber[0].totalProductNumber);
-   		       		  
-    				// 상품 리스트 추가
+   		       		totalProductNumber = data.totalProductNumber[0].totalProductNumber;
+
+   		       		// 상품 리스트 추가
     				console.log("------------------");
     				console.log(data);
     				for (var i = 0; i < data.branchProductList.length; i++) {
@@ -452,7 +453,7 @@ new Promise((resolve, reject) => {
 					        
 					     	// 총 상품 개수 추가
    		       		  		$('#totalProductNumber').html('상품 개수 : ' + matchedTotalProduct.totalProductNumber);
-					     	
+   		       		  	totalProductNumber = matchedTotalProduct.totalProductNumber;
 					        // 상품 데이터를 테이블에 추가
 					        if (matchedProducts.length > 0) {
 					            for (var j = 0; j < matchedProducts.length; j++) {
@@ -842,7 +843,12 @@ searchProduct(searchKeyword, currentBranchName);
    	                    success: function(data) {
    	                        parentRow.remove();
    	                        // 삭제후 총 상품 개수 -1
-   	                       $('#totalProductNumber').text(data.totalProductNumber[0].totalProductNumber - 1);
+   	                       totalProductNumber = totalProductNumber -1 ; // 또는 totalProductNumber += 1; 또는 totalProductNumber++;
+							console.log(totalProductNumber);
+							
+							// 업데이트된 값으로 HTML에 추가
+							$('#totalProductNumber').empty();
+							$('#totalProductNumber').html('상품 개수 : ' + totalProductNumber);
    	                        console.log("지점상품 삭제 성공");
    	                    },
    	                    error: function(e) {
