@@ -29,6 +29,8 @@ public class TankService {
 		HashMap<String, Object> params = new HashMap<>();
 		params.put("pageNum", (pager.getPageNum()-1)*10);
 		params.put("search", pager.getSearch());
+		params.put("status", pager.getStatus());
+		params.put("type", pager.getType());
 
 		Integer total = dao.totalCount(params);
 		if(total == 0) {

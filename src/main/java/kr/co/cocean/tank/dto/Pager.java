@@ -12,7 +12,8 @@ public class Pager {
 	private Integer pageNum;
 	private Integer totalCount;
 	private String category;
-	
+	private String status;
+	private String type;
 	
 	
 	public String getCategory() {
@@ -56,6 +57,28 @@ public class Pager {
 	}
 	public void setSearch(String search) {
 		this.search = search;
+	}
+	
+	
+	public String getStatus() {
+		if(this.status == null) {
+			this.status = "";
+		}
+		return this.status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
+	public String getType() {
+		if(this.type == null) {
+			this.type = "";
+		}
+		return this.type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 
 

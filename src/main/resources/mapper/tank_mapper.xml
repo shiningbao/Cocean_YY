@@ -13,6 +13,8 @@
 		GROUP BY tankID 
 		HAVING
 		e.name like CONCAT('%',#{search},'%')
+<!-- 		AND tm.tankStatus like CONCAT('%',#{status},'%') -->
+<!-- 		AND tc.tankType  like CONCAT('%',#{type},'%') -->
 		ORDER BY tankID ASC LIMIT #{pageNum},10
 	</select>
 	
