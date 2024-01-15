@@ -3,6 +3,10 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
 >
 <mapper namespace="kr.co.cocean.statistics.dao.StatisticsDAO">
+
+<select id="branchList" resultType="branch">
+		SELECT * FROM branch
+	</select>
 	<!-- 통계 데이터 가져오기 -->
 	<select id="animalHistory" resultType="AnimalHistoryDTO">
 		SELECT am.branchID, b.branchName,

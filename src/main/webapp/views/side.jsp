@@ -126,7 +126,7 @@
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
+                    aria-expanded="true" aria-controls="collapseUtilities" id="store-click">
                     <i class="fi fi-sr-bullhorn"></i>
                     <span>스토어 관리</span>
                 </a>
@@ -139,10 +139,11 @@
                     </div>
                 </div>
             </li>
-
+            
+			<c:if test="${userInfo.departmentID eq 5}">
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                    aria-expanded="true" aria-controls="collapseTwo" id="personnel-click">
                     <i class="fi fi-sr-clipboard-user"></i>
                     <span>인사 관리</span>
                 </a>
@@ -154,7 +155,8 @@
                     </div>
                 </div>
             </li>
-
+			</c:if>
+			
             <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/facility/facility.go"/>'>
                     <i class="fi fi-sr-hammer-crash"></i>
@@ -165,7 +167,7 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                    aria-expanded="true" aria-controls="collapseThree">
+                    aria-expanded="true" aria-controls="collapseThree" id="approval-click">
                     <i class="fi fi-sr-assept-document"></i>
                     <span>전자결재</span>
                 </a>
@@ -184,7 +186,7 @@
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#board"
-                    aria-expanded="true" aria-controls="board">
+                    aria-expanded="true" aria-controls="board" id="board-click">
                     <i class="fi fi-sr-flag-alt"></i>
                     <span>게시판</span>
                 </a>
@@ -211,11 +213,11 @@
             </li>
 
             <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fi fi-sr-gift"></i>
-                    <span>복지몰</span></a>
-            </li>
+<!--             <li class="nav-item"> -->
+<!--                 <a class="nav-link" href="#"> -->
+<!--                     <i class="fi fi-sr-gift"></i> -->
+<!--                     <span>복지몰</span></a> -->
+<!--             </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -464,6 +466,19 @@
 				console.log(e);
 			}
 		});
+	}
+	
+	
+	var currentPathName = location.pathname;
+	var currentAction = currentPathName.split('/')[2];
+	if(currentAction == 'board'){
+		$('#board-click').click();
+	}else if(currentAction == 'approval'){
+		$('#approval-click').click();
+	}else if(currentAction == 'personnel'){
+		$('#personnel-click').click();
+	}else if(currentAction == 'store'){
+		$('#store-click').click();
 	}
 	
 </script>

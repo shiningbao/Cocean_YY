@@ -127,7 +127,7 @@ function chart() {
           console.log(data);
           
           // 지점 셀렉트 박스 추가
-          var branchs = data.animal.filter(function (branch) {
+          var branchs = data.branchList.filter(function (branch) {
 		        return branch.branchName;
 		    });
           for (var i = 0; i < branchs.length; i++) {
@@ -281,7 +281,7 @@ function chart() {
                     ticks: {
                         /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
                         callback: function(value, index, values) {
-                            return value / 10000;
+                            return value / 1000000;
                         }
                     }
                 }
@@ -292,7 +292,7 @@ function chart() {
                 },
                 title: {
                   display: true,
-                  text: ["매출", "단위 : 만원"],
+                  text: ["매출", "단위 : 백만"],
                   	font: {
                       size: 17
                     }
@@ -350,7 +350,7 @@ function chart() {
                     ticks: {
                         /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
                         callback: function(value, index, values) {
-                            return value / 10000;
+                            return value / 1000000;
                         }
                     }
                 }
@@ -480,6 +480,7 @@ function chart() {
                 coceanFriends.update();
             } else {
                 console.log("선택된 지점 데이터를 찾을 수 없습니다.");
+                alert("선택된 지점 데이터를 찾을 수 없습니다.");
             }
             
          // 선택된 지점 수조차트1 데이터로 차트 업데이트
