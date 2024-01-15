@@ -150,7 +150,7 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href='<c:url value="/personnel/orgManage.go"/>'>조직 관리</a>
-                        <a class="collapse-item" href='<c:url value="/personnel/personnelList.go?category=&inputSearch=&startNum=1&pageNum=1"/>'>사원 관리</a>
+                        <a class="collapse-item" href='<c:url value="/personnel/personnelList.go?category=&inputSearch=&branch=0&pageNum=1"/>'>사원 관리</a>
                         <a class="collapse-item" href='<c:url value="/personnel/annualManage.go"/>'>연차 관리</a>
                     </div>
                 </div>
@@ -210,6 +210,12 @@
                 <a class="nav-link" href='<c:url value="/schedule/schedule.go"/>'>
                     <i class="fi fi-sr-calendar-pen"></i>
                     <span>캘린더</span></a>
+            </li>
+            
+           <li class="nav-item">
+                <a class="nav-link">
+                    <i class="fi-sr fi-sr-users"></i>
+                    <span data-toggle="modal" data-target="#chartModal">조직도</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
