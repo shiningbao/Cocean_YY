@@ -816,41 +816,49 @@ searchProduct(searchKeyword, currentBranchName);
    }
    	
    	var productID;
-    document.getElementById('productTable').addEventListener('click', function (event) {
-      // 체크박스를 클릭한 경우에만 처리
-      if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
-          // 체크된 체크박스의 productID 값을 가져옴
-          productID = event.target.getAttribute('data-productID');
-          branchID = event.target.getAttribute('data-branchID');
-          console.log('Selected ProductID:', productID);
-          console.log('Selected branchID:', branchID);
-      }
-  });
     
-   	// 지점 상품 삭제
-   	function branchProductDelete(){
-   		console.log(productID);
-   		console.log(branchID);
-	   	 var isConfirmed = confirm("삭제하시겠습니까?");
-	     if (isConfirmed) {
-	    	 $.ajax({
-	    			url: "branchProductDelete.do",
-	 	   		data: {
-	 	        'productID': productID,
-	 	        'branchID' : branchID
-	 	     	},
-	    			type: "POST",
-	    			success: function(data){
-	    				console.log("지점상품 삭제 성공");
-	    				/* alert("상품이 삭제되었습니다!"); */
-	    			},
-	    			error: function(e){
-	    				console.log(e);
-	    			}
-	    		});
-	     } else {
-	     }
-   	}
+   	
+   	
+   	
+   	$(document).ready(function() {
+   	    $('#productTable').on('click', function(event) {
+   	        if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
+   	            var parentRow = $(event.target).closest('tr');
+
+   	            var productID = $(event.target).data('productid');
+   	            var branchID = $(event.target).data('branchid');
+   	            console.log("productID : "+ productID);
+   	            
+   	           $('#branchProductDelete').click(function () {
+   	          	var isConfirmed = confirm("삭제하시겠습니까?");
+   	            if (isConfirmed) {
+   	                $.ajax({
+   	                    url: "branchProductDelete.do",
+   	                    data: {
+   	                        'productID': productID,
+   	                        'branchID': branchID
+   	                    },
+   	                    type: "POST",
+   	                    success: function(data) {
+   	                        parentRow.remove();
+   	                        // 삭제후 총 상품 개수 -1
+   	                       $('#totalProductNumber').text(data.totalProductNumber[0].totalProductNumber - 1);
+   	                        console.log("지점상품 삭제 성공");
+   	                    },
+   	                    error: function(e) {
+   	                        console.log(e);
+   	                    }
+   	                });
+   	            
+   	           }
+   						}); 
+   	           
+   	            
+   	        }
+   	    });
+   	});
+
+   	
    	
    	var msg = "${msg}";
    	if(msg!=""){
