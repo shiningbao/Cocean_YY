@@ -98,11 +98,11 @@
 				    </c:if>
 					  </ul>
 				</div>
-			
+				<c:if test="${(userInfo.departmentID eq 5) or (bt ne '공지사항')}">
 				<div class="text-right">
 					<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
 				</div>
-			
+				</c:if>
 			</div>
 			
 		</div>

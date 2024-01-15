@@ -81,7 +81,7 @@
 						
 							<div class="imgChange col-md-1 mb-2 pr-0" onclick="imgChange(-1)">
 								<div class="d-flex align-items-center text-center" style="height: 100%;">
-									<i class="fi fi-sr-angle-left display-3"></i>
+									<img alt="#" src="<c:url value='/resource/img/carrot-side2.png'/>" width="100%">
 								</div>
 							</div>
 							<div class="col-md-10 mb-2 text-center">
@@ -91,23 +91,23 @@
 							</div>
 							<div class="imgChange col-md-1 mb-2 pl-0" onclick="imgChange(1)">
 								<div class="d-flex align-items-center text-center" style="height: 100%;">
-									<i class="fi fi-sr-angle-right display-3"></i>
+									<img alt="#" src="<c:url value='/resource/img/carrot-side2.png'/>" width="100%" style="transform:rotate(180deg)">
 								</div>
 							</div>
 							
 							<div class="col-md-4 mb-2 pl-4">
 								<div class="animalImg">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2 pr-4">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 						</div>

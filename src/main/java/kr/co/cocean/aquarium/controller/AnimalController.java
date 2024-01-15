@@ -175,4 +175,13 @@ public class AnimalController {
 	public HashMap<String, Object> employeeInfo(@RequestParam int employeeID) {
 		return service.employeeInfo(employeeID);
 	}
+	
+	
+	@PostMapping(value = "/animal/logplanComplete")
+	@ResponseBody
+	public HashMap<String, Object> logplanComplete(@RequestParam int logID){
+		return service.logplanComplete(logID);
+	}
+	
+	
 }

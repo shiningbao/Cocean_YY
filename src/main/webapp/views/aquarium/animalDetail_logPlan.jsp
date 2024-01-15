@@ -71,7 +71,7 @@
 				<c:forEach items="${incharge}" var="item">
 					<c:if test="${item.employeeID eq userInfo.employeeID}">
 						<div id="logPlanWriteForm">
-							<h5>
+							<h5 class="mt-3">
 								<c:if test="${category eq 'log'}">
 									친구들 기록 작성
 								</c:if>
@@ -119,7 +119,7 @@
 									<div class="float-right">
 										<!-- 계획 완료 변경 -->
 									<c:if test="${category eq 'plan'}">
-										<a class="btn btn-success btn-circle mr-1" onclick="aa(this,${item.logID})">
+										<a class="btn btn-success btn-circle mr-1" onclick="logplanComplete(this,${item.logID})">
 											<i class="fas fa-check text-white"></i>
 										</a>
 									</c:if>
@@ -309,6 +309,34 @@
 			}
 		});	
 	}
+	
+	
+	function logplanComplete(e,logID){
+
+		swal({
+			title:'계획을 완료하시겠습니까?',
+			icon:'info',
+			buttons:['취소','완료']
+		}).then((isOkey) => {
+			if(isOkey){
+				$.ajax({
+					type:'post',
+					url:'logplanComplete',
+					data:{'logID':logID},
+					dataType:'JSON',
+					success:function(data){
+						location.href = location.href;
+					},
+				    error: function(e) {
+				        console.log(e);
+				    }
+				});	
+			}
+		});
+	}
+	
+	
+	
 	
 	$('.status').each(function(index, element){
 		var status = $(element).find('span').first().html();

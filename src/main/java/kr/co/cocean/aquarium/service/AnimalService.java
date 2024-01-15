@@ -322,6 +322,16 @@ public class AnimalService {
 		return result;
 	}
 
+	public HashMap<String, Object> logplanComplete(int logID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		int update = dao.logplanComplete(logID);
+		
+		result.put("update", update);
+		
+		return result;
+	}
+
 
 
 
