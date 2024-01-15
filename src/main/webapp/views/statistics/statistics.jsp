@@ -18,7 +18,7 @@
 	width: 290px;
 }
 .sales{
-	width: 420px;
+	width: 860px;
 }
 .branchType span{
 	font-size: 18px;
@@ -63,7 +63,7 @@
  
  <div class="card shadow mb-2 col-12 mx-auto">
  <div class="title">매출 추이</div>
-  <div class="row">
+  <%-- <div class="row">
     <div class="col">
       <canvas class="sales" id="sales"></canvas>
     </div>
@@ -79,7 +79,9 @@
     <div class="col">
       <canvas class="sales" id="visitorsLine"></canvas>
     </div>
-  </div>
+  </div> --%>
+  
+      <canvas class="sales" id="salesVisitorsStackedBarLine"></canvas>
 </div>
   
 </div>
@@ -258,7 +260,7 @@ function chart() {
 				monthlyProductSales.push(productSales[i].monthlyTotalSales);
 			} 
 			
-          var barChartSales = document.querySelector('#sales').getContext('2d');
+          /* var barChartSales = document.querySelector('#sales').getContext('2d');
           const sales = new Chart(barChartSales, {
             type: 'bar',
             data: {
@@ -279,7 +281,6 @@ function chart() {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
                         callback: function(value, index, values) {
                             return value / 1000000;
                         }
@@ -299,10 +300,10 @@ function chart() {
                 }
               }
             }
-          });
+          }); */
           
        	  // 매출 선그래프 그리기
-          console.log("매출 선그래프 그리기");
+          /* console.log("매출 선그래프 그리기");
 		  
           let salesLineYearMonth = [];
           let monthlyLineTicketSales = [];
@@ -348,7 +349,6 @@ function chart() {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        /* stepSize: 10000, */ // 10000만원 단위로 눈금 표시
                         callback: function(value, index, values) {
                             return value / 1000000;
                         }
@@ -359,19 +359,12 @@ function chart() {
                 legend: {
                   position: 'top',
                 },
-                /* title: {
-                  display: true,
-                  text: '매출',
-                  	font: {
-                      size: 17
-                    }
-                } */
               }
             }
-          });
+          }); */
           
        	  // 관람객 차트 그리기
-          console.log("관람객 그래프 그리기");
+          /* console.log("관람객 그래프 그리기");
 		  
           let visitorsYearMonth = [];
           let monthlyVisitorsNumber = [];
@@ -413,10 +406,10 @@ function chart() {
                 }
               }
             }
-          });
+          }); */
           
        // 관람객 선그래프 그리기
-          console.log("매출 선그래프 그리기");
+          /* console.log("매출 선그래프 그리기");
 		  
           let visitorsLineYearMonth = [];
           let monthlyLineVisitorsNumber = [];
@@ -449,18 +442,133 @@ function chart() {
                 legend: {
                   position: 'top',
                 },
-/*                 title: {
-                  display: true,
-                  text: ["관람객"],
-                  font: {
-                    size: 17
-                  }
-                }
- */              }
+                // title: {
+               //   display: true,
+               //   text: ["관람객"],
+               //   font: {
+               //     size: 17
+               //   }
+               // }
+               }
             }
-          });
+          }); */
           
        
+          
+          // 매출/관람객
+          console.log("관람객 그래프 그리기");
+
+			let SalesVisitorsYearMonth = [];
+			let monthlySalesTicket = [];
+			let monthlySalesProduct = [];
+			let monthlySalesVisitorsNumber = [];
+			
+			var ticketSales = data.ticket.filter(function (ticket) {
+			    return ticket.branchName === "가산점";
+			});
+			console.log("티켓 매출");
+			console.log(ticketSales);
+			
+			var productSales = data.product.filter(function (product) {
+			    return product.branchName === "가산점";
+			});
+			console.log("상품 매출");
+			console.log(productSales);
+			
+			for (var i = 0; i < 6; i++) {
+			    SalesVisitorsYearMonth.push(ticketSales[i].yearMonth);
+			    monthlySalesTicket.push(ticketSales[i].monthlyTotalSales);
+			    monthlySalesProduct.push(productSales[i].monthlyTotalSales);
+			}
+			
+			var visitorsData = data.visitors.filter(function (visitors) {
+			    return visitors.branchName === "가산점";
+			});
+			console.log("관람객");
+			console.log(visitorsData);
+			
+			for (var i = 0; i < 6; i++) {
+			    monthlySalesVisitorsNumber.push(visitorsData[i].monthlyVisitorsNumber);
+			}
+			
+			// 데이터 유효성 검증
+			if (SalesVisitorsYearMonth.length === 0 || monthlySalesTicket.length === 0 || monthlySalesProduct.length === 0 || monthlySalesVisitorsNumber.length === 0) {
+			    console.error("데이터가 유효하지 않습니다.");
+			} else {
+			    var salesVisitorsStackedBarLine = document.querySelector('#salesVisitorsStackedBarLine').getContext('2d');
+			 // ... (이전 코드)
+			
+			    const salesVisitors = new Chart(salesVisitorsStackedBarLine, {
+			    	type:'line',
+			        data: {
+			            labels: SalesVisitorsYearMonth,
+			            datasets: [
+			                {
+			                    label: '상품 매출',
+			                    data: monthlySalesProduct,
+			                    yAxisID: 'y',
+			                    type: 'bar',
+			                },
+			                {
+			                    label: '티켓 매출',
+			                    data: monthlySalesTicket,
+			                    yAxisID: 'y',
+			                    type: 'bar',
+			                },
+			                {
+			                    label: '관람객 수',
+			                    data: monthlySalesVisitorsNumber,
+			                    yAxisID: 'y2',
+			                    stacked: true,
+			                }
+			            ],
+			        },
+			        options: {
+			            responsive: false,
+			            scales: {
+			                y: {
+			                    stack: 'combined',
+			                    position: 'left',
+			                    beginAtZero: true,
+			                    ticks: {
+			                        callback: function (value, index, values) {
+			                            return value / 1000000 +'백만원';
+			                        }
+			                    }
+			                },
+			                y2: {
+			                    stacked: true,
+			                    position: 'right',
+			                    ticks: {
+			                      callback: function (value, index, values) {
+			                          return value +'명';
+			                      }
+			                  },
+			                    grid: {
+			                        drawOnChartArea: false,
+			                    }
+			                }
+			            },
+			            plugins: {
+			                legend: {
+			                    position: 'top',
+			                },
+			                title: {
+			                    display: true,
+			                    text: ["매출/관람객", "최근 6개월 관람객 : " + data.totalVisitors[0].totalVisitors + "명"],
+			                    font: {
+			                        size: 17
+			                    }
+			                }
+			            }
+			        }
+			    });
+			
+			}
+
+
+          
+          
           // 지점 변경 버튼 클릭시
           $('#branchChange').click(function () {
             // 선택된 지점의 이름
