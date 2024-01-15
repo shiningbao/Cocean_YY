@@ -45,6 +45,7 @@
 		    LEFT JOIN department d ON e.departmentID = d.departmentID
 		    LEFT JOIN headquarters h ON d.hqID = h.hqID
 		    WHERE e.status = '재직'
+		    <if test="isActive == 0">  AND NOT employeeID REGEXP '^[0-9]+$' </if>
 		) AS data
 		UNION ALL
 		SELECT CONCAT('de',departmentID) AS id, 

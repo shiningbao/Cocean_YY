@@ -137,7 +137,7 @@
 			                	지점
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			                    <a class="dropdown-item" href="#" data-value="지점">지점</a>
+			                    <a class="dropdown-item" onclick="selectGO(e)" href="#" data-value="지점">지점</a>
 			                </div>
 			            </div>
 			            </th>
@@ -236,7 +236,7 @@ $('.p').click(function(){
         success: function(response) {
             // 성공적으로 데이터를 받아온 경우 드롭다운 메뉴 생성
         	 response.forEach(function(branch) {
-                 $('.dropdown-menu').append('<a class="dropdown-item" href="#" data-value="' + branch.branchID + '">' + branch.branchName + '</a>');
+                 $('.dropdown-menu').append('<a class="dropdown-item" onclick="selectGO()" href="#" data-value="' + branch.branchID + '">' + branch.branchName + '</a>');
              });
         },
         error: function(xhr, status, error) {
@@ -245,23 +245,28 @@ $('.p').click(function(){
     });
 
     // 드롭다운 메뉴의 항목을 클릭했을 때 테이블을 그리도록 이벤트 핸들러를 등록합니다.
-    $('.dropdown-menu').on('click', '.dropdown-item', function(event) {
-        console.log('click');
-        var selectedBranchValue = $(this).data('value');
+//     $('.dropdown-menu').on('click', '.dropdown-item', function(event) {
+//         console.log('click');
+//         var selectedBranchValue = $(this).data('value');
 		
-        $.ajax({
-            url: 'getSelectOptionBranch.do',
-            method: 'GET',
-            data: { selectedBranchValue: selectedBranchValue },
-            success: function(data) {
-            	console.log(data);
-            	 fillTable(data);
-            },
-            error: function(e) {
-                console.error(e);
-            }
-        });
-    });
+//         $.ajax({
+//             url: 'getSelectOptionBranch.do',
+//             method: 'GET',
+//             data: { selectedBranchValue: selectedBranchValue },
+//             success: function(data) {
+//             	console.log(data);
+//             	 fillTable(data);
+//             },
+//             error: function(e) {
+//                 console.error(e);
+//             }
+//         });
+//     });
+    
+    function selectGO(e){
+    	var selectedText = event.target.innerText;
+        console.log('클릭한 텍스트:', selectedText);
+    }
     
 	function searchGo(){
 		var category = $('#emName').val();
@@ -327,23 +332,23 @@ $('.p').click(function(){
     	 
 //     })
     
-//     function fillTable(data) {
+    function fillTable(data) {
 
-//     data.forEach(function(item) {
-//         tableHTML += '<tr>';
-//         tableHTML += '<td>' + item.employeeID + '</td>';
-//         tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
-//         tableHTML += '<td>' + item.departmentName + '</td>';
-//         tableHTML += '<td>' + item.rankName + '</td>';
-//         tableHTML += '<td>' + item.positionName + '</td>';
-//         tableHTML += '<td>' + item.status + '</td>';
-//         tableHTML += '<td>' + item.branchName + '</td>';
-//         tableHTML += '</tr>';
-//     });
+    data.forEach(function(item) {
+        tableHTML += '<tr>';
+        tableHTML += '<td>' + item.employeeID + '</td>';
+        tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
+        tableHTML += '<td>' + item.departmentName + '</td>';
+        tableHTML += '<td>' + item.rankName + '</td>';
+        tableHTML += '<td>' + item.positionName + '</td>';
+        tableHTML += '<td>' + item.status + '</td>';
+        tableHTML += '<td>' + item.branchName + '</td>';
+        tableHTML += '</tr>';
+    });
 
-//     tableHTML += '</tbody>';
-//     $('#personnelList').html(tableHTML);
-// }
+    tableHTML += '</tbody>';
+    $('#personnelList').html(tableHTML);
+}
     
 //     function updatePagination(pager) {
 //         var pagingUl = $('#paging');

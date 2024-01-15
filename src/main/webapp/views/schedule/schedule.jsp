@@ -345,7 +345,7 @@ body {
 					</button>
 				</div>
 				<div class="modal-body">
-					<jsp:include page="../personnel/organization.jsp"></jsp:include>
+					<c:import url="/personnel/organization/1"/>
 				</div>
 			</div>
 		</div>
@@ -800,32 +800,46 @@ document.addEventListener('DOMContentLoaded', function() {
 					console.log(updatedStartTime);
 					console.log(updatedEndDate);
 					console.log(updatedendTime);
-                    if(confirm('수정하시겠습니까?')){
-                    	var dataToSend = {
-                    			id : id,
-                    	        title: updatedTitle,
-                    	        remarks: updatedRemarks,
-                    	        startDate: updatedStartDate,
-                    	        endDate: updatedEndDate,
-                    	        startTime: updatedStartTime,
-                    	        endTime: updatedendTime,
-                    	        content: updatedContent
-                    	    };
-                    	$.ajax({
-                    		url:'updateCal.do',
-                    		type:'post',
-                    		data:dataToSend,
-                    		success:function(data){
-                    			console.log(data);
-                    			location.href=location.href;
-                    		},
-                    		error:function(e){
-                    			console.log(e);
-                    		}
-                    	});
-                    }else{
-                    	
-                    }
+					
+					swal({
+						title: "수정하시겠습니까?",
+						text: "",
+						icon: "warning",
+						buttons: ["취소","수정"],
+					})
+					.then((isOkey) => {
+						if (isOkey) {
+							swal('수정이 완료되었습니다.','','success')
+							.then((isOkey) => {
+								if(isOkey){
+			                    	var dataToSend = {
+			                    			id : id,
+			                    	        title: updatedTitle,
+			                    	        remarks: updatedRemarks,
+			                    	        startDate: updatedStartDate,
+			                    	        endDate: updatedEndDate,
+			                    	        startTime: updatedStartTime,
+			                    	        endTime: updatedendTime,
+			                    	        content: updatedContent
+			                    	    };
+			                    	$.ajax({
+			                    		url:'updateCal.do',
+			                    		type:'post',
+			                    		data:dataToSend,
+			                    		success:function(data){
+			                    			console.log(data);
+			                    			location.href=location.href;
+			                    		},
+			                    		error:function(e){
+			                    			console.log(e);
+			                    		}
+			                    	});
+									
+								}
+							})
+						}
+					});
+	
 
                     // 업데이트 완료 후 모달 닫기
                     
@@ -838,21 +852,33 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Delete 버튼 클릭 시 이벤트 처리
             $('#deleteButton').click(function () {
-            	if(confirm("일정을 삭제하시겠습니까?")){
-            		$.ajax({
-                    	url:'delMyCal.do',
-                    	data:{id:id},
-                    	type:'post',
-                    	success:function(data){
-                    		location.href = location.href;
-                    	},
-                    	error:function(e){
-                    		console.log(e);
-                    	}
-                    });
-            	}else{
-            		
-            	}
+            	
+            	swal({
+            		title: "일정을 삭제하시겠습니까?",
+            		text: "",
+            		icon: "warning",
+            		buttons: ["취소","삭제"],
+            	})
+            	.then((isOkey) => {
+            		if (isOkey) {
+            			swal('삭제가 완료되었습니다.','','success')
+            			.then((isOkey) => {
+            				if(isOkey){
+                        		$.ajax({
+                                	url:'delMyCal.do',
+                                	data:{id:id},
+                                	type:'post',
+                                	success:function(data){
+                                		location.href = location.href;
+                                	},
+                                	error:function(e){
+                                		console.log(e);
+                                	}
+                                });
+            				}
+            			})
+            		}
+            	});
                 
             });
         }
@@ -1064,13 +1090,27 @@ var facilityList;
 
 		    // 값이 비어있는지 확인하여 유효성을 검사합니다.
 		    if (titleValue === '' || startValue === '' || endValue === '' || descriptionValue === '' || remarksValue === '') {
-		        alert('필수 입력 항목을 모두 작성해주세요.');
+		        swal('필수 입력 항목을 모두 작성해주세요.','','warning');
 		    } else {
-		        if (confirm('일정을 등록하시겠습니까?')) {
-		            // 유효성 검사를 통과한 경우 hidden input을 추가하고 폼을 제출합니다.
-		            $('#calForm').append('<input type="hidden" name="requestType" value="scheduleWrite">');
-		            $('#calForm').submit();
-		        }
+		    	
+		    	swal({
+		    		title: "일정을 등록하시겠습니까?",
+		    		text: "",
+		    		icon: "info",
+		    		buttons: ["취소","확인"],
+		    	})
+		    	.then((isOkey) => {
+		    		if (isOkey) {
+		    			swal('등록이 완료되었습니다.','','success')
+		    			.then((isOkey) => {
+		    				if(isOkey){
+		    		            $('#calForm').append('<input type="hidden" name="requestType" value="scheduleWrite">');
+		    		            $('#calForm').submit();
+		    				}
+		    			})
+		    		}
+		    	});
+
 		    }
 	})
 var room2Flag = false;
@@ -1167,11 +1207,29 @@ $('#facilitySubmit').on('click',function(){
 	    var facilityAddText = $.trim($('.facilityAdd').text()); // facilityAdd 클래스의 텍스트를 가져옵니다.
 
 	    if (startValue === '' || endValue === '' || descriptionValue === '' || facilityAddText === '') {
-	        alert('모든 필수 입력란을 입력해주세요.');
+	        swal('모든 필수 입력란을 입력해주세요.','','warning');
 	    } else {
 	        // 필요한 처리
-	        $('#facilitySubmit').append('<input type="hidden" name="requestType" value="facility">');	
-	        $('#facilityForm').submit();
+	        
+	        	swal({
+				title: "예약 일정을 등록하시겠습니까?",
+				text: "",
+				icon: "info",
+				buttons: ["취소","확인"],
+			})
+			.then((isOkey) => {
+				if (isOkey) {
+					swal('등록이 완료되었습니다.','','success')
+					.then((isOkey) => {
+						if(isOkey){
+					        
+					        $('#facilitySubmit').append('<input type="hidden" name="requestType" value="facility">');	
+					        $('#facilityForm').submit();
+						}
+					})
+				}
+			});
+
 	    }
 })
 
@@ -1180,11 +1238,24 @@ $('#facilitySubmit').on('click',function(){
 	function getEmployeeID(employeeID, nodeText) {
 	employeeID = employeeID;
 	    console.log(employeeID);
-	    if (confirm(nodeText + '님을 관심캘린더로 등록하시겠습니까?')) {
-	        addCal(employeeID, nodeText); // 확인을 눌렀을 때 addCal() 함수 호출
-	    } else {
-	
-	    }
+	    
+		swal({
+			title: nodeText+"님을 관심캘린더로 등록하시겠습니까??",
+			text: "",
+			icon: "info",
+			buttons: ["취소","확인"],
+		})
+		.then((isOkey) => {
+			if (isOkey) {
+				swal('등록이 완료되었습니다.','','success')
+				.then((isOkey) => {
+					if(isOkey){
+						addCal(employeeID, nodeText); 
+					}
+				})
+			}
+		});
+
 }
 
 	function addCal(employeeID, nodeText) {

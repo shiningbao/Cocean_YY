@@ -13,12 +13,20 @@
         border-collapse: collapse;
         padding: 5px 10px;
     }
+    table, td{
+    	text-align: left;
+    }
     table{
-    	width: 50px;
+    	/* width: 50px; */
+   /*  width: 447px; */
+    width: 200px;
     }
-    form {
+    /* form {
     	width: 200px;
-    }
+    } */
+   	button{
+   		float: right;
+   	}
 </style>
 </head>
 <body>
@@ -52,8 +60,10 @@
             </td>
         </tr>
     </table>
+    <div class="row">
     <button type="button" class="btn btn-secondary" onclick="location.href='storeList.go'">취소</button>
     <button type="submit" class="btn btn-primary" id="productInfoRegister">등록</button>
+    </div>
 </form>
 
 <script>

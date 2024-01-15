@@ -55,14 +55,20 @@ ORDER BY
 	<select id="searchProduct" resultType="branchProduct">
 	<choose>
         <when test="branchName == '본사상품'">
-        	select * from productInformation  where productName LIKE CONCAT(#{searchKeyword}, '%') AND category="상품"
+        	SELECT f.serverFileName, pi.productID, pi.productName, pi.category, pi.price
+			FROM productInformation pi
+			JOIN file f ON pi.productID = f.idx
+			WHERE pi.productName LIKE CONCAT(#{searchKeyword}, '%')
+			  AND f.category = '상품'
         </when>
     	<otherwise>
-			SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status 
+			SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status, f.serverFileName
 			FROM productInformation pi
 			JOIN branchProduct bp ON pi.productID = bp.productID
 			JOIN branch b ON bp.branchID = b.branchID
-			WHERE pi.productName LIKE CONCAT(#{searchKeyword}, '%') AND b.branchName = #{branchName};
+			JOIN file f ON pi.productID = f.idx
+			WHERE pi.productName LIKE CONCAT(#{searchKeyword}, '%') AND b.branchName = #{branchName}
+			AND f.category = '상품'
     	</otherwise>
 	</choose>
 	</select>
