@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
@@ -58,7 +59,12 @@ public class ApprovalService {
 		int tempSave = Integer.parseInt(param.get("tempSave"));
 		String title = param.get("title");
 		String titleID = param.get("titleID");
-		String lastOrder = param.get("lastOrder");
+		String lastOrder = null;
+		if(param.get("lastOrder").equals("undefined")) {
+			lastOrder="0";
+		}else {
+			lastOrder=param.get("lastOrder");
+		}
 		logger.info(title);
 		dto.setEmployeeID(writerID);
 		dto.setPublicStatus(publicStatus);
@@ -114,6 +120,9 @@ public class ApprovalService {
 			 * }
 			 */
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+			List<String> waitingEmp = dao.getWaitingEmp(idx);
+			// dao.draftAlarm(waitingEmp,idx);
+			SseService sse = new SseService();
 			if(param.get("publicStatus").equals("1")) {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
 			}
@@ -132,6 +141,12 @@ public class ApprovalService {
 		 * new SseService(); sseService.alarm(category,Integer.parseInt(employeeID),
 		 * idx, form); }
 		 */
+		for (LineDTO lineInfo : lastLineInfoList) {
+			 lineInfo.getCategory(); String employeeID = lineInfo.getApprovalEmp(); dto =
+			 dao.getForm(idx); String form = dto.getFormTitle();
+			 }
+	
+		
 		 return idx;
 
 	}
@@ -167,8 +182,26 @@ public class ApprovalService {
 		if(lastLineInfoList.isEmpty()) {
 			dao.updateLineEmpty(param);
 		}else {
-			dao.updateApproval(lastLineInfoList,param);
-		}
+			ArrayList<String> check = dao.checkEmpId(idx);
+			List<LineDTO> linesToRemove = new ArrayList<>();
+			String approvalEmp = null;
+			for (LineDTO line : lastLineInfoList) {
+	            approvalEmp = line.getApprovalEmp();
+	            logger.info(approvalEmp);
+	            if (check.contains(approvalEmp)) {
+	                linesToRemove.add(line);
+	            }
+	        }
+			lastLineInfoList.removeAll(linesToRemove);
+			
+		/*	if (check.contains(approvalEmp)) {
+				// dao.updateApproval(lastLineInfoList, param);
+			} else {*/
+			if(lastLineInfoList!=null) {
+				dao.insertApproval(lastLineInfoList, param);
+			}
+			// }
+	    }
 		if(param.get("titleID").equals("1")) {
 			dao.updateWorkDraft(param);
 			}else if(param.get("titleID").equals("2")) {
@@ -385,8 +418,8 @@ public class ApprovalService {
 		return dao.departmentList(params);
 	}
 
-	public ApprovalDTO getSign(int idx, int employeeID) {
-		return dao.getSign(idx,employeeID);
+	public ArrayList<ApprovalDTO> profile(int employeeId) {
+		return dao.profile(employeeId);
 	}
 
 	public void passDraft(String idx) {
@@ -443,6 +476,18 @@ public class ApprovalService {
 		cnt = dao.removeList(idx,titleID);
 		return cnt;
 
+	}
+
+	public ApprovalDTO getPhoto(int loginId) {
+		return dao.getPhoto(loginId);
+	}
+
+	public ApprovalDTO getSign(int empID) {
+		return dao.getSign(empID);
+	}
+
+	public ArrayList<ApprovalDTO> signImg(int idx) {
+		return dao.signImg(idx);
 	}
 
 

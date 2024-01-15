@@ -240,7 +240,7 @@ th {
 				<div class="row">
 					<div class="col-md-6" style="border-right:1px solid #EDEDED">
 					<div id="employeeList">
-					<jsp:include page="../approval/organization.jsp"></jsp:include>
+					<c:import url="/approval/appOrganization/1"/>
 					</div>
 				</div>
 				
@@ -441,8 +441,8 @@ th {
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
 <input type="button" class="btn btn-secondary" value="취소" onclick="confirmSave()"/>
-<input type="button" class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
-<input type="button" class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
+<input type="button" style="float:right"class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
+<input type="button" style="float:right; margin-right:10px;"class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
 </div>
 
 <div id="rightContainer">
@@ -582,6 +582,7 @@ function calculateDays() {
 	 
 	function remainedEmpID() {
 	    remLine = [];
+	    refLine = [];
 		// console.log($("#summernote").summernote('code'));
 	    if ($("#approvalLine tbody tr .employeeID").length > 0) {
 	        $("#approvalLine tbody tr .employeeID").each(function () {
@@ -589,7 +590,7 @@ function calculateDays() {
 	        });
 	    } else if ($("#refTable .employeeID").length > 0) {
 	        $("#refTable .employeeID").each(function () {
-	            remLine.push($(this).val());
+	        	refLine.push($(this).val());
 	        });
 	    } else {
 	        // console.log("없음");
@@ -644,16 +645,16 @@ function calculateDays() {
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
-	    if ("${form.formTitle}" === "업무기안서") {
+	    if ("${list.formTitle}" === "업무기안서") {
 	    	var content = $("#summernote").summernote('code') // 업무기안서
 	        formData.append('content', content);
 	    	formData.append('title',title);
-	    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
+	    } else if ("${list.formTitle}" === "휴직원" || "${list.formTitle}" === "복직원") {
 	    	var textArea = $('#textarea').val();
 	        formData.append('startDate', startDate);
 	        formData.append('endDate', endDate);
 	        formData.append('textArea', textArea);
-	    } else if("${form.formTitle}"==="휴가신청서"){
+	    } else if("${list.formTitle}"==="휴가신청서"){
 	    	var start = $('input[name="start"]').val();
 	        var startTime = $('select[name="startTime"]').val();
 	        var end = $('input[name="end"]').val();
@@ -722,7 +723,7 @@ function calculateDays() {
 
 	    formData.append('lastLine', JSON.stringify(lastLine));
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
-	        if ("${form.formTitle}" === "업무기안서"){
+	        if ("${list.formTitle}" === "업무기안서"){
 	        if (!content.trim() && !title.trim()) {
 		        alert("제목과 내용을 입력해주세요!");
 		    } else if (!title.trim()) {
@@ -738,7 +739,7 @@ function calculateDays() {
 	    
 	    	
 	   
-	    if("${form.formTitle}" === "휴가신청서"){
+	    if("${list.formTitle}" === "휴가신청서"){
 	    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
 	    		if(start ===''){
 	        		alert("날짜를 선택해주세요!");
@@ -808,16 +809,16 @@ function calculateDays() {
 		    formData.append('titleID',titleID);
 		    formData.append('lastOrder',lastOrder);
 		    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
-		    if ("${form.formTitle}" === "업무기안서") {
+		    if ("${list.formTitle}" === "업무기안서") {
 		    	var content = $("#summernote").summernote('code');// 업무기안서
 		        formData.append('content', content);
 		    	formData.append('title',title);
-		    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
+		    } else if ("${list.formTitle}" === "휴직원" || "${list.formTitle}" === "복직원") {
 		    	var textArea = $('#textarea').val();
 		        formData.append('startDate', startDate);
 		        formData.append('endDate', endDate);
 		        formData.append('textArea', textArea);
-		    } else if("${form.formTitle}"==="휴가신청서"){
+		    } else if("${list.formTitle}"==="휴가신청서"){
 		    	var start = $('input[name="start"]').val();
 		        var startTime = $('select[name="startTime"]').val();
 		        var end = $('input[name="end"]').val();
@@ -912,33 +913,69 @@ function calculateDays() {
 		}
 			
 	
-     function getApprovalLine(lineData){
-    	 console.log(remLine);
-		 console.log(lineData);
-		 if(remLine.length==0){ // approvalLine에 그려져있는게 없으면
-	     var firstItem = lineData[0];
-	     approvalSignature(firstItem);
-	
-	     for (var i=1; i<lineData.length; i++){
- 			 var addItem = lineData[i];
- 			 if(addItem.category!=='참조'){
- 			 appSign(addItem);
- 			 }
-	     }
-		 }else{ // approvalLine에 그려져있는게 있으면
-			 for (var i=0; i<lineData.length; i++){
-	 			 var addItem = lineData[i];
-	 			 if(addItem.category!=='참조'){
-	 			 appSign(addItem);
-	 			 console.log(addItem.category);
-	 			 }
-	 		 }
-		 }
- 		 for (var i = 0; i < lineData.length; i++) {
-              addLineToTable(lineData[i]);
-          }
- 		
- 	}
+	function getApprovalLine(lineData) {
+ 	    console.log(lineData);
+ 	    console.log(remLine);
+ 	   for (var i = 0; i < lineData.length; i++) { // 오른쪽 결재라인창에 그려지는거
+           addLineToTable(lineData[i]);
+       }
+ 	   $('#line').empty();
+		
+ 	    if (lineData[0].category == '참조' && lineData.length > 1) {
+ 	    	if(remLine.length==0){
+ 	    	var firstItem;
+ 	    	for (var i = 0; i < lineData.length; i++) {
+ 	    	    if (lineData[i].category !== '참조') {
+ 	    	        firstItem = lineData[i];
+ 	    	       break;
+ 	    	    }
+ 	    	}
+ 	       approvalSignature(firstItem);
+ 	      for (var i = lineData.indexOf(firstItem)+1; i < lineData.length; i++) {
+	 	        var addItem = lineData[i];
+	 	        appSign(addItem);
+	 	       console.log(addItem.category);
+	      }
+ 	       
+ 	    	}else{
+ 	    		for (var i = 0; i < lineData.length; i++) {
+ 	 	    	    if (lineData[i].category !== '참조') {
+ 	 	    	        firstItem = lineData[i];
+ 	 	    	      	break;
+ 	 	    	    }
+ 	    		}
+ 	      for (var i = lineData.indexOf(firstItem); i < lineData.length; i++) {
+ 	 	        var addItem = lineData[i];
+ 	 	        appSign(addItem);
+ 	      }
+ 	    	}
+ 	    }else if(lineData[0].category!=='참조'&&lineData.length>1){
+ 	    	  var firstItem = lineData[0];
+ 	    	  if(remLine.length==0){
+ 	    	  approvalSignature(firstItem);
+ 	    	  for (var i = 1; i < lineData.length; i++) {
+  	 	        var addItem = lineData[i];
+  	 	        appSign(addItem);
+  	      } 	    	  
+ 	    	  }else{
+ 	    		 for (var i = 0; i < lineData.length; i++) {
+ 	  	 	        var addItem = lineData[i];
+ 	  	 	        appSign(addItem);
+ 	  	      } 	    	
+ 	    	  }
+ 	    }else if(lineData[0].category!=='참조'&&lineData.length==1){
+	    	  console.log(remLine.length);
+	    	  var firstItem=lineData[0];
+	    	  if(remLine.length==0){
+	    		  approvalSignature(firstItem);
+	    	  }else{
+ 	    	 for (var i = 0; i < lineData.length; i++) {
+   	 	        var addItem = lineData[i];
+   	 	        appSign(addItem);
+   	      }
+	    	  }
+ 	      }
+ 	    } 
      
      function addLineToTable(lineData) {    	
 		    var appTable = $("#approvalLine");
@@ -1032,13 +1069,37 @@ function calculateDays() {
 			
 		 }
 		
+		function approvalSignature(lineData){
+			 var signTable = $("#approvalSignature");
+			
+				var content=
+			        "<table class='signApp'>"+
+						"<tr>"+
+					        "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+lineData.category+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					    "</tr>"+
+					    "<tr>"+
+					    "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+
+				        "</td>"
+					    "</tr>"+
+				        "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
+					"</table>"
+			
+				        if(lineData.category!=='참조'){
+							signTable.append(content);
+						}
+			
+		 }
+		
 		function appSign(addItem) {
-		    var frLastTd = $('#approvalSignature tr:first td:last');
+			 var frLastTd = $('#approvalSignature table.signApp:last tr:first td:last');
 		    var scLastTd = $('#approvalSignature tr:odd td:last');
 		    var lastTd = $('#approvalSignature td:last');
 	        
-	        $("<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+addItem.category+"<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" +addItem.positionName+"\u00A0"+addItem.name+ "</td>").insertAfter(frLastTd);
-	        $("<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(scLastTd);
+		    if (addItem.category !== '참조') {
+	            $("<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
+	            $("<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(scLastTd);
+	        }
 		}
 	  
 	 
