@@ -59,7 +59,7 @@ $(function () {
     $("#jstree").jstree({
         'core': {
             'data': {
-                "url": "/Cocean/personnel/getChart.do",
+                "url": "/Cocean/personnel/getChart.do/${isActive}",
                 "dataType": "JSON"
             }
         },
@@ -144,8 +144,9 @@ function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	    employeeInfo.forEach(function (item, idx) {
 	        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
 	        var isRemLineEmpID = remLine.includes(currentEmployeeID);
+	        var inRefTable = $('#refTable').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
 
-	        if (!isRemLineEmpID && !existingEmployee) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
+	        if (!isRemLineEmpID && !existingEmployee&&!inRefTable) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
 	            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
 	            var content = '<div class="lineItem">';
 	            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
@@ -156,6 +157,7 @@ function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	            content += '<label class="name">' + item.name + '</label>' + '<img src="<c:url value='/resource/img/cancel.png'/>" class="cancel" alt="삭제 아이콘">' + '<br/>';
 	            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
 	            content += '<input type="hidden" class="positionName" value="' + item.positionName + '"/>';
+	            content += '<input type="hidden" class="photo" value="' + item.serverFileName + '"/>';
 	            content += '</div>';
 
 	            $('#line').append(content);
@@ -188,6 +190,7 @@ function saveApprovalLine(lineData) {
         var name = $(this).find('.name').text();
         var employeeID = $(this).find('.employeeID').val();
         var positionName = $(this).find('.positionName').val();
+        var photo = $(this).find('.photo').val();
         lineData.push({
             category: category,
             hqName: hqName,
@@ -195,7 +198,8 @@ function saveApprovalLine(lineData) {
             rank: rank,
             name: name,
             employeeID: employeeID,
-            positionName: positionName
+            positionName: positionName,
+            photo: photo
         });
     });
     // console.log(lineData);

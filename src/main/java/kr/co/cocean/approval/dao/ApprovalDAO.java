@@ -34,7 +34,7 @@ public interface ApprovalDAO {
 
 	void saveApprovalLine(int employeeID, String category);
 
-	void approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
+	ArrayList<ApprovalDTO> approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
 
 	formDTO formTitle(int titleID);
 
@@ -85,8 +85,6 @@ public interface ApprovalDAO {
 	ArrayList<ApprovalDTO> comList(HashMap<String, Object> params);
 
 	ArrayList<ApprovalDTO> departmentList(HashMap<String, Object> params);
-
-	ApprovalDTO getSign(int idx, int employeeID);
 
 	void passDraft(String idx);
 
@@ -147,6 +145,22 @@ public interface ApprovalDAO {
 	Integer sCount(HashMap<String, Object> params);
 
 	int removeList(String idx, String titleID);
+
+	ArrayList<String> checkEmpId(int idx);
+
+	void insertApproval(List<LineDTO> lastLineInfoList, Map<String, String> param);
+
+	ArrayList<ApprovalDTO> profile(int employeeId);
+
+	ApprovalDTO getPhoto(int loginId);
+
+	ApprovalDTO getSign(int empID);
+
+	ArrayList<ApprovalDTO> signImg(int idx);
+
+	void draftAlarm(List<String> waitingEmp, int idx);
+
+	List<String> getWaitingEmp(int idx);
 
 
 	/*

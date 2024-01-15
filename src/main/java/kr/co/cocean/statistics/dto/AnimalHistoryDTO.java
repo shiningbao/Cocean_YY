@@ -7,6 +7,13 @@ public class AnimalHistoryDTO {
 	private int normalNumber;
 	private int illedNumber;
 	private int deadNumber;
+	private int isolatedNumber;
+	public int getIsolatedNumber() {
+		return isolatedNumber;
+	}
+	public void setIsolatedNumber(int isolatedNumber) {
+		this.isolatedNumber = isolatedNumber;
+	}
 	public int getBranchID() {
 		return branchID;
 	}

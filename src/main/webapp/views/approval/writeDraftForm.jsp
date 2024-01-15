@@ -87,6 +87,11 @@ button{
   border: none;
 }
 
+#approvalLine td{
+	padding : 2px;
+	font-size : 12px;
+}
+
 #agreeTable, #agreeTable tr, #agreeTable td{
 	border:none;
 }
@@ -114,46 +119,31 @@ button{
 
 #contentLine{
 	margin: 14px;
-    padding: 6% 2% 2% 2%;
+    padding: 4% 2% 2% 2%;
     border: 5px solid #e8e8e8;
-    width: 60%;
-    height: 93%;
-    position: absolute;
-    left: 17%;
-    top: 17%;
+    width: 73%;
+    height: 94%;
 }
 
 #bottom{
-	position: absolute;
-    left: 19%;
-    bottom: -29%;
-    width:59%;
+    width:74%;
 }
 
 #rightContainer{
-	display: flex;
     flex-direction: column;
     width: 22%;
-    position: absolute;
-    right: 0%;
-    top: 19%;
+    float:right;
+    margin: 5% 2%;
 }
 
 #formTitle{
-	position: absolute;
-    width: 40%;
     text-align: center;
-    top: 2%;
     font-size: 41px;
-    right: 29%;
 }
 
 .topTitle{
-	position: absolute;
     width: 50%;
-    top: 12%;
     font-size: 30px;
-    left: 18%;
 }
 
 
@@ -210,6 +200,17 @@ th {
 	height:15px;
 	cursor:pointer;
 }
+
+ .appStatus{
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: #4480e9;
+    }
+    
+    .delArea{
+    	margin:59%;
+    	width: 17px;
+    }
 </style>
 </head>
 <body>
@@ -232,7 +233,7 @@ th {
 				<div class="row">
 					<div class="col-md-6" style="border-right:1px solid #EDEDED">
 					<div id="employeeList">
-					<jsp:include page="../approval/organization.jsp"></jsp:include>
+					<c:import url="/approval/appOrganization/1"/>
 					</div>
 				</div>
 				
@@ -248,6 +249,25 @@ th {
 			</div>
 		</div>
 	</div>
+	
+	
+<div id="rightContainer">
+<div class="card shadow" style="width:300px;">
+	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
+    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
+	<hr/>
+		<table id="approvalLine">
+			<tr>
+				<th style="background-color:white;"><img src='/photo/cocean/profile/${draftInfo.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
+				<td><span class="appStatus">상신</span></td>
+				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
+				<td>${draftInfo.rankName}</td>
+				<td>${draftInfo.name}</td>
+			</tr>
+		</table>
+	</div>
+	</div>
+	</div>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
 	<div class="topTitle">
@@ -256,8 +276,7 @@ th {
 </div>
 <div id="contentLine">
 <div id="formTitle">${form.formTitle}</div>
-<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
-<!-- <div id="agrSignature">합의 서명 그려지는부분</div>	 -->
+
 <br/>
 <div id="draftInfoTop" style="display: flex;">
 <input type="hidden" value="${form.titleID}" name=titleID>
@@ -276,6 +295,7 @@ th {
 			    <td>${date}</td>
 			</tr>
 		</table>
+		<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
 		</div>
 
 <br/>
@@ -315,7 +335,7 @@ th {
 	</tr>
 	<tr>
 		<th>휴가 종류</th>
-			<td colspan="2"><select id="vacationCategory" name="vacationCategory"> 
+			<td colspan="2"><select id="vacationCategory" name="vacationCategory" onchange="reason()"> 
 					  <option value="연차" selected="selected">연차</option>
 					  <option value="반차">반차</option>
 					  <option value="병가">병가</option>
@@ -340,7 +360,7 @@ th {
 		<th>총 사용일</th>
 		<td id="total" style="background-color:lightgray;"></td>
 	</tr>
-	<tr>
+	<tr id="reason" style="display: none;">
 		<th>사유</th>
 		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력"></textarea></td>
 	</tr>
@@ -366,10 +386,12 @@ th {
 
 
 <br/>
+<div id="fileBtn">
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" style="display:none;"/>
+<input type="file" id="input-file" name="files" style="display:none;"/>
+</div>
 <br/>
 
 
@@ -391,28 +413,11 @@ th {
 <div id="btnRemove">
 <input type="button" class="btn btn-secondary"  value="취소" onclick="location.href='formList.go'"/>
 <input style="float:right" class="btn btn-primary" type="button" id="write" value="등록" onclick="save(${data.idx})"/>
-<input style="float:right" class="btn btn-primary" type="button" id="tempSave" value="임시저장" onclick="tempSave(${data.idx})"/>
+<input style="float:right; margin-right:10px;" class="btn btn-primary" type="button" id="tempSave" value="임시저장" onclick="tempSave(${data.idx})"/>
 </div>
 </div>
 </div>
 
-<div id="rightContainer">
-<div class="card shadow" style="margin-left:10px;">
-	<div class="lineContent" style="padding: 10px 15px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
-	<hr/>
-		<table id="approvalLine">
-			<tr>
-				<th class="img-profile rounded-circle"></th>
-				<td>상신</td>
-				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
-				<td>${draftInfo.rankName}</td>
-				<td>${draftInfo.name}</td>
-			</tr>
-		</table>
-	</div>
-	</div>
-	</div>
 </div>
 
 
@@ -422,9 +427,22 @@ th {
 
 
 
-<c:import url="/footer"/>	
+<c:import url="/footer"/>
 </body>
 <script>
+
+function reason() {
+    var vacationCategory = document.getElementById('vacationCategory');
+    var reason = document.getElementById('reason');
+
+    var selectedValue = vacationCategory.value;
+
+    if (selectedValue === '경조사' || selectedValue === '병가' || selectedValue === '공가') {
+        reason.style.display = '';
+    } else{
+        reason.style.display = 'none';
+    }
+}
 
 
 	var textArea = $('#textarea').text();
@@ -492,57 +510,10 @@ function calculateDays() {
     }
 });
  
-
-	
-	 /* $('input[name="start"]').on('change', function() {
-	        var start=$(this).val();
-	        // console.log(start);
-	        usageTime();
-	    });
-	 $('input[name="end"]').on('change', function() {
-	        var end=$(this).val();
-	        usageTime();
-	    });
-	 
-	$('select[name="startTime"]').on('change', function() {
-        var startTime=$(this).val();
-        usageTime();
-        // console.log(startTime);
-    });
-	 
-	$('select[name="endTime"]').on('change', function() {
-        var endTime=$(this).val();
-        // console.log($('select[name="startTime"]').val());
-        usageTime();
-    });
-	
-	function usageTime(){
-		var start = $('input[name="start"]').val();
-        var startTime = $('select[name="startTime"]').val();
-        var end = $('input[name="end"]').val();
-        var endTime = $('select[name="endTime"]').val();
-		$.ajax({
-	        url: "/Cocean/approval/calculateUsageTime",
-	        method: "POST",
-	        data:{
-	        	start:start,
-	        	startTime:startTime,
-	        	end:end,
-	        	endTime:endTime
-	        },
-        	success:function(usageTime){
-        		// console.log(usageTime);
-        		$('#usageTime').text(usageTime.usageTime);
-        	},
-        	error:function(e){
-        		console.log(e);
-        	}
-	    	});
-	}
-	  */
 	 
 	function remainedEmpID() {
 	    remLine = [];
+	    refLine = [];
 		// console.log($("#summernote").summernote('code'));
 	    if ($("#approvalLine tbody tr .employeeID").length > 0) {
 	        $("#approvalLine tbody tr .employeeID").each(function () {
@@ -550,7 +521,7 @@ function calculateDays() {
 	        });
 	    } else if ($("#refTable .employeeID").length > 0) {
 	        $("#refTable .employeeID").each(function () {
-	            remLine.push($(this).val());
+	            refLine.push($(this).val());
 	        });
 	    } else {
 	        // console.log("없음");
@@ -565,8 +536,8 @@ function calculateDays() {
 
 
 	$('#summernote').summernote({
-		height: 200, width: 825,
-		maxHeight: 200,
+		height: 500, width: 825,
+		maxHeight: 500,
 		minHeight: 200,
 		focus: true
 	});
@@ -906,7 +877,7 @@ function calculateDays() {
              <div id="btnRemove">
 	    		 <input type="button" class="btn btn-secondery"value="취소" onclick="location.href='formList.go'"/>
 	   			 <input type="button" class="btn btn-primary" style="float:right" onclick="save(` + idx + `)" value="등록"/>
-	             <input type="button" class="btn btn-primary" style="float:right" onclick="tempSave(` + idx + `)" value="임시저장"/>
+	             <input type="button" class="btn btn-primary" style="float:right; margin-right:10px;" onclick="tempSave(` + idx + `)" value="임시저장"/>
              </div>
      `;
          $('#render').append(el);
@@ -915,19 +886,70 @@ function calculateDays() {
 
 	
 	
-     function getApprovalLine(lineData){
- 		console.log(lineData);
-              var firstItem = lineData[0];
-              approvalSignature(firstItem);
- 		 for (var i = 0; i < lineData.length; i++) {
-              addLineToTable(lineData[i]);
-          }
- 		 for (var i=1; i<lineData.length; i++){
- 			 var addItem = lineData[i];
- 			 appSign(addItem);
- 			 console.log(addItem.category);
- 		 }
- 	}
+ 	function getApprovalLine(lineData) {
+ 	    console.log(lineData);
+ 	    console.log(remLine);
+ 	   for (var i = 0; i < lineData.length; i++) { // 오른쪽 결재라인창에 그려지는거
+           addLineToTable(lineData[i]);
+       }
+ 	   $('#line').empty();
+		
+ 	    if (lineData[0].category == '참조' && lineData.length > 1) {
+ 	    	if(remLine.length==0){
+ 	    	var firstItem;
+ 	    	for (var i = 0; i < lineData.length; i++) {
+ 	    	    if (lineData[i].category !== '참조') {
+ 	    	        firstItem = lineData[i];
+ 	    	       break;
+ 	    	    }
+ 	    	}
+ 	       approvalSignature(firstItem);
+ 	      for (var i = lineData.indexOf(firstItem)+1; i < lineData.length; i++) {
+	 	        var addItem = lineData[i];
+	 	        appSign(addItem);
+	 	       console.log(addItem.category);
+	      }
+ 	       
+ 	    	}else{
+ 	    		for (var i = 0; i < lineData.length; i++) {
+ 	 	    	    if (lineData[i].category !== '참조') {
+ 	 	    	        firstItem = lineData[i];
+ 	 	    	      break;
+ 	 	    	    }
+ 	    		}
+ 	      for (var i = lineData.indexOf(firstItem); i < lineData.length; i++) {
+ 	 	        var addItem = lineData[i];
+ 	 	        appSign(addItem);
+ 	      }
+ 	    	}
+ 	    }else if(lineData[0].category!=='참조'&&lineData.length>1){
+ 	    	  var firstItem = lineData[0];
+ 	    	  if(remLine.length==0){
+ 	    	  approvalSignature(firstItem);
+ 	    	  for (var i = 1; i < lineData.length; i++) {
+  	 	        var addItem = lineData[i];
+  	 	        appSign(addItem);
+  	      } 	    	  
+ 	    	  }else{
+ 	    		 for (var i = 0; i < lineData.length; i++) {
+ 	  	 	        var addItem = lineData[i];
+ 	  	 	        appSign(addItem);
+ 	  	      } 	    	
+ 	    	  }
+ 	    }else if(lineData[0].category!=='참조'&&lineData.length==1){
+	    	  console.log(remLine.length);
+	    	  var firstItem=lineData[0];
+	    	  if(remLine.length==0){
+	    		  approvalSignature(firstItem);
+	    	  }else{
+ 	    	 for (var i = 0; i < lineData.length; i++) {
+   	 	        var addItem = lineData[i];
+   	 	        appSign(addItem);
+   	      }
+	    	  }
+ 	      }
+ 	    } 
+ 	
      
      function addLineToTable(lineData) {    	 
 		    var appTable = $("#approvalLine");
@@ -937,22 +959,25 @@ function calculateDays() {
 		    // var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
 		        var row = $("<tr>");
-		        if(lineData.category=="결재" || lineData.category== "합의")
-		        	row.append("<th class='img-profile rounded-circle'></th>");
+		        	if(lineData.photo!=='null'){
+		        	row.append("<th style='background-color:white;'><img src='/photo/cocean/profile/" + lineData.photo + "' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        	}else if(lineData.photo=='null'){
+		        		row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        	}
 		      /*   
 		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
 		        	row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
 		        } */
-		        row.append("<td class='category'>" + lineData.category + "</td>");
+		        row.append("<td class='category'>" +"<span class='appStatus'>"+ lineData.category +"</span>"+ "</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } 
 		        else {
 		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
 		            row.append("<td>" + lineData.rank + "</td>");
 		            row.append("<td>" + lineData.name + "</td>");
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        row.append("<input type='hidden' name='order' class='order' value='" + (appTable.find("tr").length + 1) + "'>");
@@ -969,11 +994,10 @@ function calculateDays() {
 		        } else {
 		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
 		            row.append(row);
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);
-		        // console.log(lineData.employeeID);
 		    }
 		    
 		    $(document).on('click', '.delete', function() {
@@ -1020,15 +1044,37 @@ function calculateDays() {
 			
 		 }
 		
+		function approvalSignature(lineData){
+			 var signTable = $("#approvalSignature");
+			 
+				var content=
+			        "<table class='signApp'>"+
+						"<tr>"+
+					        "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+lineData.category+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+					        "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+					    "</tr>"+
+					    "<tr>"+
+					    "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+
+				        "</td>"
+					    "</tr>"+
+				        "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
+					"</table>"
+			if(lineData.category!=='참조'){
+				signTable.append(content);
+			}
+		 }
+		
 		function appSign(addItem) {
-		    var frLastTd = $('#approvalSignature tr:first td:last');
+		    var frLastTd = $('#approvalSignature table.signApp:last tr:first td:last');
 		    var scLastTd = $('#approvalSignature tr:odd td:last');
 		    var lastTd = $('#approvalSignature td:last');
-	        
-	        $("<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+addItem.category+"<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" +addItem.positionName+"\u00A0"+addItem.name+ "</td>").insertAfter(frLastTd);
-	        $("<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(scLastTd);
+			
+	        if (addItem.category !== '참조') {
+	            $("<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
+	            $("<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'></td>").insertAfter(scLastTd);
+	        }
 		}
-	  
+		
 	 
 	 function SendAddedLineData(lineData){
 	    	getAddedLineData(lineData);
@@ -1044,35 +1090,6 @@ function calculateDays() {
 		         orderInput.val(index + 1);
 		    });
 		}  
-		
-
-		
-		/* function updateRowNumbers(tableId) {
-		    var rows = $(tableId + ' tbody tr');
-
-		    rows.each(function(index) {
-		        var currentRow = $(this);
-		        var currentCategory = currentRow.find('.category').text();
-		        console.log(currentRow.html());
-
-		        // Check if the current row has '결재' category
-		        if (currentCategory === '결재') {
-		            var prevRow = rows.eq(index - 1);
-		            var prevPrevRow = rows.eq(index - 2);
-
-		            // Check if the previous row has '합의' category and the row before the previous one has an index greater than or equal to 2
-		            if (prevRow.length && prevRow.find('.category').text() === '합의' && prevPrevRow.length && prevPrevRow.index() >= 2) {
-		                currentRow.find('.order').text(prevPrevRow.index() + 2);
-		            } else {
-		                currentRow.find('.order').text(index + 1);
-		            }
-		        } else {
-		            currentRow.find('.order').text(index + 1);
-		        }
-		    });
-		}
-		 */
-		
 		
 		
 		 // 결재라인 추가한거 취소

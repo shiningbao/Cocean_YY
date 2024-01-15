@@ -26,12 +26,14 @@ public class StatisticsService {
 		ArrayList<SalesHistoryDTO> product = dao.productHistory();
 		ArrayList<SalesHistoryDTO> ticket = dao.ticketHistory();
 		ArrayList<SalesHistoryDTO> visitors = dao.visitorsHistory();
-
+		ArrayList<SalesHistoryDTO> totalVisitors = dao.totalVisitors();
+		
 		map.put("animal", animal);
 		map.put("tank", tank);
 		map.put("product", product);
 		map.put("ticket", ticket);
 		map.put("visitors", visitors);
+		map.put("totalVisitors", totalVisitors);
 
 		return map;
 	}

@@ -16,8 +16,8 @@
 	</select> -->
 	
 	<select id="draftInfo" resultType="approval">
-		SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID WHERE e.employeeID=#{employeeID}
+		 SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave,f.serverFileName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN file f ON e.employeeID=f.idx WHERE e.employeeID=#{employeeID} AND f.path="profile";
 	</select>
 	
 	<select id="formTitle" resultType="form">
@@ -60,10 +60,23 @@
 	</update>
 	
 	<select id="employeeInfo" resultType="approval">
-	SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID JOIN `position` p ON e.positionID = p.positionID WHERE e.employeeID=#{employeeID};
+	SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,p.positionName,f.serverFileName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID JOIN `position` p ON e.positionID = p.positionID LEFT OUTER JOIN file f ON e.employeeID = f.idx WHERE e.employeeID=#{employeeId} and (f.serverFileName IS NULL OR f.path = "profile")
 
 	</select>
+	
+		<!-- <insert id="draftAlarm" parameterType="map">
+    INSERT INTO notificationHistory(employeeID, url, content) VALUES
+    <foreach collection="waitingEmp" item="emp" separator=",">
+        (#{emp.employeeID}, '/approval/draftDetail.go?idx=#{idx}&employeeID=#{emp.employeeID}&category=#{emp.category}&hTitle=waiting', '결재도착')
+    </foreach>
+</insert> -->
+	
+	<select id="getWaitingEmp" resultType="string">
+	    SELECT DISTINCT employeeID,category FROM approval
+	    WHERE idx = #{idx} AND approvalStatus = '대기'
+	</select>
+	
 	
 	<select id="waitingList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
@@ -76,8 +89,8 @@
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
-		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx,df.titleID FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx WHERE df.idx=#{idx}
+		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx,df.titleID,f.serverFileName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx LEFT OUTER JOIN file f on e.employeeID=f.idx WHERE df.idx=#{idx} AND f.path='profile'
 	</select>
 	
 	<select id="vacDetail" resultType="approval">
@@ -89,11 +102,15 @@
 	</select>
 	
 	<select id="lineList" resultType="approval">
-		select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("결재","합의") order by approvalOrder asc
+		 	select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion,f.serverFileName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID LEFT OUTER JOIN file f on a.employeeID=f.idx where a.idx=#{idx} and (f.serverFileName IS NULL OR f.path = "profile") and a.category in("결재","합의") order by a.approvalOrder asc
+	</select>
+	
+	<select id="signImg" resultType="approval">
+		 	select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion,f.serverFileName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID LEFT OUTER JOIN file f on a.employeeID=f.idx where a.idx=#{idx} and f.path="signature" and a.category in("결재","합의") order by a.approvalOrder asc
 	</select>
 	
 	<select id="signList" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID JOIN position p ON e.positionID=p.positionID where idx=#{idx} and a.category in("결재","합의") order by approvalOrder asc
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.approvalDate,a.approvalStatus,p.positionName,f.serverFileName,f.path from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID JOIN position p ON e.positionID=p.positionID LEFT OUTER JOIN file f  ON e.employeeID=f.idx where a.idx=#{idx} and a.category in("결재","합의") and (f.serverFileName IS NULL OR f.path = "signature") order by approvalOrder asc
 	</select>
 	
 	<select id="agrRef" resultType="approval">
@@ -116,7 +133,7 @@
 	        <choose>
 	            <when test="line.order != null">#{line.order}</when>
 	            <otherwise>'0'</otherwise>
-	        </choose>, #{lastOrder}, 
+	        </choose>, #{lastOrder},
 	        <choose>
             <when test="line.order == 2"> '대기' </when>
             <otherwise>'미대기'</otherwise>
@@ -200,16 +217,35 @@
 		WHERE idx=#{param1.idx}		
 	</update>
 	
+	<insert id="insertApproval">
+    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder) VALUES 
+    <foreach collection="lastLineInfoList" item="line" separator=",">
+        (#{param2.idx}, #{line.approvalEmp}, #{line.category},
+        <choose>
+            <when test="line.order != null">#{line.order}</when>
+            <otherwise>0</otherwise>
+        </choose>, #{param2.lastOrder})
+    </foreach>
+</insert>
+	
 	<update id="updateApproval">
-		UPDATE approval SET  
-			<foreach collection="lastLineInfoList" item="line" separator=",">
-		        employeeID=#{line.approvalEmp}, category=#{line.category},
-		        <choose>
-		            <when test="line.order != null">approvalOrder=#{line.order}</when>
-		            <otherwise>'0'</otherwise>
-		        </choose>, lastOrder=#{param2.lastOrder}
-	    	</foreach> WHERE idx=#{param2.idx}
-	</update>
+    <foreach collection="lastLineInfoList" item="line" separator=";">
+        UPDATE approval SET  
+        employeeID=#{line.approvalEmp},
+        category=#{line.category},
+        <choose>
+            <when test="line.order != null">approvalOrder=#{line.order}</when>
+            <otherwise>approvalOrder='0'</otherwise>
+        </choose>,
+        lastOrder=#{param2.lastOrder}
+        WHERE idx=#{param2.idx} AND employeeID=#{line.approvalEmp}
+    </foreach>
+</update>
+
+	
+	<select id="checkEmpId" resultType="String">
+		SELECT employeeID FROM approval WHERE idx=#{idx}
+	</select>
 	
 	<update id="updateLineEmpty">
 	    UPDATE approval SET category='-', approvalOrder='0', lastOrder=#{lastOrder}, approvalStatus='미대기' WHERE idx=#{idx}
@@ -422,7 +458,7 @@
 	
 	<select id="comList" resultType="approval">
 		SELECT a.approvalDate, a.approvalStatus, e.employeeID, a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,d.draftDate FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND NOT a.approvalStatus IN('미대기','대기') LIMIT #{pageNum},10
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx WHERE a.employeeID=#{employeeID} AND NOT a.approvalStatus IN('미대기','대기') ORDER BY a.approvalDate DESC LIMIT #{pageNum},10 
 	</select>
 	
 	<select id="MaCount" parameterType="map" resultType="Integer">
@@ -447,7 +483,15 @@
 	</select>
 	
 	<select id="getSign" resultType="approval">
-		SELECT serverFileName from file WHERE idx=#{employeeID} and path="signature"
+		SELECT serverFileName from file WHERE idx=#{empID} and path="signature"
+	</select>
+	
+	<select id="profile" resultType="approval">
+		SELECT serverFileName,idx from file WHERE idx=#{employeeId} and path="profile"
+	</select>
+	
+	<select id="getPhoto" resultType="approval">
+		SELECT serverFileName FROM file WHERE idx=#{loginId} and path="profile"
 	</select>
 	
 	<select id="getForm" resultType="approval">
