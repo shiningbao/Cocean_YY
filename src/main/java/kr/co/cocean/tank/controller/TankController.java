@@ -118,6 +118,17 @@ public class TankController {
 		return recordList;
 
 	}
+	
+	@RequestMapping("tank/getAbNomal.ajax")
+	@ResponseBody
+	public List<Map<String, Object>> gerAbNomal(@RequestParam String tankID, String curDate, Model model) {
+		List<Map<String, Object>> modalList = service.getAbNomal(tankID,curDate);
+		// logger.info("recordList: "+recordList.toString());
+		model.addAttribute("modalList",modalList);
+		model.addAttribute("tankID", tankID);
+		return modalList;
+		
+	}
 
 	@GetMapping("tank/housePlan.go")
 	public ModelAndView housePlan(@RequestParam int tankID) {
