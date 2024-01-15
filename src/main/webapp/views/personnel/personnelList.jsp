@@ -137,7 +137,7 @@
 			                	지점
 			                </button>
 			                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			                    <a class="dropdown-item" onclick="selectGO(e)" href="#" data-value="지점">지점</a>
+			                    <a class="dropdown-item" onclick="selectGO(e)" href="#" data-value="0">전체</a>
 			                </div>
 			            </div>
 			            </th>
@@ -243,6 +243,12 @@ $('.p').click(function(){
             console.error(error);
         }
     });
+    
+    $('.dropdown-item').on('change',function(){
+    	
+//     	location.href='personnelList.go?category='+category+'&search='+inputSearch+'&pageNum=1';
+    	
+    });
 
     // 드롭다운 메뉴의 항목을 클릭했을 때 테이블을 그리도록 이벤트 핸들러를 등록합니다.
 //     $('.dropdown-menu').on('click', '.dropdown-item', function(event) {
@@ -263,25 +269,39 @@ $('.p').click(function(){
 //         });
 //     });
     
-    function selectGO(e){
-    	var selectedText = event.target.innerText;
-        console.log('클릭한 텍스트:', selectedText);
+var category = '';  // 초기값을 빈 문자열로 설정
+var inputSearch = '';  // 초기값을 빈 문자열로 설정
+
+function selectGO(e) {
+
+    // 이전 검색 조건 가져오기
+    var currentCategory = category;
+    var currentInputSearch = inputSearch;
+
+    // 새로운 branchID 가져오기
+    var branchID = $(event.target).data('value');
+    console.log(branchID);
+
+
+        location.href = 'personnelList.go?category=&search=&branch=' + branchID + '&pageNum=1';
+  
+}
+
+function searchGo() {
+    category = $('#emName').val();
+    inputSearch = $('#inputSearch').val();
+    console.log(inputSearch);
+
+    if (inputSearch !== '') {
+        location.href = 'personnelList.go?category=' + category + '&search=' + inputSearch + '&branch=0&pageNum=1';
+    } else {
+        swal({
+            title: '검색어를 입력해주세요',
+            button: '확인'
+        });
     }
-    
-	function searchGo(){
-		var category = $('#emName').val();
-		var inputSearch = $('#inputSearch').val();
-		console.log(inputSearch);
-		if(inputSearch != ''){
-			location.href='personnelList.go?category='+category+'&search='+inputSearch+'&pageNum=1';		
-		}else{
-			swal({
-				title: '검색어를 입력해주세요',
-				button: '확인'
-			});
-		}
-	}
-    
+}
+
 //     function linkClick(){
 
     	
@@ -332,23 +352,23 @@ $('.p').click(function(){
     	 
 //     })
     
-    function fillTable(data) {
+//     function fillTable(data) {
 
-    data.forEach(function(item) {
-        tableHTML += '<tr>';
-        tableHTML += '<td>' + item.employeeID + '</td>';
-        tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
-        tableHTML += '<td>' + item.departmentName + '</td>';
-        tableHTML += '<td>' + item.rankName + '</td>';
-        tableHTML += '<td>' + item.positionName + '</td>';
-        tableHTML += '<td>' + item.status + '</td>';
-        tableHTML += '<td>' + item.branchName + '</td>';
-        tableHTML += '</tr>';
-    });
+//     data.forEach(function(item) {
+//         tableHTML += '<tr>';
+//         tableHTML += '<td>' + item.employeeID + '</td>';
+//         tableHTML += '<td><a href="detail.go?employeeID=' + item.employeeID + '">' + item.name + '</a></td>';
+//         tableHTML += '<td>' + item.departmentName + '</td>';
+//         tableHTML += '<td>' + item.rankName + '</td>';
+//         tableHTML += '<td>' + item.positionName + '</td>';
+//         tableHTML += '<td>' + item.status + '</td>';
+//         tableHTML += '<td>' + item.branchName + '</td>';
+//         tableHTML += '</tr>';
+//     });
 
-    tableHTML += '</tbody>';
-    $('#personnelList').html(tableHTML);
-}
+//     tableHTML += '</tbody>';
+//     $('#personnelList').html(tableHTML);
+// }
     
 //     function updatePagination(pager) {
 //         var pagingUl = $('#paging');

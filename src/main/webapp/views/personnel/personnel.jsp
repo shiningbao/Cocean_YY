@@ -185,7 +185,7 @@ tbody tr {
                      <tr>
                         <th>연차</th>
                         <td>
-                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="\d{2}" title="두자리숫자만 입력해주세요" required/>
+                            <input type="text" name="remainingAnnualLeave" class="form-control mb-2"pattern="[0-9]{1,2}" title="두자리숫자만 입력해주세요" required/>
                         </td>
                     </tr>
                     
