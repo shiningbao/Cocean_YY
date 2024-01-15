@@ -211,6 +211,12 @@
                     <i class="fi fi-sr-calendar-pen"></i>
                     <span>캘린더</span></a>
             </li>
+            
+           <li class="nav-item">
+                <a class="nav-link">
+                    <i class="fi-sr fi-sr-users"></i>
+                    <span data-toggle="modal" data-target="#chartModal">조직도</span></a>
+            </li>
 
             <!-- Nav Item - Tables -->
 <!--             <li class="nav-item"> -->

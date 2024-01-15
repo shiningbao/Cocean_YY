@@ -15,7 +15,7 @@
 	
 
 	<select id="getBranchID">
-		SELECT hqName,hqID FROM headquarters h WHERE branchID =#{branchID}
+		SELECT hqName,hqID FROM headquarters h WHERE branchID =#{branchID} and isActive = 1
 	</select>
 	
 	<select id="getBranchOrgID">
@@ -193,7 +193,7 @@ fa-building' AS 'icon'
 	</select>
 	
 	<select id="getPositionName">
-		SELECT positionID ,positionName,isActive  from `position` p
+		SELECT positionID ,positionName,isActive  from `position` p where isActive = 1
 	</select>
 	
 	<select id="getPositionNameActive">
@@ -201,7 +201,7 @@ fa-building' AS 'icon'
 	</select>
 	
 	<select id="getRankName">
-		SELECT rankID,rankName,isActive from rank
+		SELECT rankID,rankName,isActive from rank where isActive = 1
 	</select>
 	
 	<select id="getRankNameActive">
