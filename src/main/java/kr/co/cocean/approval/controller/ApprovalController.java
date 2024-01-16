@@ -328,7 +328,7 @@ public class ApprovalController {
 			 logger.info("결재!!!");
 			 if(!param.get("vacationCategory").equals("")) {
 			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
-				 // service.updateRAL(updateRAL,param);
+				 service.updateRAL(updateRAL,param);
 				 logger.info("잔여연차:"+updateRAL);
 			 }
 		 }
