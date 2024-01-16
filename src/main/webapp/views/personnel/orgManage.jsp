@@ -167,9 +167,9 @@ td{
 						조직도
 						<button id="plusDepartmentButton" data-toggle="select" data-target="select"><i class="fas fa-plus"></i>추가</button>
 					</div>
-					
 
-					<c:import url="/personnel/organization/0"/>
+	        <c:import url="/personnel/organization/0"/>
+
 				</div>
 			</div>
 		</div>	
@@ -416,7 +416,7 @@ td{
 				            </div>
 				        </div>
 				        <div style="float:right">
-				        <button class="btn btn-outline-primary cancleAddPosition" type="button">취소</button>
+				        <button class="btn btn-outline-primary cancleAdddp" type="button">취소</button>
 						<button class="btn btn-primary addPositon" type="submit">생성</button>
 				        </div>
             </form>
@@ -454,8 +454,10 @@ td{
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
-				        <button class="btn btn-outline-primary cancleAddPosition" type="button">취소</button>
+				        <div class="float-right">
+				        <button class="btn btn-outline-primary cancleAddhq" type="button">취소</button>
 						<button class="btn btn-primary addPositon" type="submit">생성</button>
+						</div>
 				        
             </form>
           </div>
@@ -492,9 +494,10 @@ td{
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div class="float-right">
 				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
-				        
+				        </div>
             </form>
           </div>
         </div>
@@ -528,9 +531,10 @@ td{
 				                <label class="form-check-label" for="isActiveCheckbox">활성화</label>
 				            </div>
 				        </div>
+				        <div class="float-right">
 				        <button class="btn btn-outline-primary cancleEditDp" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
-				        
+				        </div>
 				        
             </form>
           </div>
@@ -674,7 +678,8 @@ function get1EmployeeID(employeeID, nodeText) {
             var nodata = data.nodata;
             var member = data.thisDepartmentMembers;
             var thisHqMembers = data.thisHqMembers;
-            console.log('@@@@@@@@@@@@@@@ =='+thisHqMembers);
+            console.log('@@@@@@@@@@@@@@@member =='+member);
+            console.log('@@@@@@@@@@@@@@@thisHqMembers =='+thisHqMembers);
             $('.tab').removeClass('active');
             $('.tab-content').removeClass('active');
             $('li[data-tab="depart"]').addClass('active');
@@ -763,7 +768,7 @@ function get1EmployeeID(employeeID, nodeText) {
                     }
                 });
                 }else{
-                	swal('소속 부서와 부서원을 옮겨주세요','','warning');
+                	swal('소속 부서를 비활성화 처리해주세요','','warning');
                 }
             });
 
@@ -871,7 +876,7 @@ function drawDp() {
 
 function drawRank(){
 	$.ajax({
-		url:'getRankName.do',
+		url:'getRankNameOrg.do',
 		type:'post',
 		success:function(data){
 			console.log(data);
@@ -928,7 +933,7 @@ function drawRank(){
 
 function drawPosition(){
 	$.ajax({
-		url:'getPositionName.do',
+		url:'getPositionNameOrg.do',
 		type:'post',
 		success:function(data){
 			console.log(data);
@@ -1054,6 +1059,13 @@ $('#editPositionSubmit').on('submit', function(e) {
     });
 });
 
+$('.cancleAddhq').on('click',function(){
+	$('#addhqModal').modal('hide');
+});
+
+$('.cancleAdddp').on('click',function(){
+	$('#addDepartmentModal').modal('hide');
+})
 $('#addPositionSubmit').on('submit', function(e) {
     e.preventDefault();
 

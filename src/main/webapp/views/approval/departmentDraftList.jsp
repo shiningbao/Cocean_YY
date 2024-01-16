@@ -85,6 +85,7 @@
 	<div id=dpTable>
 	<table class="table table-hover">
 		<thead id="dpTableHead">
+		
 		<tr>
 			<th scope="col">완료일</th>
 			<th scope="col">유형</th>
@@ -92,7 +93,6 @@
 			<th scope="col">기안자</th>
 			<th scope="col">결재상태</th>
 		</tr>
-		
 		<tbody id=dpList>
 		<c:forEach items="${list}" var="list">
 		<tr>
@@ -126,8 +126,12 @@
             
 		</tr>	
 		</c:forEach>
+		
 		</tbody>
 	</table>
+	<c:if test="${empty list}">
+			<div class="text-center my-3"  style="color:gray; font-weight:bold;">-- 문서가 없습니다. --</div>
+	</c:if>
 	</div>
 	</div>
 	

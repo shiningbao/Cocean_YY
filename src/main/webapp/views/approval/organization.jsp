@@ -147,12 +147,12 @@ function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	        var inRefTable = $('#refTable').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
 
 	        if (!isRemLineEmpID && !existingEmployee&&!inRefTable) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
-	            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.rankName).includes('-');
+	            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.positionName).includes('-');
 	            var content = '<div class="lineItem">';
 	            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
 	            if (!hqDepartmentRank) {
 	                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
-	                content += '<label class="rank">' + item.rankName + '</label>' + '\u00A0' + '\u00A0';
+	                content += '<label class="rank">' + item.positionName + '</label>' + '\u00A0' + '\u00A0';
 	            }
 	            content += '<label class="name">' + item.name + '</label>' + '<img src="<c:url value='/resource/img/cancel.png'/>" class="cancel" alt="삭제 아이콘">' + '<br/>';
 	            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';

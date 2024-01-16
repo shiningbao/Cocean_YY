@@ -249,9 +249,9 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-	                int idx=service.write(files, param, lastLineInfoList);
-	                result.put("idx",idx);
-	            	}else { // 임시저장
+		                service.write(files, param, lastLineInfoList);
+		                // result.put("idx",idx);
+	            	}else { // 임시저장 or 임시저장함에서 등록
 	            		logger.info(param.get("idx"));
 	            		service.update(files,param,lastLineInfoList);
 	            	}
@@ -328,7 +328,7 @@ public class ApprovalController {
 			 logger.info("결재!!!");
 			 if(!param.get("vacationCategory").equals("")) {
 			 if(param.get("vacationCategory").equals("연차")||param.get("vacationCategory").contains("반차")) {
-				 // service.updateRAL(updateRAL,param);
+				 service.updateRAL(updateRAL,param);
 				 logger.info("잔여연차:"+updateRAL);
 			 }
 		 }

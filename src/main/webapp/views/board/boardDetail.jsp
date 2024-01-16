@@ -285,13 +285,6 @@
 		
 	}
 	
-	
-	
-	
-	function boardUpdate(){}
-	
-	
-	
 	function boardFunction(e){
 		var con = $(e).text();
 		var icon = 'info';

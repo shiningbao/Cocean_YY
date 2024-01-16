@@ -162,9 +162,9 @@ public class AnimalService {
 			dao.statusChange(animalID, status);
 		}
 
-		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
-		SseService sse = new SseService();
-		sse.alarm(1, "코션친구들 로그 작성 됨", "/animal/detail.go?animalID=1");
+//		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
+//		SseService sse = new SseService();
+//		sse.alarm(1, "코션친구들 로그 작성 됨", "/animal/detail.go?animalID=1");
 
 
 	}

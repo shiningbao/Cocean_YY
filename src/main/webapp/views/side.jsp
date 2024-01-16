@@ -211,12 +211,6 @@
                     <i class="fi fi-sr-calendar-pen"></i>
                     <span>캘린더</span></a>
             </li>
-            
-           <li class="nav-item">
-                <a class="nav-link">
-                    <i class="fi-sr fi-sr-users"></i>
-                    <span data-toggle="modal" data-target="#chartModal">조직도</span></a>
-            </li>
 
             <!-- Nav Item - Tables -->
 <!--             <li class="nav-item"> -->
@@ -277,7 +271,7 @@
 						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.userInfo.name}</span>
-							<img	class="img-profile rounded-circle"	src="<c:url value='/resource/img/undraw_profile.svg'/>"/>
+							<img	 class="img-profile rounded-circle"	src="/photo/cocean/profile/${sessionScope.userInfo.serverFileName}"/>
 						</a>
 						
 						<!-- Dropdown - User Information -->
@@ -342,6 +336,26 @@
 	 	<div id="alarmText" class="float-left"></div>
 		<div class="float-right alarmDel"><i class="fas fa-times" onclick="alarmHidden()"></i></div>
 	</div>
+	
+	<!-- 조직도 모달 -->
+<!-- 	<div class="modal fade" id="chartModal" tabindex="-1" role="dialog" -->
+<!-- 		aria-labelledby="modal" aria-hidden="true"> -->
+<!-- 		<div class="modal-dialog"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					모달창 제목 -->
+<!-- 					<h5 class="modal-title">조직도</h5> -->
+<!-- 					<button type="button" class="close" data-dismiss="modal" -->
+<!-- 						aria-label="Close"> -->
+<!-- 						<span aria-hidden="true">&times;</span> -->
+<!-- 					</button> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body"> -->
+<%-- 					<c:import url="/personnel/organization/1"/> --%>
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 	
 	
 <%-- <script src="<c:url value='/resource/vendor/jquery/jquery.min.js'/>"></script> --%>

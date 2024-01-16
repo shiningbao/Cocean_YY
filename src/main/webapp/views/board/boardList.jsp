@@ -98,11 +98,35 @@
 				    </c:if>
 					  </ul>
 				</div>
-				<c:if test="${(userInfo.departmentID eq 5) or (bt ne '공지사항')}">
-				<div class="text-right">
-					<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
-				</div>
+				
+				<c:if test="${bt eq '공지사항'}">
+					<c:if test="${userInfo.departmentID eq 5}">
+						<div class="text-right">
+							<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
+						</div>						
+					</c:if>
 				</c:if>
+				
+				<c:if test="${bt eq '익명게시판'}">
+					<div class="text-right">
+						<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
+					</div>		
+				</c:if>
+				
+				<c:if test="${bt eq '부서게시판'}">
+					<div class="text-right">
+						<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
+					</div>		
+				</c:if>
+				
+				<c:if test="${bt eq '프로그램 일정'}">
+					<c:if test="${userInfo.departmentID eq 3}">
+						<div class="text-right">
+							<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
+						</div>						
+					</c:if>				
+				</c:if>
+				
 			</div>
 			
 		</div>

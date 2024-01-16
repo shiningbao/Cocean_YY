@@ -250,7 +250,7 @@ tbody tr {
 					                <span class="file-icon2"><i class="fas fa-upload"></i></span>
 					            </label>
 					            <div class="file-upload" >
-					                <input type="file" name="fileSignature" id="fileSignatureInput" title="등록" style="height:inherit;">
+					                <input type="file" name="fileSignature" id="fileSignatureInput" title="등록" style="height:inherit;" required>
 					            </div>
 					    	</td>
 					</tr>
@@ -461,31 +461,32 @@ $(document).ready(function() {
     $('#submitBtn').click(function(event) {
         event.preventDefault();
 
-        swal({
-            title: "사원을 등록하시겠습니까??",
-            text: "",
-            icon: "info",
-            buttons: ["취소","등록"],
-        })
-        .then((isOkey) => {
-            if (isOkey) {
-                var fileInput = $('#fileInput');
-                var fileSignatureInput = $('#fileSignatureInput');
+        var form = $('#joinForm')[0];
+        var fileInput = $('#fileInput')[0];
+        var fileSignatureInput = $('#fileSignatureInput')[0];
 
-                if (!fileInput[0].files.length || !fileSignatureInput[0].files.length) {
-                    swal('이미지를 선택해주세요.', '', 'warning');
-                } else {
-                    swal('등록이 완료되었습니다.', '', 'success')
-                    .then((isOkey) => {
-                        if (isOkey) {
-                            // 이 부분에서 서브밋 후 이동 로직을 처리
-                            $('#joinForm').submit();
-                            // location.href = 'personnelList.go?category=&search=&branch=&pageNum=1';
-                        }
-                    });
-                }
+        // 파일이 선택되지 않았을 때
+        if (!fileInput.files.length || !fileSignatureInput.files.length) {
+            swal('이미지를 선택해주세요.', '', 'warning');
+        } else {
+            if (form.checkValidity()) {
+                swal({
+                    title: "사원을 등록하시겠습니까??",
+                    text: "",
+                    icon: "info",
+                    buttons: ["취소", "등록"],
+                })
+                .then((isOkey) => {
+                    if (isOkey) {
+                        // 파일이 선택되었을 때 submit
+                        form.submit();
+                    }
+                });
+            } else {
+                // 필드가 유효하지 않을 때
+                form.reportValidity();
             }
-        });
+        }
     });
 });
 

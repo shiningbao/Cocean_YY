@@ -16,8 +16,8 @@
 	</select> -->
 	
 	<select id="draftInfo" resultType="approval">
-		 SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave,f.serverFileName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN file f ON e.employeeID=f.idx WHERE e.employeeID=#{employeeID} AND f.path="profile";
+		 SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave,f.serverFileName,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID JOIN position p ON e.positionID = p.positionID LEFT OUTER JOIN file f ON e.employeeID=f.idx WHERE e.employeeID=#{employeeID} AND f.path="profile";
 	</select>
 	
 	<select id="formTitle" resultType="form">
@@ -65,18 +65,17 @@
 
 	</select>
 	
-		<!-- <insert id="draftAlarm" parameterType="map">
+	<insert id="draftAlarm">
     INSERT INTO notificationHistory(employeeID, url, content) VALUES
     <foreach collection="waitingEmp" item="emp" separator=",">
-        (#{emp.employeeID}, '/approval/draftDetail.go?idx=#{idx}&employeeID=#{emp.employeeID}&category=#{emp.category}&hTitle=waiting', '결재도착')
+       (#{emp.employeeID}, '/approval/draftDetail.go?idx=#{idx}&amp;employeeID=#{emp.employeeID}&amp;category=#{emp.category}&amp;hTitle=waiting', '결재도착')
     </foreach>
-</insert> -->
+	</insert>
 	
-	<select id="getWaitingEmp" resultType="string">
-	    SELECT DISTINCT employeeID,category FROM approval
+	<select id="getWaitingEmp" resultType="approval">
+	    SELECT employeeID,category FROM approval
 	    WHERE idx = #{idx} AND approvalStatus = '대기'
 	</select>
-	
 	
 	<select id="waitingList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
@@ -89,8 +88,8 @@
 	</select>
 	
 	<select id="draftDetail" resultType="approval">
-		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx,df.titleID,f.serverFileName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
- 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx LEFT OUTER JOIN file f on e.employeeID=f.idx WHERE df.idx=#{idx} AND f.path='profile'
+		SELECT DISTINCT e.employeeID,name,r.rankName, departmentName,h.hqName,df.draftDate,w.title,w.content,dff.formTitle,df.idx,df.titleID,f.serverFileName,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+ 		LEFT OUTER JOIN rank r ON e.rankID=r.rankID LEFT OUTER JOIN draft df ON e.employeeID=df.employeeID JOIN position p ON e.positionID = p.positionID JOIN draftForm dff ON df.titleID=dff.titleID LEFT OUTER JOIN workDraft w ON df.idx=w.idx LEFT OUTER JOIN file f on e.employeeID=f.idx WHERE df.idx=#{idx} AND f.path='profile'
 	</select>
 	
 	<select id="vacDetail" resultType="approval">
@@ -102,7 +101,7 @@
 	</select>
 	
 	<select id="lineList" resultType="approval">
-		 	select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion,f.serverFileName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID LEFT OUTER JOIN file f on a.employeeID=f.idx where a.idx=#{idx} and (f.serverFileName IS NULL OR f.path = "profile") and a.category in("결재","합의") order by a.approvalOrder asc
+		 	select e.employeeID,a.approvalStatus,e.name,d.departmentName,h.hqName,r.rankName,a.category,a.approvalOrder,a.opinion,f.serverFileName,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID join position p on e.positionID = p.positionID LEFT OUTER JOIN file f on a.employeeID=f.idx where a.idx=#{idx} and (f.serverFileName IS NULL OR f.path = "profile") and a.category in("결재","합의") order by a.approvalOrder asc
 	</select>
 	
 	<select id="signImg" resultType="approval">
@@ -114,7 +113,7 @@
 	</select>
 	
 	<select id="agrRef" resultType="approval">
-		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("합의","참조")
+		select e.employeeID,e.name,d.departmentName,h.hqName,r.rankName,a.category,p.positionName from approval a join employee e on a.employeeID = e.employeeID join department d on e.departmentID =d.departmentID join headquarters h on d.hqID=h.hqID join position p on e.positionID=p.positionID join rank r on e.rankID=r.rankID where idx=#{idx} and category in("합의","참조")
 	</select>
 	
 	<select id="fileList" resultType="approval">
@@ -135,9 +134,21 @@
 	            <otherwise>'0'</otherwise>
 	        </choose>, #{lastOrder},
 	        <choose>
-            <when test="line.order == 2"> '대기' </when>
+            <when test="line.order == 2" > '대기' </when>
             <otherwise>'미대기'</otherwise>
         </choose>)
+	    </foreach>
+	</insert>
+	
+	<insert id="approvalSave" parameterType="map">
+	    INSERT INTO approval (idx, employeeID, category, approvalDate, approvalOrder, lastOrder, approvalStatus)
+	    VALUES
+	    <foreach collection="lastLineInfoList" item="line" separator=",">
+	        (#{idx}, #{line.approvalEmp}, #{line.category}, '0000-00-00',
+	        <choose>
+	            <when test="line.order != null">#{line.order}</when>
+	            <otherwise>'0'</otherwise>
+	        </choose>, #{lastOrder},'미대기')
 	    </foreach>
 	</insert>
 
@@ -217,34 +228,25 @@
 		WHERE idx=#{param1.idx}		
 	</update>
 	
-	<insert id="insertApproval">
-    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder) VALUES 
-    <foreach collection="lastLineInfoList" item="line" separator=",">
-        (#{param2.idx}, #{line.approvalEmp}, #{line.category},
-        <choose>
-            <when test="line.order != null">#{line.order}</when>
-            <otherwise>0</otherwise>
-        </choose>, #{param2.lastOrder})
-    </foreach>
-</insert>
-	
 	<update id="updateApproval">
     <foreach collection="lastLineInfoList" item="line" separator=";">
         UPDATE approval SET  
         employeeID=#{line.approvalEmp},
-        category=#{line.category},
+        category='결재',
         <choose>
-            <when test="line.order != null">approvalOrder=#{line.order}</when>
+            <when test="line.order != null">approvalOrder=1</when>
             <otherwise>approvalOrder='0'</otherwise>
         </choose>,
-        lastOrder=#{param2.lastOrder}
-        WHERE idx=#{param2.idx} AND employeeID=#{line.approvalEmp}
+        lastOrder=#{param3.lastOrder}
     </foreach>
+        WHERE idx=#{param3.idx} AND employeeID=#{param2.approvalEmp}
 </update>
+	
+	
 
 	
-	<select id="checkEmpId" resultType="String">
-		SELECT employeeID FROM approval WHERE idx=#{idx}
+	<select id="checkEmpId" resultType="line">
+		SELECT employeeID,category,approvalOrder FROM approval WHERE idx=#{idx}
 	</select>
 	
 	<update id="updateLineEmpty">
@@ -407,7 +409,7 @@
 </update>
 
 	<select id="saveList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content,df.titleID FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
+		SELECT d.idx,d.employeeID,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content,df.titleID FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="sCount" parameterType="map" resultType="Integer">
@@ -429,6 +431,21 @@
     DELETE FROM approval WHERE idx=#{idx};
     DELETE FROM draft WHERE idx=#{idx};
 </delete>
+
+	<delete id="deleteApprovalLines">
+		<choose>
+        <when test="titleID == 1">
+            DELETE FROM workDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 2">
+            DELETE FROM attendanceDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 3">
+            DELETE FROM leaveDraft WHERE idx=#{idx};
+        </when>
+    </choose>
+    DELETE FROM approval WHERE idx=#{idx};
+	</delete>
 	
 	<select id="myList" resultType="approval">
 		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10
@@ -514,6 +531,12 @@
 	<select id="formSearch" resultType="form">
 		SELECT * FROM draftForm WHERE formTitle LIKE CONCAT('%',#{keyword},'%')
 	</select>
+	
+	<insert id="alarmInsert">
+		INSERT INTO notificationHistory(employeeID,content,url) values(#{param1},#{param2},#{param3});
+	</insert>
+	
+	
 
 	<!-- <update id="update">
 		UPDATE draft SET draftDate=#{draftDate}, publicStatus=#{publicStatus} WHERE idx=#{idx}
