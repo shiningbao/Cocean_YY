@@ -203,6 +203,17 @@ public class BoardController {
 		return service.boardUpdateGo(boardID,bt);
 	}
 	
+	@PostMapping(value = "/board/{boardTitle}/boardUpdate.do")
+	String boardUpdateDo(@PathVariable String boardTitle, @ModelAttribute BoardDTO param, RedirectAttributes rAttr) {
+		
+		service.boardUpdateDo(param);
+
+		rAttr.addFlashAttribute("msg", "수정을 완료했습니다");
+		String redirect = "redirect:/board/"+boardTitle+"/detail?boardID="+param.getBoardID();
+		return redirect;
+	}
+	
+	
 	
 	
 	// 댓글 관련

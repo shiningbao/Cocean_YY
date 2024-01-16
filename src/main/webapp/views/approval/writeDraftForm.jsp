@@ -49,7 +49,7 @@ button{
 }
 
 #workDraftContent{
-	width : 50%;
+	width : 100%;
 	
 }
 
@@ -118,7 +118,7 @@ button{
     padding: 4% 2% 2% 2%;
     border: 5px solid #e8e8e8;
     width: 73%;
-    height: 145%;
+/*     height: 145%; */
 }
 
 #bottom{
@@ -554,8 +554,7 @@ function calculateDays() {
 
 
 	$('#summernote').summernote({
-		height: 500, width: 825,
-		maxHeight: 500,
+		height: 500,
 		minHeight: 200,
 		focus: true
 	});
