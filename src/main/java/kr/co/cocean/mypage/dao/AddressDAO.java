@@ -13,15 +13,11 @@ import kr.co.cocean.mypage.dto.OutAddressDTO;
 
 @Mapper
 public interface AddressDAO {
-	/*
-   ArrayList<OutAddressDTO> list();
-   */
+
    ArrayList<OutAddressDTO> list(int userId);
 
    int delete(String addressNumber);
 
-   //외부검색
-   HashMap<String, Object> namesearch(String name);
 
    //외부주소록 저장
    int insert(HashMap<String, Object> params);
@@ -35,13 +31,6 @@ public interface AddressDAO {
    //내부 주소록
    ArrayList<InaddressDTO> inaddress();
 
-   //내부 검색
-   ArrayList<LoginDTO> insearch(List<String> inname);
-
-   //수정
-   /*
-      int update(HashMap<String, Object> params);
-*/
    //수정 페이지 (리스트)
    OutAddressDTO outupdate(String addressNumber);
 
@@ -49,14 +38,19 @@ public interface AddressDAO {
 void outaddressupdate(OutAddressDTO dto);
 
 //외부검색
-ArrayList<OutAddressDTO> reserchuser(String name);
-
+ArrayList<OutAddressDTO> searchUser(String query);
 
 //내부리스트
 ArrayList<InaddressDTO> inlistCall();
 
 //내부검색
-ArrayList<OutAddressDTO> inaddresssearch(String inname);
+ArrayList<OutAddressDTO> inaddresssearch(String mul);
+
+
+
+
+
+
 
 
 

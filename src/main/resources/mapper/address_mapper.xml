@@ -24,14 +24,12 @@
 		DELETE FROM personalAddressBook WHERE addressNumber = #{param1}
 	</delete>
 	
-	
-	
-	<select id="reserchuser" resultType="outaddress">
-		select addressNumber,employeeID,name,positionLevel,rankLevel
-,departmentName,phoneNumber 
-from personalAddressBook where name = #{param1}
-	</select>
-	
+
+	<select id="searchUser" resultType="outaddress">
+ select addressNumber, employeeID, name, positionLevel, rankLevel, departmentName, phoneNumber
+    from personalAddressBook
+    where departmentName = #{query} OR name = #{query}
+</select>
 	 
 	 
 	<insert id="insert" parameterType="hashmap">
@@ -79,12 +77,15 @@ e.rankID = r.rankID
 
 <!-- 내부서치 -->
 	<select id="inaddresssearch" resultType="inaddress">
-		SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName
-FROM employee e, department d, `position` p, `rank` r
-WHERE e.name = #{inname} 
-  AND e.departmentID = d.departmentID 
-  AND e.positionID = p.positionID 
-  AND e.rankID = r.rankID;
+		 SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName
+    FROM employee e
+    JOIN department d ON e.departmentID = d.departmentID
+    JOIN `position` p ON e.positionID = p.positionID
+    JOIN `rank` r ON e.rankID = r.rankID
+    WHERE (d.departmentName = #{mul} OR e.name = #{mul})
+      AND e.departmentID = d.departmentID 
+      AND e.positionID = p.positionID 
+      AND e.rankID = r.rankID;
 	</select>
 
 

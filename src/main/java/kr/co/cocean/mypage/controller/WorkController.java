@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.mypage.dto.WorkDTO;
 import kr.co.cocean.mypage.service.WorkService;
 
 @Controller
@@ -172,12 +174,25 @@ public class WorkController {
 
 
 
+		// 세션에서 EmployeeID를 가져오는 컨트롤러 메서드
+		@GetMapping(value = "getSessionEmployeeId")
+		@ResponseBody
+		public Map<String, Object> getSessionEmployeeId(HttpSession session) {
+		    Map<String, Object> response = new HashMap<>();
+		    LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+
+		    if (userInfo != null) {
+		        response.put("employeeId", userInfo.getEmployeeID());
+		    } else {
+		        response.put("error", "EmployeeID not found in session");
+		    }
+
+		    return response;
+		}
 
 
 
-
-
-
+		
 
 
 	}
