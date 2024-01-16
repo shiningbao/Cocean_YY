@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.cocean.alarm.service.SseService;
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
@@ -155,7 +156,17 @@ public class ApprovalService {
 		 * employeeID = lineInfo.getApprovalEmp(); dto = dao.getForm(idx); String form =
 		 * dto.getFormTitle(); }
 		 */
-
+		
+		/*
+		 employeeID = 알람받을 직원
+		 content = 표시할 알람 내용 ex) 일정 30분 전입니다. / 결재가 도착했습니다
+		 url = 알람 클릭하면 이동할 주소 ex) /schedule/schedule.go
+		 */
+		// dao.alarmInsert(employeeID, content, url)
+		//SseService sse = new SseService();
+		//sse.alarm(employeeID, content, url)
+		
+		
 
 	}
 
