@@ -612,7 +612,7 @@ td{
 		$('#findPw').modal('hide');
 	})
 	
-	
+	/*
 	$('.pw').keyup(function(){
 	   let pass1 = $("#password_1").val();
 	   let pass2 = $("#password_2").val();
@@ -630,7 +630,71 @@ td{
 	      checkPw.html(""); 
 	   }
 	});
+*/
+/*
+$(document).ready(function () {
+    $('.pw').keyup(function () {
+        let pass1 = $("#password_1").val();
+        let pass2 = $("#password_2").val();
+        let checkPw = $("#checkPw");
+
+        if (pass1 !== "" || pass2 !== "") {
+            if (pass1 === pass2) {
+                checkPw.html("비밀번호가 일치합니다.");
+                checkPw.css("color", "blue");
+                // 폼 제출 활성화
+                $("form").removeAttr("onsubmit");
+            } else {
+                checkPw.html("비밀번호가 불일치합니다.");
+                checkPw.css("color", "red");
+                // 폼 제출 비활성화
+                $("form").attr("onsubmit", "return false;");
+            }
+        } else {
+            checkPw.html("");
+            // 두 필드가 모두 비어 있을 때 폼 제출 활성화
+            $("form").removeAttr("onsubmit");
+        }
+    });
+});*/
 
 
-</script>
+$(document).ready(function () {
+    $('.pw').keyup(function () {
+        let pass1 = $("#password_1").val();
+        let pass2 = $("#password_2").val();
+        let checkPw = $("#checkPw");
+
+        if (pass1 !== "" || pass2 !== "") {
+            if (pass1 === pass2) {
+                checkPw.html("비밀번호가 일치합니다.");
+                checkPw.css("color", "blue");
+                // 폼 제출 활성화
+                $("form").removeAttr("onsubmit");
+            } else {
+                checkPw.html("비밀번호가 불일치합니다.");
+                checkPw.css("color", "red");
+                // 폼 제출 비활성화
+                $("form").attr("onsubmit", "return false;");
+            }
+        } else {
+            checkPw.html("");
+            // 두 필드가 모두 비어 있을 때 폼 제출 활성화
+            $("form").removeAttr("onsubmit");
+        }
+    });
+
+    // 추가된 부분: 수정 버튼 클릭 시 비밀번호 확인
+    $("#info-update-btn").click(function() {
+        let pass1 = $("#password_1").val();
+        let pass2 = $("#password_2").val();
+
+        if (pass1 !== pass2) {
+        	 swal('새 비밀번호와 확인 비밀번호가 일치하지 않습니다', '', 'error');
+            return false; // 폼 제출 막기
+        }
+    });
+});
+
+</script>https://inpa.tistory.com/category/Snippet
 </html>
