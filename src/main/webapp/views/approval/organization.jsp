@@ -139,7 +139,7 @@ function getRemainedEmpID(remLine){
 // 조직도에서 사원 선택해서 옆에 그리는 부분
 function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	if (currentEmployeeID == loginId) {
-	    alert('지정할 수 없습니다.');
+		 swal('지정할 수 없습니다.','','warning');
 	} else {
 	    employeeInfo.forEach(function (item, idx) {
 	        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
@@ -163,7 +163,7 @@ function drawLine(employeeInfo, currentEmployeeID,nodeText) {
 	            $('#line').append(content);
 	            appendCancel();
 	        } else {
-	            alert('이미 지정된 사원입니다.');
+	        	swal('이미 지정된 사원입니다.','','warning');
 	        }
 	    });
 	}
