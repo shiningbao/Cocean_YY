@@ -33,11 +33,6 @@
 	 	cursor: default; 
 	 } 
 	
-	.detailBar_item:hover{
-		cursor: pointer;
-		background-color: #2F80ED;
-		padding-top: 13px;
-	}
 	.imgChange{
 		width: 100%;
 		z-index: 1;
@@ -270,6 +265,27 @@
 			button: '확인'
 		});
 	}
+	
+	var category = 'base';
+	
+	$('.detailBar').find('#'+category).css({'color':'#FFFFFF'});
+	
+	
+	$('.detailBar_item').hover(
+		function(){
+			if($(this).attr('id') != category){
+				$(this).css({'cursor':'pointer','background-color':'#2F80ED'});
+			}
+		},
+		function(){
+			if($(this).attr('id') != category){
+				$(this).css({'background-color':'#86B0F3'});
+			}
+		}
+	);
+	
+	
+	
 	
 	function detailPage(c){
 		var month = getMonth();
