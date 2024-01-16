@@ -206,7 +206,7 @@ public class PersonnelService {
 		return dao.checkDuplicateEmployeeID(employeeID);
 	}
 	public HashMap<String, Object> detail(int parsedEmployeeID) {
-		return dao.datail(parsedEmployeeID);
+		return dao.detail(parsedEmployeeID);
 	}
 	public List<HashMap<String, Object>> employeeHistory(int employeeID) {
 		return dao.employeeHistory(employeeID);
@@ -373,6 +373,14 @@ public class PersonnelService {
 	public int getHqMembers(String hqID) {
 		// TODO Auto-generated method stub
 		return dao.getHqMembers(hqID);
+	}
+	public List<HashMap<String, Object>> getRankNameOrg() {
+		// TODO Auto-generated method stub
+		return dao.getRankNameOrg();
+	}
+	public List<HashMap<String, Object>> getPositionNameOrg() {
+		// TODO Auto-generated method stub
+		return dao.getPositionNameOrg();
 	}
 	
 	
