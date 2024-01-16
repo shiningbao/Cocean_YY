@@ -266,19 +266,19 @@
 		});
 	}
 	
-	var content = 'base';
+	var category = 'base';
 	
-	$('.detailBar').find('#'+content).css({'color':'#FFFFFF'});
+	$('.detailBar').find('#'+category).css({'color':'#FFFFFF'});
 	
 	
 	$('.detailBar_item').hover(
 		function(){
-			if($(this).attr('id') != content){
+			if($(this).attr('id') != category){
 				$(this).css({'cursor':'pointer','background-color':'#2F80ED'});
 			}
 		},
 		function(){
-			if($(this).attr('id') != content){
+			if($(this).attr('id') != category){
 				$(this).css({'background-color':'#86B0F3'});
 			}
 		}
