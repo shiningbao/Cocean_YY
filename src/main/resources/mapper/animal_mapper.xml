@@ -159,6 +159,11 @@
 	<update id="logplanUpdateDo">
 		UPDATE logPlanTable SET content = #{param2} WHERE logID = #{param1}
 	</update>
+
+	<update id="logplanComplete">
+		UPDATE logPlanTable SET status = '완료' WHERE logID = #{param1}
+	</update>
+
 	
 </mapper>
 

@@ -24,6 +24,9 @@ public interface WorkDAO {
 	//퇴근
 	int leavecheck(String timedataValue, String datedataValue, int userId);
 
+	// 출/퇴근 데이터 저장
+	void update(int employeeId, boolean attendanceChecked, boolean leaveChecked, boolean canClick);
+
 	/*
 	//페이지 처리
 	ArrayList<WorkDTO> worklist(String pfirstSearchDate, String plastSearchDate, int userId, Pager pager);

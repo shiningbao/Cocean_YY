@@ -41,4 +41,6 @@ public interface BoardDAO {
 
 	int boardHidden(int boardID);
 
+	void boardUpdateDo(BoardDTO param);
+
 }

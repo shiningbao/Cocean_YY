@@ -44,15 +44,6 @@ button{
 	text-align: center;
 }
 
-#agrSignature {
-	margin-bottom : 20px;
-}
-
-
-#agrSignature td{
-	text-align: center;
-}
-
 #workDraftContent{
 	width : 50%;
 }
@@ -114,48 +105,35 @@ button{
 
 #contentLine{
 	margin: 14px;
-    padding: 6% 2% 2% 2%;
+    padding: 4% 2% 2% 2%;
     border: 5px solid #e8e8e8;
-    width: 60%;
-    height: 93%;
-    position: absolute;
-    left: 17%;
-    top: 17%;
+    width: 73%;
+    height: 145%;
 }
 
 #bottom{
-	position: absolute;
-    left: 19%;
-    bottom: -29%;
-    width:59%;
+    width:74%;
+    margin-left : 2%;
 }
 
 #rightContainer{
-	display: flex;
     flex-direction: column;
     width: 22%;
-    position: absolute;
-    right: 0%;
-    top: 19%;
+    float:right;
+    margin: 5% 2%;
 }
 
 #formTitle{
-	position: absolute;
-    width: 40%;
     text-align: center;
-    top: 2%;
     font-size: 41px;
-    right: 29%;
+    font-family:Dotum;
+    margin-bottom: 17px;
 }
 
 .topTitle{
-	position: absolute;
     width: 50%;
-    top: 12%;
     font-size: 30px;
-    left: 18%;
 }
-
 
 .dateSelect {
 	display:flex;
@@ -170,10 +148,6 @@ button{
 	float:right;
 }
 
-
-#agrSignature{
-	float:left;
-}
 .signAgr{
 	float:left;
 }
@@ -218,6 +192,39 @@ th {
 	cursor:pointer;
 }
 
+ .appStatus{
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: #4480e9;
+    }
+    
+      .delArea{
+		margin: 53% 15% 6% -46%;
+	    padding: 0px 5px;
+	    width: 25px;
+    }
+    
+    #draftInfo tr, #draftInfo th, #draftInfo td{
+    	    font-family: Dotum;
+    }
+    
+    #workDraftContent tr, #workDraftContent th, #workDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #attendanceDraftContent tr, #attendanceDraftContent th, #attendanceDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #leaveDraftContent tr, #leaveDraftContent th, #leaveDraftContent td{
+    	font-family:Dotum;
+    }
+    
+     #approvalSignature tr, #approvalSignature th, #approvalSignature td{
+    	font-family:Dotum;
+    	font-weight:bold;
+    }
+
 </style>
 </head>
 <body>
@@ -255,6 +262,42 @@ th {
 				</div>
 			</div>
 		</div>
+	</div>
+	
+	<div id="rightContainer">
+<div class="card shadow" style="width: 354px;padding: 3%;">
+	<div class="lineContent" style="padding: 10px 6px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재라인</span>
+    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
+	<hr/>
+		<table id="approvalLine">
+			<tr>
+				<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
+				<td><span class="appStatus" style="font-weight : bold;">상신</span></td>
+				<td>${list.hqName}/${list.departmentName}</td>
+				<td>${list.positionName}</td>
+				<td>${list.name}</td>
+			</tr>
+			<c:forEach items="${lineList}" var="lL">
+			<tr>
+				<th style="background-color:white;">
+			       <c:choose>
+			        <c:when test="${lL.serverFileName != null}">
+			            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:30px; height:35.6px">
+			        </c:when>
+			        <c:otherwise>
+			            <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:30px; height:35.6px">
+			        </c:otherwise>
+			    </c:choose>
+			    </th>
+				<td><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+				<td>${lL.hqName}/${lL.departmentName}</td>
+				<td>${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
+				<td>${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
+			</tr>	
+			</c:forEach>
+		</table>
+	</div>
+	</div>
 	</div>
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -304,7 +347,7 @@ th {
 		    <td>
 		    <label>${ref.hqName}</label>
 		    <label>${ref.departmentName}</label>
-		    <label>${ref.rankName}</label>
+		    <label>${ref.positionName}</label>
 		    <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
 		    </td>
 		    </tr>
@@ -340,7 +383,7 @@ th {
 	    <td>
 	    <label>${ref.hqName}</label>
 	    <label>${ref.departmentName}</label>
-	    <label>${ref.rankName}</label>
+	    <label>${ref.positionName}</label>
 	    <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
 	    </td>
 	    </tr>
@@ -352,7 +395,7 @@ th {
 	<tr>
 		<th>휴가 종류</th>
 			<td colspan="2">
-			<select id="vacationCategory" name="vacationCategory">
+			<select id="vacationCategory" name="vacationCategory" onchange="reason()">
         <option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
         <option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
         <option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
@@ -377,7 +420,7 @@ th {
 		<th>총 사용일</th>
 		<td id="total" style="background-color:lightgray;"></td>
 	</tr>
-	<tr>
+	<tr id="reason" style="display: none;">
 		<th>사유</th>
 		<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력">${vac.vacationReason}</textarea></td>
 	</tr>
@@ -397,7 +440,7 @@ th {
 	    <td>
 	    <label>${ref.hqName}</label>
 	    <label>${ref.departmentName}</label>
-	    <label>${ref.rankName}</label>
+	    <label>${ref.positionName}</label>
 	    <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
 	    </td>
 	    </tr>
@@ -422,7 +465,7 @@ th {
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" style="display:none;"/>
+<input type="file" id="input-file" name="files" style="display:none;"/>
 <br/>
 
 
@@ -440,37 +483,15 @@ th {
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
+<div id="render" style="margin-right:2.5%; margin-left: -1%;">
 <input type="button" class="btn btn-secondary" value="취소" onclick="confirmSave()"/>
 <input type="button" style="float:right"class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
 <input type="button" style="float:right; margin-right:10px;"class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
 </div>
 
-<div id="rightContainer">
-<div class="card shadow" style="margin-left:10px;">
-	<div class="lineContent" style="padding: 10px 15px;"><span style="margin: 0px; font-size: 13px; width: 270px;">결재라인</span>
-    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
-	<hr/>
-		<table id="approvalLine">
-			<tr>
-				<th class="img-profile rounded-circle"></th>
-				<td>상신</td>
-				<td>${list.hqName}/${list.departmentName}</td>
-				<td>${list.rankName}</td>
-				<td>${list.name}</td>
-			</tr>
-			<c:forEach items="${lineList}" var="lL">
-			<tr>
-				<th class="img-profile rounded-circle"></th>
-				<td class='category'>${lL.category}</td>
-				<td>${lL.hqName}/${lL.departmentName}</td>
-				<td>${lL.rankName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
-				<td>${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
-			</tr>	
-			</c:forEach>
-		</table>
-	</div>
-	</div>
-	</div>
+</div>
+
+
 </div>
 
 
@@ -480,10 +501,22 @@ th {
 
 
 
-<%-- <c:import url="/footer"/>	 --%>
+<c:import url="/footer"/>
 </body>
 <script>
 
+function reason() {
+    var vacationCategory = document.getElementById('vacationCategory');
+    var reason = document.getElementById('reason');
+
+    var selectedValue = vacationCategory.value;
+
+    if (selectedValue === '경조사' || selectedValue === '병가' || selectedValue === '공가') {
+        reason.style.display = '';
+    } else{
+        reason.style.display = 'none';
+    }
+}
 
 	var textArea = $('#textarea').text();
 	var startDate;
@@ -605,8 +638,8 @@ function calculateDays() {
 
 
 	$('#summernote').summernote({
-		height: 200, width: 825,
-		maxHeight: 200,
+		height: 500, width: 825,
+		maxHeight: 500,
 		minHeight: 200,
 		focus: true
 	});
@@ -683,7 +716,7 @@ function calculateDays() {
 	    $("#approvalLine tbody tr").each(function (index) {
 	        var order = $(this).find('.order').val(); // 각자의 순서
 	        var employeeID = $(this).find('.employeeID').val(); // 결재자,합의자,참조자
-	        var category = $(this).find('.category').text();
+	        var category = $(this).find('.appStatus').text();
 	        console.log("순서:"+order);
 		
 	        if (employeeID !== undefined && category == '결재') {
@@ -698,7 +731,7 @@ function calculateDays() {
 	    $("#approvalLine tbody tr").each(function (index) {
 	    	 var order = $(this).find('.order').val(); // 각자의 순서
 		     var employeeID = $(this).find('.employeeID').val();
-		     var category = $(this).find('.category').text();
+		     var category = $(this).find('.appStatus').text();
 		     
 	        if (employeeID !== undefined && category == '합의') {
 	            lastLine.push({
@@ -846,8 +879,8 @@ function calculateDays() {
 		    $("#approvalLine tbody tr").each(function (index) {
 		        var order = $(this).find('input[name="order"]').val(); // 각자의 순서
 		        var employeeID = $(this).find('.employeeID').val(); // 결재자,합의자,참조자
-		        var category = $(this).find('.category').text();
-		        
+		        var category = $(this).find('.appStatus').text();
+		       
 			
 		        if (employeeID !== undefined && category == '결재') {
 		            lastLine.push({
@@ -857,11 +890,10 @@ function calculateDays() {
 		            });
 		        }
 		    });
-
 		    $("#approvalLine tbody tr").each(function (index) {
 		    	 var order =$(this).find('input[name="order"]').val(); // 각자의 순서
 			     var employeeID = $(this).find('.employeeID').val();
-			     var category = $(this).find('.category').text();
+			     var category = $(this).find('.appStatus').text();
 			     
 		        if (employeeID !== undefined && category == '합의') {
 		            lastLine.push({
@@ -887,6 +919,7 @@ function calculateDays() {
 		    formData.append('lastLine', JSON.stringify(lastLine));
 		    formData.append('tempSave', 1); 
 	
+		    console.log(lastLine);
 		    	formData.append("idx",idx);
 		    	$.ajax({
 			        url: "/Cocean/approval/writeDraft.do",
@@ -986,22 +1019,25 @@ function calculateDays() {
 		    // var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
 		        var row = $("<tr>");
-		        if(lineData.category=="결재" || lineData.category== "합의")
-		        	row.append("<th class='img-profile rounded-circle'></th>");
+		        if(lineData.photo!=='null'){
+		        	row.append("<th style='background-color:white;'><img src='/photo/cocean/profile/" + lineData.photo + "' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        	}else if(lineData.photo=='null'){
+		        		row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        	}
 		      /*   
 		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
 		        	row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
 		        } */
-		        row.append("<td class='category'>" + lineData.category + "</td>");
+		        row.append("<td class='tdCategory'>" +"<span class='appStatus' style='font-weight : bold;'>"+ lineData.category + "</span>"+"</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row.append("<td>" + lineData.rank + lineData.name + "</td>");
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } 
 		        else {
 		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
 		            row.append("<td>" + lineData.rank + "</td>");
 		            row.append("<td>" + lineData.name + "</td>");
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        row.append("<input type='hidden' name='order' class='order' value='" + (appTable.find("tr").length + 1) + "'>");
@@ -1018,7 +1054,7 @@ function calculateDays() {
 		        } else {
 		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
 		            row.append(row);
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);

@@ -88,7 +88,7 @@
 						</label>
 					</div>
 					<input type="text" id="searchName" name="searchName" class="form-control mr-2" placeholder="담당자명을 입력하세요">
-					<button class="btn btn-outline-primary" type="submit">검색</button>
+					<button class="btn btn-outline-primary" type="button" onclick="showList()">검색</button>
 			    </nav>
 			</div>
 		</div>
