@@ -19,12 +19,6 @@ public class AddressService {
 
    @Autowired AddressDAO dao;
 
-   //외부리스트
-   /*
-   public ArrayList<OutAddressDTO> list() {
-
-      return dao.list();
-   }*/
 
    public ArrayList<OutAddressDTO> list(int userId) {
 
@@ -48,22 +42,6 @@ public class AddressService {
    public OutAddressDTO detail(String addressNumber) {
       return dao.detail(addressNumber);
    }
-/*
-   public ModelAndView update(Map<String, String> param) {
-      ModelAndView mav = new ModelAndView();
-      mav.setViewName("redirect:/detail?employeeID="+param.get("employeeID"));
-      dao.update(param);
-      return mav;
-   }
-*/
-   //본래 내부주소록리스트
-   /*
-   public ArrayList<InaddressDTO> inaddress() {
-      logger.info("내부 서비스 도착");
-      return dao.inaddress();
-   }*/
-
-
 
    //수정 페이지
    public OutAddressDTO outupdate(String addressNumber) {
