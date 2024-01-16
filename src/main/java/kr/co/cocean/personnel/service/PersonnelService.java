@@ -16,6 +16,7 @@ import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -381,6 +382,10 @@ public class PersonnelService {
 	public List<HashMap<String, Object>> getPositionNameOrg() {
 		// TODO Auto-generated method stub
 		return dao.getPositionNameOrg();
+	}
+	public List<HashMap<String, Object>> getAnnualLeave() {
+		// TODO Auto-generated method stub
+		return dao.getAnnualLeave();
 	}
 	
 	

@@ -218,8 +218,35 @@ margin-bottom: 14%;
 </body>
 
 <script>
+$(document).ready(function(){
+	
+$.ajax({
+	url:'getAnnualLeave.do',
+	type:'post',
+	success:function(data){
+		console.log(data);
+		renderDataOnPage(data);
+	},
+	error:function(e){
+		console.log(e);
+	}
+});
+})
 
+function renderDataOnPage(data) {
+    for (var i = 0; i < data.length; i++) {
+        var year = data[i].year;
+        var value = data[i].value;
 
+        // 연차에 해당하는 input 요소를 찾아서 값을 설정
+        $('.tb_content').each(function() {
+            var currentYear = $(this).find('span.txt').text().split(' ')[0];
+            if (currentYear == year) {
+                $(this).find('input').val(value);
+            }
+        });
+    }
+}
 function addRow() {
     var lastYearInput = $(".tb_content input:last");
     var currentValue = parseInt(lastYearInput.val());
@@ -237,44 +264,56 @@ function delRow() {
 }
 
 $('.annualSaveBtn').on('click', function() {
-	
-	swal({
-		title: "연차 설정을 저장하시겠습니까??",
-		text: "매년 1월1일 등록",
-		icon: "success",
-		buttons: ["취소","확인"],
-	})
-	.then((isOkey) => {
-		if (isOkey) {
-			swal('저장 되었습니다.','','success')
-			.then((isOkey) => {
-				if(isOkey){
-				    var dataToSend = [];
-				    $('.tb_content').each(function() {
-				        var year = $(this).find('span.txt').text().split(' ')[0];
-				        var value = $(this).find('input').val();
-				        dataToSend.push({ year: year, value: value });
-				    });
-					console.log(dataToSend);
-				    $.ajax({
-				        type: 'POST',
-				        url: 'annualLeave.do', // 실제 서버 URL
-				        contentType: 'application/json',
-				        data: JSON.stringify(dataToSend),
-				        success: function(response) {
-				            // 성공적으로 서버에 데이터를 보냈을 때 처리하는 코드
-				        },
-				        error: function(err) {
-				            // 에러 발생 시 처리하는 코드
-				        }
-				    });			
-				}
-			})
-		}
-	});
+    swal({
+        title: "연차 설정을 저장하시겠습니까??",
+        text: "매년 1월1일 등록",
+        icon: "success",
+        buttons: ["취소","확인"],
+    })
+    .then((isOkey) => {
+        if (isOkey) {
+            swal('저장 되었습니다.', '', 'success')
+            .then((isOkey) => {
+                if (isOkey) {
+                    var dataToSend = [];
+                    $('.tb_content').each(function() {
+                        var year = $(this).find('span.txt').text().split(' ')[0];
+                        var value = $(this).find('input').val();
+                        dataToSend.push({ year: year, value: value });
+                    });
+                    console.log(dataToSend);
+                    $.ajax({
+                        type: 'POST',
+                        url: 'annualLeave.do', // 실제 서버 URL
+                        contentType: 'application/json',
+                        data: JSON.stringify(dataToSend),
+                        success: function(response) {
+                            // 성공적으로 서버에 데이터를 보냈을 때 처리하는 코드
+                            // 서버에서 반환한 데이터를 기반으로 화면을 업데이트
+                            console.log("서버 응답: ", response);
+                            for (var i = 0; i < response.length; i++) {
+                                var year = response[i].year;
+                                var value = response[i].value;
 
+                                // 연차에 해당하는 input 요소를 찾아서 값을 설정
+                                $('.tb_content').each(function() {
+                                    var currentYear = $(this).find('span.txt').text().split(' ')[0];
+                                    if (currentYear == year) {
+                                        $(this).find('input').val(value);
+                                    }
+                                });
+                            }
+                        },
+                        error: function(err) {
+                            // 에러 발생 시 처리하는 코드
+                            console.error("에러 발생: ", err);
+                        }
+                    });         
+                }
+            })
+        }
+    });
 });
-
 
 </script>
 </html>
