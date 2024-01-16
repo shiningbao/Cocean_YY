@@ -531,6 +531,12 @@
 	<select id="formSearch" resultType="form">
 		SELECT * FROM draftForm WHERE formTitle LIKE CONCAT('%',#{keyword},'%')
 	</select>
+	
+	<insert id="alarmInsert">
+		INSERT INTO notificationHistory(employeeID,content,url) values(#{param1},#{param2},#{param3});
+	</insert>
+	
+	
 
 	<!-- <update id="update">
 		UPDATE draft SET draftDate=#{draftDate}, publicStatus=#{publicStatus} WHERE idx=#{idx}
