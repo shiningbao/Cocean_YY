@@ -121,7 +121,7 @@ public class ScheduleController {
 		int firstIndex =nodeText.indexOf(' ');
 
 		String nodeName = nodeText.substring(0,firstIndex);
-
+		
 
 		return service.addCalender(loginEmployeeID,nodeName,employeeID);
 

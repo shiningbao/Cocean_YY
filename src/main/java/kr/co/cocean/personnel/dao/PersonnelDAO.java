@@ -50,7 +50,7 @@ public interface PersonnelDAO {
 
 	void upload(FileDTO dto);
 
-	HashMap<String, Object> datail(int parsedEmployeeID);
+	HashMap<String, Object> detail(int parsedEmployeeID);
 
 	List<HashMap<String, Object>> employeeHistory(int employeeID);
 
@@ -147,6 +147,10 @@ public interface PersonnelDAO {
 	List<HashMap<String, Object>> ajaxGetscHistory(String employeeID);
 
 	int getHqMembers(String hqID);
+
+	List<HashMap<String, Object>> getRankNameOrg();
+
+	List<HashMap<String, Object>> getPositionNameOrg();
 
 
 }

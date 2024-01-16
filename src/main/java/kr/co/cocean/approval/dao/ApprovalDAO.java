@@ -167,6 +167,8 @@ public interface ApprovalDAO {
 	void insertApprovalLines(int idx, List<LineDTO> lastLineInfoList);
 
 	void approvalSave(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
+	
+	void alarmInsert(int employeeID, String content, String url);
 
 
 	/*

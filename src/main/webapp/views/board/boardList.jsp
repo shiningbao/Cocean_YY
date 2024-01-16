@@ -120,7 +120,7 @@
 				</c:if>
 				
 				<c:if test="${bt eq '프로그램 일정'}">
-					<c:if test="${userInfo.departmentID eq 6}">
+					<c:if test="${userInfo.departmentID eq 3}">
 						<div class="text-right">
 							<button class="btn btn-primary float-right" onclick="location.href='write.go'">글작성</button>
 						</div>						
