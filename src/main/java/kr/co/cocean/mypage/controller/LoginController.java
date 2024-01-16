@@ -1,3 +1,4 @@
+
 package kr.co.cocean.mypage.controller;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,9 +45,7 @@ public class LoginController {
 		boolean success= service.getPw(userNum,password);
 		if(success) {//로그인 성공
 			logger.info("userNum"+userNum);
-
 			session.setAttribute("userInfo",userInfo);
-
 			page = "redirect:/home";
 
 		}else {// 로그인 실패시

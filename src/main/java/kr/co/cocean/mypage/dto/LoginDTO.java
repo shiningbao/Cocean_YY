@@ -19,7 +19,23 @@ public class LoginDTO {
 	private String departmentName; // 부서명
 	private String responName;
 	private String serverFileName;
+	private String positionName;
+	private String rankName;
+	
+	
 
+	public String getRankName() {
+		return rankName;
+	}
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
 	public String getServerFileName() {
 		return serverFileName;
 	}

@@ -6,6 +6,12 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <link rel="stylesheet" href="<c:url value='/resource/css/common.css'/>">
+<style>
+	.rounded-circle{
+		width:200px;
+		height:200px;
+	}
+</style>
 </head>
 <body>
 	<c:import url="/side" />
@@ -15,18 +21,35 @@
 		<div class="row" style="justify-content: space-between; height: 470px; padding-top: 3%">
 			
 		<!-- 사원 정보 시작 -->
-			<div class="card border-secondary mb-3" style="width:60%;">
+			<div class="card border-secondary mb-3" style="width:30%;">
 			  <div class="card-body">
-			    <h4 class="card-title">접속 사원 정보</h4>
-			    <p class="card-text">출퇴근 버튼 배치</p>
+			    <h4 class="card-title"></h4>
+			    <p class="card-text"></p>
+			    <div style="text-align:center">
+				<img class="img-profile rounded-circle"	src="/photo/cocean/profile/${sessionScope.userInfo.serverFileName}"/>
+				  	<div>
+				  	<span>${sessionScope.userInfo.name}</span>
+				  	<span>${sessionScope.userInfo.positionName}</span>
+				  	</div>
+				  	<div>
+				  		<span>${sessionScope.userInfo.departmentName}</span>
+				  	</div>
+			  	</div>
 			  </div>
-			    <div style="display: flex; justify-content: space-around;">
-			  	<button class="btn btn btn-primary btn-lg" id="attendanceButton" style="width:48%;">출근</button>
-			  	<button class="btn btn btn-secondary btn-lg" id="leaveButton"  style="width:48%;">퇴근</button>
+			    <div style="text-align:center; margin-bottom: 30px">
+			  	<button class="btn btn btn-primary btn-lg" id="attendanceButton" style="width:130px">출근</button>
+			  	<button class="btn btn btn-secondary btn-lg" id="leaveButton" style="width:130px" >퇴근</button>
 			  	</div>
 			</div>
 		<!-- 사원 정보 끝 -->
-		
+					<div class="card border-secondary mb-3" style="width:30%;">
+			  <div class="card-body">
+			    <h4 class="card-title"></h4>
+			    <p class="card-text"></p>
+
+			  </div>
+
+			</div>
 		<!-- 기타 정보 시작 -->
 			<div class="card text-white bg-primary shadow mb-3 " style="width:39%; text-align: center; align-items: center;">
 			  <div class="card-body" style="align-items: center;">

@@ -7,11 +7,12 @@
 
 <select id="login" resultType="kr.co.cocean.mypage.dto.LoginDTO"> 
 
- SELECT e.employeeID ,e.positionID ,e.name,e.status ,e.joinDate ,e.phoneNumber ,e.address ,e.remainingAnnualLeave ,e.departmentID ,r.responName,e.rankID,h.branchID,d.departmentName,f.serverFileName 
+ SELECT e.employeeID ,e.positionID ,p.positionName ,e.name,e.status ,e.joinDate ,e.phoneNumber ,e.address ,e.remainingAnnualLeave ,e.departmentID ,r.responName,e.rankID,h.branchID,d.departmentName,f.serverFileName 
 FROM department d JOIN headquarters h 
 ON d.hqID = h.hqID JOIN employee e 
 ON e.departmentID = d.departmentID
 JOIN responsibility r ON r.responID = e.responID LEFT OUTER JOIN file f ON e.employeeID = f.idx
+JOIN `position` p ON p.positionID = e.positionID 
 where e.employeeID= #{param1} and f.path='profile'
 
 </select>

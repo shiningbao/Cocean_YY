@@ -53,7 +53,7 @@ public class StoreController {
 
 	}
 
-	@GetMapping(value="/store/branchRegister.do")
+	@PostMapping(value="/store/branchRegister.do")
 	@ResponseBody
 	public String brachRegister(@RequestParam String branchName,@RequestParam String branchLocation, @RequestParam double branchLatitude, @RequestParam double branchLongitude) {
 			logger.info("지점 등록");

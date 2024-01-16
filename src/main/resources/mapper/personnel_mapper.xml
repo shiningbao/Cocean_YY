@@ -333,6 +333,10 @@ fa-building' AS 'icon'
 		</foreach>
 	</update>
 	
+	<select id="getAnnualLeave">
+		SELECT * FROM annualLeave
+	</select>
+	
 	<select id="getYearValue">
 		SELECT year,value FROM annualLeave;
 	</select>

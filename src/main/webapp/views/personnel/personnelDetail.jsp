@@ -1024,66 +1024,105 @@ function ajaxDepartmentLog(){
 }
 function delHistory(){
 	var historyID =$(event.target).closest('tr').find('.historyID').val();
-	if(confirm("해당 이력을 삭제하시겠습니까?")){
-		
-	$.ajax({
-		url:'delHistory.do',
-		data:{historyID:historyID},
-		type:'post',
-		success:function(data){
-			console.log(data);
-			alert(data.message);
-			drawHistoryTable();
-		},
-		error:function(e){
-			console.log(e);
+	
+	swal({
+		title: "해당 이력을 삭제하시겠습니까?",
+		text: "",
+		icon: "info",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('삭제가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+					$.ajax({
+						url:'delHistory.do',
+						data:{historyID:historyID},
+						type:'post',
+						success:function(data){
+							console.log(data);
+							drawHistoryTable();
+						},
+						error:function(e){
+							console.log(e);
+						}
+						
+					});			
+				}
+			})
 		}
-		
 	});
-	}
+
 }
 
 function delscHistory(){
 	var historyID =$(event.target).closest('tr').find('.historyID').val();
-	if(confirm("해당 학력을 삭제하시겠습니까?")){
-		
-	$.ajax({
-		url:'delscHistory.do',
-		data:{historyID:historyID},
-		type:'post',
-		success:function(data){
-			console.log(data);
-			alert(data.message);
-			drawscHistoryTable();
-			
-		},
-		error:function(e){
-			console.log(e);
+	swal({
+		title: "해당 학력을 삭제하시겠습니까?",
+		text: "",
+		icon: "info",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('삭제가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+					$.ajax({
+						url:'delscHistory.do',
+						data:{historyID:historyID},
+						type:'post',
+						success:function(data){
+							console.log(data);
+							drawscHistoryTable();
+							
+						},
+						error:function(e){
+							console.log(e);
+						}
+						
+					});			
+				}
+			})
 		}
-		
 	});
-	}
+	
 }
 
 function delDepartmentLog(){
     var logID = $(event.target).closest('tr').find('.logID').val();
     console.log(logID);
-    if(confirm("해당 로그을 삭제하시겠습니까?")){
-        $.ajax({
-            url:'delDepartmentLog.do',
-            data:{logID:logID},
-            type:'post',
-            success:function(data){
-                console.log(data);
-                alert(data.message);
-                // 삭제 성공 후에 새로운 데이터로 테이블 갱신
-                ajaxDepartmentLog();
-            },
-            error:function(e){
-                console.log(e);
-            }
-        });
-    }
+	swal({
+		title: "해당 로그를 삭제하시겠습니까?",
+		text: "",
+		icon: "info",
+		buttons: ["취소","확인"],
+	})
+	.then((isOkey) => {
+		if (isOkey) {
+			swal('삭제가 완료되었습니다.','','success')
+			.then((isOkey) => {
+				if(isOkey){
+			        $.ajax({
+			            url:'delDepartmentLog.do',
+			            data:{logID:logID},
+			            type:'post',
+			            success:function(data){
+			                console.log(data);
+			                // 삭제 성공 후에 새로운 데이터로 테이블 갱신
+			                ajaxDepartmentLog();
+			            },
+			            error:function(e){
+			                console.log(e);
+			            }
+			        });		
+				}
+			})
+		}
+	});
+    
+
 }
 
     // 마지막에 추가할 새로운 입력란
@@ -1287,10 +1326,6 @@ function sample6_execDaumPostcode() {
             document.getElementById("address").focus();
         }
     }).open();
-}
-var msg = "${msg}";
-if(msg != ""){
-	alert(msg);
 }
 
 
