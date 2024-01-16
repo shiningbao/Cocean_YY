@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.co.cocean.alarm.service.SseService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.cocean.approval.dao.ApprovalDAO;
 import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.approval.dto.LineDTO;
@@ -156,11 +160,40 @@ public class ApprovalService {
 	}
 
 
-	public void update(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) {
+	public void update(MultipartFile[] files, Map<String, String> param, List<LineDTO> lastLineInfoList) throws Exception {
+		ApprovalDTO dto = new ApprovalDTO();
 		LocalDateTime now = LocalDateTime.now();
 		String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		int idx=Integer.parseInt(param.get("idx"));
-		dao.updateDraft(param,formatedNow);
+		int writerID = Integer.parseInt(param.get("writerID"));
+		int publicStatus = Integer.parseInt(param.get("publicStatus"));
+		int tempSave = Integer.parseInt(param.get("tempSave"));
+		String title = param.get("title");
+		String titleID = param.get("titleID");
+		String lastOrder = null;
+		String content = param.get("content");
+		if(param.get("lastOrder").equals("undefined")) {
+			lastOrder="0";
+		}else {
+			lastOrder=param.get("lastOrder");
+		}
+		logger.info(title);
+		dto.setEmployeeID(writerID);
+		dto.setPublicStatus(publicStatus);
+		dto.setTempSave(tempSave);
+		dto.setDocumentNo(title);
+		dto.setTitleID(titleID);
+		dto.setStartDate(param.get("startDate"));
+		dto.setEndDate(param.get("endDate"));
+		dto.setTextArea(param.get("textArea"));
+		dto.setVacationCategory(param.get("vacationCategory"));
+		if(param.get("total")!=null&&!param.get("total").isEmpty()) {
+		dto.setUsageTime(Double.parseDouble(param.get("total")));
+		}
+		
+		dao.deleteApprovalLines(idx,titleID);
+		dao.updateDraft(param, formatedNow);
+		 
 			if(files!=null) {
 				int confirm = dao.cfFile(param);
 				if(confirm>0) {
@@ -186,35 +219,25 @@ public class ApprovalService {
 		if(lastLineInfoList.isEmpty()) {
 			dao.updateLineEmpty(param);
 		}else {
-			ArrayList<String> check = dao.checkEmpId(idx);
-			List<LineDTO> linesToRemove = new ArrayList<>();
-			String approvalEmp = null;
-			for (LineDTO line : lastLineInfoList) {
-	            approvalEmp = line.getApprovalEmp();
-	            logger.info(approvalEmp);
-	            if (check.contains(approvalEmp)) {
-	                linesToRemove.add(line);
-	            }
-	        }
-			lastLineInfoList.removeAll(linesToRemove);
-			
-		/*	if (check.contains(approvalEmp)) {
-				// dao.updateApproval(lastLineInfoList, param);
-			} else {*/
-			if(lastLineInfoList!=null) {
-				dao.insertApproval(lastLineInfoList, param);
-			}
-			// }
-	    }
-		if(param.get("titleID").equals("1")) {
-			dao.updateWorkDraft(param);
-			}else if(param.get("titleID").equals("2")) {
-				dao.updateAttendenceDraft(param);
-			}else if(param.get("titleID").equals("3")){
-				dao.updateLeaveDraft(param);
+			if(tempSave==1) {
+	        // 새로운 결재 라인 정보 추가
+	        dao.approvalSave(lastLineInfoList,idx,lastOrder);
 			}else {
-				dao.updateReincrement(param);
+				dao.approvalWrite(lastLineInfoList, idx, lastOrder);
 			}
+	    }
+
+		if(titleID.equals("1")) {
+			dao.writeWorkDraft(title,content,idx); // workDraft테이블에 insert
+		}else if(titleID.equals("2")) {
+			logger.info(param.get("textArea"));
+			dao.writeattendenceDraft(dto); // 휴가신청서 insert
+		}else if(titleID.equals("3")){
+			logger.info("휴직원");
+			dao.writeLeaveDraft(dto); // 휴직원 insert
+		}else {
+			dao.writeReincrement(dto); // 복직원 insert
+		}
 
 	}
 

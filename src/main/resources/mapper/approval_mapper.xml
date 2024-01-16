@@ -134,9 +134,21 @@
 	            <otherwise>'0'</otherwise>
 	        </choose>, #{lastOrder},
 	        <choose>
-            <when test="line.order == 2"> '대기' </when>
+            <when test="line.order == 2" > '대기' </when>
             <otherwise>'미대기'</otherwise>
         </choose>)
+	    </foreach>
+	</insert>
+	
+	<insert id="approvalSave" parameterType="map">
+	    INSERT INTO approval (idx, employeeID, category, approvalDate, approvalOrder, lastOrder, approvalStatus)
+	    VALUES
+	    <foreach collection="lastLineInfoList" item="line" separator=",">
+	        (#{idx}, #{line.approvalEmp}, #{line.category}, '0000-00-00',
+	        <choose>
+	            <when test="line.order != null">#{line.order}</when>
+	            <otherwise>'0'</otherwise>
+	        </choose>, #{lastOrder},'미대기')
 	    </foreach>
 	</insert>
 
@@ -216,34 +228,25 @@
 		WHERE idx=#{param1.idx}		
 	</update>
 	
-	<insert id="insertApproval">
-    INSERT INTO approval (idx, employeeID, category, approvalOrder, lastOrder) VALUES 
-    <foreach collection="lastLineInfoList" item="line" separator=",">
-        (#{param2.idx}, #{line.approvalEmp}, #{line.category},
-        <choose>
-            <when test="line.order != null">#{line.order}</when>
-            <otherwise>0</otherwise>
-        </choose>, #{param2.lastOrder})
-    </foreach>
-</insert>
-	
 	<update id="updateApproval">
     <foreach collection="lastLineInfoList" item="line" separator=";">
         UPDATE approval SET  
         employeeID=#{line.approvalEmp},
-        category=#{line.category},
+        category='결재',
         <choose>
-            <when test="line.order != null">approvalOrder=#{line.order}</when>
+            <when test="line.order != null">approvalOrder=1</when>
             <otherwise>approvalOrder='0'</otherwise>
         </choose>,
-        lastOrder=#{param2.lastOrder}
-        WHERE idx=#{param2.idx} AND employeeID=#{line.approvalEmp}
+        lastOrder=#{param3.lastOrder}
     </foreach>
+        WHERE idx=#{param3.idx} AND employeeID=#{param2.approvalEmp}
 </update>
+	
+	
 
 	
-	<select id="checkEmpId" resultType="String">
-		SELECT employeeID FROM approval WHERE idx=#{idx}
+	<select id="checkEmpId" resultType="line">
+		SELECT employeeID,category,approvalOrder FROM approval WHERE idx=#{idx}
 	</select>
 	
 	<update id="updateLineEmpty">
@@ -406,7 +409,7 @@
 </update>
 
 	<select id="saveList" resultType="approval">
-		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content,df.titleID FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
+		SELECT d.idx,d.employeeID,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content,df.titleID FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus='임시저장' ORDER BY d.draftDate DESC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="sCount" parameterType="map" resultType="Integer">
@@ -428,6 +431,21 @@
     DELETE FROM approval WHERE idx=#{idx};
     DELETE FROM draft WHERE idx=#{idx};
 </delete>
+
+	<delete id="deleteApprovalLines">
+		<choose>
+        <when test="titleID == 1">
+            DELETE FROM workDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 2">
+            DELETE FROM attendanceDraft WHERE idx=#{idx};
+        </when>
+        <when test="titleID == 3">
+            DELETE FROM leaveDraft WHERE idx=#{idx};
+        </when>
+    </choose>
+    DELETE FROM approval WHERE idx=#{idx};
+	</delete>
 	
 	<select id="myList" resultType="approval">
 		SELECT d.idx,d.draftDate,d.draftStatus,df.formCategory,df.formTitle,wd.title,wd.content FROM draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx where employeeID=#{employeeID} and draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10

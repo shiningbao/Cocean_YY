@@ -44,11 +44,6 @@ button{
 	text-align: center;
 }
 
-#agrSignature {
-	margin-bottom : 20px;
-}
-
-
 #agrSignature td{
 	text-align: center;
 }
@@ -88,10 +83,10 @@ button{
   border: none;
 }
 
-#approvalLine td{
+/* #approvalLine td{
 	padding : 1px;
 	font-size : 12px;
-}
+} */
 
 #agreeTable, #agreeTable tr, #agreeTable td{
 	border:none;
@@ -128,6 +123,7 @@ button{
 
 #bottom{
     width:74%;
+    margin-left : 2%;
 }
 
 #rightContainer{
@@ -203,9 +199,9 @@ th {
     }
     
     .delArea{
-		    margin: 62% 20% 0% -38%;
-    padding: 0px 11px;
-    width: 22px;
+		margin: 53% 15% 6% -46%;
+	    padding: 0px 5px;
+	    width: 25px;
     }
     
     #draftInfo tr, #draftInfo th, #draftInfo td{
@@ -274,7 +270,7 @@ th {
 	
 	
 <div id="rightContainer">
-<div class="card shadow" style="width:300px;">
+<div class="card shadow" style="width: 354px;padding: 3%;">
 	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재라인</span>
     <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
 	<hr/>
@@ -431,7 +427,7 @@ th {
 </div>
 <br/>
 <input type="hidden" name="tempSave" value="0"/>
-<div id="render">
+<div id="render" style="margin-right:2.5%; margin-left: -1%;">
 <div id="btnRemove">
 <input type="button" class="btn btn-secondary"  value="취소" onclick="location.href='formList.go'"/>
 <input style="float:right" class="btn btn-primary" type="button" id="write" value="등록" onclick="save(${data.idx})"/>
@@ -690,10 +686,13 @@ function calculateDays() {
 	        if ("${form.formTitle}" === "업무기안서"){
 	        if (!content.trim() && !title.trim()) {
 		        alert("제목과 내용을 입력해주세요!");
+		        return;
 		    } else if (!title.trim()) {
 		        alert("제목을 입력해주세요!");
+		        return;
 		    } else if (!content.trim()) {
 		        alert("내용을 입력해주세요!");
+		        return;
 		    } 
 	        }
 	        if (lastLine.length === 0) {
@@ -897,7 +896,7 @@ function calculateDays() {
  	 function renderBtn(idx) {
          let el = `
              <div id="btnRemove">
-	    		 <input type="button" class="btn btn-secondery"value="취소" onclick="location.href='formList.go'"/>
+	    		 <input type="button" class="btn btn-secondary" value="취소" onclick="location.href='formList.go'"/>
 	   			 <input type="button" class="btn btn-primary" style="float:right" onclick="save(` + idx + `)" value="등록"/>
 	             <input type="button" class="btn btn-primary" style="float:right; margin-right:10px;" onclick="tempSave(` + idx + `)" value="임시저장"/>
              </div>
@@ -1010,11 +1009,11 @@ function calculateDays() {
 		        row = $("<tr>");
 
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		            row = $("<td>" + lineData.rank + lineData.name + "</td>");
+		            row = $("<td>" + lineData.rank +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
 		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
 		        } else {
-		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.positionName + lineData.name + "</td>");
+		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName +'\u00A0'+lineData.positionName +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
 		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }

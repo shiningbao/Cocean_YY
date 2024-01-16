@@ -260,7 +260,7 @@ th {
 	
 	<div id="rightContainer">
 	<div class="card shadow" style="width: 354px;padding: 3%;">
-	<div style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재정보</span>
+	<div style="padding: 10px 12px;"><span class="approvalInfo" style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재정보</span>
 	<hr/>
 		<table id="approvalLine">
 			<tr>
@@ -319,7 +319,7 @@ th {
 		<tr>
 		    <th>상신자</th>
 		    <td>${list.name}</td>
-		     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="40" height="40" class="signatureImg"></td>
+		     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="60px;" height="60px;" class="signatureImg"></td>
 		</tr>
 		<tr>
 		    <th>소속부서</th>

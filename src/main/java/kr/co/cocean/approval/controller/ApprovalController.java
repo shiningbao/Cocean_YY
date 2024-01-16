@@ -249,9 +249,9 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-	                service.write(files, param, lastLineInfoList);
-	                // result.put("idx",idx);
-	            	}else { // 임시저장
+		                service.write(files, param, lastLineInfoList);
+		                // result.put("idx",idx);
+	            	}else { // 임시저장 or 임시저장함에서 등록
 	            		logger.info(param.get("idx"));
 	            		service.update(files,param,lastLineInfoList);
 	            	}
