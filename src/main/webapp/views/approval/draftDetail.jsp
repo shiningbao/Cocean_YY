@@ -529,7 +529,7 @@ $('.modal-footer button[type="submit"]').click(function () {
             break;
     }
 
-    if (msg) {
+    /* if (msg) {
         var confirmed = confirm(msg);
 
         if (confirmed) {
@@ -537,7 +537,7 @@ $('.modal-footer button[type="submit"]').click(function () {
         }else{
         	event.preventDefault();
         }
-    }
+    } */
 });
 var loginId = $('input[name="loginId"]').val()
 var idx = $('input[name="idx"]').val()

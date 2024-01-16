@@ -581,12 +581,11 @@ function calculateDays() {
 	
 	//기안 등록
 	function save(idx) {
-	   if(confirm("등록하시겠습니까?")){
 		var title = $('input[name="title"]').val(); // 업무기안서
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = parseInt($("#approvalLine tbody tr:last .order").val()); // 결재라인의 마지막 순서
 		var lastLine = [];
-		
+		var content = $("#summernote").summernote('code') // 업무기안서
 		console.log("마지막순서:"+lastOrder);
 	    var formData = new FormData();
 
@@ -606,7 +605,6 @@ function calculateDays() {
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
 	    if ("${form.formTitle}" === "업무기안서") {
-	    	var content = $("#summernote").summernote('code') // 업무기안서
 	        formData.append('content', content);
 	    	formData.append('title',title);
 	    } else if ("${form.formTitle}" === "휴직원" || "${form.formTitle}" === "복직원") {
@@ -684,37 +682,37 @@ function calculateDays() {
 	    formData.append('lastLine', JSON.stringify(lastLine));
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
 	        if ("${form.formTitle}" === "업무기안서"){
-	        if (!content.trim() && !title.trim()) {
-		        alert("제목과 내용을 입력해주세요!");
+	        if (content.trim() === '<p><br></p>' && !title.trim()) {
+		        swal('제목과 내용을 입력해주세요!','','warning');
 		        return;
 		    } else if (!title.trim()) {
-		        alert("제목을 입력해주세요!");
+		    	 swal('제목을 입력해주세요!','','warning');
 		        return;
-		    } else if (!content.trim()) {
-		        alert("내용을 입력해주세요!");
+		    } else if (content.trim() === '<p><br></p>') {
+		    	 swal('내용을 입력해주세요!','','warning');
 		        return;
 		    } 
 	        }
 	        if (lastLine.length === 0) {
-		        alert("결재라인을 지정해주세요.");
+	        	 swal('결재라인을 지정해주세요!','','warning');
 		        return;
 		    }
 	    
-	    	
+	    	console.log(content);
 	   
 	    if("${form.formTitle}" === "휴가신청서"){
 	    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
 	    		if(start ===''){
-	        		alert("날짜를 선택해주세요!");
+	    			 swal('날짜를 선택해주세요!','','warning');
 	        		return;
 	        	}
         		
         }else{
         	if (start === '' || end ==='') {
-                alert("날짜를 전부 선택해주세요!");
+        		 swal('날짜를 전부 선택해주세요!','','warning');
                 return;
             }else if($('#total').text()=='잔여 연차를 초과하였습니다.'){
-            	alert("잔여 연차를 확인해주세요!");
+            	 swal('잔여 연차를 확인해주세요!','','warning');
             	return;
             }
         }
@@ -723,32 +721,47 @@ function calculateDays() {
 	    	formData.append("idx",idx);
 	    }
 	    
-	        $.ajax({
-		        url: "/Cocean/approval/writeDraft.do",
-		        method: "POST",
-		        processData: false,
-		        contentType: false,
-		        data: formData,
-		        cache: false,
-		        success: function (data) {
-		            // console.log(data);
-		            location.href = './myDraftList.go';
-		
-		        },
-		        error: function (e) {
-		            console.error(e);
-		        }
-		    	});
-	    
-	   }
-	   return;
+		swal({
+			title: "등록하시겠습니까?",
+			text:"",
+			icon:"info",
+			buttons:["취소","확인"]
+		})
+		.then((isOkey) => {
+			if(isOkey){
+				swal('등록이 완료 되었습니다.','','success')
+				.then((isOkey)=>{
+					if(isOkey){
+					
+					        $.ajax({
+						        url: "/Cocean/approval/writeDraft.do",
+						        method: "POST",
+						        processData: false,
+						        contentType: false,
+						        data: formData,
+						        cache: false,
+						        success: function (data) {
+						            // console.log(data);
+						            location.href = './myDraftList.go';
+						
+						        },
+						        error: function (e) {
+						            console.error(e);
+						        }
+						    	});
+						
+					}
+				})
+			}
+		});
+	   
 	}
 	
 	
 	
 	// 임시저장
 	function tempSave(idx) {
-			alert('저장되었습니다.');
+		swal('저장되었습니다.','','success');
 			console.log(idx);
 			var title = $('input[name="title"]').val(); // 업무기안서
 			var titleID = $('input[name="titleID"]').val(); // 양식titleID
