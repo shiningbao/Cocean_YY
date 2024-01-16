@@ -33,26 +33,6 @@ public class AddressController {
       return "mypage/outsideaddressBook";
    }
 
-   //외부리스트
-   /*
-   @GetMapping(value="mypage/listCall")
-   @ResponseBody
-   public HashMap<String, Object> listCall(HttpSession session) {
-      logger.info("list 시작");
-      HashMap<String, Object>result = new HashMap<String, Object>();
-
-
-      if(session.getAttribute("userInfo") == null) {
-         result.put("login", false);
-      }else {
-         result.put("login", true);
-         ArrayList<OutAddressDTO> list = service.list();
-         result.put("list", list);
-      }
-      logger.info("서비스 넘어가기전");
-      return result;
-   }*/
-
 
    @GetMapping(value="mypage/listCall")
    @ResponseBody
@@ -183,6 +163,7 @@ public class AddressController {
          logger.info("userId :"+ userId);
          params.put("userId", userId);
          String msg = service.outsidejoin(params);
+         logger.info(msg);
          ModelAndView mav = new ModelAndView();
          mav.addObject("msg", msg);
          mav.setViewName("/mypage/outsideaddressBook"); // 요청명 변경

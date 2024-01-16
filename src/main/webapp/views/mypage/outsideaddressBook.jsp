@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
 <style>
 table, th, td{
    border: 1px solid black;
@@ -11,21 +12,10 @@ table, th, td{
    padding: 5px 10px;
 }
 
-/*테이블*/
-/*
-.outaddress{
- position: absolute;
-  top: 50%; 
-  left: 60%;
-  transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 50px;
-  margin-top:0px;
- 
-}*/
+
 .outaddress{
 margin-top:-25px;
-margin-left:400px;
+margin-left:330px;
 }
 
  .outaddress th {
@@ -107,7 +97,7 @@ margin-top:3px;
 /*검색창*/
 .form-inline {
 	position: absolute;
-	left: 142px;
+	left: 73px;
 	top: 20px;
 }
 
@@ -126,7 +116,7 @@ margin-right:20px;
 
 /*버튼 나머지 버튼들 사이 조절*/
 .button-container  {
-    margin-left: 373px;
+    margin-left: 443px;
 }
 
 #reserch {
@@ -138,9 +128,15 @@ margin-right:20px;
 margin-top:1%;
 }
 
+.swal-confirm-button-center {
+        margin-right:140px;
+        
+    }
 
+.swal-cancel-button-center{
+ 		text-align: center;
 
-
+}
 
 
 </style>
@@ -185,7 +181,7 @@ margin-top:1%;
    <div class="button-container">
     <button type="submit" id="outreturn" class="btn btn-primary" >검색 초기화</button>
     <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
-    <button type="submit" id="del" class="btn btn-primary" onclick="del()" >삭제</button>
+    <button type="submit" id="del" class="btn btn-primary" onclick="confirmDelete()" >삭제</button>
 </div>
 </div>
   
@@ -197,11 +193,9 @@ margin-top:1%;
       <thead>
       <tr>
          <th><input type="checkbox" id="all"/></th>
-<!--  
-         <th>번호</th>
-  --> 
          <th>이름</th>
          <th>전화번호</th>
+         <th>회사명</th>
          <th>직급</th>
          <th>직책</th>
          <th>부서</th>
@@ -292,7 +286,6 @@ $('#outsidejoin').on('click',function(){
 //외부주소록(체크박스)
 $('#all').on('click', function (event) {
     var $chk = $('input[type="checkbox"]');
-    console.log($chk);
     if ($(this).is(":checked")) {
         $chk.prop("checked", true);
     } else {
@@ -300,6 +293,7 @@ $('#all').on('click', function (event) {
     }
     event.stopPropagation();
 });
+
 
 // 헤더의 <th>에 대한 클릭 이벤트 추가
 $('th').on('click', function () {
@@ -309,34 +303,67 @@ $('th').on('click', function () {
 
 
 
-//외부주소록
-function del(){
-   var chkArr = [];
-   $('input[type="checkbox"]:checked').each(function(addressNumber,item){
-      var val = $(item).val();
-      if(val != 'on'){
-         chkArr.push(val);
-      }      
-   });
-   console.log(chkArr);
-   
-   $.ajax({
-      type:'get',
-      url:'delete',
-      data:{'delList':chkArr},
-      dataType:'JSON',
-      success:function(data){
-         console.log(data);
-         if(data.del_cnt>0){
-        	 swal('선택한' + data.del_cnt + ' 개의 주소록이 삭제 되었습니다.', '', 'success');
-            listCall();
-         }
-      },
-      error:function(e){
-         console.log(e);
-      }
 
-   });
+function confirmDelete() {
+    var chkArr = [];
+    $('input[type="checkbox"]:checked').each(function (addressNumber, item) {
+        var val = $(item).val();
+        if (val != 'on') {
+            chkArr.push(val);
+        }
+    });
+
+    if (chkArr.length === 0) {
+        swal('선택된 항목이 없습니다.', '', 'info');
+        return;
+    }
+
+    // SweetAlert2를 사용하여 삭제 여부 확인
+    swal({
+        title: '주의',
+        text: '선택한 ' + chkArr.length + ' 개의 주소록을 삭제하시겠습니까?',
+        icon: 'warning',
+        buttons: {
+            cancel: {
+                text: '취소',
+                value: null,
+                visible: true,
+                className: 'swal-cancel-button-center',
+                closeModal: true,
+            },
+            confirm: {
+                text: '삭제',
+                value: true,
+                visible: true,
+                className: 'swal-confirm-button-center', // 추가된 클래스
+                closeModal: true,
+            }
+        },
+        dangerMode: true,
+    })
+    .then(function (confirmed) {
+        if (confirmed) {
+            // AJAX로 데이터 전송
+            $.ajax({
+                type: 'get',
+                url: 'delete',
+                data: { 'delList': chkArr },
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+                    if (data.del_cnt > 0) {
+                        swal('선택한 ' + data.del_cnt + ' 개의 주소록이 삭제되었습니다.', '', 'success');
+                        listCall();
+                    }
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        } else {
+            // 사용자가 '취소' 버튼을 클릭한 경우 아무런 작업도 수행되지 않음
+        }
+    });
 }
 
 
@@ -372,7 +399,7 @@ function drawList(list) {
 
     if (list.length === 0) {
         content = '<tr>';
-        content += '<td colspan="6" style="text-align: center; color: red;">저장된 주소록이 없습니다.</td>';
+        content += '<td colspan="7" style="text-align: center; color: red;">저장된 주소록이 없습니다.</td>';
         content += '</tr>';
     } else {
         list.forEach(function (item, addressNumber) {
@@ -381,11 +408,13 @@ function drawList(list) {
             /* content += '<td>'+item.addressNumber+'</td>'; */
             content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
             content += '<td>' + item.phoneNumber + '</td>';
+            content += '<td>' + item.companyName + '</td>';
             content += '<td>' + item.rankLevel + '</td>';
             content += '<td>' + item.positionLevel + '</td>';
             content += '<td>' + item.departmentName + '</td>';
             content += '</tr>';
         });
+        
     }
 
     $('#list').empty();
@@ -409,7 +438,7 @@ $('#reserch').on('click', function () {
 
             if (data.size == 0) {
                 content = '<tr >';
-                content += '<td style="text-align: center; color: red;" colspan="6">' + query + '이 존재하지 않습니다.</td>';
+                content += '<td style="text-align: center; color: red;" colspan="7">' + query + '이 존재하지 않습니다.</td>';
                 content += '</tr>';
                 $('#list').append(content);
             } else {
@@ -419,6 +448,7 @@ $('#reserch').on('click', function () {
                     content += '<td><input type="checkbox" value="' + item.addressNumber + '"/></td>';
                     content += '<td><a href="detail?addressNumber=' + item.addressNumber + '">' + item.name + '</a></td>';
                     content += '<td>' + item.phoneNumber + '</td>';
+                    content += '<td>' + item.companyName  + '</td>';
                     content += '<td>' + item.rankLevel + '</td>';
                     content += '<td>' + item.positionLevel + '</td>';
                     content += '<td>' + item.departmentName + '</td>';
@@ -526,6 +556,7 @@ $('#inreserch').on('click', function () {
 
     $('input[name="mul"]').val('');
 });
+
 
 
 
