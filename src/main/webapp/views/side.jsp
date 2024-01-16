@@ -125,19 +125,10 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities" id="store-click">
+                <a class="nav-link" href="<c:url value='/store/storeList.go'/>">
                     <i class="fi fi-sr-bullhorn"></i>
                     <span>스토어 관리</span>
                 </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <!--<h6 class="collapse-header">Custom Utilities:</h6> -->
-                        <a class="collapse-item" href='<c:url value="/store/storeList.go"/>'>지점 관리</a>
-                        <a class="collapse-item" href="#">상품 관리</a>
-                    </div>
-                </div>
             </li>
             
 			<c:if test="${userInfo.departmentID eq 5}">
