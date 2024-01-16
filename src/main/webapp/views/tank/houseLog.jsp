@@ -50,6 +50,9 @@
 #abHead{
 	background-color: #E9ECEF;
 }
+
+
+
 </style>
 </head>
 <body>
@@ -72,9 +75,9 @@
 			<button class="btn btn-danger" style="width: 20%; margin-right: 1%;" data-toggle="modal" data-target="#abnomalRecord">이상기록</button>
 			</div>
 
-			<div class="row" style="width: 100%; height:80vh; margin-left: 1px;">
+			<div class="row" style="width: 100%; height:90vh; margin-left: 1px;">
 			
-				<div class="card shadow mb-4" style="width: 100%; height: 90vh; margin-top: 3%; overflow: auto;">
+				<div class="card shadow mb-4" style="width: 100%; height: 85vh; margin-top: 3%; overflow: auto;">
 					<div class="card-header py-3">
 						<h6 class="m-0 font-weight-bold">월간 기록 [최대/최소/평균]</h6>
 					</div>
