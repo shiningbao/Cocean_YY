@@ -289,7 +289,7 @@ th {
 			        </c:otherwise>
 			    </c:choose>
 			    </th>
-				 <td><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+				<td><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
 				<td>${lL.hqName}/${lL.departmentName}</td>
 				<td>${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
 				<td>${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
