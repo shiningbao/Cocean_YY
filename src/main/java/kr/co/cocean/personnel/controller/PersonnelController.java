@@ -106,6 +106,8 @@ public class PersonnelController {
 	@RequestMapping(value="/personnel/organization/{isActive}")
 	public String goChart(@PathVariable int isActive, Model model) {
 		
+		
+		logger.info("@@@@@@@@@@@@@@@@@@@@@조직도관리"+isActive);
 		model.addAttribute("isActive", isActive);
 		return "personnel/organization";
 	}
@@ -258,6 +260,14 @@ public class PersonnelController {
 		return list;
 	}
 	
+	@PostMapping(value="/personnel/getPositionNameOrg.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getPositionNameOrg(){
+		
+		List<HashMap<String, Object>> list = service.getPositionNameOrg();
+		return list;
+	}
+	
 	@PostMapping(value="/personnel/getPositionNameActive.do")
 	@ResponseBody
 	public List<HashMap<String, Object>> getPositionNameActive(){
@@ -271,6 +281,14 @@ public class PersonnelController {
 	public List<HashMap<String, Object>> getRankName(){
 		
 		List<HashMap<String, Object>> list = service.getRankName();
+		return list;
+	}
+	
+	@PostMapping(value="/personnel/getRankNameOrg.do")
+	@ResponseBody 
+	public List<HashMap<String, Object>> getRankNameOrg(){
+		
+		List<HashMap<String, Object>> list = service.getRankNameOrg();
 		return list;
 	}
 	

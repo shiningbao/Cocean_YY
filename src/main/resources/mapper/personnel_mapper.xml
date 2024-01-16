@@ -161,7 +161,7 @@ fa-building' AS 'icon'
 		WHERE employeeID =#{employeeID}
 	</update>
 	
-	<select id="datail">
+	<select id="detail">
 				SELECT 
 		    e.employeeID, e.name, p.positionName,p.positionID, r.rankName,r.rankID, e.address, e.phoneNumber, b.branchName,b.branchID, d.departmentName,d.departmentID, h.hqName,h.hqID,res.responID, res.responName,
 		    f_profile.serverFileName AS profileImage, f_signature.serverFileName AS signatureImage,e.joinDate,e.status,e.remainingAnnualLeave
@@ -196,12 +196,20 @@ fa-building' AS 'icon'
 		SELECT positionID ,positionName,isActive  from `position` p where isActive = 1
 	</select>
 	
+	<select id="getPositionNameOrg">
+		SELECT positionID ,positionName,isActive  from `position` p
+	</select>
+	
 	<select id="getPositionNameActive">
 		SELECT positionID ,positionName,isActive  from `position` p where isActive = 1
 	</select>
 	
 	<select id="getRankName">
 		SELECT rankID,rankName,isActive from rank where isActive = 1
+	</select>
+	
+		<select id="getRankNameOrg">
+		SELECT rankID,rankName,isActive from rank
 	</select>
 	
 	<select id="getRankNameActive">
@@ -365,7 +373,10 @@ fa-building' AS 'icon'
 	</delete>
 	
 	<select id="getHqMembers">
-		SELECT count(*) from department d JOIN headquarters h ON d.hqID =h.hqID WHERE h.hqID =#{hqID};
+	SELECT COUNT(*) AS count_inactive
+	FROM department d
+	JOIN headquarters h ON d.hqID = h.hqID
+	WHERE h.hqID = #{hqID} AND d.isActive = 1;
 	</select>
 
 	

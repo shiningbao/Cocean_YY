@@ -47,7 +47,7 @@
 	</insert>
 	
 	<select id="getAddCalList">
-		SELECT title,start,end,subCategory,employeeID,scheduleID AS id FROM schedule s WHERE employeeID = #{val} AND subCategory='개인' AND publicCategory =1
+	SELECT title,start,end,subCategory,employeeID,scheduleID,description ,remarks  AS id FROM schedule s WHERE employeeID = #{val} AND subCategory='개인' AND publicCategory =1
 	</select>
 	
 	<select id="getDetailWriteName">
