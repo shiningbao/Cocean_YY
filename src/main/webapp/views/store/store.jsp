@@ -154,7 +154,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" onclick="branchRegisterConfirm()">등록</button>
+                <button type="button" class="btn btn-primary" onclick="branchRegisterConfirm()">등록</button>
               </div>
             </form>
           </div>
@@ -167,7 +167,7 @@ img:hover {
 	<div class="row">
 	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
 	<button id="productSearch" class="btn btn-primary">검색</button></p>
-	<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" onclick="branchProductDelete()"  style="height: 39px; margin-left:3px;"
+	<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" style="height: 39px; margin-left:3px;"
 	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
 	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
 	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
@@ -229,7 +229,7 @@ img:hover {
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                <button type="submit" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
+                <button type="button" class="btn btn-primary" id="branchProductRegister" onclick="branchProductRegisterBtn()">등록</button>
               </div>
             </form>
           </div>
@@ -284,19 +284,22 @@ img:hover {
 </body>
 <script>
 
-
 const responName = '${sessionScope.userInfo.responName}';
 console.log("담당명 : " + responName);
-
 var matchedProductList;
 var productListTable = $('.productList table');
 productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>카테고리</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
-// 현재 보여지고 있는 지점명
+
 var currentBranchName;
 var currentProductCategory;
 var currentProductName;
 var currentProductPrice;
 var totalProductNumber;
+
+// 가장 최근에 선택된 지점
+var recentBranchName = localStorage.getItem('recentBranchName');
+console.log("최근에 선택된 지점");
+console.log(recentBranchName);
 // 지점 리스트 지도에 표시
 new Promise((resolve, reject) => {
     // 첫 번째 Ajax 호출
@@ -360,11 +363,7 @@ new Promise((resolve, reject) => {
     				for (var i = 0; i < data.branchList.length; i++) {
     					console.log("지점 탭 추가");
     				    console.log(data.branchList[i].branchName);
-    				   /*  var branchButton = $('<button class="branchButton">' + data.branchList[i].branchName + '</button>'); */
-    				   /*  branchButton.data('branchName', data.branchList[i].branchName);
-    				    $('.branchLocation').append(branchButton); */
     				    $('#selectType').append('<option value= "' +data.branchList[i].branchName +'">'+ data.branchList[i].branchName+'</option>');
-    				    /* branchButton.data('branchName', data.branchList[i].branchName); */
     				    
     				}
     				   // 지점 버튼들 오른쪽에 + 버튼(지점 추가)
@@ -399,8 +398,108 @@ new Promise((resolve, reject) => {
 	                     productListTable.append(productInfo);
 						}
 					}
+    				
+    				// 웹스토리지 사용
+    				if(recentBranchName.endsWith("점")){
+      			    // selectbox 값 다시 바꾸기
+      			    var branchName = recentBranchName;
+      			    $('#selectType option').each(function() {
+      		        // 현재 option의 값과 recentBranchName 비교
+      		        if ($(this).val() === recentBranchName) {
+      		            // recentBranchName과 일치하는 경우 해당 option을 선택 상태로 변경
+      		            $(this).prop('selected', true);
+      		        }
+      		    });
+      			    recentBranchName = localStorage.setItem('recentBranchName', "");
+      			    console.log("이전에 선택된 지점으로 인해 실행");
+      			    $("#productInfoRegisterPage").hide();
+
+      			    console.log("------------------");
+  					    console.log("지점 버튼 클릭");
+  					    console.log("선택된 지점 : " + branchName);
+  					    $('#currentBranchName').val(branchName);
+  					    currentBranchName = branchName;
+  					    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
+  					    if (currentBranchName === "가산점") {
+  					        document.getElementById("modalProductRegister").style.display = "none";
+  					        document.getElementById("productInfoRegister").style.display = "inline";
+  					    } else {
+  					        document.getElementById("modalProductRegister").style.display = "inline";
+  					        document.getElementById("productInfoRegister").style.display = "none";
+  					    }
+  					    // 선택된 branchName에 해당하는 지점 찾기
+  					    var matchedBranch = data.branchProductList.find(function (branch) {
+  					        return branch.branchName === branchName;
+  					    });
+  					    var matchedTotalProduct = data.totalProductNumber.find(function (branch) {
+  				        return branch.branchName === branchName;
+  					    });
+  					    var matchedProducts = data.branchProductList.filter(function (product) {
+  					        return product.branchName === matchedBranch.branchName && product.category != "관람객" &&
+  					            product.status === "판매중";
+  					    });
+  					
+  					    if (matchedBranch) {
+  					        console.log("클릭된 지점명과 일치하는 지점명");
+  					        console.log("탭 지점명 : " + branchName);
+  					        var branchName = $(this).data('branchName');
+  					        console.log("클릭된 지점명 값 : " + matchedBranch.branchName);
+  					        console.log(matchedBranch);
+  					        console.log(matchedBranch.branchLongitude);
+  					        console.log(matchedBranch.branchLatitude);
+  					        initializeMap({
+  					            branchList: [{
+  					                branchLocation: matchedBranch.branchLocation,
+  					                branchLongitude: matchedBranch.branchLongitude,
+  					                branchLatitude: matchedBranch.branchLatitude
+  					            }]
+  					        });
+  					        // 모달창에 현재 클릭된 지점명 넣기
+  					        $('.branchName').val(branchName);
+  							
+  					        // 상품리스트로 테이블 업데이트
+  					        var productListTable = $('.productList table');
+  					        productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>카테고리</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
+  					        
+  					     	// 총 상품 개수 추가
+     		       		  		$('#totalProductNumber').html('상품 개수 : ' + matchedTotalProduct.totalProductNumber);
+     		       		  	totalProductNumber = matchedTotalProduct.totalProductNumber;
+  					        // 상품 데이터를 테이블에 추가
+  					        if (matchedProducts.length > 0) {
+  					            for (var j = 0; j < matchedProducts.length; j++) {
+  					                var product = matchedProducts[j];
+  					                var productInfo = '<tr>' +
+  					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
+  					                '<td>' + product.productID + '</td>' +
+  					                '<td>' + product.category + '</td>' +
+  					                '<td>' + product.productName + '</td>' +
+  					                '<td>' + product.price + '</td>' +
+  					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+  					    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
+  					                '</tr>';
+
+  					                productListTable.append(productInfo);
+  					                $('input[name="productCheckbox"]').change(function() {
+  					                  // 모든 productCheckbox 체크 해제
+  					                  $('input[name="productCheckbox"]').not(this).prop('checked', false);
+  					              });
+  					            }
+  					        } else {
+  					            // 클릭된 지점명과 일치하는 상품이 하나도 없는 경우 메시지를 추가합니다.
+  					            var productInfo = '<tr>' +
+  					                '<td colspan="3">' + "아직 상품이 등록되지 않았습니다" + '</td>' +
+  					                '</tr>';
+  					            productListTable.append(productInfo);
+  					        }
+  					    } else {
+  					        console.log("지점에 등록된 상품이 없습니다");
+  					    }
+    					
+    				}
+    				
     				$('#selectType').on('change', function() {
     			    // 선택된 옵션의 값을 가져와서 출력 또는 사용
+    			    console.log("콘솔솔");
     			    var branchName = $(this).val();
     			    $("#productInfoRegisterPage").hide();
 
@@ -446,7 +545,7 @@ new Promise((resolve, reject) => {
 					        });
 					        // 모달창에 현재 클릭된 지점명 넣기
 					        $('.branchName').val(branchName);
-					
+							
 					        // 상품리스트로 테이블 업데이트
 					        var productListTable = $('.productList table');
 					        productListTable.html('<tr><th>삭제</th><th>상품번호</th><th>카테고리</th><th>상품명</th><th>가격</th><th>사진</th></tr>');
@@ -484,14 +583,7 @@ new Promise((resolve, reject) => {
 					    } else {
 					        console.log("지점에 등록된 상품이 없습니다");
 					    }
-    			    // 여기서 선택된 값을 활용하여 추가적인 작업을 수행할 수 있습니다.
-    			    // 예를 들어, 선택된 값을 다른 요소에 표시하거나 서버로 전송할 수 있습니다.
     			});
-    				// 지점 탭 클릭
-    				/* $('.branchButton').click(function () {
-					    
-					});  */
-
                 resolve(); // 두 번째 Ajax 호출 성공 시 resolve 호출
             },
             error: function (e) {
@@ -516,7 +608,9 @@ $('#modalProductRegister').click(function () {
 $('#productSearch').click(function () {
 searchKeyword = $('.searchProduct').val();
 console.log(searchKeyword);
-searchProduct(searchKeyword, currentBranchName);
+if(searchKeyword){
+	searchProduct(searchKeyword, currentBranchName);
+}
 });
 
 // 모달검색 버튼 클릭
@@ -706,47 +800,59 @@ searchProduct(searchKeyword, currentBranchName);
             }
         }).open();
     }
+  
 
     function branchRegisterConfirm() {
-       // 필요한 데이터를 추출
-       var branchName = document.getElementById('branchName').value;
-       var branchLocation = document.getElementById('branchLocation').value;
+      swal({
+          title: "지점을 등록하시겠습니까?",
+          text: "",
+          icon: "info",
+          buttons: ["취소", "등록"],
+      })
+      .then((isOkey) => {
+          if (isOkey) {
+              return swal('등록이 완료되었습니다.', '', 'success');
+          }
+      })
+      .then((isConfirmed) => {
+          if (isConfirmed) {
+              // 필요한 데이터를 추출
+              var branchName = document.getElementById('branchName').value;
+              var branchLocation = document.getElementById('branchLocation').value;
 
-       // 값이 비어 있는지 확인
-       if (!branchName || !branchLocation) {
-           alert("내용을 입력해주세요.");
-           return; // 값이 비어 있다면 함수를 실행하지 않음
-       }
+              // 카카오 맵 지오코더 생성자
+              var geocoder = new kakao.maps.services.Geocoder();
 
-       // 카카오 맵 지오코더 생성자
-       var geocoder = new kakao.maps.services.Geocoder();
+              // 주소 검색 결과를 처리할 콜백 함수를 정의합니다.
+              var callback = function(result, status) {
+                  // 검색 상태가 OK인 경우에만 처리합니다.
+                  if (status === kakao.maps.services.Status.OK) {
+                      // 검색 결과에서 위도(latitude)와 경도(longitude)를 추출합니다.
+                      var result = result[0];
+                      var branchLatitude = result.y; // 위도
+                      var branchLongitude = result.x; // 경도
 
-       // 주소 검색 결과를 처리할 콜백 함수를 정의합니다.
-       var callback = function(result, status) {
-           // 검색 상태가 OK인 경우에만 처리합니다.
-           if (status === kakao.maps.services.Status.OK) {
-               // 검색 결과에서 위도(latitude)와 경도(longitude)를 추출합니다.
-               var result = result[0];
-               var branchLatitude = result.y; // 위도
-               var branchLongitude = result.x; // 경도
+                      branchReigster(branchName, branchLocation, branchLatitude, branchLongitude);
+                  } else {
+                      // 검색 상태가 OK가 아닌 경우에는 에러 메시지를 출력합니다.
+                      console.error("주소 검색 실패: " + status);
+                  }
+              };
 
-               branchReigster(branchName, branchLocation, branchLatitude, branchLongitude);
-           } else {
-               // 검색 상태가 OK가 아닌 경우에는 에러 메시지를 출력합니다.
-               console.error("주소 검색 실패: " + status);
-           }
-       };
+              // 주소 검색 요청을 수행합니다.
+              geocoder.addressSearch(branchLocation, callback);
+          }
+      });
 
-       // 주소 검색 요청을 수행합니다.
-       geocoder.addressSearch(branchLocation, callback);
-       /* alert("등록되었습니다!"); */
-       closeModal();
-   }
+      return false;
+  }
+
+      
 
     // 지점등록 데이터를 서버로 보내는 함수
     function branchReigster(branchName, branchLocation, branchLatitude, branchLongitude) {
         $.ajax({
-            type: 'get',
+            type: 'post',
             url: 'branchRegister.do',
             data: {
                 branchName: branchName,
@@ -757,6 +863,7 @@ searchProduct(searchKeyword, currentBranchName);
             success: function(data) {
                 console.log(data);
                 console.log("성공");
+                location.reload(true);
             },
             error: function(error) {
             	alert("담당자만 가능합니다");
@@ -766,17 +873,27 @@ searchProduct(searchKeyword, currentBranchName);
     }
     
     function branchProductRegisterBtn(){
-        	console.log(currentBranchName);
-        	console.log(currentProductName);
-    	  var isConfirmed = confirm("등록하시겠습니까?");
+    	console.log(currentBranchName);
+    	console.log(currentProductName);
+    	localStorage.setItem('recentBranchName', currentBranchName);
+    	swal({
+        title: "상품을 등록하시겠습니까?",
+        text: "",
+        icon: "info",
+        buttons: ["취소", "등록"],
+    })
+    .then((isOkey) => {
+        if (isOkey) {
+            return swal('등록이 완료되었습니다.', '', 'success');
+        }
+    })
+    .then((isConfirmed) => {
         if (isConfirmed) {
         	branchProductRegister(currentBranchName, currentProductName);
-        	
-        } else {
-            console.log("등록이 취소되었습니다.");
-        }
-        
-    }
+}
+
+});
+}
    
 
     
@@ -793,8 +910,8 @@ searchProduct(searchKeyword, currentBranchName);
         success: function(data) {
             console.log(data);
             console.log("성공");
-           /* alert("등록되었습니다!"); */
            console.log(currentBranchName);
+           location.reload(true);
         },
         error: function(error) {
             console.error(error);
@@ -822,47 +939,56 @@ searchProduct(searchKeyword, currentBranchName);
    	
    	
    	$(document).ready(function() {
-   	    $('#productTable').on('click', function(event) {
-   	        if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
-   	            var parentRow = $(event.target).closest('tr');
+      $('#productTable').on('click', function(event) {
+          if (event.target.type === 'checkbox' && event.target.name === 'productCheckbox') {
+              var parentRow = $(event.target).closest('tr');
+              var productID = $(event.target).data('productid');
+              var branchID = $(event.target).data('branchid');
+              console.log("productID : " + productID);
 
-   	            var productID = $(event.target).data('productid');
-   	            var branchID = $(event.target).data('branchid');
-   	            console.log("productID : "+ productID);
-   	            
-   	           $('#branchProductDelete').click(function () {
-   	          	var isConfirmed = confirm("삭제하시겠습니까?");
-   	            if (isConfirmed) {
-   	                $.ajax({
-   	                    url: "branchProductDelete.do",
-   	                    data: {
-   	                        'productID': productID,
-   	                        'branchID': branchID
-   	                    },
-   	                    type: "POST",
-   	                    success: function(data) {
-   	                        parentRow.remove();
-   	                        // 삭제후 총 상품 개수 -1
-   	                       totalProductNumber = totalProductNumber -1 ; // 또는 totalProductNumber += 1; 또는 totalProductNumber++;
-							console.log(totalProductNumber);
-							
-							// 업데이트된 값으로 HTML에 추가
-							$('#totalProductNumber').empty();
-							$('#totalProductNumber').html('상품 개수 : ' + totalProductNumber);
-   	                        console.log("지점상품 삭제 성공");
-   	                    },
-   	                    error: function(e) {
-   	                        console.log(e);
-   	                    }
-   	                });
-   	            
-   	           }
-   						}); 
-   	           
-   	            
-   	        }
-   	    });
-   	});
+              $('#branchProductDelete').click(function() {
+                  swal({
+                          title: "상품을 등록하시겠습니까?",
+                          text: "",
+                          icon: "info",
+                          buttons: ["취소", "등록"],
+                      })
+                      .then((isOkey) => {
+                          if (isOkey) {
+                              return swal('상품이 삭제되었습니다.', '', 'success');
+                          }
+                      })
+                      .then((isConfirmed) => {
+                          if (isConfirmed) {
+                              $.ajax({
+                                  url: "branchProductDelete.do",
+                                  data: {
+                                      'productID': productID,
+                                      'branchID': branchID
+                                  },
+                                  type: "POST",
+                                  success: function(data) {
+                                      parentRow.remove();
+                                      // 삭제후 총 상품 개수 -1
+                                      totalProductNumber = totalProductNumber - 1;
+                                      console.log(totalProductNumber);
+
+                                      // 업데이트된 값으로 HTML에 추가
+                                      $('#totalProductNumber').empty();
+                                      $('#totalProductNumber').html('상품 개수 : ' + totalProductNumber);
+                                      console.log("지점상품 삭제 성공");
+                                  },
+                                  error: function(e) {
+                                      console.log(e);
+                                  }
+                              });
+                          }
+                      });
+              });
+          }
+      });
+  });
+
 
    	
    	
