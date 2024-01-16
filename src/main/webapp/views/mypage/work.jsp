@@ -90,7 +90,9 @@ margin-left:-20px;
 	<table id="work_table">
 		<thead>
         	<tr>
+        	<!--  
         		<th>번호</th>
+			-->	
 				<th>날짜</th>
 				<th>출근시간</th>
 				<th>퇴근시간</th>
@@ -166,7 +168,9 @@ function drawwork(pfirstSearchDate, plastSearchDate) {
         	data.work.forEach(function(item, idx){
 	    		idx += 1;
 	    		content +='<tr>';
+	    		/*
 	    		content +='<td>'+item.workID+'</td>';
+	    		*/
 	    		content +='<td>'+item.workDate+'</td>';
                 content += '<td>' + (item.gowork ? item.gowork.substring(11, 19) : '') + '</td>';
                 content += '<td>' + (item.leavework ? item.leavework.substring(11, 19) : '') + '</td>';

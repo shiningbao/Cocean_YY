@@ -96,9 +96,9 @@
 		<div class="card shadow col-12 mx-auto">
 			<div class="drawList"></div>
 		</div>
-
-		<button  type="button" class="btn btn-primary float-right mt-2" id="write">등록</button>
-	
+		<c:if test="${userInfo.departmentID eq 1 and userInfo.positionID eq 2}">
+			<button  type="button" class="btn btn-primary float-right mt-2" id="write">등록</button>
+		</c:if>
 	</div>
 
 	<c:import url="/footer"/>

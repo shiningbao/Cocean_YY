@@ -55,7 +55,7 @@ $(function () {
     $("#jstree").jstree({
         'core': {
             'data': {
-                "url": "/Cocean/personnel/getChart.do/${isActive}",
+                "url": "<c:url value='/personnel/getChart.do/'/>"+${isActive},
                 "dataType": "JSON"
             }
         },

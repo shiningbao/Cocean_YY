@@ -13,7 +13,8 @@
         p.positionLevel, 
         p.rankLevel,
         p.departmentName,
-        p.phoneNumber
+        p.phoneNumber,
+        p.CompanyName
     FROM personalAddressBook p
     WHERE p.EmployeeID = #{userId}
     ORDER BY p.addressNumber ASC
@@ -33,8 +34,8 @@
 	 
 	 
 	<insert id="insert" parameterType="hashmap">
-		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber)
-values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber})
+		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber,CompanyName)
+values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phoneNumber},#{CompanyName})
 	</insert>
 	
 	<select id="detail" resultType="outaddress">
@@ -49,9 +50,10 @@ values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phon
 		<set>
 			<if test="!name.equals('')">name = #{name},</if>
 			<if test="!positionLevel.equals('')">positionLevel = #{positionLevel},</if>
-			<if test="!departmentName.equals('')">departmentName = #{departmentName}</if>
-			<if test="!rankLevel.equals('')">rankLevel = #{rankLevel}</if>
-			<if test="!phoneNumber.equals('')">phoneNumber = #{phoneNumber}</if>
+			<if test="!departmentName.equals('')">departmentName = #{departmentName},</if>
+			<if test="!rankLevel.equals('')">rankLevel = #{rankLevel},</if>
+			<if test="!phoneNumber.equals('')">phoneNumber = #{phoneNumber},</if>
+			<if test="!CompanyName.equals('')">CompanyName = #{CompanyName}</if>
 		</set>
 		WHERE addressNumber = #{addressNumber}
 	</update>
@@ -59,7 +61,7 @@ values (#{userId},#{name},#{positionLevel},#{rankLevel},#{departmentName},#{phon
 	<!--  수정 -->
 	<update id="outaddressupdate" parameterType="hashmap">
      	UPDATE personalAddressBook SET name=#{name}, positionLevel=#{positionLevel}, rankLevel=#{rankLevel}, 
-	departmentName=#{departmentName},phoneNumber=#{phoneNumber}
+	departmentName=#{departmentName},phoneNumber=#{phoneNumber},CompanyName=#{CompanyName}
      		WHERE addressNumber=#{addressNumber}
     </update>
 	
@@ -89,37 +91,11 @@ e.rankID = r.rankID
 	</select>
 
 
-<!--  내부서치 -->
-<!-- 
-<select id="insearch" parameterType="list" resultType="inaddress">	
- 
-    SELECT e.name, e.phoneNumber, d.departmentName, p.positionName, r.rankName
-    FROM employee e, department d, `position` p, `rank` r
-    WHERE e.departmentID = d.departmentID AND e.positionID = p.positionID AND e.rankID = r.rankID
-        AND e.rankID IN
-        <foreach collection="list" item="item" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-
-SELECT e.name,e.phoneNumber, d.departmentName, p.positionName,r.rankName  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.employeeID = #{parma1} AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID
-</select>
-	-->
-	
-	
-	
 	<!-- 수정페이지 접속 리스트 -->
 	<select id="outupdate" resultType="outaddress">
 		SELECT * FROM 
 			personalAddressBook WHERE addressNumber = #{param1}
 	</select>
 	
-	<!--  
-	<select id="myInfo" resultType="mypage">
-	SELECT e.name, e.employeeID ,e.phoneNumber, d.departmentName, p.positionName,r.rankName,e.remainingAnnualLeave s  FROM employee e ,department d , `position` p, `rank` r 
-WHERE e.employeeID=#{param1}  AND  e.departmentID = d.departmentID AND e.positionID = p.positionID And
-e.rankID = r.rankID
-	</select>
--->
+
 </mapper>

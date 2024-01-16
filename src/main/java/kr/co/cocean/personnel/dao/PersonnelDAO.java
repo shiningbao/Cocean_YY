@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 
 import kr.co.cocean.main.dto.FileDTO;
@@ -151,6 +152,8 @@ public interface PersonnelDAO {
 	List<HashMap<String, Object>> getRankNameOrg();
 
 	List<HashMap<String, Object>> getPositionNameOrg();
+
+	List<HashMap<String, Object>> getAnnualLeave();
 
 
 }

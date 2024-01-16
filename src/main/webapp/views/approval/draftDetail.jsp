@@ -222,7 +222,7 @@ th {
 	              </div>
 	              <div class="modal-footer">
 	                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-	                <button type="submit" class="btn btn-primary"></button>
+	                <button type="button" class="btn btn-primary"></button>
 	              </div>
 	                <input type="hidden" value="${loginId}" name="loginId">
 					<input type="hidden" value="${list.idx}" name="idx">
@@ -505,40 +505,49 @@ function updateModalContent(action) {
     	modalButtonText = '거부';
     }
     $('.modal-title').text(modalTitle);
-    $('.modal-footer button[type="submit"]').text(modalButtonText);
+    $('.modal-footer button[class="btn btn-primary"]').text(modalButtonText);
     
 }
-$('.modal-footer button[type="submit"]').click(function () {
+
+$('.modal-footer button[class="btn btn-primary"]').click(function () {
     var buttonText = $(this).text();
     console.log(buttonText);
     var msg = "";
     switch (buttonText) {
-        case '결재':
-            msg = "결재하시겠습니까?";
-            break;
-        case '반려':
-            msg = "반려하시겠습니까?";
-            break;
-        case '합의':
-            msg = "합의하시겠습니까?";
-            break;
-        case '거부':
-            msg = "거부하시겠습니까?";
-            break;
-        default:
-            break;
+	    case '결재':
+	        msg = "결재하시겠습니까?";
+	        break;
+	    case '반려':
+	        msg = "반려하시겠습니까?";
+	        break;
+	    case '합의':
+	        msg = "합의하시겠습니까?";
+	        break;
+	    case '거부':
+	        msg = "거부하시겠습니까?";
+	        break;
+	    default:
+	        break;
     }
-
+   
     if (msg) {
-        var confirmed = confirm(msg);
-
-        if (confirmed) {
-            $('form').submit();
-        }else{
-        	event.preventDefault();
-        }
+        swal({
+            title: msg,
+            icon: "info",
+            buttons: ["취소", "확인"]
+        })
+         .then((isOkey) => {
+            if (isOkey) {           	
+            		$('form').submit();      
+            }
+            else {
+                event.preventDefault();
+            }
+        }); 
     }
+ 
 });
+
 var loginId = $('input[name="loginId"]').val()
 var idx = $('input[name="idx"]').val()
  var hTitle = "${hTitle}";

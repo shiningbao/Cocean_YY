@@ -79,6 +79,24 @@
                  <input type="text" name="name" placeholder="이름을 입력해주세요."/>
              </th>
          </tr>
+          <tr>
+             <th>전화번호</th>
+             <th>
+                 <input type="text" name="phoneNumber" id="phoneInput" placeholder="전화번호를 입력해주세요." onblur="validatePhoneNumber(this)"/>
+             </th>
+         </tr>
+          <tr>
+             <th>회사명</th>
+             <th>
+                 <input type="text" name="CompanyName" placeholder="회사명을 입력해주세요."/>
+             </th>
+         </tr>
+         <tr>
+             <th>직급</th>
+             <th>
+                 <input type="text" name="rankLevel" placeholder="직급을 입력해주세요."/>
+             </th>
+         </tr>
          <tr>
              <th>직책</th>
              <th>
@@ -91,22 +109,11 @@
                  <input type="text" name="departmentName"placeholder="부서를 입력해주세요."/>
              </th>
          </tr>
-          <tr>
-             <th>직급</th>
-             <th>
-                 <input type="text" name="rankLevel" placeholder="직급을 입력해주세요."/>
-             </th>
-         </tr>
-          <tr>
-             <th>전화번호</th>
-             <th>
-                 <input type="text" name="phoneNumber" placeholder="전화번호를 입력해주세요."/>
-             </th>
-         </tr>
+          
     
          <tr>
              <th colspan="2" style="text-align: center;">
-                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="리스트" type="button"style="width:70px;"/>
+                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="취소" type="button"style="width:58px;"/>
 				 <button type="submit" id="save" class="btn btn-primary">저장</button>
              </th>
          </tr>
@@ -117,7 +124,15 @@
  </div>
 </body>
 <script>
-
-
+function validatePhoneNumber() {
+    // 입력된 값에 '-'가 포함되어 있는지 확인
+    var input = document.getElementById("phoneInput");
+    
+    if (input.value.indexOf('-') === -1) {
+       	swal("숫자와 '-'(하이픈)를 포함해서 입력해주세요.", "", "error");
+        // 입력 값이 유효하지 않으면 값을 비워줄 수도 있습니다.
+        input.value = "";
+    }
+}
 </script>
 </html>

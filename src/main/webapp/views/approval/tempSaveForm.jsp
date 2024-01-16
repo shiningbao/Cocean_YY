@@ -265,7 +265,7 @@ th {
 	</div>
 	
 	<div id="rightContainer">
-<div class="card shadow" style="width: 354px;padding: 3%;">
+<div class="card shadow" style="width: 354px;padding: 1%;">
 	<div class="lineContent" style="padding: 10px 6px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재라인</span>
     <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
 	<hr/>
@@ -653,7 +653,7 @@ function calculateDays() {
 	
 	//기안 등록
 	function save(idx) {
-	   if(confirm("등록하시겠습니까?")){
+	   
 		var title = $('input[name="title"]').val(); // 업무기안서
 		var titleID = $('input[name="titleID"]').val(); // 양식titleID
 		var lastOrder = parseInt($("#approvalLine tbody tr:last .order").val()); // 결재라인의 마지막 순서
@@ -757,68 +757,88 @@ function calculateDays() {
 	    formData.append('lastLine', JSON.stringify(lastLine));
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
 	        if ("${list.formTitle}" === "업무기안서"){
-	        if (!content.trim() && !title.trim()) {
-		        alert("제목과 내용을 입력해주세요!");
-		    } else if (!title.trim()) {
-		        alert("제목을 입력해주세요!");
-		    } else if (!content.trim()) {
-		        alert("내용을 입력해주세요!");
-		    } 
-	        }
-	        if (lastLine.length === 0) {
-		        alert("결재라인을 지정해주세요.");
-		        return;
-		    }
+		        if (content.trim() === '<p><br></p>' && !title.trim()) {
+			        swal('제목과 내용을 입력해주세요!','','warning');
+			        return;
+			    } else if (!title.trim()) {
+			    	 swal('제목을 입력해주세요!','','warning');
+			        return;
+			    } else if (content.trim() === '<p><br></p>') {
+			    	 swal('내용을 입력해주세요!','','warning');
+			        return;
+			    } 
+		        }
+		        if (lastLine.length === 0) {
+		        	 swal('결재라인을 지정해주세요!','','warning');
+			        return;
+			    }
 	    
 	    	
 	   
-	    if("${list.formTitle}" === "휴가신청서"){
-	    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
-	    		if(start ===''){
-	        		alert("날짜를 선택해주세요!");
-	        		return;
-	        	}
-        		
-        }else{
-        	if (start === '' || end ==='') {
-                alert("날짜를 전부 선택해주세요!");
-                return;
-            }else if($('#total').text()=='잔여 연차를 초과하였습니다.'){
-            	alert("잔여 연차를 확인해주세요!");
-            	return;
-            }
-        }
-	    }
+
+			    if("${list.formTitle}" === "휴가신청서"){
+			    	if(vacationCategory=="오전반차"||vacationCategory=="오후반차"){
+			    		if(start ===''){
+			    			 swal('날짜를 선택해주세요!','','warning');
+			        		return;
+			        	}
+		        		
+		        }else{
+		        	if (start === '' || end ==='') {
+		        		 swal('날짜를 전부 선택해주세요!','','warning');
+		                return;
+		            }else if($('#total').text()=='잔여 연차를 초과하였습니다.'){
+		            	 swal('잔여 연차를 확인해주세요!','','warning');
+		            	return;
+		            }
+		        }
+			    }
 	    if(idx!==undefined){
 	    	formData.append("idx",idx);
 	    }
 	    
-	        $.ajax({
-		        url: "/Cocean/approval/writeDraft.do",
-		        method: "POST",
-		        processData: false,
-		        contentType: false,
-		        data: formData,
-		        cache: false,
-		        success: function (data) {
-		            console.log(data);
-		            location.href = './myDraftList.go';
-		
-		        },
-		        error: function (e) {
-		            console.error(e);
-		        }
-		    	});
+	    swal({
+			title: "등록하시겠습니까?",
+			text:"",
+			icon:"info",
+			buttons:["취소","확인"]
+		})
+		.then((isOkey) => {
+			if(isOkey){
+				swal('등록이 완료 되었습니다.','','success')
+				.then((isOkey)=>{
+					if(isOkey){
+					
+					        $.ajax({
+						        url: "/Cocean/approval/writeDraft.do",
+						        method: "POST",
+						        processData: false,
+						        contentType: false,
+						        data: formData,
+						        cache: false,
+						        success: function (data) {
+						            // console.log(data);
+						            location.href = './myDraftList.go';
+						
+						        },
+						        error: function (e) {
+						            console.error(e);
+						        }
+						    	});
+						
+					}
+				})
+			}
+		});
 	    
-	   }
-	   return;
+	
 	}
 	
 	
 	
 	// 임시저장
 	function tempSave(idx) {
-			alert('저장되었습니다.');
+		swal('저장되었습니다.','','success');
 			console.log(idx);
 			var title = $('input[name="title"]').val(); // 업무기안서
 			var titleID = $('input[name="titleID"]').val(); // 양식titleID
@@ -939,11 +959,20 @@ function calculateDays() {
 		}
 	
 	function confirmSave() {
-		  if(confirm("변경사항이 저장되지 않을 수 있습니다. 그래도 나가시겠습니까?")){
-			  location.href = './tempSaveList.go';
-		  }
-		  return;
-		}
+		  
+		swal({
+			title:"변경사항이 저장되지 않을 수 있습니다. 그래도 나가시겠습니까?",
+			text:"",
+			icon:"warning",
+			buttons:["취소","확인"]
+		})
+		.then((isOkey)=>{
+			if(isOkey){
+				 location.href = './tempSaveList.go';
+			}
+		})
+		
+	}
 			
 	
 	function getApprovalLine(lineData) {

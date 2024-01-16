@@ -64,6 +64,14 @@
              <!--inaddress는 내가 백단에서 이름 지정한걸 가지고 와서 사용한다  -->
              <td>${outaddress.name}</td>
          </tr>
+          <tr>
+             <th>전화번호</th>
+             <td>${outaddress.phoneNumber}</td>
+         </tr>
+         <tr>
+             <th>회사명</th>
+             <td>${outaddress.companyName}</td>
+         </tr>
          <tr>
              <th>직급</th>
              <td>${outaddress.rankLevel}</td>
@@ -76,21 +84,11 @@
              <th>부서</th>
             <td>${outaddress.departmentName}</td> 
          </tr>
-         <tr>
-             <th>전화번호</th>
-             <td>${outaddress.phoneNumber}</td>
-         </tr>
-   <!--  
-         <tr>
-             <th colspan="2">
-                  <input type="button" onclick="location.href='./outsideupdate?addressNumber=${outaddress.addressNumber}'" value="수정"/>   
-                 <input type="button" onclick="location.href='./list'" value="리스트"/>
-             </th>
-         </tr>
-         -->
+        
+
           <tr>
              <th colspan="2" style="text-align: center;">
-                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="리스트" style="width:70px;"/>
+                 <input class="btn btn-outline-primary detailCancleBtn" id="list" onclick="location.href='./list'" value="취소" style="width:58px;"/>
 				 <button type="submit" id="update" class="btn btn-primary" onclick="location.href='./outsideupdate?addressNumber=${outaddress.addressNumber}'" >수정</button>
              </th>
          </tr>

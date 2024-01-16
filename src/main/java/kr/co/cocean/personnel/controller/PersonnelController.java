@@ -573,7 +573,8 @@ public class PersonnelController {
 		return response; 
 		}
 	@PostMapping(value="/personnel/annualLeave.do")
-	public ResponseEntity<String> annualLeave( @RequestBody List<HashMap<String, Integer>> dataList){
+	@ResponseBody
+	public List<HashMap<String, Object>> annualLeave( @RequestBody List<HashMap<String, Integer>> dataList){
 			
 			List<HashMap<String,Object>> leaveYears = service.leaveYears();
 			logger.info("leaveYears =="+leaveYears);
@@ -589,10 +590,19 @@ public class PersonnelController {
 	     
 		}
 		service.saveAnnualLeave(dataList);
+		List<HashMap<String, Object>> result = service.getAnnualLeave();
 		/* service.updateAnnual(dataList); */
 
-		return ResponseEntity.ok("연차 계산 완료");
+		return result;
 	}
+	@PostMapping(value="/personnel/getAnnualLeave.do")
+	@ResponseBody
+	public List<HashMap<String, Object>> getAnnualLeave(){
+		List<HashMap<String, Object>> result = service.getAnnualLeave();
+		
+		return result;
+	}
+	
 	@PostMapping(value="/personnel/delHistory.do")
 	@ResponseBody
 	public HashMap<String, Object> delHistory (@RequestParam String historyID) {
@@ -601,9 +611,7 @@ public class PersonnelController {
 		int row = service.delHistory(historyID);
 		if(row>0) {
 			
-			response.put("message", "삭제 성공");
 		}else {
-			response.put("message", "삭제 실패");
 		}
 		
 		return response;
