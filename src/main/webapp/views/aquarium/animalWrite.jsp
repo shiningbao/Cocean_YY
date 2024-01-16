@@ -60,9 +60,9 @@
 						<tr>
 							<th class="text-center align-middle" scope="col">코션하우스</th>
 							<td>
-								<select class="form-control" name="tank">
-									<c:forEach items="${tankList}" var="item">
-										<option value="${item.tankID}">${item.branchName} - ${item.tankName}</option>
+								<select class="form-control" name="tank" id="tank">
+									<c:forEach items="${tankList}" var="item" varStatus="idx">
+										<option value="${idx.index}">${item.branchName} - ${item.tankName}</option>
 									</c:forEach>
 								</select>
 								<input type="text" class="form-control" id="branchID" name="branchID" style="display: none;" readonly/>
@@ -129,8 +129,11 @@ var index;
 
 $('#tank').on('change',function(){
 	var i = $('#tank').val();
+	console.log(i);
 	$('#branchID').val(branchIDList[i]);
 	$('#tankID').val(tankIDList[i]);
+	console.log(branchIDList);
+	console.log($('#branchID').val());
 });
 
 
