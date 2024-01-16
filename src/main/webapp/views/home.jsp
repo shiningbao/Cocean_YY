@@ -51,7 +51,41 @@
 				<div class="card border-secondary mb-5" style="width:100%;">
 				  <div class="card-body">
 				    <h4 class="card-title">공지사항</h4>
-				    <p class="card-text">게시판 배치</p>
+				    
+					    <table class="table table-hover">
+						<colgroup>
+							<col width="20%">
+							<col width="40%">
+							<col width="20%">
+							<col width="20%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">글 번호</th>
+								<th scope="col">제목</th>
+								<th scope="col">작성자</th>
+								<th scope="col">작성일</th>
+							</tr>
+						</thead>
+						<tr>
+						<c:if test="${empty notice}">
+							<tr>
+								<td colspan="4">게시글이 없습니다.</td>
+							</tr>
+						</c:if>
+						<c:forEach items="${notice}" var="item">
+							<tr>
+								<td>
+									<c:if test="${item.isPinned eq 1}">공지</c:if>
+									<c:if test="${item.isPinned ne 1}">${item.boardID}</c:if>
+								</td>
+								<td><a href="board/notice/detail?boardID=${item.boardID}">${item.title}</a></td>
+								<td>${item.name}</td>
+								<td>${item.creationDate}</td>
+							</tr>
+						</c:forEach>
+					</table>
+				
 				    <p class="card-text"></p>
 				  </div>
 				</div>
@@ -139,199 +173,215 @@ function formatDateTimeFromTimestamp(timestamp) {
 
 
 
+var attendanceChecked, leaveChecked, canClick, userId;
 
 
-var attendanceChecked, leaveChecked, canClick;
+function getEmployeeIdFromSession(callback) {
+    $.ajax({
+        type: "GET",
+        url: "getSessionEmployeeId",
+        success: function (response) {
+            var employeeId = response.employeeId;
+
+            // 여기서부터 이후 코드에서 employeeId를 사용할 수 있음
+            // 예를 들어, 출근 또는 퇴근 버튼 클릭 이벤트에서 사용 가능
+            console.log("EmployeeID from session:", employeeId);
+
+            // callback 함수를 호출하여 employeeId를 전달
+            if (typeof callback === "function") {
+                callback(employeeId);
+            }
+        },
+        error: function (error) {
+            console.error("Error fetching EmployeeID from session:", error);
+        }
+    });
+}
+
+// 페이지 로드 시 세션에서 EmployeeID를 가져오기
+$(document).ready(function () {
+    getEmployeeIdFromSession(function(employeeId) {
+        initializeValues(employeeId);
+        updateButtonState();
+    });
+});
 
 //초기화 함수
-function initializeValues() {
-    attendanceChecked = JSON.parse(sessionStorage.getItem('attendanceChecked'));
-    leaveChecked = JSON.parse(sessionStorage.getItem('leaveChecked'));
-    canClick = JSON.parse(sessionStorage.getItem('canClick'));
+function initializeValues(employeeId) {
+ userId = employeeId;
+ attendanceChecked = JSON.parse(localStorage.getItem(userId + '_attendanceChecked'));
+ leaveChecked = JSON.parse(localStorage.getItem(userId + '_leaveChecked'));
+ canClick = JSON.parse(localStorage.getItem(userId + '_canClick'));
 
-    // Debugging
-    console.log("Raw values from sessionStorage:");
-    console.log("attendanceChecked:", sessionStorage.getItem('attendanceChecked'));
-    console.log("leaveChecked:", sessionStorage.getItem('leaveChecked'));
-    console.log("canClick:", sessionStorage.getItem('canClick'));
+ // Debugging
+ console.log("Raw values from localStorage:");
+ console.log("attendanceChecked:", localStorage.getItem(userId + '_attendanceChecked'));
+ console.log("leaveChecked:", localStorage.getItem(userId + '_leaveChecked'));
+ console.log("canClick:", localStorage.getItem(userId + '_canClick'));
 
-    // 기본값 설정
-    if (attendanceChecked === null || attendanceChecked === undefined) {
-        attendanceChecked = false;
-    }
+ // 기본값 설정
+ if (attendanceChecked === null || attendanceChecked === undefined) {
+     attendanceChecked = false;
+ }
 
-    if (leaveChecked === null || leaveChecked === undefined) {
-        leaveChecked = false;
-    }
+ if (leaveChecked === null || leaveChecked === undefined) {
+     leaveChecked = false;
+ }
 
-    if (canClick === null || canClick === undefined) {
-        canClick = true;
-    }
+ if (canClick === null || canClick === undefined) {
+     canClick = true;
+ }
 }
 
-//페이지 로드 시 초기화
-$(document).ready(function () {
-    initializeValues();
-    updateButtonState();
-});
 
-function resetClickPermission() {
-    console.log("클릭 권한 재설정 중.");
-    var now = new Date();
-    var hours = now.getHours();
-
-    // 아침 6시에 초기화
-    if (hours === 6) {
-        canClick = true;
-        console.log("클릭 권한이 성공적으로 재설정되었습니다.");
-    }
-}
-
-function updateButtonState() {
-    console.log("updateButtonState 호출됨");
-
-    console.log("attendanceChecked:", attendanceChecked);
-    console.log("leaveChecked:", leaveChecked);
-    console.log("canClick:", canClick);
-
-    // 출근 버튼 상태 업데이트
-    if (attendanceChecked) {
-        console.log("출근 체크됨");
-        $("#attendanceButton").prop("disabled", true);
-    } else {
-        console.log("출근 체크 안 됨");
-        $("#attendanceButton").prop("disabled", !canClick);
-    }
-
-    // 퇴근 버튼 상태 업데이트
-    if (leaveChecked) {
-        console.log("퇴근 체크됨");
-        $("#leaveButton").prop("disabled", true);
-    } else {
-        console.log("퇴근 체크 안 됨");
-        $("#leaveButton").prop("disabled", false); // 항상 활성화
-    }
-}
-
-function sendAttendanceData() {
-    if (!canClick) {
-        swal('아침 6시이후에 다시 출근 체크를 할 수 있습니다.', '', 'success');
-        return;
-    }
-
-    if (attendanceChecked) {
-        swal('이미 출근 체크 하셨습니다.', '', 'success');
-        return;
-    }
-
-    var currentTimestamp = Date.now();
-    var formattedTime = formatTimeFromTimestamp(currentTimestamp);
-    var formattedDate = formatDateFromTimestamp(currentTimestamp);
-
-    var url = "gocheck";
-
-    var requestData = {
-        timedata: formattedTime, datedate: formattedDate
-    };
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: requestData,
-        dataType: "json",
-        success: function (data) {
-            console.log("서버 응답: " + data);
-            swal('출근이 되었습니다', '', 'success');
-            attendanceChecked = true;
-            leaveChecked = false; // 퇴근 체크 초기화
-            canClick = false;
-            updateButtonState();
-            sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
-            sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
-            sessionStorage.setItem('canClick', JSON.stringify(canClick));
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
-}
-$("#attendanceButton").click(function () {
-    sendAttendanceData();
-});
-
-function leaveAttendanceData() {
-    if (leaveChecked) {
-        swal('아침 6시 이후에 다시 퇴근 체크를 할 수 있습니다.', '', 'success');
-        return;
-    }
-
-    if (!attendanceChecked) {
-        swal('출근 체크를 먼저 해주세요.', '', 'success');
-        return;
-    }
-
-    var currentTimestamp = Date.now();
-    var formattedTime = formatTimeFromTimestamp(currentTimestamp);
-    var formattedDate = formatDateFromTimestamp(currentTimestamp);
-
-    var url = "leavecheck";
-
-    var leaveData = {
-        timedata: formattedTime, datedate: formattedDate
-    };
-
-    $.ajax({
-        type: "POST",
-        url: url,
-        data: leaveData,
-        dataType: "json",
-        success: function (data) {
-            console.log("서버 응답: " + data);
-            swal('퇴근이 되었습니다', '', 'success');
-            leaveChecked = true;
-            attendanceChecked = false;
-            canClick = false;
-            updateButtonState();
-            sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
-            sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
-            sessionStorage.setItem('canClick', JSON.stringify(canClick));
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
-}
-
-$("#leaveButton").click(function () {
-    leaveAttendanceData();
-});
-
-// 1분마다 클릭 여부 초기화 확인
+//1분마다 클릭 여부 초기화 확인
 setInterval(resetClickPermission, 60000);
 
-//로그아웃 시 초기화
-function logout() {
-    console.log("세션 스토리지 초기화 전 attendanceChecked:", attendanceChecked);
-    sessionStorage.clear(); // 세션 스토리지 초기화
-    initializeValues();  // 값 초기화
-    updateButtonState(); // 버튼 상태 초기화
-    console.log("세션 스토리지 초기화 후 attendanceChecked:", attendanceChecked);
+//클릭 여부 초기화 함수
+function resetClickPermission() {
+ console.log("클릭 권한 재설정 중.");
+ var now = new Date();
+ var hours = now.getHours();
+
+ // 아침 6시 이후에 초기화
+ if (hours >= 6 && !canClick) {
+     canClick = true;
+     console.log("클릭 권한이 성공적으로 재설정되었습니다.");
+     // 변경된 데이터를 localStorage에 저장
+     localStorage.setItem(userId + '_canClick', JSON.stringify(canClick));
+     // 버튼 상태 업데이트
+     updateButtonState();
+ }
 }
 
-// 새로운 사용자로 로그인 시 초기화
-function loginUser() {
-    console.log("새로운 사용자로 로그인");
-    initializeValues();  // 값 초기화
-    updateButtonState(); // 버튼 상태 초기화
-    sessionStorage.setItem('attendanceChecked', JSON.stringify(attendanceChecked));
-    sessionStorage.setItem('leaveChecked', JSON.stringify(leaveChecked));
-    sessionStorage.setItem('canClick', JSON.stringify(canClick));
+//버튼 상태 업데이트 함수
+function updateButtonState() {
+ console.log("updateButtonState 호출됨");
+
+ console.log("attendanceChecked:", attendanceChecked);
+ console.log("leaveChecked:", leaveChecked);
+ console.log("canClick:", canClick);
+
+ // 출근 버튼 상태 업데이트
+ if (attendanceChecked || !canClick) {
+     console.log("출근 체크됨 또는 클릭 불가");
+     $("#attendanceButton").prop("disabled", true);
+ } else {
+     console.log("출근 체크 안 됨");
+     $("#attendanceButton").prop("disabled", false);
+ }
+
+ // 퇴근 버튼 상태 업데이트
+ if (leaveChecked) {
+     console.log("퇴근 체크됨");
+     $("#leaveButton").prop("disabled", true);
+ } else {
+     console.log("퇴근 체크 안 됨");
+     $("#leaveButton").prop("disabled", false);
+ }
 }
 
-// 페이지 로드 시 버튼 상태 업데이트
-$(document).ready(function () {
-    updateButtonState();
+//출근 버튼 클릭 이벤트
+$("#attendanceButton").click(function () {
+ sendAttendanceData();
 });
+
+//퇴근 버튼 클릭 이벤트
+$("#leaveButton").click(function () {
+ leaveAttendanceData();
+});
+
+//출근 데이터 전송 함수
+function sendAttendanceData() {
+ if (!canClick) {
+     swal('아침 6시 이후에 다시 출근 체크를 할 수 있습니다.', '', 'success');
+     return;
+ }
+
+ if (attendanceChecked) {
+     swal('이미 출근 체크 하셨습니다.', '', 'success');
+     return;
+ }
+
+ var currentTimestamp = Date.now();
+ var formattedTime = formatTimeFromTimestamp(currentTimestamp);
+ var formattedDate = formatDateFromTimestamp(currentTimestamp);
+
+ var url = "gocheck";
+
+ var requestData = {
+     timedata: formattedTime, datedate: formattedDate
+ };
+
+ $.ajax({
+     type: "POST",
+     url: url,
+     data: requestData,
+     dataType: "json",
+     success: function (data) {
+         console.log("서버 응답: " + data);
+         swal('출근이 되었습니다', '', 'success');
+         attendanceChecked = true;
+         leaveChecked = false; // 퇴근 체크 초기화
+         canClick = false;
+         updateButtonState();
+         // 변경된 데이터를 localStorage에 저장
+         localStorage.setItem(userId + '_attendanceChecked', JSON.stringify(attendanceChecked));
+         localStorage.setItem(userId + '_leaveChecked', JSON.stringify(leaveChecked));
+         localStorage.setItem(userId + '_canClick', JSON.stringify(canClick));
+     },
+     error: function (error) {
+         console.error(error);
+     }
+ });
+}
+
+//퇴근 데이터 전송 함수
+function leaveAttendanceData() {
+ if (leaveChecked) {
+     swal('아침 6시 이후에 다시 퇴근 체크를 할 수 있습니다.', '', 'success');
+     return;
+ }
+
+ if (!attendanceChecked) {
+     swal('출근 체크를 먼저 해주세요.', '', 'success');
+     return;
+ }
+
+ var currentTimestamp = Date.now();
+ var formattedTime = formatTimeFromTimestamp(currentTimestamp);
+ var formattedDate = formatDateFromTimestamp(currentTimestamp);
+
+ var url = "leavecheck";
+
+ var leaveData = {
+     timedata: formattedTime, datedate: formattedDate
+ };
+
+ $.ajax({
+     type: "POST",
+     url: url,
+     data: leaveData,
+     dataType: "json",
+     success: function (data) {
+         console.log("서버 응답: " + data);
+         swal('퇴근이 되었습니다', '', 'success');
+         leaveChecked = true;
+         attendanceChecked = false;
+         canClick = false;
+         updateButtonState();
+         // 변경된 데이터를 localStorage에 저장
+         localStorage.setItem(userId + '_attendanceChecked', JSON.stringify(attendanceChecked));
+         localStorage.setItem(userId + '_leaveChecked', JSON.stringify(leaveChecked));
+         localStorage.setItem(userId + '_canClick', JSON.stringify(canClick));
+     },
+     error: function (error) {
+         console.error(error);
+     }
+ });
+}
+
+
 
 </script>
 </html>

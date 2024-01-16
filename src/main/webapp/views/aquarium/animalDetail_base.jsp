@@ -33,11 +33,6 @@
 	 	cursor: default; 
 	 } 
 	
-	.detailBar_item:hover{
-		cursor: pointer;
-		background-color: #2F80ED;
-		padding-top: 13px;
-	}
 	.imgChange{
 		width: 100%;
 		z-index: 1;
@@ -81,7 +76,7 @@
 						
 							<div class="imgChange col-md-1 mb-2 pr-0" onclick="imgChange(-1)">
 								<div class="d-flex align-items-center text-center" style="height: 100%;">
-									<i class="fi fi-sr-angle-left display-3"></i>
+									<img alt="#" src="<c:url value='/resource/img/carrot-side2.png'/>" width="100%">
 								</div>
 							</div>
 							<div class="col-md-10 mb-2 text-center">
@@ -91,23 +86,23 @@
 							</div>
 							<div class="imgChange col-md-1 mb-2 pl-0" onclick="imgChange(1)">
 								<div class="d-flex align-items-center text-center" style="height: 100%;">
-									<i class="fi fi-sr-angle-right display-3"></i>
+									<img alt="#" src="<c:url value='/resource/img/carrot-side2.png'/>" width="100%" style="transform:rotate(180deg)">
 								</div>
 							</div>
 							
 							<div class="col-md-4 mb-2 pl-4">
 								<div class="animalImg">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 							<div class="col-md-4 mb-2 pr-4">
 								<div class="animalImg text-center">
-									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/marketing.svg'/>">
+									<img class="img-fluid img-thumbnail" alt="#" src="<c:url value='/resource/img/no_image.png'/>">
 								</div>
 							</div>
 						</div>
@@ -270,6 +265,27 @@
 			button: '확인'
 		});
 	}
+	
+	var category = 'base';
+	
+	$('.detailBar').find('#'+category).css({'color':'#FFFFFF'});
+	
+	
+	$('.detailBar_item').hover(
+		function(){
+			if($(this).attr('id') != category){
+				$(this).css({'cursor':'pointer','background-color':'#2F80ED'});
+			}
+		},
+		function(){
+			if($(this).attr('id') != category){
+				$(this).css({'background-color':'#86B0F3'});
+			}
+		}
+	);
+	
+	
+	
 	
 	function detailPage(c){
 		var month = getMonth();

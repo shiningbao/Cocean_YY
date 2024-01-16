@@ -23,7 +23,7 @@
 		<div class="card shadow p-3">
 			<form action="write.do" method="post">
 			<div class="form-check form-check-inline">
-				<h4 class="mr-4">글작성</h4>
+				<h4 class="mr-4 mb-2">글작성</h4>
 				<c:if test="${bt ne '익명게시판'}">
 					<label class="form-check-label">
 						게시글 상단 고정  
@@ -51,10 +51,8 @@
 	<c:import url="/footer"/>
 </body>
 <script>
-	$('#details').trigger('input');
 	$('#summernote').summernote({
-		height: 200,
-		maxHeight: 200,
+		height: 500,
 		minHeight: 200,
 		focus: false,
 		//toolbar:['picture']

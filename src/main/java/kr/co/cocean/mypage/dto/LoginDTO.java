@@ -18,7 +18,14 @@ public class LoginDTO {
 	private int branchID;
 	private String departmentName; // 부서명
 	private String responName;
+	private String serverFileName;
 
+	public String getServerFileName() {
+		return serverFileName;
+	}
+	public void setServerFileName(String serverFileName) {
+		this.serverFileName = serverFileName;
+	}
 	public String getResponName() {
 		return responName;
 	}

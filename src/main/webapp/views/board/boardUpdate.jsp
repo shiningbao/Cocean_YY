@@ -21,9 +21,9 @@
 			<h1 class="h3 mb-0 text-gray-800">${bt}</h1>
 		</div>
 		<div class="card shadow p-3">
-			<form action="write.do" method="post">
+			<form action="boardUpdate.do" method="post">
 			<div class="form-check form-check-inline">
-				<h4 class="mr-4">글작성</h4>
+				<h4 class="mr-4 mb-2">글 수정</h4>
 				<c:if test="${bt ne '익명게시판'}">
 					<label class="form-check-label">
 						게시글 상단 고정  
@@ -38,13 +38,14 @@
 			</div>
 			
 			<input type="hidden" name="content" class="form-control" value=""/>
+			<input type="hidden" name="boardID" class="form-control" value="${detail.boardID}"/>
 			</form>
 			<div class="mt-3">
 				<div id="summernote"></div>
 			</div>
 			<div class="d-inline mt-2">
-				<button class="btn btn-primary float-right ml-2" type="button" onclick="save()">작성</button>
-				<button class="btn btn-secondary float-right ml-2" type="button" onclick="location.href='list?searchCategory=&search=&page=1'">취소</button>
+				<button class="btn btn-primary float-right ml-2" type="button" onclick="update()">수정</button>
+				<button class="btn btn-secondary float-right ml-2" type="button" onclick="location.href='detail?boardID=${detail.boardID}'">취소</button>
 			</div>
 		</div>
 	</div>
@@ -53,15 +54,16 @@
 <script>
 	$('#details').trigger('input');
 	$('#summernote').summernote({
-		height: 200,
-		maxHeight: 200,
+		height: 500,
 		minHeight: 200,
 		focus: false,
 		//toolbar:['picture']
 	});
+	$('#summernote').summernote('code','${detail.content}');
 	
-
-	function save(){
+	$('input[name="title"]').val('${detail.title}');
+	
+	function update(){
 		var content = $('#summernote').summernote('code');
 		$('input[name="content"]').val(content);
 		if(content.length > (2*1024*1024)){
@@ -76,7 +78,7 @@
 			});			
 		}else{
 			swal({
-				title:'게시글을 작성하시겠습니까?',
+				title:'게시글을 수정하시겠습니까?',
 				icon:'info',
 				buttons:['취소','확인']
 			}).then((isOkey) => {

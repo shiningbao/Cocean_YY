@@ -94,6 +94,10 @@ public class BoardService {
 		mav.addObject("detail", dao.boardDetail(boardID));
 		return mav;
 	}
+
+	public void boardUpdateDo(BoardDTO param) {
+		dao.boardUpdateDo(param);
+	}
 	
 
 }

@@ -34,7 +34,7 @@ public interface ApprovalDAO {
 
 	void saveApprovalLine(int employeeID, String category);
 
-	ArrayList<ApprovalDTO> approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
+	void approvalWrite(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
 
 	formDTO formTitle(int titleID);
 
@@ -102,8 +102,6 @@ public interface ApprovalDAO {
 
 	void updateDraft(Map<String, String> param, String formatedNow);
 
-	void updateApproval(List<LineDTO> lastLineInfoList, Map<String, String> param);
-
 	void updateLineEmpty(Map<String, String> param);
 
 	void updateWorkDraft(Map<String, String> param);
@@ -146,9 +144,7 @@ public interface ApprovalDAO {
 
 	int removeList(String idx, String titleID);
 
-	ArrayList<String> checkEmpId(int idx);
-
-	void insertApproval(List<LineDTO> lastLineInfoList, Map<String, String> param);
+	ArrayList<LineDTO> checkEmpId(int idx);
 
 	ArrayList<ApprovalDTO> profile(int employeeId);
 
@@ -158,9 +154,19 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> signImg(int idx);
 
-	void draftAlarm(List<String> waitingEmp, int idx);
+	List<ApprovalDTO> getWaitingEmp(int idx);
 
-	List<String> getWaitingEmp(int idx);
+	void draftAlarm(List<ApprovalDTO> waitingEmp, int idx);
+
+	void insertApproval(List<LineDTO> saveLine, Map<String, String> param, List<LineDTO> lastLineInfoList);
+
+	void updateApproval(List<LineDTO> lastLineInfoList, List<LineDTO> check, Map<String, String> param);
+
+	void deleteApprovalLines(int idx, String titleID);
+
+	void insertApprovalLines(int idx, List<LineDTO> lastLineInfoList);
+
+	void approvalSave(List<LineDTO> lastLineInfoList, int idx, String lastOrder);
 
 
 	/*

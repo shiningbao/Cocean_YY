@@ -78,23 +78,23 @@ public class AddressController {
 
    //외부검색
    @GetMapping(value = "mypage/addresssearch")
-	@ResponseBody
-	public HashMap<String,Object> reserch (@RequestParam String name,Model model){
-		logger.info("검색 list");
+   @ResponseBody
+   public HashMap<String, Object> search(@RequestParam(required = false) String query,
+                                         Model model) {
+       logger.info("검색 list");
 
-		HashMap<String, Object> result = new HashMap<>();
+       HashMap<String, Object> result = new HashMap<>();
+       
+       
+       ArrayList<OutAddressDTO> list = service.search(query);
+       
+       result.put("list", list);
+       result.put("size", list.size());
 
-		ArrayList<OutAddressDTO> list = service.reserch(name);
+       logger.info("result: " + result);
 
-		result.put("list", list);
-		result.put("size", list.size());
-
-		logger.info("result :"+result);
-
-		return result;
-	}
-
-
+       return result;
+   }
 
 
 
@@ -121,21 +121,21 @@ public class AddressController {
 
    //내부검색
    @GetMapping(value = "mypage/inaddresssearch")
-	@ResponseBody
-	public HashMap<String,Object> inaddresssearch (@RequestParam String inname,Model model){
-		logger.info("검색 list");
+   @ResponseBody
+   public HashMap<String, Object> inaddresssearch(@RequestParam String mul, Model model) {
+       logger.info("검색 list");
 
-		HashMap<String, Object> result1 = new HashMap<>();
+       HashMap<String, Object> result1 = new HashMap<>();
 
-		ArrayList<OutAddressDTO> list1 = service.inaddresssearch(inname);
+       ArrayList<OutAddressDTO> list1 = service.inaddresssearch(mul);
 
-		result1.put("list1", list1);
-		result1.put("size", list1.size());
+       result1.put("list1", list1);
+       result1.put("size", list1.size());
 
-		logger.info("result1 :"+result1);
+       logger.info("result1: " + result1);
 
-		return result1;
-	}
+       return result1;
+   }
 
 
 

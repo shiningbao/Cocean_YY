@@ -162,9 +162,9 @@ public class AnimalService {
 			dao.statusChange(animalID, status);
 		}
 
-		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
-		SseService sse = new SseService();
-		sse.alarm(1, "코션친구들 로그 작성 됨", "/animal/detail.go?animalID=1");
+//		dao.testalarm(1,"/animal/detail.go?animalID=1","코션친구들 로그 작성 됨");
+//		SseService sse = new SseService();
+//		sse.alarm(1, "코션친구들 로그 작성 됨", "/animal/detail.go?animalID=1");
 
 
 	}
@@ -319,6 +319,16 @@ public class AnimalService {
 			msg = "수정을 완료했습니다";
 		}
 		result.put("msg", msg);
+		return result;
+	}
+
+	public HashMap<String, Object> logplanComplete(int logID) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		
+		int update = dao.logplanComplete(logID);
+		
+		result.put("update", update);
+		
 		return result;
 	}
 

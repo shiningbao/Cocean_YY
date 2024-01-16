@@ -114,6 +114,10 @@
 		UPDATE board SET isHidden = 1 WHERE boardID = #{param1}
 	</update>
 	
+	<update id="boardUpdateDo" parameterType="board">
+		UPDATE board SET title = #{title}, content= #{content} WHERE boardID = #{boardID}
+	</update>
+	
 </mapper>
 
 
