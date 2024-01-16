@@ -29,7 +29,10 @@ import kr.co.cocean.main.dto.FileDTO;
 
 @Service
 public class AnimalService {
-
+	
+// mac 업로드 주소
+//	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
+// window 업로드 주소
 	private String root = "C:/upload/cocean/";
 
 	Logger logger = LoggerFactory.getLogger(getClass());
