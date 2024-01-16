@@ -11,16 +11,20 @@
 <title>Insert title here</title>
 <style>
 table, th, td{
-	border: 1px solid black;
+	
 	border-collapse: collapse;
 	padding: 5px 10px;
 	
 }
 
+#work_head {
+	background-color: #86B0F3;
+}
+
 #container-work {
   
-    margin-top: 100px; 
-    margin-left: 50px;
+    margin-top: 20px; 
+    margin-left: 30px;
    margin-bottom: 10px; 
 }
 
@@ -28,15 +32,11 @@ table {
     margin: auto; 
     margin-top: 100px; 
     width:1000px;
+    border-color: gray;
 }
 
 
-/* 출근 퇴근*/
- #attendanceButton, #leaveButton {
-            padding: 6px 20px; 
-            font-size: 20px;
-        
-  }      
+ 
   
        
  #work_table {
@@ -44,13 +44,7 @@ table {
  }       
  
         
- #work_table th {
-	background-color: #86B0F3;
-}
-   
- #work_table td {
-	background-color: #E9ECEF;
-}
+ 
 
 #pfirstsearchdate {
 margin-left:300px;
@@ -58,11 +52,12 @@ margin-left:300px;
 }
 
 #work-button{
-margin-top:-60px;
-margin-left:-20px;
-
+margin-top:60px;
+position: absolute;
+left:-255px;
 }
-        
+
+    
 </style>
 </head>
 <body>
@@ -80,31 +75,29 @@ margin-left:-20px;
 	<div id="container-work">
 	<div id="work-button">
 	<label for="date">
-        <input type="date" id="pfirstsearchdate" value="" style="height: 38px; font-size: 14px; width:150px"/>
+        <input type="date" id="pfirstsearchdate" value="" style="height: 38px; font-size: 14px; width:150px  " />
         ~
         <input type="date" id="plastsearchdate" value="" style="height: 38px; font-size: 14px; width:150px"/>
         
         <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="psearchButton">검색</button> 
     </label>
 	</div>
-	<table id="work_table">
-		<thead>
+	<div class="mb-4" style="height: 60vh;">
+<div id="tank_table">
+	<table class="table table-hover" > <!--  이걸 먹어야지 생긴다 -->
+		<thead id="work_head">
         	<tr>
-        	<!--  
-        		<th>번호</th>
-			-->	
-				<th>날짜</th>
-				<th>출근시간</th>
-				<th>퇴근시간</th>
+				<th scope="col">날짜</th>
+				<th scope="col">출근시간</th>
+				<th scope="col">퇴근시간</th>
         	</tr>
 		</thead>
     	<tbody id="worklist">
     	</tbody>
 	</table>
-<!--  
-	<button type="submit" id="attendanceButton" class="btn btn-primary">출근</button>
-	<button type="submit" id="leaveButton" class="btn btn-primary">퇴근</button>
--->	
+	</div>
+	
+</div>
 </div>
 
 
