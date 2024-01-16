@@ -289,7 +289,7 @@
 								주소록
 							</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#" data-toggle="modal"	data-target="#logoutModal">
+							<a class="dropdown-item"  onclick="logoutConfirm()" style="cursor:pointer;">
 								<i	class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 								로그아웃
 							</a>
@@ -308,27 +308,6 @@
     <a class="scroll-to-top rounded" href="#page-top" style="display: list-item">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- 로그아웃 확인 모달-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">로그아웃 확인 메시지</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="<c:url value='/mypage/logout'/>">로그아웃</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     
     
     <!-- 알림오면 생기는 창 -->
@@ -367,6 +346,22 @@
 </body>
 
 <script>
+
+
+function logoutConfirm() {
+	 
+	swal({
+		title: "로그아웃하시겠습니까?",
+		text:"",
+		icon:"info",
+		buttons:["취소","확인"]
+	})
+	.then((isOkey)=>{
+		if(isOkey){
+		location.href='./mypage/logout/';
+		}
+	})
+}
 	
 	var msg = "${msg}";
 	if(msg != ""){

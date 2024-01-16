@@ -261,7 +261,7 @@
                                     근태기록
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     로그아웃
                                 </a>
@@ -302,29 +302,14 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- 로그아웃 확인 모달-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">로그아웃 확인 메시지</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                    <a class="btn btn-primary" href="#">로그아웃</a>
-                </div>
-            </div>
-        </div>
-    </div>
 <script src="<c:url value='/resource/vendor/jquery/jquery.min.js'/>"></script>
 <script	src="<c:url value='/resource/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 <script src="<c:url value='/resource/vendor/jquery-easing/jquery.easing.min.js'/>"></script>
 <script src="<c:url value='/resource/js/sb-admin-2.min.js'/>"></script>
 </body>
+<script>
+
+
+</script>
 
 </html>
