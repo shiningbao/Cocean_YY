@@ -23,7 +23,7 @@
 
         body{
             font-family: 'SOYOMapleBoldTTF';
-            background-image: url(resource/img/main_2.png);
+            background-image: url(resource/img/background.png);
             background-position: center;
             background-size: cover;
             height: 100vh;
@@ -37,8 +37,8 @@
             margin-right: 80px;
         }
         #loginBox{
-            height: 120px;
-            width: 350px;
+    		width: 30%;
+   			height: 10%;
             flex-direction: column;
             justify-content: space-evenly;
             margin-right: 90px;
@@ -49,8 +49,8 @@
 
         #login{
             width: 300px;
-            height: 40px;
-            font-size: 15px;
+            height: 50px;
+            font-size: 20px;
             border-radius: 5px;
             margin-top: 20px;
             margin-left: 10px;
@@ -72,6 +72,9 @@
             line-height: 2.5;
         }
         
+		label{
+			font-size: 35px;
+		}
 
 
     </style>
@@ -80,11 +83,11 @@
         <div id="loginBox">
             <form action="logingo" method="post">
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="text" name="userNum" class="form-control" />
+                  <input type="text" name="userNum" class="form-control" style="	padding-top: 3%; font-size: 25px;" />
                   <label class="form-label" for="userNum">사번</label>
                 </div>
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="password" name="password" class="form-control" />
+                  <input type="password" name="password" class="form-control" style="padding-top: 3%; font-size: 25px;" />
                   <label class="form-label" for="password">비밀번호</label>
                 </div>
                 <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block" id="login">로그인</button>

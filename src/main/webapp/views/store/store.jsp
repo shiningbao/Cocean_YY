@@ -106,18 +106,7 @@ text-align: center;
 	text-align: right;
     margin-right: 83px;
 }
-img {
-    transition: all 0.2s linear;
-}
 
-img:hover {
-    transform: scale(2.5);
-    border: 1px solid #000;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
-}
-/* #deleteBtn{
-	margin-left: 335px;
-} */
 .branchLocation span{
 	font-size: 23px;
 }
