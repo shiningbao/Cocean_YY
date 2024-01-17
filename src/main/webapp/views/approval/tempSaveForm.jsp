@@ -349,6 +349,7 @@ th {
 		    <label>${ref.departmentName}</label>
 		    <label>${ref.positionName}</label>
 		    <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+		     <input type="hidden" name="refEmpId" value="${ref.employeeID }">
 		    </td>
 		    </tr>
 		    </c:if>
@@ -754,6 +755,19 @@ function calculateDays() {
 	            });
 	        }
 	    });
+	    
+	    $('input[name="refEmpId"]').each(function (index) {
+	        var employeeID = $(this).val();
+
+	        if (employeeID !== undefined) {
+	            lastLine.push({
+	                employeeID: employeeID,
+	                order: null,
+	                category: '참조'
+	            });
+	        }
+	    });
+	    console.log( $('input[name="refEmpId"]').val());
 
 	    formData.append('lastLine', JSON.stringify(lastLine));
 	        formData.append('tempSave', 0); // 0이면 임시저장안한거
@@ -819,7 +833,7 @@ function calculateDays() {
 						        cache: false,
 						        success: function (data) {
 						            // console.log(data);
-						            location.href = './myDraftList.go';
+						            // location.href = './myDraftList.go';
 						
 						        },
 						        error: function (e) {
@@ -1088,7 +1102,7 @@ function calculateDays() {
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        refTable.append(row);
-		        // console.log(lineData.employeeID);
+		        console.log(lineData.employeeID);
 		    }
 		    
 		    $(document).on('click', '.delete', function() {

@@ -195,6 +195,19 @@ th {
     	font-family:Dotum;
     	font-weight:bold;
     }
+    
+    .box{
+	   	background-color: #cfdff0;
+	    border: 1px solid #9fc2e8;
+	    display: inline-block;
+	    padding-left: 5px;
+	    padding-right: 5px;
+	    text-align: center;
+	    border-radius: 11px;
+	    letter-spacing: 0px;
+	    height: 21px;
+	    vertical-align: middle;
+    }
 
 </style>
 </head>
@@ -342,13 +355,16 @@ th {
 <table id="workDraftContent">
     <tr>
         <th style="text-align:center;">참조자</th>
+        
         <td>
             <c:forEach items="${agrRef}" var="ref">
                 <c:if test="${ref.category eq '참조'}">
+                <span class="box">
                     <label>${ref.hqName}</label>
                     <label>${ref.departmentName}</label>
                     <label>${ref.positionName}</label>
                     <label>${ref.name}</label>
+                </span>
                 </c:if>
             </c:forEach>
         </td>
