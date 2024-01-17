@@ -833,7 +833,7 @@ function calculateDays() {
 						        cache: false,
 						        success: function (data) {
 						            // console.log(data);
-						            // location.href = './myDraftList.go';
+						            location.href = './myDraftList.go';
 						
 						        },
 						        error: function (e) {
