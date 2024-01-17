@@ -134,7 +134,8 @@ body {
 } */
 
 .modal-title{
-	font-size: 28px;
+/* 	font-size: 28px; */
+	padding-left: 34px;
 }
 .fc-event {
     /* 이벤트의 높이와 너비를 조정할 수 있습니다. */
@@ -148,7 +149,7 @@ body {
 .fcCalColor {
 	display: inline-block;
     padding: 0px 8px;
-    background: #FF82FF;
+    background: #F3B0C3;
     border-radius: 50%;
     height: 15px;
     width:15px;
@@ -159,7 +160,7 @@ body {
 .myCalColor{
 	display: inline-block;
     padding: 0px 8px;
-    background: #18CCA8;
+    background: #ABDEE6;
     border-radius: 50%;
     height: 15px;
     width:15px;
@@ -256,18 +257,23 @@ body {
 	width: 700px !important;
 }
 
+.calDetail tr th{
+	text-align: center;
+}
+
 .fc-customPrev-button,
 .fc-button,
 .fc-button-primary {
     /* 원하는 스타일을 적용하세요 */
     /* 예시로 배경색과 글자색을 변경합니다 */
-    background-color: #4e73df !important;
+    background-color: #2554C7 !important;
     color: white !important;
-    border:none !important;
+    border: 1px solid blue;
+    margin: 0 2;
     /* 추가적인 스타일 속성을 필요에 따라 적용하세요 */
 }
 
-
+/*
 .calDetail-body {
     border: 1px solid #ccc;
     padding: 20px;
@@ -275,7 +281,7 @@ body {
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+*/
 /* 각 섹션에 대한 스타일 */
 .detail {
     margin-bottom: 15px;
@@ -355,39 +361,76 @@ body {
 		aria-labelledby="modal" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
+			
 				<div class="modal-header">
 					<!-- 모달창 제목 -->
-					<h4 class="modal-title">일정 상세</h4>
+					<h4 class="modal-title">제목</h4>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="calDetail-body">
-				<div class="detail-write detail">
-					<h5>작성자 :</h5>
-					<div class="calDetail-write"></div>
-				</div>
-				<div class="detail-title detail">
-					<h5>제목 :</h5>
-					<div class="calDetail-title"></div>
-				</div>
-				<div class="detail-date detail">
-					<h5>일시 :</h5>
-					<div class="calDetail-start"></div>~
-					<div class="calDetail-end"></div>
-				</div>
-				<div class="detail-content detail">
-					<h5>내용 :</h5>
-					<div class="calDetail-content"></div>
-				</div>
-				<div class="detail-remark detail">	
-					<h5>비고 :</h5>
-					<div class="calDetail-remark"></div>
-				</div>	
-					<div class="calDetail-buttons"></div>
-				</div>
 				
+				<div class="modal-body">
+					<table class="table calDetail">
+						<colgroup>
+							<col width="30%" align="center">
+							<col width="70%">
+						</colgroup>
+						<tr>
+							<th>작성자</th>
+							<td><div class="calDetail-write"></div></td>
+						</tr>
+						<tr>
+							<th>제목</th>
+							<td><div class="calDetail-title"></div></td>
+						</tr>
+						<tr>
+							<th>일시</th>
+							<td>
+								<div class="d-flex">
+									<div class="calDetail-start"></div>
+									 &nbsp;~&nbsp;
+									<div class="calDetail-end"></div>
+								</div>
+							</td>
+						
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td><div class="calDetail-content"></div></td>
+						</tr>
+						<tr>
+							<th>비고</th>
+							<td><div class="calDetail-remark"></div></td>
+						</tr>
+					</table>
+					<!-- 
+					<div class="detail-write detail">
+						<h5>작성자 :</h5>
+						<div class="calDetail-write"></div>
+					</div>
+					<div class="detail-title detail">
+						<h5>제목 :</h5>
+						<div class="calDetail-title"></div>
+					</div>
+					<div class="detail-date detail">
+						<h5>일시 :</h5>
+						<div class="calDetail-start"></div>~
+						<div class="calDetail-end"></div>
+					</div>
+					<div class="detail-content detail">
+						<h5>내용 :</h5>
+						<div class="calDetail-content"></div>
+					</div>
+					<div class="detail-remark detail">	
+						<h5>비고 :</h5>
+						<div class="calDetail-remark"></div>
+					</div>	
+					
+					<div class="calDetail-buttons"></div>
+				 -->
+				</div>
 				<div class="modal-footer">
 							
 				</div>
