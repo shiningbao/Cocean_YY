@@ -45,8 +45,8 @@ public class MainController {
 	@RequestMapping(value="/home")
 	public String home(Model model,HttpSession session) {
 		ArrayList<BoardDTO> notice = service.getNoticeList();
-		LoginDTO userInfo = new LoginDTO();
-		String employeeID =(String) session.getAttribute("employeeId");
+		LoginDTO userInfo = (LoginDTO) session.getAttribute("userInfo");
+		int employeeID =userInfo.getEmployeeID();
 		logger.info("@@@@@@@@@@@@" +employeeID);
 		//HashMap<String, Object> list = service.detail(employeeID);
 		ArrayList<ApprovalDTO> wList = service.homeWaitingList(employeeID);
