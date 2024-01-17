@@ -38,7 +38,7 @@ public class ScheduleService {
 		dto.getEnd();
 		int row =dao.facilityWrite(dto);
 		if(row>0) {
-			dao.updateFacility(facilityName);
+//			dao.updateFacility(facilityName);
 		}
 
 	}

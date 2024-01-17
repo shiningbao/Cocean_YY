@@ -37,9 +37,9 @@
     VALUES (#{employeeID}, #{title}, #{start}, #{end}, '예약', #{description}, '-', '1', #{backgroundColor});
 </insert>
 	
-	<update id="updateFacility">
-		update facility SET isUSE='1' WHERE facilityName = #{facilityName}
-	</update>
+<!-- 	<update id="updateFacility"> -->
+<!-- 		update facility SET isUSE='1' WHERE facilityName = #{facilityName} -->
+<!-- 	</update> -->
 	
 	<insert id="addCalender" parameterType="String">
 		INSERT INTO calendar(employeeID, calendarName, addemployeeID)

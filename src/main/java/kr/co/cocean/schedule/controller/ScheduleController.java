@@ -65,12 +65,12 @@ public class ScheduleController {
 		dto.setEnd(endDateTime.toString());
 		if("scheduleWrite".equals(requestType)) {
 			logger.info("일정등록요청@@@@@@@@@@@@@");
-			dto.setBackgroundColor("#18CCA8");
+			dto.setBackgroundColor("#ABDEE6");
 			dto.setSubCategory("개인");
 			service.scheduleWrite(dto);
 		}else if("facility".equals(requestType)){
 			logger.info("시설예약요청@@@@@@@@@@@@@");
-			dto.setBackgroundColor("#FF82FF");
+			dto.setBackgroundColor("#F3B0C3");
 			service.facilityWrite(dto);
 		}
 
