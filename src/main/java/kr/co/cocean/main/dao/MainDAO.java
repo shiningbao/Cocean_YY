@@ -13,7 +13,7 @@ public interface MainDAO {
 
 	ArrayList<BoardDTO> getNoticeList();
 
-	ArrayList<ApprovalDTO> homeWaitingList(String employeeID);
+	ArrayList<ApprovalDTO> homeWaitingList(int employeeID);
 
 	
 }

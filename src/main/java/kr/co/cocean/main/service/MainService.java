@@ -19,7 +19,7 @@ public class MainService {
 		return dao.getNoticeList();
 	}
 
-	public ArrayList<ApprovalDTO> homeWaitingList(String employeeID) {
+	public ArrayList<ApprovalDTO> homeWaitingList(int employeeID) {
 		return dao.homeWaitingList(employeeID);
 	}
 
