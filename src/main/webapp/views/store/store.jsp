@@ -26,7 +26,6 @@
 
 .psSelect {
 	/* form-control 클래스 스타일 */
-	margin-bottom: 12px;
 	height: 38px;
 	padding: 0.375rem 0.75rem;
 	font-size: 1rem;
@@ -74,7 +73,6 @@ text-align: center;
 .productList{
     left: 770px;
     top: 70px;
-    width: 585px;
 }
 .searchedModalProduct{
  height: 490px;
@@ -105,7 +103,7 @@ text-align: center;
 }
 #totalProductNumber{
 	text-align: right;
-    margin-right: 83px;
+    margin-right: 20px;
 }
 
 .branchLocation span{
@@ -128,8 +126,11 @@ text-align: center;
 <div class="col-6">
 			<div class="card shadow">
 				<div class="card-body">
-<div class="branchLocation"><span>지점</span>
+				<span>지점</span>
+				<div class="row">
+<div class="branchLocation form-inline ml-auto">
  <select id="selectType" class="psSelect"></select>
+</div>
 </div>
 <div id="map" class="card shadow"></div>
 </div>
@@ -175,10 +176,11 @@ text-align: center;
     		<div class="col-6">
 			<div class="card shadow">
 				<div class="card-body">
+				상품 리스트
 		<div class="productList" >
 				<div class="row">
-				<p>상품 리스트<input type="text" class="searchProduct " placeholder="검색어 입력">
-				<button id="productSearch" class="btn btn-primary">검색</button></p>
+				<div class="form-inline ml-auto"><input type="text" class="searchProduct psSelect" placeholder="검색어 입력">
+				<button id="productSearch" class="btn btn-primary">검색</button></div>
 				<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" style="height: 39px; margin-left:3px;"
 				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
 				<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
