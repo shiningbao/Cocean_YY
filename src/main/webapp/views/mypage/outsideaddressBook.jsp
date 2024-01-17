@@ -160,6 +160,9 @@ background-color: #86B0F3;
 <c:import url="/side"/>
 
 <div class="container-fluid contentField">  
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">주소록</h1>
+	</div>  
 
 <div class="card shadow p-3"> 
 <div class="tab">
