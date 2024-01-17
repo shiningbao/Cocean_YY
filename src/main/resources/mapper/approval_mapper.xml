@@ -191,15 +191,15 @@
 	</update>
 	
 	<update id="approveApp">
-	    UPDATE approval SET approvalStatus = '결재', opinion=#{opinionWrite} WHERE idx = #{idx}
+	    UPDATE approval SET approvalStatus = '결재', opinion=#{opinionWrite} WHERE idx = #{idx} AND employeeID = #{loginId}
 	</update>
 	
 	<update id="passApp">
-		UPDATE approval SET approvalStatus='대기' WHERE approvalOrder=#{approvalOrder}+1
+		UPDATE approval SET approvalStatus='대기' WHERE idx=#{idx} AND approvalOrder=#{approvalOrder}+1
 	</update>
 	
 	<update id="passDraft">
-		UPDATE draft SET draftStatus='완료', WHERE idx=#{idx}
+		UPDATE draft SET draftStatus='진행중' WHERE idx=#{idx}
 	</update>
 	
 	<update id="changeCategory">
@@ -229,6 +229,7 @@
 	            	'대기'
 	            </otherwise>
             </choose>
+            ,tempSave=#{param1.tempSave}
 		WHERE idx=#{param1.idx}		
 	</update>
 	
