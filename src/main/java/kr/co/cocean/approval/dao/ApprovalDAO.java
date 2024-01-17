@@ -170,6 +170,8 @@ public interface ApprovalDAO {
 	
 	void alarmInsert(int employeeID, String content, String url);
 
+	void changeCategory(Map<String, String> param);
+
 
 	/*
 	 * void update(ApprovalDTO dto);

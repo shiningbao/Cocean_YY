@@ -248,7 +248,7 @@ external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.exten
     },
     image: {
       image: 'Picture',
-      insert: 'Insert Image',
+      insert: '이미지 삽입',
       resizeFull: 'Resize full',
       resizeHalf: 'Resize half',
       resizeQuarter: 'Resize quarter',
@@ -262,10 +262,10 @@ external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.exten
       shapeNone: 'Shape: None',
       dragImageHere: 'Drag image or text here',
       dropImage: 'Drop image or Text',
-      selectFromFiles: 'Select from files',
+      selectFromFiles: '파일 선택하기',
       maximumFileSize: 'Maximum file size',
       maximumFileSizeError: 'Maximum file size exceeded.',
-      url: 'Image URL',
+      url: '이미지URL',
       remove: 'Remove Image',
       original: 'Original'
     },

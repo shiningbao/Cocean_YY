@@ -199,7 +199,11 @@
 	</update>
 	
 	<update id="passDraft">
-		UPDATE draft SET draftStatus='진행중' WHERE idx=#{idx}
+		UPDATE draft SET draftStatus='완료', WHERE idx=#{idx}
+	</update>
+	
+	<update id="changeCategory">
+		UPDATE approval SET approvalStats='대기취소', WHERE idx=#{idx}
 	</update>
 	
 	<update id="myStatus">
@@ -460,8 +464,8 @@
 	</select>
 	
 	<select id="refList" resultType="approval">
-		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람') AND d.draftStatus!='임시저장' ORDER BY d.draftDate desc LIMIT #{pageNum},10
+		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,d.draftStatus,df.formCategory,a.category,d.titleID,df.formTitle,a.approvalStatus,d.publicStatus FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.category in('참조','열람','결재','합의') AND d.draftStatus!='임시저장' AND a.approvalStatus in('미대기','열람','대기취소') ORDER BY d.draftDate desc
 	</select>
 	
 	<select id="RCount" parameterType="map" resultType="Integer">
@@ -488,7 +492,7 @@
 	</select>
 	
 	<select id="departmentList" resultType="approval">
-		select a.approvalStatus,d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID}) AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
+		select a.approvalStatus,d.idx,d.employeeID,a.approvalDate,d.publicStatus,d.draftStatus,d.titleID,e.name,dp.departmentName,df.formCategory,df.formTitle,wd.title,wd.content from draft d JOIN draftForm df ON d.titleID=df.titleID LEFT OUTER JOIN approval a ON d.idx=a.idx LEFT OUTER JOIN attendanceDraft ad ON d.idx=ad.idx LEFT OUTER JOIN leaveDraft ld ON d.idx=ld.idx LEFT OUTER JOIN workDraft wd ON d.idx=wd.idx JOIN employee e ON d.employeeID=e.employeeID JOIN department dp ON e.departmentID=dp.departmentID WHERE departmentName=(select dt.departmentName from department dt JOIN employee e ON dt.departmentID = e.departmentID WHERE employeeID=#{employeeID})  AND a.employeeID=#{employeeID} AND d.draftStatus='완료' GROUP BY d.idx ORDER BY a.approvalDate DESC LIMIT #{pageNum},10
 	</select>
 	
 	<select id="dpCount" parameterType="map" resultType="Integer">

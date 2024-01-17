@@ -594,7 +594,7 @@ var idx = $('input[name="idx"]').val()
 	    "</tr>" +
 	    "<tr>" +
 	    "<td style='width: 80px; font-size:10px; height: 70px;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>" +
-	    (firstItem.approvalStatus !== "대기" && firstItem.approvalStatus !== "미대기" ?
+	    (firstItem.approvalStatus !== "대기" && firstItem.approvalStatus !== "미대기" && firstItem.approvalStatus !== "대기취소"?
 	    	"<img src='/photo/cocean/signature/" + firstItem.serverFileName + "' width='40' height='40' class='signatureImg'>" : "") +
 	    "</td>" +
 	    "</tr>";
@@ -658,7 +658,7 @@ function appSign(addItem) {
 
     $("<td rowspan='3' style='width: 20px; background-color:#ededed; font-weight:bold;'>" + addItem.category + "<input type='hidden' class='empID' value='" + addItem.employeeID + "'></td><td style='width: 80px; font-size:10px; padding: 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + addItem.employeeID + "'>" + addItem.positionName + "\u00A0" + addItem.name + "</td>").insertAfter(frLastTd);
     
-    if (addItem.approvalStatus != "대기" && addItem.approvalStatus != "미대기") {
+    if (addItem.approvalStatus != "대기" && addItem.approvalStatus != "미대기" && addItem.approvalStatus != "대기취소") {
         $("<td style='width: 80px; font-size:10px; '><input type='hidden' class='empID' value='" + addItem.employeeID + "'><img src='/photo/cocean/signature/" + addItem.serverFileName + "' width='40' height='40' class='signatureImg'></td>").insertAfter(scLastTd);
     }
     
