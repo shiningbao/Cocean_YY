@@ -528,6 +528,11 @@ public class ApprovalService {
 		return dao.signImg(idx);
 	}
 
+	public void changeCategory(Map<String, String> param) {
+		dao.changeCategory(param);
+		
+	}
+
 
 	/*
 	 * public ArrayList<HashMap<String, Object>> employeeList() { return

@@ -249,11 +249,11 @@ public class ApprovalController {
 	            }
 	            	logger.info("line:"+lastLineInfoList);
 	            	if(param.get("idx")==null) {
-		                // service.write(files, param, lastLineInfoList);
+		                service.write(files, param, lastLineInfoList);
 		                // result.put("idx",idx);
 	            	}else { // 임시저장 or 임시저장함에서 등록
 	            		logger.info(param.get("idx"));
-	            		// service.update(files,param,lastLineInfoList);
+	            		service.update(files,param,lastLineInfoList);
 	            	}
 
 	        	} catch (Exception e) {
@@ -352,18 +352,18 @@ public class ApprovalController {
 				 service.myAgree(param); // 내 상태 완료로 변경
 				 service.passDraft(idx); // draft update
 			 }else {
-				// service.approveDraft(param); // draft update
-				// service.approveApp(param); // approval update
+				service.approveDraft(param); // draft update
+				service.approveApp(param); // approval update
 			 }
 		 }else { // 거부
 			 if(approvalOrder<lastOrder) {
 				 // service.passApp(idx,approvalOrder); // approval update(다음사람에게 넘기기)
-				 // service.rejectAgree(param);
-				 // service.passDraft(idx); // draft update
+				 service.rejectAgree(param); // approval 테이블 
+				 service.changeCategory(param);// 얘 다음사람 approval테이블에서 category 열람으로 바꾸기		 
 			 }else {
-			//  service.rejectAgree(param);
-			 // service.rejectDraft(param);
+				service.rejectAgree(param);
 			 }
+			 service.rejectDraft(param); // draft 테이블
 		 }
 		 return mav;
 	}
