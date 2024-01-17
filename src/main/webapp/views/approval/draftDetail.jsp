@@ -379,7 +379,7 @@ th {
 	</c:if>
 	<tr>
 	    <th>사용 날짜</th>
-	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly></c:if>
+	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '오전반차' and vac.category ne '오후반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly></c:if>
 							  
 	</tr>
 	<tr>

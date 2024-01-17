@@ -605,6 +605,7 @@ function calculateDays() {
         	  }
         	 var order = signList.approvalOrder;
         	 $('#order').val(order);
+        	 console.log(order);
          },
          error: function (e) {
              console.log(e);

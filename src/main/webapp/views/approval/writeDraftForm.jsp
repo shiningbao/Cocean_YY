@@ -408,7 +408,7 @@ th {
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" name="files" style="display:none;"/>
+<input type="file" id="input-file" name="files" style="display:none;" multiple/>
 </div>
 <br/>
 
@@ -588,18 +588,24 @@ function calculateDays() {
 		console.log("마지막순서:"+lastOrder);
 	    var formData = new FormData();
 
-	    var filesInput = $('input[name="files"]')[0];
+	   /*  var input-file = $("#input-file")[0];
+	    console.log(input-file); */
+	    // formData.append( "files", $("#input-file")[0].files[0] );
+	   /*  for (var i = 0; i < $('input[name="files"]').length; i++) {
+	        formData.append('files', files[i]);
+	    } */
+	    
+	   /*  var filesInput = $('input[name="files"]')[0];
 	    var files = filesInput.files;
-	    // console.log(files.length);
-	    // console.log(filesInput);
+	    console.log(files);
 	    if (files.length === 0) {
 	        formData.append('files', null);
 	    }else{
 	    for (var i = 0; i < files.length; i++) {
 	        formData.append('files', files[i]);
 	    }
-	    }
-	    
+	    } */
+
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
 	    formData.append('publicStatus', $('input[name="publicStatus"]:checked').val());
@@ -618,13 +624,14 @@ function calculateDays() {
 	        var endTime = $('select[name="endTime"]').val();
 	        var vacationCategory =$('#vacationCategory').val();
 	    	var total= $('#total').text().replace(/\D/g, ''); // 문자 빼기('일')
-	    	if(vacationCategory=='반차'){
-	    		total=0.5;
-	    		if($('input[value="오전반차"]:checked')){
-	    			vacationCategory=$('input[value="오전반차"]:checked').val();
-	    		}else{
-	    			vacationCategory=$('input[value="오후반차"]:checked').val();
-	    		}
+	    	var vacationCategory = $('#vacationCategory').val();
+	    	if (vacationCategory == '반차') {
+	    	    total = 0.5;
+	    	    if ($('input[value="오전반차"]:checked').length > 0) {
+	    	        vacationCategory = '오전반차';
+	    	    } else if ($('input[value="오후반차"]:checked').length > 0) {
+	    	        vacationCategory = '오후반차';
+	    	    }
 	    	}
 	        var textArea = $('#textarea').val();
 	        console.log(total);
@@ -705,7 +712,7 @@ function calculateDays() {
 	    			 swal('날짜를 선택해주세요!','','warning');
 	        		return;
 	        	}
-        		
+        		console.log(vacationCategory);
         }else{
         	if (start === '' || end ==='') {
         		 swal('날짜를 전부 선택해주세요!','','warning');
@@ -715,7 +722,8 @@ function calculateDays() {
             	return;
             }
         }
-	    }
+	    } 
+	    console.log(vacationCategory);
 	    if(idx!==undefined){
 	    	formData.append("idx",idx);
 	    }
@@ -741,7 +749,7 @@ function calculateDays() {
 						        cache: false,
 						        success: function (data) {
 						            // console.log(data);
-						            location.href = './myDraftList.go';
+						            // location.href = './myDraftList.go';
 						
 						        },
 						        error: function (e) {

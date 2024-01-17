@@ -324,8 +324,8 @@
 <%-- 					<c:import url="/personnel/organization/1"/> --%>
 <!-- 				</div> -->
 <!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
+<!-- 		</div> --><
+!-- 	</div> -->
 	
 	
 <%-- <script src="<c:url value='/resource/vendor/jquery/jquery.min.js'/>"></script> --%>

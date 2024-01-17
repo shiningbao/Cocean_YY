@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <!-- 카카오 지도 api -->
@@ -416,9 +417,9 @@ new Promise((resolve, reject) => {
 	                     productListTable.append(productInfo);
 						}
 					}
-    				
+    			
     				// 웹스토리지 사용
-    				if(recentBranchName.endsWith("점")){
+    				if(recentBranchName !== null && recentBranchName !== "" && recentBranchName.endsWith("점")){
       			    // selectbox 값 다시 바꾸기
       			    var branchName = recentBranchName;
       			    $('#selectType option').each(function() {
