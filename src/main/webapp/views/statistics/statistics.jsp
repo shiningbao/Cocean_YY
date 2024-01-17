@@ -364,7 +364,10 @@ function chart() {
 		        coceanFriends.update();
 		    } else {
 		        console.log("선택된 지점 동물 데이터를 찾을 수 없습니다.");
-		        swal("선택된 지점 동물 데이터를 찾을 수 없습니다.");
+		        swal({
+		          title: "선택된 지점 동물 데이터를 찾을 수 없습니다.",
+		          icon: "info",
+		        });
 		    }
 		
 		    // 선택된 지점 수조차트1 데이터로 차트 업데이트

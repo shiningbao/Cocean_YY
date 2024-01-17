@@ -448,7 +448,7 @@ new Promise((resolve, reject) => {
 								data.branchProductList[i].category != "관람객" && data.branchProductList[i].status === "판매중"){
 							var product = data.branchProductList[i];
 							    var productInfo = '<tr>' +
-							    '<td><input type="checkbox" onclick="return false"></td>' + 
+							    '<td><input type="checkbox" id="deleteCheckbox" onclick="return false"></td>' + 
 							    '<td>' + product.productID + '</td>' +
 							    '<td>' + product.category + '</td>' +
 							    '<td>' + product.productName + '</td>' +
@@ -529,15 +529,27 @@ new Promise((resolve, reject) => {
   					        if (matchedProducts.length > 0) {
   					            for (var j = 0; j < matchedProducts.length; j++) {
   					                var product = matchedProducts[j];
-  					                var productInfo = '<tr>' +
-  					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
-  					                '<td>' + product.productID + '</td>' +
-  					                '<td>' + product.category + '</td>' +
-  					                '<td>' + product.productName + '</td>' +
-  					                '<td>' + product.price + '</td>' +
-  					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-  					    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
-  					                '</tr>';
+  					                if (currentBranchName === "가산점") {
+  					                	var productInfo = '<tr>' +
+  										    '<td><input type="checkbox" id="deleteCheckbox" onclick="return false"></td>' + 
+  										    '<td>' + product.productID + '</td>' +
+  										    '<td>' + product.category + '</td>' +
+  										    '<td>' + product.productName + '</td>' +
+  										    '<td>' + product.price + '</td>' +
+  										    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 65px;" src="/photo/cocean/product/' +
+  											product.serverFileName + '" alt=""/>' : '') + '</td>' +
+  										    '</tr>';
+  				  					    } else {
+  				  					    	var productInfo = '<tr>' +
+  								                '<td><input type="checkbox" id="deleteCheckbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
+  								                '<td>' + product.productID + '</td>' +
+  								                '<td>' + product.category + '</td>' +
+  								                '<td>' + product.productName + '</td>' +
+  								                '<td>' + product.price + '</td>' +
+  								                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+  								    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
+  								                '</tr>';
+  				  					    }
 
   					                productListTable.append(productInfo);
   					                $('input[name="productCheckbox"]').change(function() {
@@ -560,22 +572,21 @@ new Promise((resolve, reject) => {
     				
     				$('#selectType').on('change', function() {
     			    // 선택된 옵션의 값을 가져와서 출력 또는 사용
-    			    console.log("콘솔솔");
     			    var branchName = $(this).val();
-
-    			    console.log("------------------");
+		
+    			    	console.log("------------------");
 					    console.log("지점 버튼 클릭");
 					    console.log("선택된 지점 : " + branchName);
 					    $('#currentBranchName').val(branchName);
 					    currentBranchName = branchName;
 					    // 현재 지점명이 "가산점"이면 productInfoRegister 버튼을 보이게 하고, 그렇지 않으면 modalBtn 버튼을 보이게 함
 					    if (currentBranchName === "가산점") {
-					        document.getElementById("modalProductRegister").style.display = "none";
-					        document.getElementById("productInfoRegister").style.display = "inline";
-					    } else {
-					        document.getElementById("modalProductRegister").style.display = "inline";
-					        document.getElementById("productInfoRegister").style.display = "none";
-					    }
+  					        document.getElementById("modalProductRegister").style.display = "none";
+  					        document.getElementById("productInfoRegister").style.display = "inline";
+  					    } else {
+  					        document.getElementById("modalProductRegister").style.display = "inline";
+  					        document.getElementById("productInfoRegister").style.display = "none";
+  					    }
 					    // 선택된 branchName에 해당하는 지점 찾기
 					    var matchedBranch = data.branchProductList.find(function (branch) {
 					        return branch.branchName === branchName;
@@ -612,20 +623,32 @@ new Promise((resolve, reject) => {
 					        
 					     	// 총 상품 개수 추가
    		       		  		$('#totalProductNumber').html('상품 개수 : ' + matchedTotalProduct.totalProductNumber);
-   		       		  	totalProductNumber = matchedTotalProduct.totalProductNumber;
+   		       		  		totalProductNumber = matchedTotalProduct.totalProductNumber;
 					        // 상품 데이터를 테이블에 추가
 					        if (matchedProducts.length > 0) {
 					            for (var j = 0; j < matchedProducts.length; j++) {
 					                var product = matchedProducts[j];
-					                var productInfo = '<tr>' +
-					                '<td><input type="checkbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
-					                '<td>' + product.productID + '</td>' +
-					                '<td>' + product.category + '</td>' +
-					                '<td>' + product.productName + '</td>' +
-					                '<td>' + product.price + '</td>' +
-					                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
-					    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
-					                '</tr>';
+					                if (currentBranchName === "가산점") {
+					                	var productInfo = '<tr>' +
+										    '<td><input type="checkbox" id="deleteCheckbox" onclick="return false"></td>' + 
+										    '<td>' + product.productID + '</td>' +
+										    '<td>' + product.category + '</td>' +
+										    '<td>' + product.productName + '</td>' +
+										    '<td>' + product.price + '</td>' +
+										    '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 65px;" src="/photo/cocean/product/' +
+											product.serverFileName + '" alt=""/>' : '') + '</td>' +
+										    '</tr>';
+				  					    } else {
+				  					    	var productInfo = '<tr>' +
+								                '<td><input type="checkbox" id="deleteCheckbox" name="productCheckbox" data-productID="' + product.productID + '" data-branchID="' + product.branchID + '"></td>' +
+								                '<td>' + product.productID + '</td>' +
+								                '<td>' + product.category + '</td>' +
+								                '<td>' + product.productName + '</td>' +
+								                '<td>' + product.price + '</td>' +
+								                '<td>' + (product.serverFileName ? '<img class="card-img-top" style="width: 50%; height: 80px;" src="/photo/cocean/product/' +
+								    								product.serverFileName + '" alt=""/>' : '') + '</td>' +
+								                '</tr>';
+				  					    }
 
 					                productListTable.append(productInfo);
 					                $('input[name="productCheckbox"]').change(function() {
@@ -828,7 +851,7 @@ if(searchKeyword){
 		        console.log(product);
 		
 		        var productInfo = '<tr>' +
-		     '<td><input type="checkbox" onclick="return false"></td>' + 
+		     '<td><input type="checkbox" id="deleteCheckbox" onclick="return false"></td>' + 
             '<td>' + product.productID + '</td>' +
             '<td>' + product.category + '</td>' +
             '<td>' + product.productName + '</td>' +
