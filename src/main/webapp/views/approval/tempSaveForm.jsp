@@ -603,7 +603,7 @@ function calculateDays() {
                       appSign(addItem);
         	  	}
         	  }
-        	 var order = signList.approvalOrder;
+        	 var order = data.order.approvalOrder;
         	 $('#order').val(order);
         	 console.log(order);
          },

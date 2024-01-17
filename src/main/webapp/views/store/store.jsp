@@ -53,15 +53,8 @@
 .listTable th {
     position: sticky;
     top: 0;
-   	/* color: white; */
     background-color: #86B0F3;
 }
-
-.listTable td {
-   /*  word-break: break-word; */
-}
-
-
 
 table, th, td{
 border: 1px solid gray;
@@ -89,8 +82,11 @@ text-align: center;
 #modalSearch{
 	width: 300px;
 }
+#branchName{
+	width: 323px;
+}
 #branchLocation{
-	width: 50%;
+	width: 323px;
 	height: 50%;
 	top: 255px;
 	left: 400px;
@@ -103,13 +99,25 @@ text-align: center;
 }
 #totalProductNumber{
 	text-align: right;
-    margin-right: 20px;
+    margin-right: 24px;
 }
 
 .branchLocation span{
 	font-size: 23px;
 }
-
+#searchDeleteRegisterBtn{
+	margin-right: 26px;
+}
+#searchInput{
+	margin-right: 4px;
+}
+#branchTypeBtn{
+	margin-right: 635px;
+    margin-bottom: 4px;
+}
+.currentStyle{
+	width: 50%;
+}
 </style>
 <body>
 
@@ -127,7 +135,7 @@ text-align: center;
 			<div class="card shadow">
 				<div class="card-body">
 				<span>지점</span>
-				<div class="row">
+				<div class="row" id="branchTypeBtn">
 <div class="branchLocation form-inline ml-auto">
  <select id="selectType" class="psSelect"></select>
 </div>
@@ -144,7 +152,7 @@ text-align: center;
 <!-- 버튼 클릭 시 열리는 모달창 -->
     <div class="modal fade" id="firstBranchModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style=" width: 450px;">
           <div class="modal-header">
             <!-- 모달창 제목 -->
             <h5 class="modal-title">지점등록</h5>
@@ -177,17 +185,16 @@ text-align: center;
 			<div class="card shadow">
 				<div class="card-body">
 				상품 리스트
-		<div class="productList" >
-				<div class="row">
-				<div class="form-inline ml-auto"><input type="text" class="searchProduct psSelect" placeholder="검색어 입력">
+				<div class="productList" >
+				<div class="row" id="searchDeleteRegisterBtn">
+				<div class="form-inline ml-auto"><input type="text" id="searchInput" class="searchProduct psSelect" placeholder="검색어 입력">
 				<button id="productSearch" class="btn btn-primary">검색</button></div>
 				<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" style="height: 39px; margin-left:3px;"
 				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
 				<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
 				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
-				<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
-				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>본사상품 등록</button>
-				
+				<button id="productInfoRegister" class="btn btn-primary" data-toggle="modal" data-target="#productInfoRegisterModal" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
+    			${sessionScope.userInfo.responName.equals('마케팅') ? '' : 'disabled'}>본사상품 등록</button>
 				</div>
 				<div id="totalProductNumber">
 				상품 개수 :
@@ -199,19 +206,55 @@ text-align: center;
 					</table>
 					</div>
 					</div>
-					
-					<div class="col">
-						<div id="productInfoRegisterPage">
-					 	</div>
-				 	</div>
 			 	</div>
 		 	</div>
 		 	</div>
 		 	</div>
 		 	</div>
-		 	
-		 	
 </div>
+</div>
+
+<!-- 본사상품 모달창 -->
+<div class="modal fade" id="productInfoRegisterModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 470px;">
+      <div class="modal-header">
+        <h5 class="modal-title">본사상품 등록</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-body">
+            <form action="productInfoRegister.do" method="post" enctype="multipart/form-data" onsubmit="return submitForm(this);">
+              <div class="form-group">
+                <label>상품명</label> 
+                <input type="text" name="productName" class="form-control" style="width: 80%;" required>
+              </div>
+              <div class="form-group">
+                <label>가격</label>
+                <input type="text" name="price" class="form-control" style="width: 80%;" required>
+              </div>
+              <div class="modalInput form-group">
+                <label>구분</label>
+                 <select name="category" onchange="toggleFileInput(this.value)">
+                    <option value="상품">상품</option>
+                    <option value="티켓">티켓</option>
+                </select>
+              </div>
+              <div class="form-group" id="fileInputRow">
+                <label>사진</label>
+                 <input type="file" name="photo" multiple="multiple" id="fileInput">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+  			   <button type="submit" class="btn btn-primary" id="productInfoRegister">등록</button>
+              </div>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -230,21 +273,21 @@ text-align: center;
             <form action="" method="get">
               <div class="form-group">
                 <label>지점명</label> 
-                <input type="text" name="currentBranchName" readonly class="form-control" id="currentBranchName">
+                <input type="text" name="currentBranchName" readonly class="form-control currentStyle" id="currentBranchName">
               </div>
               <div class="form-group">
                 <label>카테고리</label>
-                <input type="text" readonly class="form-control" id="currentProductCategory">
+                <input type="text" readonly class="form-control currentStyle" id="currentProductCategory">
               </div>
               <div class="modalInput form-group">
                 <label>상품명</label>
                  <!-- 두번째 모달 창 열기 버튼 -->
         		 <button type="button" id="firstProductSearchModal" class="btn btn-primary" data-toggle="modal" data-target="#secondProductModal">검색</button>
-                	 <input type="text" name="currentProductName" readonly required class="form-control" id="currentProductName">
+                	 <input type="text" name="currentProductName" readonly required class="form-control currentStyle" id="currentProductName">
               </div>
               <div class="form-group">
                 <label>가격</label>
-                 <input type="text"  class="form-control" class="price" id="currentProductPrice" readonly></input>
+                 <input type="text"  class="form-control currentStyle" class="price" id="currentProductPrice" readonly></input>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
@@ -431,7 +474,6 @@ new Promise((resolve, reject) => {
       		    });
       			    recentBranchName = localStorage.setItem('recentBranchName', "");
       			    console.log("이전에 선택된 지점으로 인해 실행");
-      			    $("#productInfoRegisterPage").hide();
 
       			    console.log("------------------");
   					    console.log("지점 버튼 클릭");
@@ -520,7 +562,6 @@ new Promise((resolve, reject) => {
     			    // 선택된 옵션의 값을 가져와서 출력 또는 사용
     			    console.log("콘솔솔");
     			    var branchName = $(this).val();
-    			    $("#productInfoRegisterPage").hide();
 
     			    console.log("------------------");
 					    console.log("지점 버튼 클릭");
@@ -938,19 +979,35 @@ if(searchKeyword){
     	});
     }
    	
-   	// 본사상품 등록 페이지 불러오기
-    function productInfoRegister(){
-     	$.ajax({
-	      url: "productInfoRegister.go",
-	      type: "GET",
-	      success: function(data) {
-	          $("#productInfoRegisterPage").html(data);
-	      },
-	      error: function(e) {
-	          console.log(e);
-	      	}
-	  	});
-   }
+   function submitForm(form) {
+     swal({
+         title: "등록하시겠습니까?",
+         text: "",
+         icon: "info",
+         buttons: ["취소", "등록"],
+     })
+         .then((isOkey) => {
+             if (isOkey) {
+                 swal('등록이 완료되었습니다.', '', 'success')
+                     .then((isOkey) => {
+                         if (isOkey) {
+                             form.submit();
+                         }
+                     })
+             }
+         });
+     return false;
+ }
+
+ function toggleFileInput(category) {
+     var fileInput = document.getElementById("fileInput");
+
+     if (category === "티켓") {
+         fileInput.disabled = true;
+     } else {
+         fileInput.disabled = false;
+     }
+ }
    	
    	var productID;
     
@@ -1008,8 +1065,6 @@ if(searchKeyword){
       });
   });
 
-
-   	
    	
    	var msg = "${msg}";
    	if(msg!=""){

@@ -36,7 +36,7 @@ public class StoreService {
 	StoreDTO storedto = new StoreDTO();
 	// 상품 사진 경로
 	// mac 경로
-	//	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
+	// private String root = "/Users/chajaeho/Desktop/upload/cocean/";
 	// window 경로
 	private String root = "C:/upload/cocean/";
 

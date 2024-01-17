@@ -64,12 +64,6 @@ public class StoreController {
 			return service.brachRegister(branchName, branchLocation, branchLatitude,branchLongitude);
 	}
 
-	@GetMapping(value="/store/productInfoRegister.go")
-	public String productInfoRegisterLoad() {
-			logger.info("상품 등록 페이지 이동");
-			return "store/productInfoRegister";
-	}
-
 	@PostMapping(value="/store/productInfoRegister.do")
 	public String productInfoRegister(@RequestParam Map<String, String>params, @RequestParam(name = "photo", required = false) MultipartFile photo) {
 			 logger.info("본사상품 등록");
