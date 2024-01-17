@@ -215,7 +215,7 @@
 		
 		data.forEach(function(item){
 			index += '<tr>';
-			index += '<td>' + item.creationDate.substring(5,16).replace("T", "&nbsp;&nbsp;") + '</td>';
+			index += '<td>' + item.date.substring(3,14) + '</td>';
 			index += '<td>' + item.content + '</td>';
 			index += '</tr>';
 		});
