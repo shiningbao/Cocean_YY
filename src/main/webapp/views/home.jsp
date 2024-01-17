@@ -42,16 +42,58 @@
 			  	</div>
 			</div>
 		<!-- 사원 정보 끝 -->
-					<div class="card border-secondary mb-3" style="width:30%;">
+		<!-- 결재대기문서 리스트 -->
+					<div class="card border-secondary mb-3" style="width:39%;">
 			  <div class="card-body">
-			    <h4 class="card-title"></h4>
-			    <p class="card-text"></p>
+			    <h4 class="card-title">결재대기문서</h4>
+			      <table class="table table-hover" style="text-align:center;">
+						<colgroup>
+							<col width="20%">
+							<col width="40%">
+							<col width="20%">
+							<col width="20%">
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="col">기안일</th>
+								<th scope="col">제목</th>
+								<th scope="col">상태</th>
+								<th scope="col">기안자</th>
+							</tr>
+						</thead>
+						<tr>
+						<c:if test="${empty wList}">
+							<tr>
+								<td colspan="4" style="text-align:center;color:gray; font-weight:bold;">-- 문서가 없습니다. --</td>
+							</tr>
+						</c:if>
+						<c:forEach items="${wList}" var="item">
+							<tr>
+								<td>${item.draftDate}</td>
+								<td>
+									<c:choose>
+										<c:when test="${item.title == null}">
+										<a href="draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting">${item.formTitle}</a>
+										</c:when>
+										<c:otherwise>
+								        <a href="draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting">${item.title}</a>
+								        </c:otherwise>
+									</c:choose>
+								</td>
+								<td>${item.approvalStatus}</td>
+								<td>${item.name}</td>
+							</tr>
+						</c:forEach>
+					</table>
+					<a href="./approval/waitingList.go" class="card-text" style="float:right;font-weight:bold;">+더보기</a>
+			    
 
 			  </div>
 
 			</div>
+			<!-- 결재대기문서 리스트 끝 -->
 		<!-- 기타 정보 시작 -->
-			<div class="card text-white bg-primary shadow mb-3 " style="width:39%; text-align: center; align-items: center;">
+			<div class="card text-white bg-primary shadow mb-3 " style="width:30%; text-align: center; align-items: center;">
 			  <div class="card-body" style="align-items: center;">
 			    <h3 class="card-title" id="branch"></h3>
 			    <div style="width: 200px; height: 200px;">
@@ -93,7 +135,7 @@
 						<tr>
 						<c:if test="${empty notice}">
 							<tr>
-								<td colspan="4">게시글이 없습니다.</td>
+								<td colspan="4" style="text-align:center;color:gray; font-weight:bold;">게시글이 없습니다.</td>
 							</tr>
 						</c:if>
 						<c:forEach items="${notice}" var="item">
@@ -109,7 +151,7 @@
 						</c:forEach>
 					</table>
 				
-				    <p class="card-text"></p>
+				    <a href="./board/notice/list?searchCategory=&search=&page=1"class="card-text" style="float:right;font-weight:bold;">+더보기</a>
 				  </div>
 				</div>
 			</div>
