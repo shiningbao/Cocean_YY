@@ -1,7 +1,6 @@
 package kr.co.cocean.main.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import kr.co.cocean.approval.dto.ApprovalDTO;
 import kr.co.cocean.board.dto.BoardDTO;
 import kr.co.cocean.main.service.MainService;
 import kr.co.cocean.mypage.dto.LoginDTO;
+import kr.co.cocean.mypage.dto.WorkDTO;
 
 @Controller
 public class MainController {
@@ -48,11 +49,12 @@ public class MainController {
 		String employeeID =(String) session.getAttribute("employeeId");
 		logger.info("@@@@@@@@@@@@" +employeeID);
 		//HashMap<String, Object> list = service.detail(employeeID);
+		ArrayList<ApprovalDTO> wList = service.homeWaitingList(employeeID);
 		
-		
+		model.addAttribute("wList", wList);	
 		model.addAttribute("notice", notice);
 		return "home";
 	}
-
+	
 
 }

@@ -349,7 +349,7 @@ function logoutConfirm() {
 	})
 	.then((isOkey)=>{
 		if(isOkey){
-		location.href='./mypage/logout/';
+		location.href='/Cocean/mypage/logout/';
 		}
 	})
 }
