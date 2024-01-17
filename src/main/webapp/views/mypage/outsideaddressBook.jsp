@@ -6,16 +6,13 @@
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <style>
-table, th, td{
-   border: 1px solid black;
-   border-collapse: collapse;
-   padding: 5px 10px;
-}
+
 
 
 .outaddress{
 margin-top:-25px;
 margin-left:330px;
+background-color: #86B0F3;
 }
 
  .outaddress th {
@@ -24,7 +21,7 @@ margin-left:330px;
 }
    
  .outaddress td {
-	background-color: #E9ECEF;
+ background-color: #FFFFFF;
 	width:137.5px;
 }
 
@@ -86,20 +83,19 @@ margin-top:3px;
 }
    
  .address td {
-	background-color: #E9ECEF;
+ background-color: #FFFFFF;
 	width:200px;
 }
 
-.row{
-	position: relative;
-}
+
 
 /*검색창*/
+/*
 .form-inline {
 	position: absolute;
-	left: 73px;
-	top: 20px;
-}
+	left: -255px;
+	top: 45px;
+}*/
 
 
 
@@ -114,23 +110,12 @@ margin-right:20px;
 }
 
 
-/*버튼 나머지 버튼들 사이 조절*/
-.button-container  {
-    margin-left: 443px;
-}
-
-#reserch {
-    margin-right: -20px; 
-}
 
 
-#tab02{
-margin-top:1%;
-}
+
 
 .swal-confirm-button-center {
-        margin-right:140px;
-        
+        margin-right:140px;       
     }
 
 .swal-cancel-button-center{
@@ -138,7 +123,28 @@ margin-top:1%;
 
 }
 
+.table table-hover{
+top:-20px;
+}
 
+#outaddress_head{
+background-color: #86B0F3;
+}
+
+#inaddress_head{
+background-color: #86B0F3;
+}
+
+.row {
+        display: flex;
+        align-items: center;
+        margin-bottom: -20px; /* 원하는 여백 크기 조절 */
+    }
+    
+    .table table-hover {
+       position: absolute;
+       top:50px;
+    }
 </style>
 </head>
 
@@ -168,57 +174,54 @@ margin-top:1%;
 	 
 	 <div class="container text-center">
 	 
-    <nav class="navbar navbar" id="search">
-
- 		
+    
 
 
-<div class="row">
-<form class="form-inline ">
-         <input class="form-control mr-sm-2" type="text" name="query" id="query" placeholder="이름 또는 부서를 입력해주세요." aria-label="이름 또는 부서 검색">
-    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch">검색</button>
-        </form>
-   <div class="button-container">
-    <button type="submit" id="outreturn" class="btn btn-primary" >검색 초기화</button>
-    <button type="submit" id="outsidejoin" class="btn btn-primary" >주소록 추가</button>
-    <button type="submit" id="del" class="btn btn-primary" onclick="confirmDelete()" >삭제</button>
+<div class="row" style="width: 1500px;">
+         <input class="form-control mr-sm-2" type="text" name="query" id="query" style="width:250px; margin-left:-240px;" placeholder="이름 또는 부서를 입력해주세요."  aria-label="이름 또는 부서 검색" >
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="reserch" style="height:40px; margin-left:-4px;">검색</button>
+    <button type="submit" id="outreturn" class="btn btn-primary" style="width:100px; margin-left:1003px;">검색 초기화</button>
+    <button type="submit" id="outsidejoin" class="btn btn-primary" style="height:40px;">주소록 추가</button>
+    <button type="submit" id="del" class="btn btn-primary" onclick="confirmDelete()"style="height:40px;" >삭제</button>
 </div>
-</div>
+
   
-    </nav>
+    
 </div>
 	 
     
-   <table class="outaddress">
-      <thead>
+   <table class="table table-hover">
+      <thead id="outaddress_head">
       <tr>
          <th><input type="checkbox" id="all"/></th>
-         <th>이름</th>
-         <th>전화번호</th>
-         <th>회사명</th>
-         <th>직급</th>
-         <th>직책</th>
-         <th>부서</th>
+         <th scope="col">이름</th>
+         <th scope="col">전화번호</th>
+         <th scope="col">회사명</th>
+         <th scope="col">직급</th>
+         <th scope="col">직책</th>
+         <th scope="col">부서</th>
       </tr>
       </thead>
       <!-- 내용 -->
       <tbody id="list">      
       </tbody>      
    </table>
-	</div>
+	</div>  
+    
 	
 	
       <div id="tab02">
       
      <div style="display: flex; flex-direction: column; align-items: center;">
-    <div style="display: flex; margin-top:7px;">
-    <input class="form-control mr-sm-2" type="text" name="mul" id="mul" placeholder="이름 또는 부서를 입력해주세요." aria-label="이름 또는 부서 검색">
+    <div style="display: flex; margin-top:7px; ">
+    <input class="form-control mr-sm-2" type="text" name="mul" id="mul" placeholder="이름 또는 부서를 입력해주세요." aria-label="이름 또는 부서 검색" style="width:250px;">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="inreserch">검색</button>
-    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:615px">검색 초기화</button>
+    <button type="submit" id="inreturn" class="btn btn-primary" style=" margin-left:1170px">검색 초기화</button>
     </div>
 
-    <table class="address">
-        <thead>
+    <table class="table table-hover">
+    
+        <thead id="inaddress_head">
             <tr>
                 <th>이름</th>
                 <th>전화번호</th>
@@ -399,7 +402,7 @@ function drawList(list) {
 
     if (list.length === 0) {
         content = '<tr>';
-        content += '<td colspan="7" style="text-align: center; color: red;">저장된 주소록이 없습니다.</td>';
+        content += '<td colspan="7" style="text-align: center; color: black;">저장된 주소록이 없습니다.</td>';
         content += '</tr>';
     } else {
         list.forEach(function (item, addressNumber) {

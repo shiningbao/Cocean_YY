@@ -119,7 +119,9 @@
 	</select>
 	
 	<select id="getAbNomal" parameterType="String" resultType="map">
-		SELECT creationDate ,content  FROM logPlanTable WHERE idx = #{param1} AND coceanCategory = 'house' AND manageCategory = 'log' AND creationDate BETWEEN #{param2} AND LAST_DAY(#{param2})
+		SELECT DATE_FORMAT(creationDate,'%y-%m-%d %H:%i:%s') AS date ,content  FROM logPlanTable WHERE idx = #{param1} 
+			AND coceanCategory = 'house' AND manageCategory = 'log' 
+			AND creationDate BETWEEN #{param2} AND LAST_DAY(#{param2}) ORDER BY creationDate DESC
 	</select>
 	
 	

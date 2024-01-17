@@ -21,7 +21,7 @@
 		<div class="row" style="justify-content: space-between; height: 470px; padding-top: 3%">
 			
 		<!-- 사원 정보 시작 -->
-			<div class="card border-secondary mb-3" style="width:30%;">
+			<div class="card shadow mb-3" style="width:30%;">
 			  <div class="card-body">
 			    <h4 class="card-title"></h4>
 			    <p class="card-text"></p>
@@ -43,7 +43,7 @@
 			</div>
 		<!-- 사원 정보 끝 -->
 		<!-- 결재대기문서 리스트 -->
-					<div class="card border-secondary mb-3" style="width:39%;">
+					<div class="card shadow mb-3" style="width:39%;">
 			  <div class="card-body">
 			    <h4 class="card-title">결재대기문서</h4>
 			      <table class="table table-hover" style="text-align:center;">
@@ -113,7 +113,7 @@
 			
 		<!-- 게시판 영역 시작 -->
 			<div class="row" style="height: 100%;">
-				<div class="card border-secondary mb-5" style="width:100%;">
+				<div class="card shadow mb-5" style="width:100%;">
 				  <div class="card-body">
 				    <h4 class="card-title">공지사항</h4>
 				    
