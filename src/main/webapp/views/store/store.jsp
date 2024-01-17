@@ -112,7 +112,6 @@ text-align: center;
 	margin-right: 4px;
 }
 #branchTypeBtn{
-	margin-right: 635px;
     margin-bottom: 4px;
 }
 .currentStyle{

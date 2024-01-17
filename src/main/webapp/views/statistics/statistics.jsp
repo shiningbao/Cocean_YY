@@ -11,8 +11,11 @@
 <style>
 .title {
 	text-align: center;
-	font-size: 17px;
-	color: #4E73DF;
+	color: white;
+	background-color: #4E73DF; 
+	font-size: 25px;
+	padding: 8px 0;
+	font-weight: 600;
 }
 .cocean{
 	width: 290px;
@@ -21,34 +24,23 @@
 	width: 860px;
 	margin-left: 29px;
 }
-.branchType span{
-	font-size: 18px;
-}
-.branchType{
-	margin-bottom: 5px;
-}
-.branchType input{
-	margin-left: 2px;
-}
+
 </style>
 </head>
 <body>
     <c:import url="/side"/>
 <div class="container-fluid contentField">
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">통계</h1>
+    	<h1 class="h3 mb-0 text-gray-800">통계</h1>
     </div>
 <div class="container" style="display: flex;flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
 
 <div>
-<div class="branchType">
-  <label><span>지점 : </span></label>
-  <select id="selectType"></select>
-  <input type="button" class="btn btn-primary" id="branchChange" value="확인">
- </div>
-
-<div class="card shadow mb-2 col-12 mx-auto">
-<div class="title">코션친구들, 하우스 현황</div>
+    	<div class="branchType mb-2">
+			<select class="form-control" id="selectType" style="width: 200px"></select>
+		</div>
+<div class="card shadow mb-2 col-12 mx-auto px-0 pb-4">
+<div class="card-title title">코션친구들, 하우스 현황</div>
   <div class="row">
     <div class="col">
       <canvas class="cocean" id="coceanFriends"></canvas>
@@ -62,8 +54,8 @@
   </div>
  </div>
  
- <div class="card shadow mb-2 col-12 mx-auto">
- <div class="title">매출 추이</div>
+ <div class="card shadow mb-2 col-12 mx-auto px-0 pb-4">
+ <div class="card-title title">매출 추이</div>
       <canvas class="sales" id="salesVisitors"></canvas>
 </div>
 </div>
@@ -345,7 +337,7 @@ function chart() {
 		        }
 			    });
           // 지점 변경 버튼 클릭시
-          $('#branchChange').click(function () {
+          $('#selectType').change(function () {
 		    // 선택된 지점의 이름
 		    var selectedBranch = $('#selectType').val();
 		    console.log("클릭된 지점명: " + selectedBranch);
@@ -367,7 +359,11 @@ function chart() {
 		        swal({
 		          title: "선택된 지점 동물 데이터를 찾을 수 없습니다.",
 		          icon: "info",
+		        }).then((isOkey) =>{
+		        		location.href = location.href;		
+		        	
 		        });
+		       
 		    }
 		
 		    // 선택된 지점 수조차트1 데이터로 차트 업데이트
