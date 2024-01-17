@@ -23,14 +23,28 @@
 	
 </head>
 <style>
+
+.psSelect {
+	/* form-control 클래스 스타일 */
+	margin-bottom: 12px;
+	height: 38px;
+	padding: 0.375rem 0.75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: 0.25rem;
+	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 .contentField {
     padding-left: 250px;
     margin-top: 80px;
 }
 .listTable {
     overflow: auto;
-    width: 519px;
-    height: 355px
+    height: 410px;
 }
 .listTable table {
     width: 100%;
@@ -84,7 +98,6 @@ text-align: center;
 	left: 400px;
 }
 #map{
-	width:450px;
 	height:450px;
 }
 #secondProductModal{
@@ -109,16 +122,23 @@ text-align: center;
                         <h1 class="h3 mb-0 text-gray-800">스토어 관리</h1>
     </div>
 </div>
-<div class="container" style="display: flex; margin-left: 33px; flex-direction: column;align-content: space-around;flex-wrap: wrap; ">
+
+<div>
 <div class="row">
+<div class="col-6">
+			<div class="card shadow">
+				<div class="card-body">
 <div class="branchLocation"><span>지점</span>
- <select id="selectType"></select>
+ <select id="selectType" class="psSelect"></select>
+</div>
+<div id="map" class="card shadow"></div>
 </div>
 </div>
-<div class="row" style="width: 100%; display: flex; justify-content: space-between;">
+</div>
+<div>
 
-<div id="map" class="card shadow mb-4"></div>
 
+</div>
 <!-- 지점등록 모달 -->	
 <!-- 버튼 클릭 시 열리는 모달창 -->
     <div class="modal fade" id="firstBranchModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
@@ -152,39 +172,46 @@ text-align: center;
       </div>
       
     </div>
-    
-<div class="productList" >
-	<div class="row">
-	<p>상품 리스트<input type="text" class="searchProduct" placeholder="검색어 입력">
-	<button id="productSearch" class="btn btn-primary">검색</button></p>
-	<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" style="height: 39px; margin-left:3px;"
-	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
-	<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
-	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
-	<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
-	${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>본사상품 등록</button>
-	
-	</div>
-	<div id="totalProductNumber">
-	상품 개수 :
-	</div>
-	<div class="row" style="flex-wrap: nowrap;">
-		<div class="col">
-		<div id="productTable" class="listTable">
-		<table style="width: 100%;">
-		</table>
-		</div>
-		</div>
-		
-		<div class="col">
-			<div id="productInfoRegisterPage">
+    		<div class="col-6">
+			<div class="card shadow">
+				<div class="card-body">
+		<div class="productList" >
+				<div class="row">
+				<p>상품 리스트<input type="text" class="searchProduct " placeholder="검색어 입력">
+				<button id="productSearch" class="btn btn-primary">검색</button></p>
+				<button id="branchProductDelete" class="btn btn-primary" id="deleteBtn" style="height: 39px; margin-left:3px;"
+				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>삭제</button>
+				<button id="modalProductRegister" class="btn btn-primary" class="btn" data-toggle="modal" data-target="#firstProductModal" style="display: none; width: 57px; height: 39px; margin-left: 3px;"
+				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>등록</button>
+				<button id="productInfoRegister" class="btn btn-primary" onclick="productInfoRegister()" style="display: inline; margin-left:3px; width: 126px; height: 39px" 
+				${!sessionScope.userInfo.responName.equals('마케팅') ? 'disabled' : ''}>본사상품 등록</button>
+				
+				</div>
+				<div id="totalProductNumber">
+				상품 개수 :
+				</div>
+				<div class="" style="flex-wrap: nowrap;">
+					<div class="col">
+					<div id="productTable" class="listTable">
+					<table style="width: 100%;">
+					</table>
+					</div>
+					</div>
+					
+					<div class="col">
+						<div id="productInfoRegisterPage">
+					 	</div>
+				 	</div>
+			 	</div>
 		 	</div>
-	 	</div>
- 	</div>
- 
- 	</div>
+		 	</div>
+		 	</div>
+		 	</div>
+		 	
+		 	
 </div>
 </div>
+
 
 <!-- 첫번째 모달창 -->
 <div class="modal fade" id="firstProductModal" tabindex="-1" role="dialog">

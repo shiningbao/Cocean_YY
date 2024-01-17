@@ -696,5 +696,5 @@ $(document).ready(function () {
     });
 });
 
-</script>https://inpa.tistory.com/category/Snippet
+</script>
 </html>
