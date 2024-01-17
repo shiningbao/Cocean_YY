@@ -982,7 +982,7 @@ var facilityList;
 	       
 	    }
 	});
-	var color = ['#8B0000','#FA8072','#556B2F','#000001','#9932CC','#E6E6FA','#FF1493','#FFFACD','#2F4F4F','#FFF0F5','#FFFFE0','#DB7093','#4B0082','#E6E6FA','#7B68EE'];
+	var color = ['#CBAACB','#97C1A9','#BFCACA','#CCE2CB','#ECEAE4','#FFDBCC','#FF1493','#FFFACD','#2F4F4F','#FFF0F5','#FFFFE0','#DB7093','#4B0082','#E6E6FA','#7B68EE'];
 	function getAddCalenderCall(){
 		 $.ajax({
 	        	url:'getAddCalender.do',

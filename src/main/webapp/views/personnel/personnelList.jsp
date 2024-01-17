@@ -292,14 +292,9 @@ function searchGo() {
     inputSearch = $('#inputSearch').val();
     console.log(inputSearch);
 
-    if (inputSearch !== '') {
+
         location.href = 'personnelList.go?category=' + category + '&search=' + inputSearch + '&branch=0&pageNum=1';
-    } else {
-        swal({
-            title: '검색어를 입력해주세요',
-            button: '확인'
-        });
-    }
+
 }
 
 //     function linkClick(){
