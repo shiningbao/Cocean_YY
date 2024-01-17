@@ -495,7 +495,7 @@ td{
 				            </div>
 				        </div>
 				        <div class="float-right">
-				        <button class="btn btn-outline-primary canclePosition" type="button">취소</button>
+				        <button class="btn btn-outline-primary cancleEditHq" type="button">취소</button>
 						<button class="btn btn-primary savePositon" type="submit">저장</button>
 				        </div>
             </form>
@@ -619,6 +619,8 @@ $('li[data-tab="depart"]').addClass('active');
 $('#departTab').addClass('active');
 drawloadDp();
 
+var member = 0;
+var thisHqMembers = 0;
 $(".tab").click(function() {
     $('.tab').removeClass('active');
     $('.tab-content').removeClass('active');
@@ -658,8 +660,7 @@ function drawloadDp(){
     $(".infoClass").empty();
     $(".infoClass").append(content);
 }
-var member;
-var thisHqMembers;
+
 
 function get1EmployeeID(employeeID, nodeText) {
     $.ajax({
@@ -676,8 +677,8 @@ function get1EmployeeID(employeeID, nodeText) {
             var dpInfo = data.dpInfo;
             var hqInfo = data.hqInfo;
             var nodata = data.nodata;
-            var member = data.thisDepartmentMembers;
-            var thisHqMembers = data.thisHqMembers;
+            member = data.thisDepartmentMembers;
+            thisHqMembers = data.thisHqMembers;
             console.log('@@@@@@@@@@@@@@@member =='+member);
             console.log('@@@@@@@@@@@@@@@thisHqMembers =='+thisHqMembers);
             $('.tab').removeClass('active');
@@ -688,7 +689,7 @@ function get1EmployeeID(employeeID, nodeText) {
             if (data.dpInfo) {
                 var content =
                     '<div class="headerInfo">' +
-                    '<span> 부서관리 </span>'+
+                    '<span> 부서관리 ('+data.dpInfo.totalEmployee+'명) </span>'+
                     '</div>' +
                     '<table class="table table-hover">' +
                     '<colgroup> <col width="30%"> <col width="70%"> </colgroup>' +
@@ -774,7 +775,7 @@ function get1EmployeeID(employeeID, nodeText) {
 
             $('#editdpSubmit').on('submit', function(e) {
             	e.preventDefault();
-            	console.log(member);
+            	console.log('@@@@@@@member!!!!!!!!@@'+member);
             	if(member==0){
             		
             	var departmentID = $('#departmentID').val();
@@ -837,6 +838,9 @@ $('.cancleRank').on('click',function(){
 	console.log('click');
 	 $('#editmodal').modal('hide');
 });
+$('.cancleEditHq').on('click',function(){
+	$('#edithqModal').modal('hide');
+})
 
 $('.canclePosition').on('click',function(){
 	$('#editPositionmodal').modal('hide');

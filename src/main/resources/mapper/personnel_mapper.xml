@@ -254,7 +254,11 @@ fa-building' AS 'icon'
 	</update>
 	
 	<select id="getdepartmentInfo">
-		select d.departmentID,d.departmentName,d.isActive,h.hqName from department d JOIN headquarters h ON d.hqID =h.hqID where departmentID = #{departmentID}
+SELECT COUNT(e.employeeID) AS totalEmployee, d.departmentID, d.departmentName, d.isActive, h.hqName 
+FROM department d  
+JOIN headquarters h ON d.hqID = h.hqID 
+LEFT JOIN employee e ON e.departmentID = d.departmentID 
+WHERE d.departmentID = #{departmentID};
 		
 	</select>
 	

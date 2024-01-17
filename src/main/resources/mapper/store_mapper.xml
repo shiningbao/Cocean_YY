@@ -14,16 +14,16 @@
     pi.productName, pi.category, pi.price, 
     b.branchName, b.branchLocation, b.branchLatitude, b.branchLongitude,
     f.serverFileName
-FROM 
-    branchProduct bp
-LEFT JOIN 
-    productInformation pi ON bp.productID = pi.productID
-INNER JOIN 
-    branch b ON bp.branchID = b.branchID
-LEFT JOIN 
-    file f ON pi.productID = f.idx AND f.category = "상품"
-ORDER BY 
-    bp.productID ASC;
+	FROM 
+	    branchProduct bp
+	LEFT JOIN 
+	    productInformation pi ON bp.productID = pi.productID
+	INNER JOIN 
+	    branch b ON bp.branchID = b.branchID
+	LEFT JOIN 
+	    file f ON pi.productID = f.idx AND f.category = "상품"
+	ORDER BY 
+	    bp.productID ASC;
 	</select>
 	
 	<select id="totalProductNumber" resultType="branchProduct">
@@ -62,13 +62,22 @@ ORDER BY
 			  AND f.category = '상품'
         </when>
     	<otherwise>
-			SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status, f.serverFileName
+			<!-- SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status, f.serverFileName
 			FROM productInformation pi
 			JOIN branchProduct bp ON pi.productID = bp.productID
 			JOIN branch b ON bp.branchID = b.branchID
 			JOIN file f ON pi.productID = f.idx
 			WHERE pi.productName LIKE CONCAT(#{searchKeyword}, '%') AND b.branchName = #{branchName}
-			AND f.category = '상품'
+			AND f.category = '상품' -->
+			<![CDATA[
+        SELECT pi.productID, pi.productName, pi.category, pi.price, bp.branchID, bp.status, 
+               COALESCE(f.serverFileName, '') AS serverFileName
+        FROM productInformation pi
+        JOIN branchProduct bp ON pi.productID = bp.productID
+        JOIN branch b ON bp.branchID = b.branchID
+        LEFT JOIN file f ON pi.productID = f.idx AND f.category = '상품'
+        WHERE pi.productName LIKE CONCAT(#{searchKeyword}, '%') AND b.branchName = #{branchName}
+        ]]>
     	</otherwise>
 	</choose>
 	</select>

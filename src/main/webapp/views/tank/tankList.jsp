@@ -62,7 +62,7 @@ label {
 	<div class="row">
 	<div class="col-md">
 		<div id="checkBox" style="margin-top: 20px;">
-        <nav class="navbar navbar" id="search" style="width: 100%;">
+        <nav class="navbar navbar" id="search" style="width: 100%; left:78%;">
             <form class="form-inline" action="list.go" method="get" id="frm" style="width: 100%;">
 <!--     		<div style="display: flex; align-items: center; width: 75%;"> -->
 <!--     		<text style="font-size: 16px; margin-right: 1%;">타입</text> -->
