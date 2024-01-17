@@ -53,7 +53,7 @@
 							<col width="20%">
 							<col width="20%">
 						</colgroup>
-						<thead>
+						<thead style="background-color:#86B0F3;">
 							<tr>
 								<th scope="col">기안일</th>
 								<th scope="col">제목</th>
@@ -124,7 +124,7 @@
 							<col width="20%">
 							<col width="20%">
 						</colgroup>
-						<thead>
+						<thead style="background-color:#86B0F3; text-align:center;">
 							<tr>
 								<th scope="col">글 번호</th>
 								<th scope="col">제목</th>
@@ -139,7 +139,7 @@
 							</tr>
 						</c:if>
 						<c:forEach items="${notice}" var="item">
-							<tr>
+							<tr style="text-align:center;">
 								<td>
 									<c:if test="${item.isPinned eq 1}">공지</c:if>
 									<c:if test="${item.isPinned ne 1}">${item.boardID}</c:if>
