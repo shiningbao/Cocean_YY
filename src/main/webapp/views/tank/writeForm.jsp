@@ -235,7 +235,7 @@ function submitForm(form){
 	})
 	.then((isOkey) => {
 		if (isOkey) {
-			swal('등록이 완료되었습니다.','','success')
+			swal('등록되었습니다.','','success')
 			.then((isOkey) => {
 				if(isOkey){
 			form.submit();					
