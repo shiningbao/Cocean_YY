@@ -7,9 +7,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-<script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script>
-<script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script>
-<link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>">
+
+
+<%-- <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script> --%>
+<%-- <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script> --%>
+<%-- <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>"> --%>
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
 <style>
 table,th,td{
 		border : 1px solid black;
