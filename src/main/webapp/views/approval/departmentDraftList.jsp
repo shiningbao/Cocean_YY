@@ -33,33 +33,35 @@
 	}
 }
 
-.rStatus{
-	background-color: #e33d6e87;
-    border: #e33d6e87;
+/* .rStatus{
+	background-color: #f16e84;
+    border: #f16e84;
     display: inline-block;
     padding: 4px;
     text-align: center;
     color: #fff;
     border-radius: 2px;
     letter-spacing: -1px;
-    height: 19px;
+    height: 22px;
+    width: 19%;
     font-size: 12px;
     vertical-align: middle;
 }
 
 .aStatus{
-	background-color: #61a8dba6;
-    border: #61a8dba6;
+	background-color: #1d90e3a6;
+    border: #1d90e3a6;
     display: inline-block;
     padding: 4px;
     text-align: center;
     color: #fff;
     border-radius: 2px;
     letter-spacing: -1px;
-    height: 19px;
+    height: 22px;
+    width: 19%;
     font-size: 12px;
     vertical-align: middle;
-}
+} */
 </style>
 </head>
 <body>
@@ -91,7 +93,6 @@
 			<th scope="col">유형</th>
 			<th scope="col">제목</th>
 			<th scope="col">기안자</th>
-			<th scope="col">결재상태</th>
 		</tr>
 		<tbody id=dpList>
 		<c:forEach items="${list}" var="list">
@@ -111,19 +112,7 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-            <td>${list.name}</td>
-            <c:choose> 
-            <c:when test="${list.approvalStatus eq'반려'}">
-            <td><span class="rStatus">${list.approvalStatus}</span></td>
-            </c:when>
-            <c:when test="${list.approvalStatus eq'결재'}">
-            <td><span class="aStatus">${list.approvalStatus}</span></td>
-            </c:when>
-            <c:otherwise>
-            <td></td>
-            </c:otherwise>
-            </c:choose>
-            
+            <td>${list.name}</td>           
 		</tr>	
 		</c:forEach>
 		

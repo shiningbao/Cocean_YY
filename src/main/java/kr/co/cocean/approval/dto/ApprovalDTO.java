@@ -48,7 +48,21 @@ public class ApprovalDTO {
 	private String draftEmp;
 	private String positionName;
 	private int total;
+	private int approvalEmp;
+	private boolean included;
 
+	public boolean isIncluded() {
+		return included;
+	}
+	public void setIncluded(boolean included) {
+		this.included = included;
+	}
+	public int getApprovalEmp() {
+		return approvalEmp;
+	}
+	public void setApprovalEmp(int approvalEmp) {
+		this.approvalEmp = approvalEmp;
+	}
 	public int getTotal() {
 		return total;
 	}

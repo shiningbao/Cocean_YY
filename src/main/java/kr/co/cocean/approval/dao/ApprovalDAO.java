@@ -154,7 +154,7 @@ public interface ApprovalDAO {
 
 	ArrayList<ApprovalDTO> signImg(int idx);
 
-	List<ApprovalDTO> getWaitingEmp(int idx);
+	ApprovalDTO getWaitingEmp(int idx);
 
 	void draftAlarm(List<ApprovalDTO> waitingEmp, int idx);
 
@@ -171,6 +171,10 @@ public interface ApprovalDAO {
 	void alarmInsert(int employeeID, String content, String url);
 
 	void changeCategory(Map<String, String> param);
+
+	ArrayList<ApprovalDTO> hidden(int employeeID);
+
+	void refDate(Map<String, String> param);
 
 
 	/*

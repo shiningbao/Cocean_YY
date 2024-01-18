@@ -365,6 +365,7 @@ public class ApprovalController {
 			 }
 			 service.rejectDraft(param); // draft 테이블
 		 }
+		 service.refDate(param);
 		 return mav;
 	}
 
@@ -496,6 +497,9 @@ public class ApprovalController {
 		if (dto != null) {
 			int employeeID = dto.getEmployeeID();
 			ArrayList<ApprovalDTO> departmentList = service.departmentList(employeeID,pager);
+			ArrayList<ApprovalDTO> hidden = service.hidden(employeeID);
+			departmentList.addAll(hidden);
+			
 			mav.addObject("list", departmentList);
 			mav.addObject("pager",pager);
 			mav.setViewName("approval/departmentDraftList");

@@ -70,7 +70,7 @@
 						<c:forEach items="${wList}" var="item">
 							<tr>
 								<td>${item.draftDate}</td>
-								<td>
+								<td style="padding:13px 0px;">
 									<c:choose>
 										<c:when test="${item.title == null}">
 										<a href="/Cocean/approval/draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting">${item.formTitle}</a>
@@ -80,7 +80,19 @@
 								        </c:otherwise>
 									</c:choose>
 								</td>
-								<td>${item.approvalStatus}</td>
+								<td><span class="waitingSpan" style="
+					    background-color: #f16e84;
+					    border: 1px solid #f16e84;
+					    display: inline-block;
+					    padding: 4px;
+					    text-align: center;
+					    color: #fff;
+					    border-radius: 2px;
+					    letter-spacing: -1px;
+					    height: 23px;
+					    width: 73%;
+					    font-size: 12px;
+					    vertical-align: middle;">${item.approvalStatus}</span></td>
 								<td>${item.name}</td>
 							</tr>
 						</c:forEach>

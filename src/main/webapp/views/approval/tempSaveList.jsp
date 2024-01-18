@@ -204,35 +204,41 @@ function removeSave() {
     var checkedSave = $("input[name=chk]:checked");
 
     if (checkedSave.length > 0) {
-    	if(confirm("삭제하시겠습니까?")){
-    		
-        var selectedSave = [];
-		
-        checkedSave.each(function() {
-        	selectedSave.push({
-        			idx:$(this).closest("tr").find("input[name=idx]").val(),
-        			titleID:$(this).closest("tr").find("input[name=titleID]").val()
-        });
-        });
-            console.log(selectedSave);
+        swal({
+            title: "삭제하시겠습니까?",
+            text: "",
+            icon: "warning",
+            buttons: ["취소", "확인"]
+        }).then((isOkey) => {
+            if (isOkey) {
+                var selectedSave = [];
 
-         $.ajax({
-            type: 'POST',
-            url: 'removeSave', 
-            data: {'removeList': JSON.stringify(selectedSave)},
-        	dataType: 'json',
-            success: function(data) {
-                console.log(data);
-                location.reload();
-            },
-            error: function(e) {
-                console.error(e);
+                checkedSave.each(function () {
+                    selectedSave.push({
+                        idx: $(this).closest("tr").find("input[name=idx]").val(),
+                        titleID: $(this).closest("tr").find("input[name=titleID]").val()
+                    });
+                });
+
+                console.log(selectedSave);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'removeSave',
+                    data: {'removeList': JSON.stringify(selectedSave)},
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        location.reload();
+                    },
+                    error: function (e) {
+                        console.error(e);
+                    }
+                });
             }
-        }); 
-    }
-    	return;
+        });
     } else {
-        alert('삭제할 문서를 선택해주세요.');
+        swal('삭제할 문서를 선택해주세요!', '', 'warning');
     }
 }
 </script>

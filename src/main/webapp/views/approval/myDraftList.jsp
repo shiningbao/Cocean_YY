@@ -31,6 +31,51 @@
 	}
 }
 
+.mySpan{
+	background-color: #f16e84;
+    border: 1px solid #f16e84;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 19%;
+    font-size: 12px;
+    vertical-align: middle;
+}
+ .spanIng{
+  	background-color: #cfdff0;
+    border: 1px solid #cfdff0;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 19%;
+    font-size: 12px;
+    vertical-align: middle;
+ }
+ 
+  .spanCom{
+  	background-color: #63e67b;
+    border: 1px solid #63e67b;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 19%;
+    font-size: 12px;
+    vertical-align: middle;
+ }
+
+
 </style>
 </head>
 <body>
@@ -61,7 +106,7 @@
 			<th>기안일</th>
 			<th>유형</th>
 			<th>제목</th>
-			<th>상태</th>
+			<th>진행 상태</th>
 		</tr>
 		</thead>
 		
@@ -83,7 +128,10 @@
 	                </c:otherwise>
 	            	</c:choose>
             </td>
-			<td>${my.draftStatus}</td>
+			<td><c:if test="${my.draftStatus eq '대기'}"><span class="mySpan">${my.draftStatus}</span></c:if>
+					<c:if test="${my.draftStatus eq '진행중'}"><span class="spanIng">${my.draftStatus}</span></c:if>
+					<c:if test="${my.draftStatus eq '완료'}"><span class="spanCom">${my.draftStatus}</span></c:if>
+			</td>
 		</tr>	
 		</c:forEach>
 		</tbody>

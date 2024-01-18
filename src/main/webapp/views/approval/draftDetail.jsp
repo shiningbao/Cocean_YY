@@ -121,8 +121,16 @@ button{
     top: 16%;
 }
  */
+ 
+ #approvalLine{
+	border-spacing : 10px 10px;
+	width: 100%;
+	
+}
+ 
 #approvalLine, #approvalLine th, #approvalLine td {
   border: none;
+  padding : 0px;
 }
 
 #approvalLine td{
@@ -195,6 +203,19 @@ th {
     	font-family:Dotum;
     	font-weight:bold;
     }
+    
+    .box{
+	   	background-color: #cfdff0;
+	    border: 1px solid #9fc2e8;
+	    display: inline-block;
+	    padding-left: 5px;
+	    padding-right: 5px;
+	    text-align: center;
+	    border-radius: 11px;
+	    letter-spacing: 0px;
+	    height: 21px;
+	    vertical-align: middle;
+    }
 
 </style>
 </head>
@@ -260,32 +281,32 @@ th {
 	
 	<div id="rightContainer">
 	<div class="card shadow" style="width: 354px;padding: 3%;">
-	<div style="padding: 10px 12px;"><span class="approvalInfo" style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재정보</span>
+	<div style="padding: 10px 12px;"><span class="approvalInfo" style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재정보</span>
 	<hr/>
-		<table id="approvalLine">
-			<tr>
-				<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
-				<td><span class="appStatus" style="font-weight : bold;">상신</span></td>
-				<td>${list.hqName}/${list.departmentName}</td>
-				<td>${list.positionName}</td>
-				<td>${list.name}</td>
+		<table id="approvalLine" style="font-size:14px;">
+			<tr style="text-align: center;">
+				<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px"></th>
+				<td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+				<td style="width: 40%; font-size:12px;">${list.hqName}/${list.departmentName}</td>
+				<td style="width: 20%;">${list.positionName}</td>
+				<td style="width: 20%;">${list.name}</td>
 			</tr>
 			<c:forEach items="${lineList}" var="lL">
-    <tr>
+    <tr style="text-align: center;">
     <th style="background-color:white;">
        <c:choose>
         <c:when test="${lL.serverFileName != null}">
-            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:30px; height:35.6px">
+            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
         </c:when>
         <c:otherwise>
-            <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:30px; height:35.6px">
+            <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
         </c:otherwise>
     </c:choose>
     </th>
-        <td><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
-        <td>${lL.hqName}/${lL.departmentName}</td>
-        <td>${lL.positionName}<input type='hidden' id='order' value=''></td>
-        <td>${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
+        <td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+        <td style="width: 40%; font-size:12px;">${lL.hqName}/${lL.departmentName}</td>
+        <td style="width: 20%;">${lL.positionName}<input type='hidden' id='order' value=''></td>
+        <td style="width: 20%;">${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
         <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
             <td>
                 <c:choose>
@@ -342,13 +363,16 @@ th {
 <table id="workDraftContent">
     <tr>
         <th style="text-align:center;">참조자</th>
+        
         <td>
             <c:forEach items="${agrRef}" var="ref">
                 <c:if test="${ref.category eq '참조'}">
+                <span class="box">
                     <label>${ref.hqName}</label>
                     <label>${ref.departmentName}</label>
                     <label>${ref.positionName}</label>
                     <label>${ref.name}</label>
+                </span>
                 </c:if>
             </c:forEach>
         </td>
@@ -379,7 +403,7 @@ th {
 	</c:if>
 	<tr>
 	    <th>사용 날짜</th>
-	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '오전반차' and vac.category ne '오후반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}" readonly></c:if>
+	    <td><input type="date" name="start" id="startFac" class="form-control mb-2" style="margin-top: 10px; text-align: center;" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '오전반차' and vac.category ne '오후반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" style="margin-left: 10px; text-align: center;" value="${vac.vacationEndDate}" readonly></c:if>
 							  
 	</tr>
 	<tr>

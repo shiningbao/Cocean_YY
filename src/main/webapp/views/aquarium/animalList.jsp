@@ -23,12 +23,12 @@
 				<nav class="navbar navbar" id="search">
 			    	<div class="form-check form-check-inline">
 						<label class="form-check-label">
-							<input class="form-check-input" name="all" type="checkbox" checked="checked" value="all" id="option1">전체
+							<input class="form-check-input" name="incharge" type="checkbox" value="${userInfo.employeeID}" id="option2">담당친구들
 						</label>
 					</div>
 			    	<div class="form-check form-check-inline">
 						<label class="form-check-label">
-							<input class="form-check-input" name="incharge" type="checkbox" value="${userInfo.employeeID}" id="option2">담당친구들
+							<input class="form-check-input" name="all" type="checkbox" checked="checked" value="all" id="option1">전체
 						</label>
 					</div>
 					<div class="form-check form-check-inline">
@@ -97,10 +97,10 @@
 			<div class="drawList"></div>
 		</div>
 		<c:if test="${userInfo.departmentID eq 1 and userInfo.positionID eq 2}">
-			<button  type="button" class="btn btn-primary float-right mt-2" id="write">등록</button>
+			<button  type="button" class="btn btn-primary float-right mb-4" id="write">등록</button>
 		</c:if>
 	</div>
-
+	<br>
 	<c:import url="/footer"/>
 </body>
 
@@ -122,6 +122,17 @@
 			$('#option2').prop('checked', true);
 		}
 	});
+	
+	$('#option2').on('change',function(){
+		if(this.checked){
+			$('input[type="checkbox"]').prop('checked', true);
+			$('#option1').prop('checked', false);
+		}else{
+			$('input[type="checkbox"]').prop('checked', false);
+			$('#option1').prop('checked', true);
+		}
+	});
+	
 	
 	function showList(){
 		var inchargeEmployeeID = ($('#option2').prop('checked')) ? '${userInfo.employeeID}' : 0;
