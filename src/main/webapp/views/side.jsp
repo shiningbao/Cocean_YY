@@ -349,7 +349,7 @@ function logoutConfirm() {
 	})
 	.then((isOkey)=>{
 		if(isOkey){
-		location.href='/Cocean/mypage/logout/';
+		location.href='<c:url value="/mypage/logout"/>';
 		}
 	})
 }
