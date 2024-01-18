@@ -233,7 +233,7 @@ function submitForm(form){
 	})
 	.then((isOkey) => {
 		if (isOkey) {
-			swal('수정이 완료되었습니다.','','success')
+			swal('수정되었습니다.','','success')
 			.then((isOkey) => {
 				if(isOkey){
 			form.submit();					
