@@ -184,7 +184,7 @@ button {
 				<c:forEach items="${tankAnimal}" var="item">
 					<tr>
 						<td scope="row">${item.commonName}</td>
-						<td><a href="/Cocean/animal/detailBase?animalID=${item.animalID}">${item.nickname}</a></td>
+						<td><a href='<c:url value="/animal/detailBase?animalID=${item.animalID}"/>'>${item.nickname}</a></td>
 						<td>${item.individual}</td>
 						<td>${item.status}</td>
 					</tr>
