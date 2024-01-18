@@ -43,14 +43,14 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 19%;
+    width: 22%;
     font-size: 12px;
     vertical-align: middle;
  }
  
   .spanIng{
-  	background-color: #cfdff0;
-    border: 1px solid #cfdff0;
+  	background-color: #64a6eb;
+    border: 1px solid #64a6eb;
     display: inline-block;
     padding: 4px;
     text-align: center;
@@ -58,7 +58,7 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 19%;
+    width: 22%;
     font-size: 12px;
     vertical-align: middle;
  }
@@ -73,7 +73,7 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 19%;
+    width: 22%;
     font-size: 12px;
     vertical-align: middle;
  }
