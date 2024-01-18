@@ -74,13 +74,14 @@ button{
 }
 
 #approvalLine{
-	font-size : 10px;
 	border-spacing : 10px 10px;
+	width: 100%;
 	
 }
 
 #approvalLine, #approvalLine th, #approvalLine td {
   border: none;
+  padding : 0px;
 }
 
 /* #approvalLine td{
@@ -200,7 +201,7 @@ th {
     
     .delArea{
 		margin: 53% 15% 6% -46%;
-	    padding: 0px 5px;
+	    padding: 3px 9px;
 	    width: 25px;
     }
     
@@ -223,6 +224,21 @@ th {
      #approvalSignature tr, #approvalSignature th, #approvalSignature td{
     	font-family:Dotum;
     	font-weight:bold;
+    }
+    
+     .box{
+	background-color: #cfdff0;
+    border: 1px solid #9fc2e8;
+    display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-right: 10px;
+    padding-top: 0px;
+    margin-top: -9px;
+    text-align: center;
+    border-radius: 11px;
+    letter-spacing: 0px;
+    height: 26px;
     }
     
     
@@ -271,16 +287,16 @@ th {
 	
 <div id="rightContainer">
 <div class="card shadow" style="width: 354px;padding: 3%;">
-	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 13px; width: 270px; font-weight : bold;">결재라인</span>
+	<div class="lineContent" style="padding: 10px 12px;"><span style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재라인</span>
     <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
 	<hr/>
-		<table id="approvalLine">
-			<tr>
-				<th style="background-color:white;"><img src='/photo/cocean/profile/${draftInfo.serverFileName}' class="img-profile rounded-circle" style="width:30px; height:35.6px"></th>
-				<td><span class="appStatus" style="font-weight : bold;">상신</span></td>
-				<td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
-				<td>${draftInfo.positionName}</td>
-				<td>${draftInfo.name}</td>
+		<table id="approvalLine" style="font-size:14px;">
+			<tr style="text-align: center;">
+				<th style="background-color:white;"><img src='/photo/cocean/profile/${draftInfo.serverFileName}' class="img-profile rounded-circle" style="width: 40px;height: 40px;"></th>
+				<td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+				<td style="width: 40%;">${draftInfo.hqName}/${draftInfo.departmentName}</td>
+				<td style="width: 20%;">${draftInfo.positionName}</td>
+				<td style="width: 20%;">${draftInfo.name}</td>
 			</tr>
 		</table>
 	</div>
@@ -554,7 +570,8 @@ function calculateDays() {
 
 
 	$('#summernote').summernote({
-		height: 500,
+		height: 500, width: 825,
+		maxHeight: 500,
 		minHeight: 200,
 		focus: true
 	});
@@ -999,25 +1016,27 @@ function calculateDays() {
 		    var signTable = $("#approvalSignature");
 		    // var agrSign = $("#agrSignature");
 		    if (lineData.category == "결재" || lineData.category == "합의") {
-		        var row = $("<tr>");
+		        var row = $("<tr style='text-align:center;'>");
 		        	if(lineData.photo!=='null'){
-		        	row.append("<th style='background-color:white;'><img src='/photo/cocean/profile/" + lineData.photo + "' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        	row.append("<th style='background-color:white;'><img src='/photo/cocean/profile/" + lineData.photo + "' style='width:40px; margin-top:10px; height:40px' class='img-profile rounded-circle'></th>");
 		        	}else if(lineData.photo=='null'){
-		        		row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:30px; height:35.6px' class='img-profile rounded-circle'></th>");
+		        		row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:40px; height:40px' class='img-profile rounded-circle'></th>");
 		        	}
 		      /*   
 		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
 		        	row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
 		        } */
-		        row.append("<td class='category'>" +"<span class='appStatus' style='font-weight : bold;'>"+ lineData.category +"</span>"+ "</td>");
+		        row.append("<td class='category' style='width:15%;'>" +"<span class='appStatus' style='font-weight : bold;'>"+ lineData.category +"</span>"+ "</td>");
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		            row.append("<td>" + lineData.positionName + lineData.name + "</td>");
+		        	row.append("<td style='width:65%;' colspan='2'>" + lineData.positionName + "</td>");
+		            // row.append("<td style='width:25%;'>" + lineData.positionName +"</td>");
+		            row.append("<td style='width:20%;'>" + lineData.name + "</td>");
 		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } 
 		        else {
-		            row.append("<td>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
-		            row.append("<td>" + lineData.positionName + "</td>");
-		            row.append("<td>" + lineData.name + "</td>");
+		            row.append("<td style='width:40%;'>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
+		            row.append("<td style='width:20%;'>" + lineData.positionName + "</td>");
+		            row.append("<td style='width:20%;'>" + lineData.name + "</td>");
 		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
@@ -1031,14 +1050,17 @@ function calculateDays() {
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row = $("<td>" + lineData.rank +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
-		            row.append('<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">');
+		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } else {
 		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName +'\u00A0'+lineData.positionName +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
 		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
-		        refTable.append(row);
+		        // refTable.append(row);
+		        var span = $("<span class='box'></span>").append(row);
+		        
+		        refTable.append(span);
 		    }
 		    
 		    $(document).on('click', '.delete', function() {
@@ -1046,6 +1068,7 @@ function calculateDays() {
 			    var row = element.closest('tr')
 			    var cell = element.closest('td');
 			    var table = row.closest('table');
+			    var span = element.closest('.box');
 			    if (table.attr('id') === 'approvalLine') {
 			        row.remove();
 			        updateRowNumbers('#approvalLine');
@@ -1058,6 +1081,7 @@ function calculateDays() {
 			        
 			    } else {
 			        cell.remove();
+			        span.remove();
 			    }
 			});	
 				

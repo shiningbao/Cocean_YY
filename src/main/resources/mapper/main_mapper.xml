@@ -28,7 +28,7 @@
 	
 	<select id="homeWaitingList" resultType="approval">
 		SELECT d.draftDate,e.employeeID,a.idx,w.title,e.name,a.approvalStatus,df.formCategory,d.titleID,df.formTitle,a.category, a.employeeID AS "id" FROM approval a LEFT OUTER JOIN draft d ON a.idx=d.idx JOIN draftForm df ON d.titleID=df.titleID JOIN employee e ON d.employeeID=e.employeeID 
-		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' AND d.tempSave!=1 ORDER BY d.draftDate DESC LIMIT 10
+		LEFT OUTER JOIN workDraft w ON a.idx=w.idx where a.employeeID=#{employeeID} AND a.approvalStatus='대기' AND d.tempSave!=1 ORDER BY d.draftDate DESC LIMIT 4
 	</select>
 	
 </mapper>

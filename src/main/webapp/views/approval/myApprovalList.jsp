@@ -37,6 +37,50 @@
 	}
 }
 
+ .spanCom{
+	background-color: #63e67b;
+    border: 1px solid #63e67b;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 29%;
+    font-size: 12px;
+    vertical-align: middle;
+ }
+
+ .spanWaiting{
+  	background-color: #f16e84;
+    border: 1px solid #f16e84;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 19%;
+    font-size: 12px;
+    vertical-align: middle;
+ }
+ 
+  .spanIng{
+  	background-color: #cfdff0;
+    border: 1px solid #cfdff0;
+    display: inline-block;
+    padding: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    letter-spacing: -1px;
+    height: 22px;
+    width: 19%;
+    font-size: 12px;
+    vertical-align: middle;
+ }
 </style>
 </head>
 <body>
@@ -99,7 +143,10 @@
 	            	</c:choose>
             </td>
             <td>${com.name}</td>
-			<td>${com.draftStatus}</td>
+			<td><c:if test="${com.draftStatus eq '대기'}"><span class="spanWaiting">${com.draftStatus}</span></c:if>
+					<c:if test="${com.draftStatus eq '진행중'}"><span class="spanIng">${com.draftStatus}</span></c:if>
+					<c:if test="${com.draftStatus eq '완료'}"><span class="spanCom">${com.draftStatus}</span></c:if>
+			</td>
 		</tr>	
 		</tbody>
 		</c:if>

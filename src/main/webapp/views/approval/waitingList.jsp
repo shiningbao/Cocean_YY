@@ -29,6 +29,7 @@
 		margin-bottom: 5px;
 	}
 	
+	
 
 </style>
 </head>
@@ -79,7 +80,19 @@
 			        </c:otherwise>
 				</c:choose>
 			</td>
-			<td>${list.approvalStatus}</td>
+			<td><span class="waitingSpan" style="
+					    background-color: #f16e84;
+					    border: 1px solid #f16e84;
+					    display: inline-block;
+					    padding: 4px;
+					    text-align: center;
+					    color: #fff;
+					    border-radius: 2px;
+					    letter-spacing: -1px;
+					    height: 22px;
+					    width: 29%;
+					    font-size: 12px;
+					    vertical-align: middle;">${list.approvalStatus}</span></td>
 			<td>${list.name}</td>
 		</tr>	
 		</c:forEach>

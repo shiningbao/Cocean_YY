@@ -125,8 +125,18 @@ public class ApprovalService {
 			 * }
 			 */
 			dao.approvalWrite(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
-			List<ApprovalDTO> waitingEmp = dao.getWaitingEmp(idx);
-			logger.info("결재대기:"+waitingEmp);
+			ApprovalDTO waitingEmp = dao.getWaitingEmp(idx);
+			
+			/*
+			 employeeID = 알람받을 직원
+			 content = 표시할 알람 내용 ex) 일정 30분 전입니다. / 결재가 도착했습니다
+			 url = 알람 클릭하면 이동할 주소 ex) /schedule/schedule.go
+			 */
+			// String alContent = "결재가 도착했습니다.";
+			// String url = "";
+			// dao.alarmInsert(waitingEmp, alContent, url);
+			// SseService sse = new SseService();
+			// sse.alarm(waitingEmp, content, url)
 			
 			/*
 			 * dao.draftAlarm("/approval/draftDetail.go?idx="+idx+
@@ -157,14 +167,7 @@ public class ApprovalService {
 		 * dto.getFormTitle(); }
 		 */
 		
-		/*
-		 employeeID = 알람받을 직원
-		 content = 표시할 알람 내용 ex) 일정 30분 전입니다. / 결재가 도착했습니다
-		 url = 알람 클릭하면 이동할 주소 ex) /schedule/schedule.go
-		 */
-		// dao.alarmInsert(employeeID, content, url)
-		//SseService sse = new SseService();
-		//sse.alarm(employeeID, content, url)
+		
 		
 		
 
@@ -235,6 +238,9 @@ public class ApprovalService {
 	        dao.approvalSave(lastLineInfoList,idx,lastOrder);
 			}else {
 				dao.approvalWrite(lastLineInfoList, idx, lastOrder);
+				if(param.get("publicStatus").equals("1")) {
+					dao.publicApp(idx); // "공개"일때 approval 테이블 insert
+				}
 			}
 	    }
 
@@ -530,6 +536,15 @@ public class ApprovalService {
 
 	public void changeCategory(Map<String, String> param) {
 		dao.changeCategory(param);
+		
+	}
+
+	public ArrayList<ApprovalDTO> hidden(int employeeID) {
+		return dao.hidden(employeeID);
+	}
+
+	public void refDate(Map<String, String> param) {
+		dao.refDate(param);
 		
 	}
 
