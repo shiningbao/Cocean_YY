@@ -598,7 +598,7 @@ var idx = $('input[name="idx"]').val()
         	  if(hTitle=='waiting'){
         	  var order = data.order.approvalOrder;
         	  console.log(order);
-        	  $('input[name="approvalOrder"]').val(order);
+        	  $('#order').val(order);
         	  }
          },
          error: function (e) {

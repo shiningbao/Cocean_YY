@@ -1121,11 +1121,11 @@ function calculateDays() {
 		        row = $("<tr>");
 
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
-		            row = $("<td>" + lineData.rank + lineData.name + "</td>");
+		            row = $("<td>" + lineData.rank +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
 		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } else {
-		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName + lineData.rank + lineData.name + "</td>");
+		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName +'\u00A0'+ lineData.positionName +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
 		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }

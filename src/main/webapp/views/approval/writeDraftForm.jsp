@@ -392,7 +392,7 @@ th {
 	</tr>
 	<tr>
 		<th>총 사용일</th>
-		<td id="total" style="background-color:lightgray;"></td>
+		<td id="total" style="background-color:#ededed;"></td>
 	</tr>
 	<tr id="reason" style="display: none;">
 		<th>사유</th>

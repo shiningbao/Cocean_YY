@@ -90,7 +90,7 @@
 					    border-radius: 2px;
 					    letter-spacing: -1px;
 					    height: 22px;
-					    width: 29%;
+					    width: 32%;
 					    font-size: 12px;
 					    vertical-align: middle;">${list.approvalStatus}</span></td>
 			<td>${list.name}</td>
