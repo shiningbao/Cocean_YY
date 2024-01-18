@@ -41,7 +41,7 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 27%;
+    width: 40px;
     font-size: 12px;
     vertical-align: middle;
 }
@@ -55,7 +55,7 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 27%;
+    width: 40px;
     font-size: 12px;
     vertical-align: middle;
  }
@@ -70,7 +70,7 @@
     border-radius: 2px;
     letter-spacing: -1px;
     height: 22px;
-    width: 27%;
+    width: 40px;
     font-size: 12px;
     vertical-align: middle;
  }
