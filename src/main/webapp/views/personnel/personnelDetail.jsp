@@ -570,7 +570,7 @@ td{
 	        </span>
 	    </div>
         <div class="formbtn">
-        	<button class="btn btn-outline-primary" type="button" onclick="location.href='http://localhost:8080/Cocean/personnel/personnelList.go?category=&inputSearch=&branch=0&pageNum=1'">이전</button>
+        	<button class="btn btn-outline-primary" type="button" onclick="back()">이전</button>
         <button class="btn btn-primary detailSaveBtn" type="submit">저장</button>
         </div>
 
@@ -1327,6 +1327,11 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
+
+function back(){
+	location.href = '<c:url value="/personnel/personnelList.go?category=&inputSearch=&branch=0&pageNum=1"/>';
+}
+
 
 
 </script>

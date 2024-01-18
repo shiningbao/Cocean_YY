@@ -758,7 +758,7 @@ function calculateDays() {
 					if(isOkey){
 					
 					        $.ajax({
-						        url: "/Cocean/approval/writeDraft.do",
+						        url: "<c:url value='/approval/writeDraft.do'/>",
 						        method: "POST",
 						        processData: false,
 						        contentType: false,
@@ -890,7 +890,7 @@ function calculateDays() {
 		    	console.log("이미 임시저장한거있음:idx="+idx);
 		    	formData.append("idx",idx);
 		    	$.ajax({
-			        url: "/Cocean/approval/writeDraft.do",
+		    		url: "<c:url value='/approval/writeDraft.do'/>",
 			        method: "POST",
 			        processData: false,
 			        contentType: false,
@@ -905,7 +905,7 @@ function calculateDays() {
 			    	});
 		    }else{
 	        $.ajax({
-		        url: "/Cocean/approval/writeDraft.do",
+	        	url: "<c:url value='/approval/writeDraft.do'/>",
 		        method: "POST",
 		        processData: false,
 		        contentType: false,

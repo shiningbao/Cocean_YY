@@ -302,7 +302,7 @@ th {
 			            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
 			        </c:when>
 			        <c:otherwise>
-			            <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+			            <img src='<c:url value="/resource/img/undraw_profile.svg"/>' class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
 			        </c:otherwise>
 			    </c:choose>
 			    </th>
@@ -853,7 +853,7 @@ function calculateDays() {
 					if(isOkey){
 					
 					        $.ajax({
-						        url: "/Cocean/approval/writeDraft.do",
+					        	url: "<c:url value='/approval/writeDraft.do'/>",
 						        method: "POST",
 						        processData: false,
 						        contentType: false,
@@ -985,7 +985,7 @@ function calculateDays() {
 		    console.log(lastLine);
 		    	formData.append("idx",idx);
 		    	$.ajax({
-			        url: "/Cocean/approval/writeDraft.do",
+		    		url: "<c:url value='/approval/writeDraft.do'/>",
 			        method: "POST",
 			        processData: false,
 			        contentType: false,
@@ -1094,7 +1094,7 @@ function calculateDays() {
 		        if(lineData.photo!=='null'){
 		        	row.append("<th style='background-color:white;'><img src='/photo/cocean/profile/" + lineData.photo + "' style='width:40px; margin-top:10px; height:40px' class='img-profile rounded-circle'></th>");
 		        	}else if(lineData.photo=='null'){
-		        		row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:40px; height:40px' class='img-profile rounded-circle'></th>");
+		        		row.append("<th style='background-color:white;'><img src='<c:url value=\"/resource/img/undraw_profile.svg\"/>' style='width:40px; height:40px' class='img-profile rounded-circle'></th>");
 		        	}
 		      /*   
 		        if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){

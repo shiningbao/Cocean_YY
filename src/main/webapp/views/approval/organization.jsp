@@ -59,7 +59,7 @@ $(function () {
     $("#jstree").jstree({
         'core': {
             'data': {
-            	"url": "<c:url value='/personnel/getChart.do/'/>"+${isActive},
+            	"url": "<c:url value='/personnel/getChart.do/{isActive}'/>",
                 "dataType": "JSON"
             }
         },
@@ -94,7 +94,7 @@ $(function () {
     	// console.log(icon);
     	if(icon!=true){	
     		 $.ajax({
- 	        	url:"/Cocean/approval/getEmployeeID.do",
+ 	        	url:"<c:url value='/approval/getEmployeeID.do'/>",
  	        	data:{employeeID:employeeID},
  	        	success:function(data){
  	        		console.log(data);

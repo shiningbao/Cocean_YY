@@ -73,10 +73,10 @@
 								<td style="padding:13px 0px;">
 									<c:choose>
 										<c:when test="${item.title == null}">
-										<a href="/Cocean/approval/draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting">${item.formTitle}</a>
+										<a href="<c:url value='/approval/draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting'/>">${item.formTitle}</a>
 										</c:when>
 										<c:otherwise>
-								        <a href="/Cocean/approval/draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting">${item.title}</a>
+								        <a href="<c:url value='/approval/draftDetail.go?idx=${item.idx}&employeeID=${item.id}&category=${item.category}&hTitle=waiting'/>">${item.title}</a>
 								        </c:otherwise>
 									</c:choose>
 								</td>

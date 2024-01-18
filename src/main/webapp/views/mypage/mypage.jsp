@@ -195,7 +195,7 @@ td{
 													id="thumbnail_image" alt="프로필 사진">
 											</c:when>
 											<c:otherwise>
-												<img src="/Cocean/resource/img/psProfile.jpg"
+												<img src="<c:url value='/resource/img/psProfile.jpg'/>"
 													id="thumbnail_image" alt="프로필 사진">
 
 											</c:otherwise>
