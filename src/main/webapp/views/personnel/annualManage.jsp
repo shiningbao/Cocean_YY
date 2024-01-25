@@ -205,7 +205,6 @@ margin-bottom: 14%;
             </table>
             
                     <div class="formbtn">
-				        <button class="btn btn-outline-primary annualCancleBtn">취소</button>
 				        <button class="btn btn-primary annualSaveBtn" type="button">저장</button>
 			        </div>
             

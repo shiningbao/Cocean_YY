@@ -729,6 +729,7 @@ document.addEventListener('DOMContentLoaded', function() {
     	// 일정 클릭 시 발생할 이벤트
     	//클릭한 일정 Id
     	var id = info.event.id;
+    	 
     	console.log(id);
     	console.log(info);
     	// 상세보기
