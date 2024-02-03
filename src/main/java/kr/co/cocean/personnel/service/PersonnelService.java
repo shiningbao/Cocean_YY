@@ -16,6 +16,7 @@ import org.apache.tomcat.util.http.fileupload.UploadContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -31,7 +32,7 @@ import kr.co.cocean.tank.dto.Pager;
 
 @Service
 public class PersonnelService {
-	private String root = "C:/upload/cocean/";
+	@Value("${file.root}") private String root;
 	@Autowired PersonnelDAO dao;
 	Logger logger = LoggerFactory.getLogger(getClass());
 	public int join(HashMap<String, Object> params, MultipartFile file, MultipartFile fileSignature) {

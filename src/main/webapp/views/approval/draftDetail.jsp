@@ -305,7 +305,7 @@ th {
             <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
         </c:when>
         <c:otherwise>
-            <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+            <img src="<c:url value='/resource/img/undraw_profile.svg'/>" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
         </c:otherwise>
     </c:choose>
     </th>

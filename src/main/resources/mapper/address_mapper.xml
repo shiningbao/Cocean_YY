@@ -27,11 +27,11 @@
 	
 
 	<select id="searchUser" resultType="outaddress">
- select addressNumber, employeeID, name, positionLevel, rankLevel, departmentName, phoneNumber
-    from personalAddressBook
-    where departmentName = #{query} OR name = #{query}
-</select>
-	 
+	 select addressNumber, employeeID, name, positionLevel, rankLevel, departmentName, phoneNumber,CompanyName
+	    from personalAddressBook
+	    where departmentName = #{query} OR name = #{query}
+	</select>
+		 
 	 
 	<insert id="insert" parameterType="hashmap">
 		INSERT into personalAddressBook (employeeID ,name,positionLevel,rankLevel,departmentName,phoneNumber,CompanyName)

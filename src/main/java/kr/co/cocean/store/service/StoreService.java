@@ -17,6 +17,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +39,7 @@ public class StoreService {
 	// mac 경로
 	// private String root = "/Users/chajaeho/Desktop/upload/cocean/";
 	// window 경로
-	private String root = "C:/upload/cocean/";
+	@Value("${file.root}") private String root;
 
 	// 카카오 지도 api 사용
 	public JSONObject kakaoAPi(Model model) {

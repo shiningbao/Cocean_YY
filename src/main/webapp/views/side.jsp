@@ -9,18 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cocean</title> 
 
-    
-  <!--    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script> -->
-
-
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <!-- icon-->
-<link
-	href="<c:url value='/resource/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet" type="text/css">
-<link rel="icon" href="<c:url value='/resource/img/favi.png'/>"
-	type="image/x-icon">
+<link	href="<c:url value='/resource/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet" type="text/css">
+
+
+<link rel="icon" href="<c:url value='/resource/img/favi.png'/>" type="image/x-icon">
 <!-- Custom styles template-->
 <link href="<c:url value='/resource/css/sb-admin-2.css'/>" rel="stylesheet">
 <!-- sweetalert -->
@@ -439,7 +435,7 @@ function logoutConfirm() {
 				}
 				
 				con += '</i></div></div><div class="alarmclick mr-5" style="width: 100%" onclick="location.href=\'';
-				con += '/Cocean'+list[i].url+'\'"><div class="small text-gray-500">';
+				con += list[i].url+'\'"><div class="small text-gray-500">';
 				con += list[i].notificationTime;
 				con += '</div><div>';
 				con += list[i].content;
@@ -477,13 +473,13 @@ function logoutConfirm() {
 	
 	var currentPathName = location.pathname;
 	var currentAction = currentPathName.split('/')[2];
-	if(currentAction == 'board'){
+	if(currentPathName == 'board'){
 		$('#board-click').click();
-	}else if(currentAction == 'approval'){
+	}else if(currentPathName == 'approval'){
 		$('#approval-click').click();
-	}else if(currentAction == 'personnel'){
+	}else if(currentPathName == 'personnel'){
 		$('#personnel-click').click();
-	}else if(currentAction == 'store'){
+	}else if(currentPathName == 'store'){
 		$('#store-click').click();
 	}
 	

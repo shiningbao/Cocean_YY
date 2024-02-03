@@ -12,6 +12,7 @@ import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,10 +31,7 @@ import kr.co.cocean.main.dto.FileDTO;
 @Service
 public class AnimalService {
 	
-// mac 업로드 주소
-//	private String root = "/Users/chajaeho/Desktop/upload/cocean/";
-// window 업로드 주소
-	private String root = "C:/upload/cocean/";
+	@Value("${file.root}") private String root;
 
 	Logger logger = LoggerFactory.getLogger(getClass());
 

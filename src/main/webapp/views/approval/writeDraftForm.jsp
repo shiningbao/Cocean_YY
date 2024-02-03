@@ -1034,13 +1034,13 @@ function calculateDays() {
 		        	row.append("<td style='width:65%;' colspan='2'>" + lineData.positionName + "</td>");
 		            // row.append("<td style='width:25%;'>" + lineData.positionName +"</td>");
 		            row.append("<td style='width:20%;'>" + lineData.name + "</td>");
-		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
+		            row.append("<div class='delArea'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } 
 		        else {
 		            row.append("<td style='width:40%;'>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
 		            row.append("<td style='width:20%;'>" + lineData.positionName + "</td>");
 		            row.append("<td style='width:20%;'>" + lineData.name + "</td>");
-		            row.append("<div class='delArea'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
+		            row.append("<div class='delArea'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        row.append("<input type='hidden' name='order' class='order' value='" + (appTable.find("tr").length + 1) + "'>");
@@ -1053,11 +1053,11 @@ function calculateDays() {
 		        if (lineData.hqName == '' && lineData.departmentName == '') {
 		            row = $("<td>" + lineData.rank +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
-		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
+		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
 		        } else {
 		            row = $("<td>" + lineData.hqName + "/" + lineData.departmentName +'\u00A0'+lineData.positionName +'\u00A0'+ lineData.name + "</td>");
 		            row.append(row);
-		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="<c:url value='/resource/img/cancel.png'/>" class="delete" alt="삭제 아이콘">'+"</div>");
+		            row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
 		        }
 		        row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
 		        // refTable.append(row);
