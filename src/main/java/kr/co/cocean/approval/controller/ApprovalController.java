@@ -42,7 +42,7 @@ import kr.co.cocean.mypage.dto.LoginDTO;
 import kr.co.cocean.tank.dto.Pager;
 
 @Controller
-public class ApprovalController {
+public class ApprovalController { // git test
 	Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Value("${file.root}") private String root;
