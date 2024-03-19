@@ -13,6 +13,7 @@ public class ApprovalDTO {
 	private String name;
 	private String departmentName;
 	private String rankName;
+	private int rankID;
 	private String hqName;
 	private int idx;
 	private int employeeID;
@@ -50,6 +51,13 @@ public class ApprovalDTO {
 	private int total;
 	private int approvalEmp;
 	private boolean included;
+	
+	public int getRankID() {
+		return rankID;
+	}
+	public void setRankID(int rankID) {
+		this.rankID = rankID;
+	}
 
 	public boolean isIncluded() {
 		return included;

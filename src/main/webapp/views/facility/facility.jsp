@@ -137,7 +137,7 @@ ul.mylist{
 						<c:forEach var="facility" items="${getCategory }">
 						<div class="facility">
 						<button class="interestCalendar Hide">
-							<img src="<c:url value='/resource/img/carrot-side.png'/>"
+							<img src="<c:url value='/resource/img/carrot-side.PNG'/>"
 									class="img2" alt="버튼 이미지">
 									<p class="facilityList">${facility.category }</p>
 						</button>
@@ -283,8 +283,8 @@ if (responName == '시설관리') {
 console.log(loginResponName);
 console.log(responName);
 
-var carrotSideImgUrl = '<c:url value="/resource/img/carrot-side.png"/>';
-var carrotDownImgUrl = '<c:url value="/resource/img/carrot-down.png"/>';
+var carrotSideImgUrl = '<c:url value="/resource/img/carrot-side.PNG"/>';
+var carrotDownImgUrl = '<c:url value="/resource/img/carrot-down.PNG"/>';
 
 
 

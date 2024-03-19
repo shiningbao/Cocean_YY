@@ -16,7 +16,7 @@
 	</select> -->
 	
 	<select id="draftInfo" resultType="approval">
-		 SELECT DISTINCT name,r.rankName, departmentName,h.hqName,e.employeeID,e.remainingAnnualLeave,f.serverFileName,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
+		SELECT DISTINCT name,r.rankName, departmentName,h.hqName, r.rankID, e.employeeID,e.remainingAnnualLeave,f.serverFileName,p.positionName FROM employee e LEFT OUTER JOIN department d ON e.departmentID=d.departmentID RIGHT OUTER JOIN headquarters h ON d.hqID=h.hqID 
  		LEFT OUTER JOIN rank r ON e.rankID=r.rankID JOIN position p ON e.positionID = p.positionID LEFT OUTER JOIN file f ON e.employeeID=f.idx WHERE e.employeeID=#{employeeID} AND f.path="profile";
 	</select>
 	

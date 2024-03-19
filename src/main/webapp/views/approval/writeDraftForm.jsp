@@ -297,7 +297,12 @@ th {
 			<tr style="text-align: center;">
 				<th style="background-color:white;"><img src='/photo/cocean/profile/${draftInfo.serverFileName}' class="img-profile rounded-circle" style="width: 40px;height: 40px;"></th>
 				<td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+				<c:if test="${draftInfo.rankID < 4}">
 				<td style="width: 40%;">${draftInfo.hqName}/${draftInfo.departmentName}</td>
+				</c:if>
+				<c:if test="${draftInfo.rankID >= 4}">
+				<td style="width: 40%;"></td>
+				</c:if>
 				<td style="width: 20%;">${draftInfo.positionName}</td>
 				<td style="width: 20%;">${draftInfo.name}</td>
 			</tr>
@@ -325,7 +330,9 @@ th {
 			</tr>
 			<tr>
 			    <th>소속부서</th>
+			    <c:if test="${draftInfo.rankID < 4}">
 			    <td>${draftInfo.hqName}/${draftInfo.departmentName}</td>
+			   	</c:if>
 			</tr>
 			<tr>
 			    <th>상신일</th>
