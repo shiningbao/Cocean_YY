@@ -244,7 +244,9 @@ th {
     height: 26px;
     }
     
-    
+    #fileList{
+    	font-family:Dotum;
+    }
     
     
 
@@ -434,9 +436,10 @@ th {
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" name="files" style="display:none;" multiple/>
+<input type="file" id="input-file" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
 </div>
 <br/>
+<div id="fileList"></div>
 
 
 </div>
@@ -474,6 +477,20 @@ th {
 <c:import url="/footer"/>
 </body>
 <script>
+
+function displayFileList(input) {
+    var fileList = document.getElementById('fileList');
+    fileList.innerHTML = ''; 
+    
+    var files = input.files;
+    for (var i = 0; i < files.length; i++) {
+        var fileItem = document.createElement('div');
+        fileItem.textContent = files[i].name;
+        fileList.appendChild(fileItem);
+    }
+}
+
+
 
 function reason() {
     var vacationCategory = document.getElementById('vacationCategory');
@@ -615,23 +632,23 @@ function calculateDays() {
 		console.log("마지막순서:"+lastOrder);
 	    var formData = new FormData();
 
-	   /*  var input-file = $("#input-file")[0];
-	    console.log(input-file); */
-	    // formData.append( "files", $("#input-file")[0].files[0] );
-	   /*  for (var i = 0; i < $('input[name="files"]').length; i++) {
+	   /*  var inputFile = $("#input-file")[0];
+	    console.log(inputFile);
+	    formData.append( "files", $("#input-file")[0].files[0] );
+	    for (var i = 0; i < $('input[name="files"]').length; i++) {
 	        formData.append('files', files[i]);
-	    } */
+	    }  */
 	    
-	   /*  var filesInput = $('input[name="files"]')[0];
-	    var files = filesInput.files;
+	    var filesInput = $("input[name='uploadFile']");
+	    var files = filesInput[0].files;
 	    console.log(files);
-	    if (files.length === 0) {
+	    if (files.length == 0) {
 	        formData.append('files', null);
 	    }else{
 	    for (var i = 0; i < files.length; i++) {
 	        formData.append('files', files[i]);
 	    }
-	    } */
+	    } 
 
 	    formData.append('titleID',titleID);
 	    formData.append('lastOrder',lastOrder);
@@ -776,7 +793,7 @@ function calculateDays() {
 						        cache: false,
 						        success: function (data) {
 						            // console.log(data);
-						            location.href = './myDraftList.go';
+						            // location.href = './myDraftList.go';
 						
 						        },
 						        error: function (e) {
