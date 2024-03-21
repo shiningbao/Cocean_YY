@@ -497,8 +497,13 @@ th {
 <label class="input-file-button" for="input-file">
  파일첨부
 </label>
-<input type="file" id="input-file" name="files" style="display:none;"/>
+<input type="file" id="input-file" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
 <br/>
+<div id="fileList">
+	<c:forEach items="${fileList}" var="file">
+    <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a><img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘"><br/>
+    </c:forEach>
+</div>
 
 
 </div>
@@ -536,6 +541,28 @@ th {
 <c:import url="/footer"/>
 </body>
 <script>
+
+function displayFileList(input) {
+    var fileList = document.getElementById('fileList');
+
+    var files = input.files;
+    for (var i = 0; i < files.length; i++) {
+        var fileItem = document.createElement('div');
+        fileItem.textContent = files[i].name;
+        
+        var deleteIcon = document.createElement('img');
+        deleteIcon.src = "/Cocean/resource/img/cancel.png";
+        deleteIcon.classList.add('delete');
+        deleteIcon.alt = "삭제 아이콘";
+        
+        deleteIcon.addEventListener('click', function() {
+            this.parentNode.remove();
+        });
+
+        fileItem.appendChild(deleteIcon);
+        fileList.appendChild(fileItem);
+    }
+}
 
 function reason() {
     var vacationCategory = document.getElementById('vacationCategory');

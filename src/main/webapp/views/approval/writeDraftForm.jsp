@@ -480,17 +480,25 @@ th {
 
 function displayFileList(input) {
     var fileList = document.getElementById('fileList');
-    fileList.innerHTML = ''; 
-    
+
     var files = input.files;
     for (var i = 0; i < files.length; i++) {
         var fileItem = document.createElement('div');
         fileItem.textContent = files[i].name;
+        
+        var deleteIcon = document.createElement('img');
+        deleteIcon.src = "/Cocean/resource/img/cancel.png";
+        deleteIcon.classList.add('delete');
+        deleteIcon.alt = "삭제 아이콘";
+        
+        deleteIcon.addEventListener('click', function() {
+            this.parentNode.remove();
+        });
+
+        fileItem.appendChild(deleteIcon);
         fileList.appendChild(fileItem);
     }
 }
-
-
 
 function reason() {
     var vacationCategory = document.getElementById('vacationCategory');
@@ -793,7 +801,7 @@ function calculateDays() {
 						        cache: false,
 						        success: function (data) {
 						            // console.log(data);
-						            // location.href = './myDraftList.go';
+						            location.href = './myDraftList.go';
 						
 						        },
 						        error: function (e) {
@@ -821,17 +829,16 @@ function calculateDays() {
 			
 		    var formData = new FormData();
 
-		    var filesInput = $('input[name="files"]')[0];
-		    var files = filesInput.files;
-		   //  console.log(files.length);
-		   //  console.log(filesInput);
-		    if (files.length === 0) {
+		    var filesInput = $("input[name='uploadFile']");
+		    var files = filesInput[0].files;
+		    console.log(files);
+		    if (files.length == 0) {
 		        formData.append('files', null);
 		    }else{
 		    for (var i = 0; i < files.length; i++) {
 		        formData.append('files', files[i]);
 		    }
-		    }
+		    } 
 		    
 		    formData.append('titleID',titleID);
 		    formData.append('lastOrder',lastOrder);
