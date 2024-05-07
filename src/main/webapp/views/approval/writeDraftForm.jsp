@@ -466,37 +466,37 @@ th {
 </div>
 
 </div>
-
-
-
 <!-- </form> -->
-
-
-
-
 <c:import url="/footer"/>
 </body>
 <script>
 
+var fileList = [];
+
 function displayFileList(input) {
-    var fileList = document.getElementById('fileList');
+	  var files = input.files;
+	    for (var i = 0; i < files.length; i++) {
+	        var fileItem = document.createElement('div');
+	        fileItem.textContent = files[i].name;
+	        
+	        var deleteIcon = document.createElement('img');
+	        deleteIcon.src = "/Cocean/resource/img/cancel.png";
+	        deleteIcon.classList.add('delete');
+	        deleteIcon.alt = "삭제 아이콘";
+	        
+	        deleteIcon.addEventListener('click', function() {
+	            var index = fileList.indexOf(this.parentNode.textContent);
+	            if (index !== -1) {
+	                fileList.splice(index, 1); // 삭제되지 않은 파일 목록에서 제거
+	            }
+	            this.parentNode.remove();
+	        });
 
-    var files = input.files;
-    for (var i = 0; i < files.length; i++) {
-        var fileItem = document.createElement('div');
-        fileItem.textContent = files[i].name;
-        
-        var deleteIcon = document.createElement('img');
-        deleteIcon.src = "/Cocean/resource/img/cancel.png";
-        deleteIcon.classList.add('delete');
-        deleteIcon.alt = "삭제 아이콘";
-        
-        deleteIcon.addEventListener('click', function() {
-            this.parentNode.remove();
-        });
+	        fileItem.appendChild(deleteIcon);
+	        document.getElementById('fileList').appendChild(fileItem);
+	        
+	        fileList.push(files[i].name); // 파일 목록 배열에 추가
 
-        fileItem.appendChild(deleteIcon);
-        fileList.appendChild(fileItem);
     }
 }
 
@@ -525,8 +525,7 @@ function reason() {
 		 endDate=$(this).val();
 	    });
 
-	// 휴가신청서 시간 부분
-	
+	// 휴가신청서 시간 부분	
 	 $('#startFac, #endFac').on('change', function () {
         calculateDays();
     });
@@ -816,8 +815,7 @@ function calculateDays() {
 	   
 	}
 	
-	
-	
+
 	// 임시저장
 	function tempSave(idx) {
 		swal('저장되었습니다.','','success');
@@ -832,13 +830,11 @@ function calculateDays() {
 		    var filesInput = $("input[name='uploadFile']");
 		    var files = filesInput[0].files;
 		    console.log(files);
-		    if (files.length == 0) {
-		        formData.append('files', null);
-		    }else{
 		    for (var i = 0; i < files.length; i++) {
-		        formData.append('files', files[i]);
+		        if (fileList.includes(files[i].name)) {
+		            formData.append('files', files[i]);
+		        }
 		    }
-		    } 
 		    
 		    formData.append('titleID',titleID);
 		    formData.append('lastOrder',lastOrder);
@@ -874,7 +870,6 @@ function calculateDays() {
 		    	formData.append('vacationCategory', vacationCategory);
 		    	formData.append('textArea', textArea);
 		    	formData.append('total', total);
-				console.log("아오:"+vacationCategory);
 		    }
 	    
 		    $("#approvalLine tbody tr").each(function (index) {
@@ -921,7 +916,7 @@ function calculateDays() {
 		    formData.append('lastLine', JSON.stringify(lastLine));
 		    formData.append('tempSave', 1); 
 		    if(idx!==undefined){
-		    	console.log("이미 임시저장한거있음:idx="+idx);
+		    	console.log("이미 임시저장한거있음 : idx="+idx);
 		    	formData.append("idx",idx);
 		    	$.ajax({
 		    		url: "<c:url value='/approval/writeDraft.do'/>",
@@ -946,8 +941,8 @@ function calculateDays() {
 		        data: formData,
 		        cache: false,
 		        success: function (data) {
-		            console.log(data.idx);
-		            var idx=data.idx;
+		            console.log(data);
+		            // var idx=data.idx;
 		            changeBtn(idx);
 		        },
 		        error: function (e) {
@@ -961,7 +956,6 @@ function calculateDays() {
 	 function changeBtn(idx) {
         $('#btnRemove').remove();
         renderBtn(idx);
-	
      }
 	 
  	 function renderBtn(idx) {

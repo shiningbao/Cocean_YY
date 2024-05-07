@@ -148,11 +148,10 @@ public class ApprovalService {
 				dao.publicApp(idx); // "공개"일때 approval 테이블 insert
 			}
 		}else { // 첫 임시저장
-
 				if(lastLineInfoList.isEmpty()) { // 결재라인 비었을 경우
 					dao.lineEmptyTs(idx,lastOrder,writerID); // approval테이블에 insert
 				}else{
-				dao.approvalTs(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
+					dao.approvalTs(lastLineInfoList,idx,lastOrder); // approval테이블에 insert
 				}
 		}
 		/*
@@ -270,7 +269,7 @@ public class ApprovalService {
 			byte[] bytes = uploadFile.getBytes();
 			Path path = Paths.get(root+"draft/"+newFileName);
 			Files.write(path, bytes);
-			dao.writeFile(idx,oriFileName,newFileName); // file테이블에 insert
+			dao.writeFile(idx,oriFileName,newFileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

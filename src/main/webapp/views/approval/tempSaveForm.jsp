@@ -249,264 +249,271 @@ th {
 </head>
 <body>
 <c:import url="/side"/>
+
 <div class="container-fluid contentField">
+	<!-- 결재라인 설정 모달 -->
+	<div class="modal fade" id="lineModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			
+				<div class="modal-header">
+				   <!-- 모달창 제목 -->
+				   <h5 class="modal-title">결재라인 설정</h5>
+				   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				      <span aria-hidden="true">&times;</span>
+				   </button>
+				</div>
+				
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6" style="border-right:1px solid #EDEDED">
+							<div id="employeeList">
+							<!-- 조직도 -->
+							<c:import url="/approval/appOrganization/1"/>
+							</div>
+						</div>				
+						<div class="col-md-6">
+							<div id="line">
+							<!-- 라인 추가하면 그려지는 부분 -->
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- 모달창에서 라인 추가하면 그려지는 부분 -->
+	<div id="rightContainer">
+		<div class="card shadow" style="width: 354px;padding: 1%;">
+			<div class="lineContent" style="padding: 10px 6px;">
+				<span style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재라인</span>
+				<img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;">
+				<hr/>
+				<table id="approvalLine"  style="font-size:14px;">
+					<tr style="text-align: center;">
+						<!-- 로그인 유저 정보 그려지는 부분 -->
+						<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px "></th>
+						<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+						<td style="width: 40%;">${list.hqName}/${list.departmentName}</td>
+						<td style="width: 20%; padding:0px;">${list.positionName}</td>
+						<td style="width: 20%;">${list.name}</td>
+					</tr>
+					<!-- 모달창에서 결재라인에 추가한 직원의 정보가 그려지는 부분 -->
+					<c:forEach items="${lineList}" var="lL">
+					<tr style="text-align: center;">
+						<th style="background-color:white;">
+						<c:choose>
+						<c:when test="${lL.serverFileName != null}">
+						<img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+						</c:when>
+						<c:otherwise>
+						<img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+						</c:otherwise>
+						</c:choose>
+						</th>
+						<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+						<td style="width: 40%;">${lL.hqName}/${lL.departmentName}</td>
+						<td style="width: 20%; padding:0px;">${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
+						<td style="width: 20%;">${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
+					</tr>   
+					</c:forEach>
+				</table>
+			</div>
+		</div>
+	</div>
 
-<div class="modal fade" id="lineModal" tabindex="-1" role="dialog"
-      aria-labelledby="modal" aria-hidden="true">
-      <div class="modal-dialog">
-         <div class="modal-content">
-            <div class="modal-header">
-               <!-- 모달창 제목 -->
-               <h5 class="modal-title">결재라인 설정</h5>
-               <button type="button" class="close" data-dismiss="modal"
-                  aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-               </button>
-            </div>
-            <div class="modal-body">
-            <div class="row">
-               <div class="col-md-6" style="border-right:1px solid #EDEDED">
-               <div id="employeeList">
-               <c:import url="/approval/appOrganization/1"/>
-               </div>
-            </div>
-            
-            <div class="col-md-6">
-            <div id="line">
-            </div>
-            </div>
-            </div>
-            </div>
-            <div class="modal-footer">
-             <button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
-            </div>
-         </div>
-      </div>
-   </div>
-   
-   <div id="rightContainer">
-<div class="card shadow" style="width: 354px;padding: 1%;">
-   <div class="lineContent" style="padding: 10px 6px;"><span style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재라인</span>
-    <img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;"><!-- <a href="#" class="addApprovalLine" onclick="remainedEmpID()" "></a> -->
-   <hr/>
-      <table id="approvalLine"  style="font-size:14px;">
-         <tr style="text-align: center;">
-            <th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px "></th>
-            <td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
-            <td style="width: 40%;">${list.hqName}/${list.departmentName}</td>
-            <td style="width: 20%; padding:0px;">${list.positionName}</td>
-            <td style="width: 20%;">${list.name}</td>
-         </tr>
-         <c:forEach items="${lineList}" var="lL">
-         <tr style="text-align: center;">
-            <th style="background-color:white;">
-                <c:choose>
-                 <c:when test="${lL.serverFileName != null}">
-                     <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-                 </c:when>
-                 <c:otherwise>
-                     <img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-                 </c:otherwise>
-             </c:choose>
-             </th>
-            <td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
-            <td style="width: 40%;">${lL.hqName}/${lL.departmentName}</td>
-            <td style="width: 20%; padding:0px;">${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
-            <td style="width: 20%;">${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
-         </tr>   
-         </c:forEach>
-      </table>
-   </div>
-   </div>
-   </div>
-
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-   <div class="topTitle">
-   <h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
-   </div>
-</div>
-<div id="contentLine">
-<div id="formTitle">${list.formTitle}</div>
-<div id="draftInfoTop" style="display: flex;">
-<input type="hidden" value="${list.titleID}" name=titleID>
-      <table id="draftInfo">
-         <tr>
-             <th>상신자</th>
-             <td>${list.name}</td>
-             <td rowspan="3" class="di-td-1"></td>
-         </tr>
-         <tr>
-             <th>소속부서</th>
-             <td>${list.hqName}/${list.departmentName}</td>
-         </tr>
-         <tr>
-             <th>상신일</th>
-             <td>${date}</td>
-         </tr>
-      </table>
-      
-      <div id="approvalSignature">
-      </div>
-   
-   </div>
-<input type="hidden" value="${list.employeeID}" name="loginId">
-<input type="hidden" value="${list.idx}" name="idx">
-<input type="hidden" id="order" name="order" value="">
-
-<br/>
-<!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
-<c:if test="${list.formTitle eq '업무기안서'}">
-<table id="workDraftContent">
-   
-      <tr>
-          <th>참조자</th>
-          <td><table id="refTable" style="border:none;">
-          <c:forEach items="${agrRef}" var="ref">
-          <c:if test="${ref.category eq '참조'}">
-          <tr>
-          <td>
-          <span class="box" style="background-color: #cfdff0;
-       border: 1px solid #9fc2e8;
-       display: inline-block;
-       padding-left: 5px;
-       padding-right: 5px;
-       text-align: center;
-       border-radius: 11px;
-       letter-spacing: 0px;
-       height: 21px;
-       vertical-align: middle;">
-          <label>${ref.hqName}</label>
-          <label>${ref.departmentName}</label>
-          <label>${ref.positionName}</label>
-          <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-           <input type="hidden" name="refEmpId" value="${ref.employeeID }">
-           </span>
-          </td>
-          </tr>
-          </c:if>
-          </c:forEach>
-          </table>
-          </td>
-      </tr>
-      <tr>
-      <th>제목</th>
-         <td><input type="text" name="title" placeholder="*제목을 입력해주세요." value="${list.title}"></td>
-      </tr>
-      <tr>
-         <td colspan="2">
-            <div id="summernote">${list.content}</div>
-         <!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
-         <input type="hidden" name="content" value=""/>
-      </td>
-   </tr>
-</table>
-
-</c:if>
-
-<c:if test="${list.formTitle eq '휴가신청서'}">
-<table id="attendanceDraftContent">
-   <tr>
-       <th>참조자</th>
-       <td>
-       <c:forEach items="${agrRef}" var="ref">
-       <c:if test="${ref.category eq '참조'}">
-       <table id="refTable" style="border:none;">
-       <tr>
-       <td>
-       <label>${ref.hqName}</label>
-       <label>${ref.departmentName}</label>
-       <label>${ref.positionName}</label>
-       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-       </td>
-       </tr>
-       </table>
-       </c:if>
-       </c:forEach>
-       </td>
-   </tr>
-   <tr>
-      <th>휴가 종류</th>
-         <td colspan="2">
-         <select id="vacationCategory" name="vacationCategory" onchange="reason()">
-        <option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
-        <option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
-        <option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
-        <option value="공가" ${'공가' eq vac.category ? 'selected="selected"' : ''}>공가</option>
-        <option value="경조사" ${'경조사' eq vac.category ? 'selected="selected"' : ''}>경조사</option>
-    </select>
-         </td>
-   </tr>
-   <tr>
-       <th>잔여 연차</th>
-      <td id="remain" contentEditable="false" style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
-   </tr>
-   <tr>
-       <th>사용 날짜</th>
-      <td> 
-          <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
-          <div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
-          </div>
-       </td>
-   </tr>
-   <tr>
-      <th>총 사용일</th>
-      <td id="total" style="background-color:lightgray;"></td>
-   </tr>
-   <tr id="reason" style="display: none;">
-      <th>사유</th>
-      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력">${vac.vacationReason}</textarea></td>
-   </tr>
-</table>
-</c:if>
-
-
-<c:if test="${list.formTitle eq '휴직원' or form.formTitle eq '복직원'}">
-<table id="leaveDraftContent">
-   <tr>
-       <th>참조자</th>
-       <td>
-       <c:forEach items="${agrRef}" var="ref">
-       <c:if test="${ref.category eq '참조'}">
-       <table id="refTable" style="border:none;">
-       <tr>
-       <td>
-       <label>${ref.hqName}</label>
-       <label>${ref.departmentName}</label>
-       <label>${ref.positionName}</label>
-       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-       </td>
-       </tr>
-       </table>
-       </c:if>
-       </c:forEach>
-       </td>
-   </tr>
-   <tr>
-      <th>휴직 기간</th>
-         <td><input type="date" name="startDate" value="${lv.leaveStartDate}">~<input type="date" name="endDate" value="${lv.leaveEndDate}"></td>
-      </tr>
-   <tr>
-      <th>사유</th>
-      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력" >${lv.leaveReason}</textarea></td>
-   </tr>
-</table>
-</c:if>
-
-
-<br/>
-<label class="input-file-button" for="input-file">
- 파일첨부
-</label>
-<input type="file" id="input-file" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
-<br/>
-<div id="fileList">
-	<c:forEach items="${fileList}" var="file">
-    <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a><img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘"><br/>
-    </c:forEach>
-</div>
-
-
-</div>
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<div class="topTitle">
+			<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
+		</div>
+	</div>
+	
+	<div id="contentLine">
+		<div id="formTitle">${list.formTitle}</div>
+		<div id="draftInfoTop" style="display: flex;">
+			<input type="hidden" value="${list.titleID}" name=titleID>
+			<table id="draftInfo">
+			<!-- 로그인한 유저의 정보 -->
+				<tr>
+				    <th>상신자</th>
+				    <td>${list.name}</td>
+				    <td rowspan="3" class="di-td-1"></td>
+				</tr>
+				<tr>
+				    <th>소속부서</th>
+				    <td>${list.hqName}/${list.departmentName}</td>
+				</tr>
+				<tr>
+				    <th>상신일</th>
+				    <td>${date}</td>
+				</tr>
+			</table>		      
+			<div id="approvalSignature">
+			</div>		   
+		</div>
+	<input type="hidden" value="${list.employeeID}" name="loginId">
+	<input type="hidden" value="${list.idx}" name="idx">
+	<input type="hidden" id="order" name="order" value="">
+	
+	<br/>
+	<!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
+	<c:if test="${list.formTitle eq '업무기안서'}">
+	<table id="workDraftContent">
+	   
+	      <tr>
+	          <th>참조자</th>
+	          <td><table id="refTable" style="border:none;">
+	          <c:forEach items="${agrRef}" var="ref">
+	          <c:if test="${ref.category eq '참조'}">
+	          <tr>
+	          <td>
+	          <span class="box" style="background-color: #cfdff0;
+	       border: 1px solid #9fc2e8;
+	       display: inline-block;
+	       padding-left: 5px;
+	       padding-right: 5px;
+	       text-align: center;
+	       border-radius: 11px;
+	       letter-spacing: 0px;
+	       height: 21px;
+	       vertical-align: middle;">
+	          <label>${ref.hqName}</label>
+	          <label>${ref.departmentName}</label>
+	          <label>${ref.positionName}</label>
+	          <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+	           <input type="hidden" name="refEmpId" value="${ref.employeeID }">
+	           </span>
+	          </td>
+	          </tr>
+	          </c:if>
+	          </c:forEach>
+	          </table>
+	          </td>
+	      </tr>
+	      <tr>
+	      <th>제목</th>
+	         <td><input type="text" name="title" placeholder="*제목을 입력해주세요." value="${list.title}"></td>
+	      </tr>
+	      <tr>
+	         <td colspan="2">
+	            <div id="summernote">${list.content}</div>
+	         <!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
+	         <input type="hidden" name="content" value=""/>
+	      </td>
+	   </tr>
+	</table>
+	
+	</c:if>
+	
+	<c:if test="${list.formTitle eq '휴가신청서'}">
+	<table id="attendanceDraftContent">
+	   <tr>
+	       <th>참조자</th>
+	       <td>
+	       <c:forEach items="${agrRef}" var="ref">
+	       <c:if test="${ref.category eq '참조'}">
+	       <table id="refTable" style="border:none;">
+	       <tr>
+	       <td>
+	       <label>${ref.hqName}</label>
+	       <label>${ref.departmentName}</label>
+	       <label>${ref.positionName}</label>
+	       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+	       </td>
+	       </tr>
+	       </table>
+	       </c:if>
+	       </c:forEach>
+	       </td>
+	   </tr>
+	   <tr>
+	      <th>휴가 종류</th>
+	         <td colspan="2">
+	         <select id="vacationCategory" name="vacationCategory" onchange="reason()">
+	        <option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
+	        <option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
+	        <option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
+	        <option value="공가" ${'공가' eq vac.category ? 'selected="selected"' : ''}>공가</option>
+	        <option value="경조사" ${'경조사' eq vac.category ? 'selected="selected"' : ''}>경조사</option>
+	    </select>
+	         </td>
+	   </tr>
+	   <tr>
+	       <th>잔여 연차</th>
+	      <td id="remain" contentEditable="false" style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
+	   </tr>
+	   <tr>
+	       <th>사용 날짜</th>
+	      <td> 
+	          <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
+	          <div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
+	          </div>
+	       </td>
+	   </tr>
+	   <tr>
+	      <th>총 사용일</th>
+	      <td id="total" style="background-color:lightgray;"></td>
+	   </tr>
+	   <tr id="reason" style="display: none;">
+	      <th>사유</th>
+	      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력">${vac.vacationReason}</textarea></td>
+	   </tr>
+	</table>
+	</c:if>
+	
+	
+	<c:if test="${list.formTitle eq '휴직원' or form.formTitle eq '복직원'}">
+	<table id="leaveDraftContent">
+	   <tr>
+	       <th>참조자</th>
+	       <td>
+	       <c:forEach items="${agrRef}" var="ref">
+	       <c:if test="${ref.category eq '참조'}">
+	       <table id="refTable" style="border:none;">
+	       <tr>
+	       <td>
+	       <label>${ref.hqName}</label>
+	       <label>${ref.departmentName}</label>
+	       <label>${ref.positionName}</label>
+	       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+	       </td>
+	       </tr>
+	       </table>
+	       </c:if>
+	       </c:forEach>
+	       </td>
+	   </tr>
+	   <tr>
+	      <th>휴직 기간</th>
+	         <td><input type="date" name="startDate" value="${lv.leaveStartDate}">~<input type="date" name="endDate" value="${lv.leaveEndDate}"></td>
+	      </tr>
+	   <tr>
+	      <th>사유</th>
+	      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력" >${lv.leaveReason}</textarea></td>
+	   </tr>
+	</table>
+	</c:if>
+	
+	
+	<br/>
+	<label class="input-file-button" for="input-file">
+	 파일첨부
+	</label>
+	<input type="file" id="input-file" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
+	<br/>
+	<div id="fileList">
+		<c:forEach items="${fileList}" var="file">
+	    <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a><img src="/Cocean/resource/img/cancel.png" class="deletee" alt="삭제 아이콘"><br/>
+	    </c:forEach>
+	</div>
+	
+	
+	</div>
 <div id="bottom">
 <div id="isPublic">
 <input type="radio" name="publicStatus" value=0 checked/>비공개
@@ -537,24 +544,24 @@ th {
 
 
 
-
 <c:import url="/footer"/>
 </body>
 <script>
 
-function displayFileList(input) {
-    var fileList = document.getElementById('fileList');
 
-    var files = input.files;
+function displayFileList(input) {
+	var fileList = document.getElementById('fileList');
+    var files = input.files; 
+
     for (var i = 0; i < files.length; i++) {
         var fileItem = document.createElement('div');
         fileItem.textContent = files[i].name;
-        
+
         var deleteIcon = document.createElement('img');
         deleteIcon.src = "/Cocean/resource/img/cancel.png";
         deleteIcon.classList.add('delete');
         deleteIcon.alt = "삭제 아이콘";
-        
+
         deleteIcon.addEventListener('click', function() {
             this.parentNode.remove();
         });
@@ -919,19 +926,16 @@ function calculateDays() {
          var lastOrder = $('#approvalLine input[name="order"]:last').val(); // 결재라인의 마지막 순서
          var lastLine = [];
          
-          var formData = new FormData();
+         var formData = new FormData();
 
-          var filesInput = $('input[name="files"]')[0];
-          var files = filesInput.files;
-         //  console.log(files.length);
-         //  console.log(filesInput);
-          if (files.length === 0) {
-              formData.append('files', null);
-          }else{
-          for (var i = 0; i < files.length; i++) {
-              formData.append('files', files[i]);
-          }
-          }
+          var filesInput = $("input[name='uploadFile']");
+		  var files = filesInput[0].files;
+		  console.log(files);
+		    for (var i = 0; i < files.length; i++) {
+		        if (fileList.includes(files[i].name)) {
+		            formData.append('files', files[i]);
+		        }
+		    }
           
           formData.append('titleID',titleID);
           formData.append('lastOrder',lastOrder);
@@ -967,7 +971,6 @@ function calculateDays() {
              formData.append('vacationCategory', vacationCategory);
              formData.append('textArea', textArea);
              formData.append('total', total);
-            console.log("아오:"+vacationCategory);
           }
        
           $("#approvalLine tbody tr").each(function (index) {
@@ -1011,11 +1014,10 @@ function calculateDays() {
           });
 
           formData.append('lastLine', JSON.stringify(lastLine));
-          formData.append('tempSave', 1); 
-   
-          console.log(lastLine);
-             formData.append("idx",idx);
-             $.ajax({
+          formData.append('tempSave', 1);    
+          formData.append("idx",idx);
+          
+              $.ajax({
                  url: "<c:url value='/approval/writeDraft.do'/>",
                  method: "POST",
                  processData: false,
@@ -1028,7 +1030,7 @@ function calculateDays() {
                  error: function (e) {
                      console.error(e);
                  }
-                });
+              	});
        
       }
    
@@ -1135,13 +1137,13 @@ function calculateDays() {
               if (lineData.hqName == '' && lineData.departmentName == '') {
                  row.append("<td style='width:65%;' colspan='2'>" + lineData.positionName + "</td>");
                   row.append("<td style='width:20%'>" + lineData.name + "</td>");
-                  row.append("<div class='delArea'>"+'<img src="/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
+                  row.append("<div class='delArea'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
               } 
               else {
                   row.append("<td style='width:40%;'>" + lineData.hqName + "/" + lineData.departmentName + "</td>");
                   row.append("<td style='width:20%;'>" + lineData.rank + "</td>");
                   row.append("<td style='width:20%;'>" + lineData.name + "</td>");
-                  row.append("<div class='delArea'>"+'<img src="/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
+                  row.append("<div class='delArea'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
               }
               row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
               row.append("<input type='hidden' name='order' class='order' value='" + (appTable.find("tr").length + 1) + "'>");
@@ -1154,11 +1156,11 @@ function calculateDays() {
               if (lineData.hqName == '' && lineData.departmentName == '') {
                   row = $("<td>" + lineData.rank +'\u00A0'+ lineData.name + "</td>");
                   row.append(row);
-                  row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
+                  row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
               } else {
                   row = $("<td>" + lineData.hqName + "/" + lineData.departmentName +'\u00A0'+ lineData.positionName +'\u00A0'+ lineData.name + "</td>");
                   row.append(row);
-                  row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
+                  row.append("<div class='delRef' style='width:20px; float:right;'>"+'<img src="/Cocean/resource/img/cancel.png" class="delete" alt="삭제 아이콘">'+"</div>");
               }
               row.append("<input type='hidden' class='employeeID' value='" + lineData.employeeID + "'>");
               // refTable.append(row);
@@ -1267,6 +1269,8 @@ function calculateDays() {
              var row = element.closest('tr')
              var cell = element.closest('td');
              var table = row.closest('table');
+             var fileItem = $(this).prev();
+             var fileList = $(this).closest('#fileList');
              
              if (table.attr('id') === 'approvalLine') {
                  row.remove();
@@ -1277,7 +1281,11 @@ function calculateDays() {
                   $('#approvalSignature .empID[value="' + delEmpID + '"]').parent().remove();
              } else {
                  cell.remove();
-
+                 fileItem.remove();
+                 $(this).remove();
+             }
+             if (fileList.children('br').length > 0) {
+                 fileList.empty();
              }
          });   
 
