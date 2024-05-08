@@ -171,7 +171,7 @@ public class ApprovalController {
 		return mav;
 	}
 
-
+	// 서명란 그리는 요청
 	@RequestMapping(value = "/approval/drawSign")
 	@ResponseBody
 	public HashMap<String, Object> drawSign(@RequestParam String loginId, String idx) {

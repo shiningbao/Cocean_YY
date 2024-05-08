@@ -1,5 +1,3 @@
-writeDraftForm
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.text.SimpleDateFormat" %>
@@ -11,698 +9,658 @@ writeDraftForm
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-
-<%-- <script src="<c:url value='/resource/summernote/summernote-lite.js'/>"></script> --%>
-<%-- <script src="<c:url value='/resource/summernote/lang/summernote-ko-KR.js'/>"></script> --%>
-<%-- <link rel="stylesheet" href="<c:url value='/resource/summernote/summernote-lite.css'/>"> --%>
-
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
 <style>
-table,th,td{
-      border : 1px solid black;
-      border-collapse : collapse;
-      padding : 5px 10px;
-}
-
-.di-td-1{
-   width:86px;
-}
-
-input[type="text"]{
-   width : 100%;
-}
-
-button{
-   margin : 5px 0;
-}
-
-#approvalSignature{
-   margin-left : 20px;
-   margin-bottom : 20px;
-}
-
-#approvalSignature td{
-   text-align: center;
-}
-
-#workDraftContent{
-   width : 50%;
-}
-
-#attendanceDraftContent{
-   width : 100%;
-}
-
-#leaveDraftContent{
-   width : 100%;
-}
-
-#leaveDraftContent th{
-   text-align : center;
-}
-
-#attendanceDraftContent th{
-   text-align : center;
-}
-
-#draftInfoTop{
-   width : 840.8px;
-}
-
-#approvalLine{
-   border-spacing : 10px 10px;
-   width: 100%;
-   
-}
-
-#approvalLine, #approvalLine th, #approvalLine td {
-  border: none;
-  padding : 0px;
-}
-
-#agreeTable, #agreeTable tr, #agreeTable td{
-   border:none;
-}
-
-#refTable, #refTable tr, #refTable td{
-   border:none;
-}
-
-#textarea{
-   width : 100%;
-   height: 200px;
-   resize: none;
-}
-
-.modal-content{
-   width:133% !important;
-   height:100%;
-   overflow-y: auto;
-}
-
-.show {
-   display:block;
-
-}
-
-#contentLine{
-   margin: 14px;
-    padding: 4% 2% 2% 2%;
-    border: 5px solid #e8e8e8;
-    width: 73%;
-    height: 145%;
-}
-
-#bottom{
-    width:74%;
-    margin-left : 2%;
-}
-
-#rightContainer{
-    flex-direction: column;
-    width: 22%;
-    float:right;
-    margin: 5% 2%;
-}
-
-#formTitle{
-    text-align: center;
-    font-size: 41px;
-    font-family:Dotum;
-    margin-bottom: 17px;
-}
-
-.topTitle{
-    width: 50%;
-    font-size: 30px;
-}
-
-.dateSelect {
-   display:flex;
-   height:40px;
-}
-
-.signApp{
-   float:right;
-}
-
-#approvalSignature{
-   float:right;
-}
-
-.signAgr{
-   float:left;
-}
-
-.input-file-button{
-    padding: 3px 10px;
-    background-color: #2e59d9;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    width: 83px;
-}
-
-th {
-    background-color: #ededed;
-}
-
-.orderNum{
-   background-color: white;
-}
-
-.order{
-   background-color: white;
-}
-
-.addApprovalLine{
-   width:20px;
-   height:20px;
-
-}
-
-.deletee{
-   width:15px;
-   height:15px;
-   cursor:pointer;
-}
-
-
-.delete{
-   width:15px;
-   height:15px;
-   cursor:pointer;
-}
-
- .appStatus{
-    text-decoration: underline;
-    text-decoration-thickness: 3px;
-    text-decoration-color: #4480e9;
-    }
-    
-      .delArea{
-      margin: 53% 15% 6% -46%;
-       padding: 0px 5px;
-       width: 25px;
-    }
-    
-    #draftInfo tr, #draftInfo th, #draftInfo td{
-           font-family: Dotum;
-    }
-    
-    #workDraftContent tr, #workDraftContent th, #workDraftContent td{
-       font-family:Dotum;
-    }
-    
-     #attendanceDraftContent tr, #attendanceDraftContent th, #attendanceDraftContent td{
-       font-family:Dotum;
-    }
-    
-     #leaveDraftContent tr, #leaveDraftContent th, #leaveDraftContent td{
-       font-family:Dotum;
-    }
-    
-     #approvalSignature tr, #approvalSignature th, #approvalSignature td{
-       font-family:Dotum;
-       font-weight:bold;
-    }
-
-     .newBox{
-   background-color: #cfdff0;
-    border: 1px solid #9fc2e8;
-    display: inline-block;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-right: 10px;
-    padding-top: 0px;
-    margin-top: 1px;
-    text-align: center;
-    border-radius: 11px;
-    letter-spacing: 0px;
-    height: 26px;
-    }
-
-    
+	table,th,td{
+		border : 1px solid black;
+		border-collapse : collapse;
+		padding : 5px 10px;
+	}
+	
+	.di-td-1{
+		width:86px;
+	}
+	
+	input[type="text"]{
+		width : 100%;
+	}
+	
+	button{
+		margin : 5px 0;
+	}
+	
+	#approvalSignature{
+	   	margin-left : 20px;
+	   	margin-bottom : 20px;
+	}
+	
+	#approvalSignature td{
+		text-align: center;
+	}
+	
+	#workDraftContent{
+		width : 50%;
+	}
+	
+	#attendanceDraftContent{
+		width : 100%;
+	}
+	
+	#leaveDraftContent{
+		width : 100%;
+	}
+	
+	#leaveDraftContent th{
+		text-align : center;
+	}
+	
+	#attendanceDraftContent th{
+		text-align : center;
+	}
+	
+	#draftInfoTop{
+		width : 840.8px;
+	}
+	
+	#approvalLine{
+		border-spacing : 10px 10px;
+		width: 100%; 
+	}
+	
+	#approvalLine, #approvalLine th, #approvalLine td {
+		border: none;
+		padding : 0px;
+	}
+	
+	#agreeTable, #agreeTable tr, #agreeTable td{
+		border:none;
+	}
+	
+	#refTable, #refTable tr, #refTable td{
+		border:none;
+	}
+	
+	#textarea{
+		width : 100%;
+		height: 200px;
+		resize: none;
+	}
+	
+	.modal-content{
+		width:133% !important;
+		height:100%;
+		overflow-y: auto;
+	}
+	
+	.show{
+		display:block;
+	}
+	
+	#contentLine{
+		margin: 14px;
+		padding: 4% 2% 2% 2%;
+		border: 5px solid #e8e8e8;
+		width: 73%;
+		height: 145%;
+	}
+	
+	#bottom{
+		width:74%;
+		margin-left : 2%;
+	}
+	
+	#rightContainer{
+		flex-direction: column;
+		width: 22%;
+		float:right;
+		margin: 5% 2%;
+	}
+	
+	#formTitle{
+		text-align: center;
+		font-size: 41px;
+		font-family:Dotum;
+		margin-bottom: 17px;
+	}
+	
+	.topTitle{
+		width: 50%;
+	    font-size: 30px;
+	}
+	
+	.dateSelect{
+	   display:flex;
+	   height:40px;
+	}
+	
+	.signApp{
+	   float:right;
+	}
+	
+	#approvalSignature{
+	   float:right;
+	}
+	
+	.signAgr{
+	   float:left;
+	}
+	
+	.inputFileButton{
+		padding: 3px 10px;
+		background-color: #2e59d9;
+		border-radius: 4px;
+		color: white;
+		cursor: pointer;
+		width: 83px;
+	}
+	
+	th{
+	    background-color: #ededed;
+	}
+	
+	.orderNum{
+		background-color: white;
+	}
+	
+	.order{
+		background-color: white;
+	}
+	
+	.addApprovalLine{
+		width:20px;
+		height:20px;
+	
+	}
+	
+	.deletee{
+		width:15px;
+		height:15px;
+		cursor:pointer;
+	}
+	
+	.delete{
+		width:15px;
+		height:15px;
+		cursor:pointer;
+	}
+	
+	.appStatus{
+	    text-decoration: underline;
+	    text-decoration-thickness: 3px;
+	    text-decoration-color: #4480e9;
+	}
+	    
+	.delArea{
+		margin: 53% 15% 6% -46%;
+		padding: 0px 5px;
+		width: 25px;
+	}
+	 
+	#draftInfo tr, #draftInfo th, #draftInfo td{
+	    font-family: Dotum;
+	}
+	 
+	#workDraftContent tr, #workDraftContent th, #workDraftContent td{
+	    font-family:Dotum;
+	}
+	 
+	#attendanceDraftContent tr, #attendanceDraftContent th, #attendanceDraftContent td{
+	    font-family:Dotum;
+	}
+	 
+	#leaveDraftContent tr, #leaveDraftContent th, #leaveDraftContent td{
+	    font-family:Dotum;
+	}
+	 
+	#approvalSignature tr, #approvalSignature th, #approvalSignature td{
+	    font-family:Dotum;
+	    font-weight:bold;
+	}
+	
+	.newBox{
+		background-color: #cfdff0;
+		border: 1px solid #9fc2e8;
+		display: inline-block;
+		padding-left: 5px;
+		padding-right: 5px;
+		margin-right: 10px;
+		padding-top: 0px;
+		margin-top: 1px;
+		text-align: center;
+		border-radius: 11px;
+		letter-spacing: 0px;
+		height: 26px;
+	}
 </style>
 </head>
-<body>
-<c:import url="/side"/>
 
-<div class="container-fluid contentField">
-	<!-- 결재라인 설정 모달 -->
-	<div class="modal fade" id="lineModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-			
-				<div class="modal-header">
-				   <!-- 모달창 제목 -->
-				   <h5 class="modal-title">결재라인 설정</h5>
-				   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				      <span aria-hidden="true">&times;</span>
-				   </button>
-				</div>
+<body>
+	<c:import url="/side"/>
+	
+	<div class="container-fluid contentField">
+		<!-- 결재라인 설정 모달 -->
+		<div class="modal fade" id="lineModal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
 				
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-6" style="border-right:1px solid #EDEDED">
-							<div id="employeeList">
-							<!-- 조직도 -->
-							<c:import url="/approval/appOrganization/1"/>
-							</div>
-						</div>				
-						<div class="col-md-6">
-							<div id="line">
-							<!-- 라인 추가하면 그려지는 부분 -->
+					<div class="modal-header">
+					   <!-- 모달창 제목 -->
+					   <h5 class="modal-title">결재라인 설정</h5>
+					   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					      <span aria-hidden="true">&times;</span>
+					   </button>
+					</div>
+					
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6" style="border-right:1px solid #EDEDED">
+								<div id="employeeList">
+								<!-- 조직도 -->
+								<c:import url="/approval/appOrganization/1"/>
+								</div>
+							</div>				
+							<div class="col-md-6">
+								<div id="line">
+								<!-- 라인 추가하면 그려지는 부분 -->
+								</div>
 							</div>
 						</div>
 					</div>
+					
+					<div class="modal-footer">
+						<button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
+					</div>
+					
 				</div>
-				
-				<div class="modal-footer">
-					<button class="btn btn-primary" onclick="saveApprovalLine()" data-dismiss="modal">저장</button>
-				</div>
-				
 			</div>
 		</div>
-	</div>
-	<!-- 모달창에서 라인 추가하면 그려지는 부분 -->
-	<div id="rightContainer">
-		<div class="card shadow" style="width: 354px;padding: 1%;">
-			<div class="lineContent" style="padding: 10px 6px;">
-				<span style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재라인</span>
-				<img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;">
-				<hr/>
-				<table id="approvalLine"  style="font-size:14px;">
-					<tr style="text-align: center;">
-						<!-- 로그인 유저 정보 그려지는 부분 -->
-						<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px "></th>
-						<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
-						<td style="width: 40%;">${list.hqName}/${list.departmentName}</td>
-						<td style="width: 20%; padding:0px;">${list.positionName}</td>
-						<td style="width: 20%;">${list.name}</td>
+		<!-- 모달창에서 라인 추가하면 그려지는 부분 -->
+		<div id="rightContainer">
+			<div class="card shadow" style="width: 354px;padding: 1%;">
+				<div class="lineContent" style="padding: 10px 6px;">
+					<span style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재라인</span>
+					<img src="<c:url value='/resource/img/addButton.png'/>" class="addApprovalLine" alt="라인 추가 아이콘" onclick="remainedEmpID()" data-toggle="modal" data-target="#lineModal" style="margin-left: auto; cursor: pointer;">
+					<hr/>
+					<table id="approvalLine"  style="font-size:14px;">
+						<tr style="text-align: center;">
+							<!-- 로그인 유저 정보 그려지는 부분 -->
+							<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px "></th>
+							<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+							<td style="width: 40%;">${list.hqName}/${list.departmentName}</td>
+							<td style="width: 20%; padding:0px;">${list.positionName}</td>
+							<td style="width: 20%;">${list.name}</td>
+						</tr>
+						<!-- 모달창에서 결재라인에 추가한 직원의 정보가 그려지는 부분 -->
+						<c:forEach items="${lineList}" var="lL">
+						<tr style="text-align: center;">
+							<th style="background-color:white;">
+							<c:choose>
+							<c:when test="${lL.serverFileName != null}">
+							<img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+							</c:when>
+							<c:otherwise>
+							<img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+							</c:otherwise>
+							</c:choose>
+							</th>
+							<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+							<td style="width: 40%;">${lL.hqName}/${lL.departmentName}</td>
+							<td style="width: 20%; padding:0px;">${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
+							<td style="width: 20%;">${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
+						</tr>   
+						</c:forEach>
+					</table>
+				</div>
+			</div>
+		</div>
+	
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<div class="topTitle">
+				<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
+			</div>
+		</div>
+		
+		<div id="contentLine">
+			<div id="formTitle">${list.formTitle}</div>
+			<div id="draftInfoTop" style="display: flex;">
+				<input type="hidden" value="${list.titleID}" name=titleID>
+				<table id="draftInfo">
+				<!-- 로그인한 유저의 정보 -->
+					<tr>
+					    <th>상신자</th>
+					    <td>${list.name}</td>
+					    <td rowspan="3" class="di-td-1"></td>
 					</tr>
-					<!-- 모달창에서 결재라인에 추가한 직원의 정보가 그려지는 부분 -->
-					<c:forEach items="${lineList}" var="lL">
-					<tr style="text-align: center;">
-						<th style="background-color:white;">
-						<c:choose>
-						<c:when test="${lL.serverFileName != null}">
-						<img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-						</c:when>
-						<c:otherwise>
-						<img src="/Cocean/resource/img/undraw_profile.svg" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-						</c:otherwise>
-						</c:choose>
-						</th>
-						<td style="width: 15%; padding:0px;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
-						<td style="width: 40%;">${lL.hqName}/${lL.departmentName}</td>
-						<td style="width: 20%; padding:0px;">${lL.positionName}<input type="hidden" name="order" class="order" value="${lL.approvalOrder}"></td>
-						<td style="width: 20%;">${lL.name}<input type="hidden" class="employeeID" value="${lL.employeeID}"><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘"></td>
-					</tr>   
-					</c:forEach>
-				</table>
+					<tr>
+					    <th>소속부서</th>
+					    <td>${list.hqName}/${list.departmentName}</td>
+					</tr>
+					<tr>
+					    <th>상신일</th>
+					    <td>${date}</td>
+					</tr>
+				</table>		      
+				<div id="approvalSignature">
+				</div>		   
 			</div>
-		</div>
-	</div>
-
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<div class="topTitle">
-			<h1 class="h3 mb-0 text-gray-800">기안서 작성</h1>
-		</div>
-	</div>
-	
-	<div id="contentLine">
-		<div id="formTitle">${list.formTitle}</div>
-		<div id="draftInfoTop" style="display: flex;">
-			<input type="hidden" value="${list.titleID}" name=titleID>
-			<table id="draftInfo">
-			<!-- 로그인한 유저의 정보 -->
-				<tr>
-				    <th>상신자</th>
-				    <td>${list.name}</td>
-				    <td rowspan="3" class="di-td-1"></td>
-				</tr>
-				<tr>
-				    <th>소속부서</th>
-				    <td>${list.hqName}/${list.departmentName}</td>
-				</tr>
-				<tr>
-				    <th>상신일</th>
-				    <td>${date}</td>
-				</tr>
-			</table>		      
-			<div id="approvalSignature">
-			</div>		   
-		</div>
-	<input type="hidden" value="${list.employeeID}" name="loginId">
-	<input type="hidden" value="${list.idx}" name="idx">
-	<input type="hidden" id="order" name="order" value="">
-	
-	<br/>
-	<!-- <form action="writeDraft.do" method="post" enctype="multipart/form-data"> -->
-	<c:if test="${list.formTitle eq '업무기안서'}">
-	<table id="workDraftContent">
-	   
-	      <tr>
-	          <th>참조자</th>
-	          <td><table id="refTable" style="border:none;">
-	          <c:forEach items="${agrRef}" var="ref">
-	          <c:if test="${ref.category eq '참조'}">
-	          <tr>
-	          <td>
-	          <span class="box" style="background-color: #cfdff0;
-	       border: 1px solid #9fc2e8;
-	       display: inline-block;
-	       padding-left: 5px;
-	       padding-right: 5px;
-	       text-align: center;
-	       border-radius: 11px;
-	       letter-spacing: 0px;
-	       height: 21px;
-	       vertical-align: middle;">
-	          <label>${ref.hqName}</label>
-	          <label>${ref.departmentName}</label>
-	          <label>${ref.positionName}</label>
-	          <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-	           <input type="hidden" name="refEmpId" value="${ref.employeeID }">
-	           </span>
-	          </td>
-	          </tr>
-	          </c:if>
-	          </c:forEach>
-	          </table>
-	          </td>
-	      </tr>
-	      <tr>
-	      <th>제목</th>
-	         <td><input type="text" name="title" placeholder="*제목을 입력해주세요." value="${list.title}"></td>
-	      </tr>
-	      <tr>
-	         <td colspan="2">
-	            <div id="summernote">${list.content}</div>
-	         <!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
-	         <input type="hidden" name="content" value=""/>
-	      </td>
-	   </tr>
-	</table>
-	
-	</c:if>
-	
-	<c:if test="${list.formTitle eq '휴가신청서'}">
-	<table id="attendanceDraftContent">
-	   <tr>
-	       <th>참조자</th>
-	       <td>
-	       <c:forEach items="${agrRef}" var="ref">
-	       <c:if test="${ref.category eq '참조'}">
-	       <table id="refTable" style="border:none;">
-	       <tr>
-	       <td>
-	       <label>${ref.hqName}</label>
-	       <label>${ref.departmentName}</label>
-	       <label>${ref.positionName}</label>
-	       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-	       </td>
-	       </tr>
-	       </table>
-	       </c:if>
-	       </c:forEach>
-	       </td>
-	   </tr>
-	   <tr>
-	      <th>휴가 종류</th>
-	         <td colspan="2">
-	         <select id="vacationCategory" name="vacationCategory" onchange="reason()">
-	        <option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
-	        <option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
-	        <option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
-	        <option value="공가" ${'공가' eq vac.category ? 'selected="selected"' : ''}>공가</option>
-	        <option value="경조사" ${'경조사' eq vac.category ? 'selected="selected"' : ''}>경조사</option>
-	    </select>
-	         </td>
-	   </tr>
-	   <tr>
-	       <th>잔여 연차</th>
-	      <td id="remain" contentEditable="false" style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
-	   </tr>
-	   <tr>
-	       <th>사용 날짜</th>
-	      <td> 
-	          <div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
-	          <div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
-	          </div>
-	       </td>
-	   </tr>
-	   <tr>
-	      <th>총 사용일</th>
-	      <td id="total" style="background-color:lightgray;"></td>
-	   </tr>
-	   <tr id="reason" style="display: none;">
-	      <th>사유</th>
-	      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력">${vac.vacationReason}</textarea></td>
-	   </tr>
-	</table>
-	</c:if>
-	
-	
-	<c:if test="${list.formTitle eq '휴직원' or form.formTitle eq '복직원'}">
-	<table id="leaveDraftContent">
-	   <tr>
-	       <th>참조자</th>
-	       <td>
-	       <c:forEach items="${agrRef}" var="ref">
-	       <c:if test="${ref.category eq '참조'}">
-	       <table id="refTable" style="border:none;">
-	       <tr>
-	       <td>
-	       <label>${ref.hqName}</label>
-	       <label>${ref.departmentName}</label>
-	       <label>${ref.positionName}</label>
-	       <label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
-	       </td>
-	       </tr>
-	       </table>
-	       </c:if>
-	       </c:forEach>
-	       </td>
-	   </tr>
-	   <tr>
-	      <th>휴직 기간</th>
-	         <td><input type="date" name="startDate" value="${lv.leaveStartDate}">~<input type="date" name="endDate" value="${lv.leaveEndDate}"></td>
-	      </tr>
-	   <tr>
-	      <th>사유</th>
-	      <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력" >${lv.leaveReason}</textarea></td>
-	   </tr>
-	</table>
-	</c:if>
-	
-	
-	<br/>
-	<label class="input-file-button" for="input-file">
-	 파일첨부
-	</label>
-	<input type="file" id="input-file" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
-	<br/>
-	<div id="fileList">
-		<c:forEach items="${fileList}" var="file">
-	    <a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a><img src="/Cocean/resource/img/cancel.png" class="deletee" alt="삭제 아이콘"><br/>
-	    </c:forEach>
-	</div>
-	
-	
-	</div>
-<div id="bottom">
-<div id="isPublic">
-<input type="radio" name="publicStatus" value=0 checked/>비공개
-<input type="radio" name="publicStatus" value=1 />공개
-</div>
-<div style="font-size:12px; color:gray;" id="publicDesc">
-*공개 설정시 모든 임직원이 열람 가능합니다.
-<br/>
-*비공개 설정시 결재라인에 있는 사람만 열람 가능합니다.
-
-</div>
-<br/>
-<input type="hidden" name="tempSave" value="0"/>
-<div id="render" style="margin-right:2.5%; margin-left: -1%;">
-<input type="button" class="btn btn-secondary" value="취소" onclick="confirmSave()"/>
-<input type="button" style="float:right"class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
-<input type="button" style="float:right; margin-right:10px;"class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
-</div>
-
-</div>
-
-
-</div>
-
-
-
-<!-- </form> -->
-
-
-
-<c:import url="/footer"/>
+			<input type="hidden" value="${list.employeeID}" name="loginId">
+			<input type="hidden" value="${list.idx}" name="idx">
+			<input type="hidden" id="order" name="order" value="">
+		
+			<br/>
+			
+			<c:if test="${list.formTitle eq '업무기안서'}">
+				<table id="workDraftContent">		   
+					<tr>
+					    <th>참조자</th>
+					    <td>
+					    	<table id="refTable" style="border:none;">
+							<c:forEach items="${agrRef}" var="ref">
+							<c:if test="${ref.category eq '참조'}">
+								<tr>
+									<td>
+									<span class="box" style="background-color: #cfdff0; border: 1px solid #9fc2e8; display: inline-block; padding-left: 5px; padding-right: 5px; text-align: center; border-radius: 11px; letter-spacing: 0px; height: 21px; vertical-align: middle;">
+									<label>${ref.hqName}</label>
+									<label>${ref.departmentName}</label>
+									<label>${ref.positionName}</label>
+									<label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+									<input type="hidden" name="refEmpId" value="${ref.employeeID }">
+									</span>
+									</td>
+								</tr>
+							</c:if>
+							</c:forEach>
+					    	</table>
+					    </td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" placeholder="*제목을 입력해주세요." value="${list.title}"></td>
+					</tr>
+					<tr>
+					   <td colspan="2">
+					      <div id="summernote">${list.content}</div>
+					      <!-- 작성글은 div 에 담겨지는데, div는 서버로 전송이 불가능 -->
+					      <input type="hidden" name="content" value=""/>
+					   </td>
+					</tr>
+				</table>		
+			</c:if>
+		
+			<c:if test="${list.formTitle eq '휴가신청서'}">
+				<table id="attendanceDraftContent">
+					<tr>
+						<th>참조자</th>
+						<td>
+							<table id="refTable" style="border:none;">
+							<c:forEach items="${agrRef}" var="ref">
+							<c:if test="${ref.category eq '참조'}">
+								<tr>
+									<td>
+									<label>${ref.hqName}</label>
+									<label>${ref.departmentName}</label>
+									<label>${ref.positionName}</label>
+									<label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+									</td>
+								</tr>
+							</c:if>
+							</c:forEach>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<th>휴가 종류</th>
+						<td colspan="2">
+							<select id="vacationCategory" name="vacationCategory" onchange="selectVacation()">
+							<option value="연차" ${'연차' eq vac.category ? 'selected="selected"' : ''}>연차</option>
+							<option value="반차" ${'반차' eq vac.category ? 'selected="selected"' : ''}>반차</option>
+							<option value="병가" ${'병가' eq vac.category ? 'selected="selected"' : ''}>병가</option>
+							<option value="공가" ${'공가' eq vac.category ? 'selected="selected"' : ''}>공가</option>
+							<option value="경조사" ${'경조사' eq vac.category ? 'selected="selected"' : ''}>경조사</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th>잔여 연차</th>
+						<td id="remain" contentEditable="false" style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
+					</tr>
+					<tr>
+						<th>사용 날짜</th>
+						<td> 
+							<div class="dateSelect"><input type="date" name="start" id="startFac" class="form-control mb-2" value="${vac.vacationStartDate}"><p>&nbsp;~&nbsp;</p><input type="date" name="end" id="endFac"  class="form-control mb-2" value="${vac.vacationEndDate}">
+							<div class="ampm" style="display:none; margin-left:10px; font-size:12px; margin-top:10px;"><input type="radio" name="time" value="오전반차" checked/>오전<input type="radio" name="time" value="오후반차" />오후</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th>총 사용일</th>
+						<td id="total" style="background-color:lightgray;"></td>
+					</tr>
+					<tr id="reason" style="display: none;">
+						<th>사유</th>
+						<td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력">${vac.vacationReason}</textarea></td>
+					</tr>
+				</table>
+			</c:if>
+			
+			<c:if test="${list.formTitle eq '휴직원' or form.formTitle eq '복직원'}">
+				<table id="leaveDraftContent">
+					<tr>
+					    <th>참조자</th>
+					    <td>
+							<table id="refTable" style="border:none;">
+							<c:forEach items="${agrRef}" var="ref">
+							<c:if test="${ref.category eq '참조'}">
+								<tr>
+									<td>
+									<label>${ref.hqName}</label>
+									<label>${ref.departmentName}</label>
+									<label>${ref.positionName}</label>
+									<label>${ref.name}</label><img src="<c:url value='/resource/img/cancel.png'/>" class="deletee" alt="삭제 아이콘">
+									</td>
+								</tr>
+							</c:if>
+							</c:forEach>
+							</table>
+					    </td>
+					</tr>
+					<tr>
+						<th>휴직 기간</th>
+						   <td><input type="date" name="startDate" value="${lv.leaveStartDate}">~<input type="date" name="endDate" value="${lv.leaveEndDate}"></td>
+						</tr>
+					<tr>
+					   <th>사유</th>
+					   <td colspan="2"><textarea  name="content" id="textarea" placeholder="*필수입력" >${lv.leaveReason}</textarea></td>
+					</tr>
+				</table>
+			</c:if>
+			
+			<br/>
+		
+			<label class="inputFileButton" for="inputFile">파일첨부</label>
+			<input type="file" id="inputFile" name="uploadFile" style="display:none;" multiple onchange="displayFileList(this)"/>
+			<br/>
+			<div id="fileList">
+				<c:forEach items="${fileList}" var="file">
+				<a href="download.do?file=${file.serverFileName}">${file.oriFileName}</a><img src="/Cocean/resource/img/cancel.png" class="deletee" alt="삭제 아이콘"><br/>
+				</c:forEach>
+			</div>	
+		</div><!-- contentLine 끝 -->
+		
+		<div id="bottom">
+			<div id="isPublic">
+				<input type="radio" name="publicStatus" value=0 checked/>비공개
+				<input type="radio" name="publicStatus" value=1 />공개
+			</div>
+			<div style="font-size:12px; color:gray;" id="publicDesc">
+				*공개 설정시 모든 임직원이 열람 가능합니다.
+			<br/>
+				*비공개 설정시 결재라인에 있는 사람만 열람 가능합니다.		
+			</div>
+			<br/>
+			<input type="hidden" name="tempSave" value="0"/>
+			<div id="render" style="margin-right:2.5%; margin-left: -1%;">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="confirmSave()"/>
+				<input type="button" style="float:right"class="btn btn-primary" id="write" value="등록" onclick="save(${list.idx})"/>
+				<input type="button" style="float:right; margin-right:10px;"class="btn btn-primary" id="tempSave" value="임시저장" onclick="tempSave(${list.idx})"/>
+			</div>	
+		</div><!-- bottom 끝 -->
+		
+	</div><!-- container-fluid contentField 끝 -->
 </body>
+
 <script>
 
+	function displayFileList(input) {
+		var fileList = document.getElementById('fileList');
+	    var files = input.files; 
+	
+	    for (var i = 0; i < files.length; i++) {
+	        var fileItem = document.createElement('div');
+	        fileItem.textContent = files[i].name;
+	
+	        var deleteIcon = document.createElement('img');
+	        deleteIcon.src = "/Cocean/resource/img/cancel.png";
+	        deleteIcon.classList.add('delete');
+	        deleteIcon.alt = "삭제 아이콘";
+	
+	        deleteIcon.addEventListener('click', function() {
+	            this.parentNode.remove();
+	        });
+	
+	        fileItem.appendChild(deleteIcon);
+	        fileList.appendChild(fileItem);
+	    }
+	}
 
-function displayFileList(input) {
-	var fileList = document.getElementById('fileList');
-    var files = input.files; 
-
-    for (var i = 0; i < files.length; i++) {
-        var fileItem = document.createElement('div');
-        fileItem.textContent = files[i].name;
-
-        var deleteIcon = document.createElement('img');
-        deleteIcon.src = "/Cocean/resource/img/cancel.png";
-        deleteIcon.classList.add('delete');
-        deleteIcon.alt = "삭제 아이콘";
-
-        deleteIcon.addEventListener('click', function() {
-            this.parentNode.remove();
-        });
-
-        fileItem.appendChild(deleteIcon);
-        fileList.appendChild(fileItem);
-    }
-}
-
-function reason() {
-    var vacationCategory = document.getElementById('vacationCategory');
-    var reason = document.getElementById('reason');
-
-    var selectedValue = vacationCategory.value;
-
-    if (selectedValue === '경조사' || selectedValue === '병가' || selectedValue === '공가') {
-        reason.style.display = '';
-    } else{
-        reason.style.display = 'none';
-    }
-}
+	function selectVacation() { // '휴가신청서' 양식에서 휴가 종류 선택할 때 호출
+	    var vacationCategory = document.getElementById('vacationCategory');
+	    var reason = document.getElementById('reason');
+	
+	    var selectedValue = vacationCategory.value;
+	
+	    if (selectedValue === '경조사' || selectedValue === '병가' || selectedValue === '공가') {
+	        reason.style.display = '';
+	    } else{
+	        reason.style.display = 'none';
+	    }
+	}
 
    var textArea = $('#textarea').text();
    var startDate;
    var endDate;
-    $('input[name="startDate"]').on('change', function() {
-       startDate=$(this).val();
-           console.log(startDate);
-       });
-    $('input[name="endDate"]').on('change', function() {
-       endDate=$(this).val();
-       });
+	$('input[name="startDate"]').on('change', function() {
+		startDate=$(this).val();
+	    console.log(startDate);
+	});
+	
+	$('input[name="endDate"]').on('change', function() {
+		endDate=$(this).val();
+	});
 
-   // 휴가신청서 시간 부분
-   
-    $('#startFac, #endFac').on('change', function () {
+    $('#startFac, #endFac').on('change', function () { // 휴가신청서 시간 부분
         calculateDays();
     });
     
-function calculateDays() {
-    var startDay = $('#startFac').val();
-    var endDay = $('#endFac').val();
-    console.log(startDay);
+	function calculateDays() {
+	    var startDay = $('#startFac').val();
+	    var endDay = $('#endFac').val();
+	    console.log(startDay);
+	
+	    if (startDay && endDay) {
+	        var startDayTime = new Date(startDay).getTime();
+	        var endDayTime = new Date(endDay).getTime();
+	        var timeCal = endDayTime - startDayTime;
+	        var daysCal = Math.ceil(timeCal / (1000 * 3600 * 24));
+	
+	        
+	        var remainingDays = parseInt($('#remain').text());
+	        if (daysCal + 1 > remainingDays) {
+	            $('#total').text('잔여 연차를 초과하였습니다.').css('color', 'red');
+	        }else{
+	           $('#total').text(daysCal+1 + '일').css('color', 'black');
+	        }
+	    }
+	}
 
-    if (startDay && endDay) {
-        var startDayTime = new Date(startDay).getTime();
-        var endDayTime = new Date(endDay).getTime();
-        var timeCal = endDayTime - startDayTime;
-        var daysCal = Math.ceil(timeCal / (1000 * 3600 * 24));
-
-        
-        var remainingDays = parseInt($('#remain').text());
-        if (daysCal + 1 > remainingDays) {
-            $('#total').text('잔여 연차를 초과하였습니다.').css('color', 'red');
-        }else{
-           $('#total').text(daysCal+1 + '일').css('color', 'black');
-        }
-    }
-}
-
- $('select[name="vacationCategory"]').on('change', function() {
-    var selectedOption = $(this).val();
-    console.log("선택옵션: " + selectedOption);
-
-    if (selectedOption === "반차") {
-        $('#endFac').prev('p').hide();
-        $('#endFac').hide();
-        $('#total').closest('tr').hide();
-        $('.ampm').show();
-        $('#startFac').css('width','85%');
-        $('#remain').closest('tr').show();
-    } else if(selectedOption === "연차"){
-        $('#endFac').prev('p').show();
-        $('#endFac').show();
-        $('.ampm').hide();
-        $('#total').closest('tr').show();
-        $('#remain').closest('tr').show();
-        $('#total').closest('tr').show();
-    }else if(selectedOption === "병가" || "공가" || "경조사"){
-       $('#remain').closest('tr').hide();
-         $('#total').closest('tr').hide();
-         $('#endFac').prev('p').show();
-         $('#endFac').show();
-         $('.ampm').hide();
-    }
-});
+	$('select[name="vacationCategory"]').on('change', function() {
+		var selectedOption = $(this).val();
+	    console.log("선택옵션: " + selectedOption);
+	
+	    if (selectedOption === "반차") {
+	        $('#endFac').prev('p').hide();
+	        $('#endFac').hide();
+	        $('#total').closest('tr').hide();
+	        $('.ampm').show();
+	        $('#startFac').css('width','85%');
+	        $('#remain').closest('tr').show();
+	    } else if(selectedOption === "연차"){
+	        $('#endFac').prev('p').show();
+	        $('#endFac').show();
+	        $('.ampm').hide();
+	        $('#total').closest('tr').show();
+	        $('#remain').closest('tr').show();
+	        $('#total').closest('tr').show();
+	    } else if(selectedOption === "병가" || "공가" || "경조사"){
+			$('#remain').closest('tr').hide();
+			$('#total').closest('tr').hide();
+			$('#endFac').prev('p').show();
+			$('#endFac').show();
+			$('.ampm').hide();
+	    }
+	});
  
-   var loginId = $('input[name="loginId"]').val()
-   var idx = $('input[name="idx"]').val()
+	var loginId = $('input[name="loginId"]').val()
+	var idx = $('input[name="idx"]').val()
  
- $(function () {
-     $.ajax({
-         url: "drawSign",
-         type: "GET",
-         data:{'loginId':loginId, 'idx':idx},
-         success: function (data) {
-            var signList = data.signList;
-            // console.log(signList);
-            // console.log(signList.length);
-             if (signList.length>0) {
-                  var firstItem = signList[0];
-                  approvalSignature(firstItem);
-                  for (var i = 1; i < signList.length; i++) {
-                     var addItem = signList[i];
-                      appSign(addItem);
-                }
-             }
-            var order = data.approvalOrder;
-            $('#order').val(order);
-            console.log(data);
-         },
-         error: function (e) {
-             console.log(e);
-         }
-     });
- });
-   
-    
-   function remainedEmpID() {
-       remLine = [];
-       refLine = [];
-      // console.log($("#summernote").summernote('code'));
-       if ($("#approvalLine tbody tr .employeeID").length > 0) {
-           $("#approvalLine tbody tr .employeeID").each(function () {
-               remLine.push($(this).val());
-           });
-       } else if ($("#refTable .employeeID").length > 0) {
-           $("#refTable .employeeID").each(function () {
-              refLine.push($(this).val());
-           });
-       } else {
-           // console.log("없음");
-       }
-       console.log("remLine:", remLine);
-       getRemainedEmpID(remLine);
-   }
+	$(function () { // 서명란 불러오는 부분
+	    $.ajax({
+	        url: "drawSign",
+	        type: "GET",
+	        data:{'loginId':loginId, 'idx':idx},
+	        success: function (data) {
+				console.log(data);
+	        	var signList = data.signList;
+
+	            if (signList.length>0) {
+	                var firstItem = signList[0];
+	                approvalSignature(firstItem);
+	                for (var i = 1; i < signList.length; i++) {
+	                	var addItem = signList[i];
+	                    appSign(addItem);
+	              	}
+	            }
+	           /* var order = data.approvalOrder;
+	           $('#order').val(order); */
+	        },
+	        error: function (e) {
+	            console.log(e);
+	        }
+	    });
+	});
+       
+	function remainedEmpID() { // 결재라인 추가 아이콘 클릭시 호출
+	    remLine = [];
+	    refLine = [];
+
+	    if ($("#approvalLine tbody tr .employeeID").length > 0) {
+	        $("#approvalLine tbody tr .employeeID").each(function () {
+	            remLine.push($(this).val());
+	        });
+	    } else if ($("#refTable .employeeID").length > 0) {
+	        $("#refTable .employeeID").each(function () {
+	           refLine.push($(this).val());
+	        });
+	    }
+	    
+	    console.log("remLine:", remLine);
+	    getRemainedEmpID(remLine);
+	}
    
    function getEmployeeID(employeeID,nodeText){
       console.log(employeeID);
    }
-
 
    $('#summernote').summernote({
       height: 500, width: 825,
@@ -716,8 +674,7 @@ function calculateDays() {
        order = index + 1;
    });
    
-   var idx;
-   
+   var idx;  
    //기안 등록
    function save(idx) {
       
@@ -1115,11 +1072,11 @@ function calculateDays() {
           }
         } 
      
+          var signTable = $("#approvalSignature");
      function addLineToTable(lineData) {       
           var appTable = $("#approvalLine");
           // var agrTable = $("#agreeTable");
           var refTable = $("#refTable");
-          var signTable = $("#approvalSignature");
 
           // var agrSign = $("#agrSignature");
           if (lineData.category == "결재" || lineData.category == "합의") {
@@ -1195,47 +1152,37 @@ function calculateDays() {
           
       }
      
-      function approvalSignature(firstItem){
-          var signTable = $("#approvalSignature");
-         
-            var content=
-                 "<table class='signApp'>"+
-                  "<tr>"+
-                       "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+firstItem.category+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
-                       "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+firstItem.positionName+"\u00A0"+firstItem.name+"</td>"+
-                   "</tr>"+
-                   "<tr>"+
-                   "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+
-                    "</td>"
-                   "</tr>"+
-                    "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
-               "</table>"
-         
-         signTable.append(content);
-         
-       }
+	function approvalSignature(firstItem){
+	    // var signTable = $("#approvalSignature");	    
+		var content = 
+		"<table class='signApp'>"+
+			"<tr>"+
+				"<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+firstItem.category+"<input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td>"+
+				"<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'>"+firstItem.positionName+"\u00A0"+firstItem.name+"</td>"+
+			"</tr>"+
+			"<tr><td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + firstItem.employeeID + "'></td></tr>"+
+			"<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
+		"</table>"
+
+	   signTable.append(content);	   
+	}
       
-      function approvalSignature(lineData){
-          var signTable = $("#approvalSignature");
-         
-            var content=
-                 "<table class='signApp'>"+
-                  "<tr>"+
-                       "<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+lineData.category+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
-                       "<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
-                   "</tr>"+
-                   "<tr>"+
-                   "<td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+
-                    "</td>"
-                   "</tr>"+
-                    "<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
-               "</table>"
-         
-                    if(lineData.category!=='참조'){
-                     signTable.append(content);
-                  }
-         
-       }
+	function approvalSignature(lineData){
+	    // var signTable = $("#approvalSignature");	   
+		var content=
+		"<table class='signApp'>"+
+			"<tr>"+
+				"<td rowspan='3' style='width: 20px; height:90px; background-color:#ededed;'>"+lineData.category+"<input type='hidden' class='empID' value='" + lineData.employeeID + "'></td>"+
+				"<td style='width: 80px; font-size:10px; padding : 0; background-color:#ededed;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'>"+lineData.positionName+"\u00A0"+lineData.name+"</td>"+
+			"</tr>"+
+			"<tr><td style='width: 80px; font-size:10px; vertical-align: bottom; height: 70px;'><input type='hidden' class='empID' value='" + lineData.employeeID + "'></td></tr>"+
+			"<tr><td style='width: 80px; font-size:8px; background-color:#ededed;'></tr>"+
+		"</table>"
+
+        if(lineData.category!=='참조'){
+         signTable.append(content);
+      	}	   
+	}
       
       function appSign(addItem) {
           var frLastTd = $('#approvalSignature table.signApp:last tr:first td:last');
