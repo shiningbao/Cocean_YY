@@ -104,7 +104,6 @@ public class PersonnelController {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/personnel/getChart.do/{isActive}" ,produces= {org.springframework.http.MediaType.APPLICATION_XML_VALUE, org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE})
 	public ResponseEntity getChart(@PathVariable int isActive) {
-		
 		return new ResponseEntity(service.getChart(isActive),HttpStatus.OK); 
 	}
 	 

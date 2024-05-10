@@ -129,6 +129,12 @@
 	    font-size: 30px;
 	}
 	
+	.cancel{
+		cursor:pointer;
+		width:15px;
+		height:15px;
+	}
+	
 	.dateSelect{
 	   display:flex;
 	   height:40px;
@@ -257,12 +263,13 @@
 							<div class="col-md-6" style="border-right:1px solid #EDEDED">
 								<div id="employeeList">
 								<!-- 조직도 -->
-								<c:import url="/approval/appOrganization/1"/>
+								<%-- <c:import url="/approval/appOrganization/1"/> --%>
+								<c:import url="/personnel/organization/1"/>
 								</div>
 							</div>				
 							<div class="col-md-6">
 								<div id="line">
-								<!-- 라인 추가하면 그려지는 부분 -->
+									<!-- 라인 추가하면 그려지는 부분 -->									
 								</div>
 							</div>
 						</div>
@@ -658,9 +665,104 @@
 	    getRemainedEmpID(remLine);
 	}
    
-   function getEmployeeID(employeeID,nodeText){
-      console.log(employeeID);
-   }
+   function getEmployeeID(emp,node){
+		console.log('emp : '+emp);
+		console.log('node : '+node);
+		
+		$.ajax({
+	        	url:"<c:url value='/approval/getEmployeeID.do'/>",
+	        	data:{'employeeID':emp},
+	        	success:function(data){
+	        		console.log(data);
+	        		drawLine(data.employeeInfo,emp);
+	        	},
+	        	error:function(e){
+	        		console.log(e);
+	        	}
+	        });
+	}
+   	
+	function drawLine(employeeInfo, emp) { // 조직도에서 사원 선택해서 옆에 그리는 부분
+		if (remLine.includes(emp) || emp == loginId) { // 결재라인에 이미 지정된 사원 또는 자기자신은 지정할 수 없음
+			 swal('지정할 수 없습니다.','','warning'); 
+		} else {
+		    employeeInfo.forEach(function (item, idx) {
+		        var existingEmployee = $('#line').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
+		        var isRemLineEmpID = remLine.includes(emp);
+		        var inRefTable = $('#refTable').find('.employeeID[value="' + item.employeeID + '"]').length > 0;
+	
+		        if (!isRemLineEmpID && !existingEmployee&&!inRefTable) { // 옆 라인, 본페이지에 추가되어있는 사원이 아니라면
+		            var hqDepartmentRank = (item.hqName + '/' + item.departmentName + item.positionName).includes('-');
+		            var content = '<div class="lineItem">';
+		            content += '<select class="category" name="approvalCategory" style="width: 46px; font-size: 10px;"><option value="결재" selected="selected">결재</option><option value="합의">합의</option><option value="참조">참조</option></select>' + '\u00A0' + '\u00A0';
+		            if (!hqDepartmentRank) {
+		                content += '<label class="hqName">' + item.hqName + '</label>' + '/' + '<label class="departmentName">' + item.departmentName + '</label>' + '\u00A0' + '\u00A0';
+		                content += '<label class="rank">' + item.positionName + '</label>' + '\u00A0' + '\u00A0';
+		            }
+		            content += '<label class="name">' + item.name + '</label>' + '<img src="<c:url value='/resource/img/cancel.png'/>" class="cancel" alt="삭제 아이콘">' + '<br/>';
+		            content += '<input type="hidden" class="employeeID" value="' + item.employeeID + '"/>';
+		            content += '<input type="hidden" class="positionName" value="' + item.positionName + '"/>';
+		            content += '<input type="hidden" class="photo" value="' + item.serverFileName + '"/>';
+		            content += '</div>';
+	
+		            $('#line').append(content);
+		            appendCancel();
+		        }
+		    });
+		}
+	}
+	
+	function appendCancel() { // 모달창에서 x
+		$('.cancel').off('click').on('click', function() {
+			var lineItem = $(this).closest('.lineItem');
+		    var employeeID = lineItem.find('.employeeID').val();
+		
+		    lineItem.remove();
+			// console.log(employeeID);
+		});
+	}
+   
+	function getAddedLineData(lineData){
+		// console.log(lineData);
+	}
+		
+	var remLine;
+	
+	function getRemainedEmpID(remLine){
+	       //  console.log("getRemainedEmpID호출");	   
+	}
+	
+	
+	var lineData;
+	// 모달창 결재라인 저장
+	function saveApprovalLine(lineData) {
+		lineData=[];
+	   	
+	    $('.lineItem').each(function () {
+	        var category = $(this).find('.category').val();
+	        var hqName = $(this).find('.hqName').text();
+	        var departmentName = $(this).find('.departmentName').text();
+	        var rank = $(this).find('.rank').text();
+	        var name = $(this).find('.name').text();
+	        var employeeID = $(this).find('.employeeID').val();
+	        var positionName = $(this).find('.positionName').val();
+	        var photo = $(this).find('.photo').val();
+	        lineData.push({
+	            category: category,
+	            hqName: hqName,
+	            departmentName: departmentName,
+	            rank: rank,
+	            name: name,
+	            employeeID: employeeID,
+	            positionName: positionName,
+	            photo: photo
+	        });
+	    });
+	    // console.log(lineData);
+	    getApprovalLine(lineData);
+	    $('#line').empty();
+	    
+	}
 
    $('#summernote').summernote({
       height: 500, width: 825,
@@ -1086,10 +1188,7 @@
                  }else if(lineData.photo=='null'){
                     row.append("<th style='background-color:white;'><img src='/Cocean/resource/img/undraw_profile.svg' style='width:40px; height:40px' class='img-profile rounded-circle'></th>");
                  }
-            /*   
-              if(lineData.category == "합의"&&appTable.find("tr:last .category").text() == "합의"){
-                 row.append("<td class='img-profile rounded-circle'><input type='hidden' class='order' value=''></td>");
-              } */
+ 
               row.append("<td class='appStatus' style='width:15%;'>" +"<span style='font-weight : bold; text-decoration: underline; text-decoration-thickness: 3px; text-decoration-color: #4480e9;'>"+ lineData.category + "</span>"+"</td>");
               if (lineData.hqName == '' && lineData.departmentName == '') {
                  row.append("<td style='width:65%;' colspan='2'>" + lineData.positionName + "</td>");
