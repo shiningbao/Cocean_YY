@@ -82,7 +82,7 @@
 	</div>
 	</div>
 </div>
-<c:import url="/footer"/>	
+
 </body>
 <script>
 function formSearch() {

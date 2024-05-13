@@ -152,7 +152,6 @@
 
 	</div>
 
-<c:import url="/footer"/>	
 </body>
 <script>
 
