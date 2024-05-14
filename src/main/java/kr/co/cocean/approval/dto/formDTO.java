@@ -12,21 +12,26 @@ public class formDTO {
 	public String getTitleID() {
 		return titleID;
 	}
+	
 	public void setTitleID(String titleID) {
 		this.titleID = titleID;
 	}
-
+	
 	public String getFormCategory() {
 		return formCategory;
 	}
+	
 	public void setFormCategory(String formCategory) {
 		this.formCategory = formCategory;
 	}
+	
 	public String getFormTitle() {
 		return formTitle;
 	}
+	
 	public void setFormTitle(String formTitle) {
 		this.formTitle = formTitle;
 	}
+	
 }
 

@@ -17,171 +17,157 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <style>
-table,th,td{
-		border : 1px solid black;
-		border-collapse : collapse;
-		padding : 5px 10px;
-}
-
-input[type="text"]{
-	width : 100%;
-}
-
-input[type="date"]{
-	width : 30%;
-}
-
-button{
-	margin : 5px 0;
-}
-
-#approvalLine{
-	font-size : 10px;
+	table,th,td{
+			border : 1px solid black;
+			border-collapse : collapse;
+			padding : 5px 10px;
+	}
 	
-}
-
-.di-td-1{
-	width:86px;
-}
-
-#approvalLine, #approvalLine th, #approvalLine td {
-  border: none;
-}
-
-#approvalSignature{
-	float:right;
-	margin-left : 20px;
-	margin-bottom : 20px;
-}
+	input[type="text"]{
+		width : 100%;
+	}
 	
-
-
-
-#agrSignature{
-	float:left;
-}
-
-#approvalSignature td{
-	text-align: center;
-}
-
-#workDraftContent{
-	width : 100%;
-}
-
-#attendanceDraftContent{
-	width : 100%;
-}
-
-#leaveDraftContent{
-	width : 100%;
-}
-
-#leaveDraftContent th{
-	text-align : center;
-}
-
-#attendanceDraftContent th{
-	text-align : center;
-}
-
-#detailInfoTop{
-	width : 840.8px;
-}
-
-.topTitle{
-    width: 50%;
-    font-size: 30px;
-
-}
-
-#contentLine{
-	margin: 14px;
-    padding: 4% 2% 2% 2%;
-    border: 5px solid #e8e8e8;
-    width: 73%;
-    height: 137%;
-}
-
-#formTitle{
-  text-align: center;
-  font-size: 41px;
-  font-family:Dotum;
-}
-
-#bottom{
- width:74%;
-}
-
-#rightContainer{
-	flex-direction: column;
-    width: 22%;
-    float:right;
-    margin: 5% 2%;
-}
-/* 
-#contentContainer{
-	position: absolute;
-    width: 94%;
-    height: 70%;
-    top: 16%;
-}
- */
- 
- #approvalLine{
-	border-spacing : 10px 10px;
-	width: 100%;
+	input[type="date"]{
+		width : 30%;
+	}
 	
-}
- 
-#approvalLine, #approvalLine th, #approvalLine td {
-  border: none;
-  padding : 0px;
-}
-
-#approvalLine td{
-	padding : 3px;
-}
-
-
-.modal-content{
-	width: 94%;
-    height: 53%;
-	/* overflow-y: auto; */
-}
-
-th {
-    background-color: #ededed;
-}
-
-.orderNum{
-	background-color: white;
-}
-
-.order{
-	background-color: white;
-}
-
-.appOpinion{
-	background: #fa5a5a;
-	color: #FFF;
-  	border-radius: 5px;
-  	transition: all 0.2s ;
-  	border:none;
-}
-
-.rejOpinion{
-	background: #86b0f3;
-	color: #FFF;
-  	border-radius: 5px;
-  	transition: all 0.2s ;
-  	border:none;
-}
-
- #startFac, #endFac {
-        display: inline-block;
-        margin-right: 10px;
-    }
+	button{
+		margin : 5px 0;
+	}
+	
+	#approvalLine{
+		font-size : 10px;
+		
+	}
+	
+	.di-td-1{
+		width:86px;
+	}
+	
+	#approvalLine, #approvalLine th, #approvalLine td {
+	  border: none;
+	}
+	
+	#approvalSignature{
+		float:right;
+		margin-left : 20px;
+		margin-bottom : 20px;
+	}
+		
+	#agrSignature{
+		float:left;
+	}
+	
+	#approvalSignature td{
+		text-align: center;
+	}
+	
+	#workDraftContent{
+		width : 100%;
+	}
+	
+	#attendanceDraftContent{
+		width : 100%;
+	}
+	
+	#leaveDraftContent{
+		width : 100%;
+	}
+	
+	#leaveDraftContent th{
+		text-align : center;
+	}
+	
+	#attendanceDraftContent th{
+		text-align : center;
+	}
+	
+	#detailInfoTop{
+		width : 840.8px;
+	}
+	
+	.topTitle{
+	    width: 50%;
+	    font-size: 30px;
+	
+	}
+	
+	#contentLine{
+		margin: 14px;
+	    padding: 4% 2% 2% 2%;
+	    border: 5px solid #e8e8e8;
+	    width: 73%;
+	    height: 137%;
+	}
+	
+	#formTitle{
+	  text-align: center;
+	  font-size: 41px;
+	  font-family:Dotum;
+	}
+	
+	#bottom{
+	 width:74%;
+	}
+	
+	#rightContainer{
+		flex-direction: column;
+	    width: 22%;
+	    float:right;
+	    margin: 5% 2%;
+	}
+	 
+	#approvalLine{
+		border-spacing : 10px 10px;
+		width: 100%;	
+	}
+	 
+	#approvalLine, #approvalLine th, #approvalLine td {
+	  border: none;
+	  padding : 0px;
+	}
+	
+	#approvalLine td{
+		padding : 3px;
+	}
+		
+	.modal-content{
+		width: 94%;
+	    height: 53%;
+	}
+	
+	th{
+	    background-color: #ededed;
+	}
+	
+	.orderNum{
+		background-color: white;
+	}
+	
+	.order{
+		background-color: white;
+	}
+	
+	.appOpinion{
+		background: #fa5a5a;
+		color: #FFF;
+	  	border-radius: 5px;
+	  	transition: all 0.2s ;
+	  	border:none;
+	}
+	
+	.rejOpinion{
+		background: #86b0f3;
+		color: #FFF;
+	  	border-radius: 5px;
+	  	transition: all 0.2s ;
+	  	border:none;
+	}
+	
+	#startFac, #endFac {
+	        display: inline-block;
+	        margin-right: 10px;
+	}
     
     .appStatus{
     text-decoration: underline;
@@ -222,252 +208,248 @@ th {
 	    height: 21px;
 	    vertical-align: middle;
     }
-
 </style>
 </head>
+
 <body>
 	<c:import url="/side"/>
 	
 	<div class="container-fluid contentField">
 	
-	<div class="modal fade" id="opinionWrite" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+		<div class="modal fade" id="opinionWrite" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
+				
 					<div class="modal-header">
 						<!-- 모달창 제목 -->
 						<h5 class="modal-title"></h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+					
 					<div class="modal-body">
-					<form action="approval.do" method="post"><!-- 입력폼 -->
-		              <div class="form-group">
-						<textarea name="opinionWrite" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
-		              </div>
-		              <div class="modal-footer">
-		                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-		                <button type="button" class="btn btn-primary"></button>
-		              </div>
-		                <input type="hidden" value="${loginId}" name="loginId">
-						<input type="hidden" value="${list.idx}" name="idx">
-						<input type="hidden" id="approvalAction" name="action" value="">
-						<input type="hidden" id="lastOrder" name="lastOrder" value="">
-						<input type="hidden" id="order" name="approvalOrder" value="">
-						<input type="hidden" value="${vac.remainingAnnualLeave}" name="ral" value="">
-						<input type="hidden" value="${vac.usageTime}" name="usageTime" value="">
-						<input type="hidden" value="${vac.category}" name="vacationCategory" value="">
-	                </form>
+						<form action="approval.do" method="post"><!-- 입력폼 -->
+							<div class="form-group">
+								<textarea name="opinionWrite" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;"></textarea>
+							</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary"></button>
+						</div>
+							<input type="hidden" value="${loginId}" name="loginId">
+							<input type="hidden" value="${list.idx}" name="idx">
+							<input type="hidden" id="approvalAction" name="action" value="">
+							<input type="hidden" id="lastOrder" name="lastOrder" value="">
+							<input type="hidden" id="order" name="approvalOrder" value="">
+							<input type="hidden" value="${vac.remainingAnnualLeave}" name="ral" value="">
+							<input type="hidden" value="${vac.usageTime}" name="usageTime" value="">
+							<input type="hidden" value="${vac.category}" name="vacationCategory" value="">
+						</form>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="opinion" tabindex="-1" role="dialog"
-			aria-labelledby="modal" aria-hidden="true">
+					
+				</div><!-- modal-content 끝 -->
+			</div><!-- modal-dialog 끝 -->
+		</div><!-- opinionWrite 끝 -->
+		
+		<div class="modal fade" id="opinion" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
+				
 					<div class="modal-header">
 						<!-- 모달창 제목 -->
 						<h5 class="modal-title">의견</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
+					
 					<div class="modal-body">
-		              <div class="form-group">
-		              <textarea name="opinion" id="opinionText" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;" readonly></textarea>
-		              </div>
+						<div class="form-group">
+							<textarea name="opinion" id="opinionText" class="form-control" oninput="this.setCustomValidity('')" maxlength="500" placeholder="500자까지 작성 가능" style="height: 180px;" readonly></textarea>
+						</div>
 					</div>
+					
+				</div><!-- modal-content 끝 -->
+			</div><!-- modal-dialog 끝 -->
+		</div><!-- opinion 끝 -->
+		<!-- 결재라인 정보 -->
+		<div id="rightContainer">
+			<div class="card shadow" style="width: 354px;padding: 3%;">
+				<div style="padding: 10px 12px;"><span class="approvalInfo" style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재정보</span>
+					<hr/>
+					<table id="approvalLine" style="font-size:14px;">
+						<tr style="text-align: center;">
+							<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px"></th>
+							<td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
+							<td style="width: 40%; font-size:12px;">${list.hqName}/${list.departmentName}</td>
+							<td style="width: 20%;">${list.positionName}</td>
+							<td style="width: 20%;">${list.name}</td>
+						</tr>
+						<c:forEach items="${lineList}" var="lL">
+					    <tr style="text-align: center;">
+						    <th style="background-color:white;">
+					       	<c:choose>
+						        <c:when test="${lL.serverFileName != null}">
+						            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+						        </c:when>
+						        <c:otherwise>
+						            <img src="<c:url value='/resource/img/undraw_profile.svg'/>" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
+						        </c:otherwise>
+						    </c:choose>
+						    </th>
+					        <td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
+					        <td style="width: 40%; font-size:12px;">${lL.hqName}/${lL.departmentName}</td>
+					        <td style="width: 20%;">${lL.positionName}<input type='hidden' id='order' value=''></td>
+					        <td style="width: 20%;">${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
+					        <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
+				            <td>
+				                <c:choose>
+				                	<c:when test="${lL.approvalStatus == '거부' or lL.approvalStatus == '반려'}">
+				                        <input type="button" class="appOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
+				                    </c:when>
+				                    <c:otherwise>
+				                        <input type="button" class="rejOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
+				                    </c:otherwise>
+				                </c:choose>
+				            </td>
+					        </c:if>
+					    </tr>
+						</c:forEach>
+					</table>
 				</div>
+			</div><!-- card shadow 끝 -->
+		</div><!-- rightContainer 끝 -->
+		
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<div class="topTitle">
+				<h1 class="h3 mb-0 text-gray-800">결재</h1>
 			</div>
 		</div>
 		
-		<div id="rightContainer">
-		<div class="card shadow" style="width: 354px;padding: 3%;">
-		<div style="padding: 10px 12px;"><span class="approvalInfo" style="margin: 0px; font-size: 17px; width: 270px; font-weight : normal;">결재정보</span>
-		<hr/>
-			<table id="approvalLine" style="font-size:14px;">
-				<tr style="text-align: center;">
-					<th style="background-color:white;"><img src='/photo/cocean/profile/${list.serverFileName}' class="img-profile rounded-circle" style="width:40px; height:40px"></th>
-					<td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">상신</span></td>
-					<td style="width: 40%; font-size:12px;">${list.hqName}/${list.departmentName}</td>
-					<td style="width: 20%;">${list.positionName}</td>
-					<td style="width: 20%;">${list.name}</td>
-				</tr>
-				<c:forEach items="${lineList}" var="lL">
-	    <tr style="text-align: center;">
-	    <th style="background-color:white;">
-	       <c:choose>
-	        <c:when test="${lL.serverFileName != null}">
-	            <img src="/photo/cocean/profile/${lL.serverFileName}" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-	        </c:when>
-	        <c:otherwise>
-	            <img src="<c:url value='/resource/img/undraw_profile.svg'/>" class="img-profile rounded-circle" style="width:40px; margin-top:10px; height:40px">
-	        </c:otherwise>
-	    </c:choose>
-	    </th>
-	        <td style="width: 15%;"><span class="appStatus" style="font-weight : bold;">${lL.category}</span></td>
-	        <td style="width: 40%; font-size:12px;">${lL.hqName}/${lL.departmentName}</td>
-	        <td style="width: 20%;">${lL.positionName}<input type='hidden' id='order' value=''></td>
-	        <td style="width: 20%;">${lL.name}<input type="hidden" name="employeeID" value="${lL.employeeID}"></td>
-	        <c:if test="${not empty lL.opinion and lL.opinion ne '-'}">
-	            <td>
-	                <c:choose>
-	                    <c:when test="${lL.approvalStatus == '거부' or lL.approvalStatus == '반려'}">
-	                        <input type="button" class="appOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
-	                    </c:when>
-	                    <c:otherwise>
-	                        <input type="button" class="rejOpinion" value="${lL.approvalStatus}" onclick="openOpinion('${lL.opinion}')" data-toggle="modal" data-target="#opinion">
-	                    </c:otherwise>
-	                </c:choose>
-	            </td>
-	        </c:if>
-	    </tr>
-	</c:forEach>
-			</table>
+		<div id="contentLine">
+			<div id="formTitle">${list.formTitle}</div>
+			<br/>
+			<div id="detailInfoTop" style="display: flex;">
+				<table id="detailInfo">
+					<tr>
+					    <th>상신자</th>
+					    <td>${list.name}</td>
+					     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="60px;" height="60px;" class="signatureImg"></td>
+					</tr>
+					<tr>
+					    <th>소속부서</th>
+					    <td>${list.hqName}/${list.departmentName}</td>
+					</tr>
+					<tr>
+					    <th>상신일</th>
+					    <td>${list.draftDate}</td>
+					</tr>
+				</table>
+				<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
+			</div>		
+			<br/>
+					
+			<c:if test="${list.formTitle eq '업무기안서'}">
+			<div id="workDraft">
+				<table id="workDraftContent">
+				    <tr>
+				        <th style="text-align:center;">참조자</th>			        
+				        <td>
+				            <c:forEach items="${agrRef}" var="ref">
+				                <c:if test="${ref.category eq '참조'}">
+				                <span class="box">
+				                    <label>${ref.hqName}</label>
+				                    <label>${ref.departmentName}</label>
+				                    <label>${ref.positionName}</label>
+				                    <label>${ref.name}</label>
+				                </span>
+				                </c:if>
+				            </c:forEach>
+				        </td>
+				    </tr>
+				    <tr>
+				        <th style="width: 82.25px; text-align: center;">제목</th>
+				        <td>${list.title}</td>
+				    </tr>
+				    <tr style="height:340px;">
+				        <th style="width: 82.25px; text-align: center;">내용</th>
+				        <td>${list.content}</td>
+				    </tr>
+				</table>
+			</div>
+			</c:if>
+			
+			<c:if test="${list.formTitle eq '휴가신청서'}">
+				<table id="attendanceDraftContent">
+					<tr>
+						<th>휴가 종류</th>
+						<td colspan="2">${vac.category}</td>
+					</tr>
+					<c:if test="${hTitle eq 'waiting'}">
+					<tr>
+						<th>잔여 연차</th>
+						<td style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
+					</tr>
+					</c:if>
+					<tr>
+					    <th>사용 날짜</th>
+					    <td><input type="date" name="start" id="startFac" class="form-control mb-2" style="margin-top: 10px; text-align: center;" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '오전반차' and vac.category ne '오후반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" style="margin-left: 10px; text-align: center;" value="${vac.vacationEndDate}" readonly></c:if>											  
+					</tr>
+					<tr>
+						<th>총 사용일</th>
+						<td>${vac.usageTime}일</td>
+					</tr>
+					<tr>
+						<th>사유</th>
+						<td colspan="2" style="height:300px;" >${vac.vacationReason}</td>
+					</tr>
+				</table>
+			</c:if>
+			
+			<c:if test="${list.formTitle eq '휴직원' or list.formTitle eq '복직원'}">
+				<table id="leaveDraftContent">
+					<tr>
+						<th>휴직 기간</th>
+						<td><input type="date" class="form-control mb-2" name="startDate" value="${lv.leaveStartDate}" readonly><p>~</p><input type="date" name="endDate" class="form-control mb-2" value="${lv.leaveEndDate}" readonly></td>
+					</tr>
+					<tr>
+						<th>사유</th>
+						<td colspan="2">${lv.leaveReason}</td>
+					</tr>
+				</table>
+			</c:if>
+			<br/>
+			
+			<label>첨부파일 : 
+				<c:choose>
+			        <c:when test="${not empty fileList}">
+			            <c:forEach items="${fileList}" var="file">
+			                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}<br/></a>
+			            </c:forEach>
+			        </c:when>
+			        <c:otherwise>없음</c:otherwise>
+				</c:choose>
+			</label>
+		</div><!-- contentLine 끝 -->
+	
+		<div id="bottom">
+			<c:if test="${hTitle ne 'waiting'}">
+				<input type="button" class="btn btn-secondary" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
+			</c:if>
+			<c:if test="${category eq '합의' && hTitle eq 'waiting'}">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+			    <input type="button" class="btn btn-primary"  style="float:right;" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
+			    <input type="button" class="btn btn-primary"  style="float:right; margin-right:10px;" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
+			</c:if>
+			<c:if test="${category ne '합의' && hTitle eq 'waiting'}">
+				<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
+			    <input type="button" class="btn btn-primary"  style="float:right;" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
+			    <input type="button" class="btn btn-primary"  style="float:right; margin-right:10px;" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
+			</c:if>
 		</div>
-		</div>
-		</div>
-		
-	<div class="d-sm-flex align-items-center justify-content-between mb-4">
-		<div class="topTitle">
-		<h1 class="h3 mb-0 text-gray-800">결재</h1>
-		</div>
-	</div>
-	<div id="contentLine">
-	<div id="contentContainer">
-	<div id="formTitle">${list.formTitle}</div>
-	<br/>
-	<div id="detailInfoTop" style="display: flex;">
-		<table id="detailInfo">
-			<tr>
-			    <th>상신자</th>
-			    <td>${list.name}</td>
-			     <td rowspan="3" class="di-td-1"><img src="/photo/cocean/signature/${sign.serverFileName}" width="60px;" height="60px;" class="signatureImg"></td>
-			</tr>
-			<tr>
-			    <th>소속부서</th>
-			    <td>${list.hqName}/${list.departmentName}</td>
-			</tr>
-			<tr>
-			    <th>상신일</th>
-			    <td>${list.draftDate}</td>
-			</tr>
-		</table>
-		<div id="approvalSignature"><!-- 결재 서명 그려지는부분 --></div>
-	</div>
 	
-	
-	
-	<br/>
-	
-	<c:if test="${list.formTitle eq '업무기안서'}">
-	<div id="workDraft">
-	<table id="workDraftContent">
-	    <tr>
-	        <th style="text-align:center;">참조자</th>
-	        
-	        <td>
-	            <c:forEach items="${agrRef}" var="ref">
-	                <c:if test="${ref.category eq '참조'}">
-	                <span class="box">
-	                    <label>${ref.hqName}</label>
-	                    <label>${ref.departmentName}</label>
-	                    <label>${ref.positionName}</label>
-	                    <label>${ref.name}</label>
-	                </span>
-	                </c:if>
-	            </c:forEach>
-	        </td>
-	    </tr>
-	    <tr>
-	        <th style="width: 82.25px; text-align: center;">제목</th>
-	        <td>${list.title}</td>
-	    </tr>
-	    <tr style="height:340px;">
-	        <th style="width: 82.25px; text-align: center;">내용</th>
-	        <td>${list.content}</td>
-	    </tr>
-	</table>
-	</div>
-	</c:if>
-	
-	<c:if test="${list.formTitle eq '휴가신청서'}">
-	<table id="attendanceDraftContent">
-		<tr>
-			<th>휴가 종류</th>
-			<td colspan="2">${vac.category}</td>
-		</tr>
-		<c:if test="${hTitle eq 'waiting'}">
-		<tr>
-			<th>잔여 연차</th>
-			<td style="background-color:#ededed;">${vac.remainingAnnualLeave}일</td>
-		</tr>
-		</c:if>
-		<tr>
-		    <th>사용 날짜</th>
-		    <td><input type="date" name="start" id="startFac" class="form-control mb-2" style="margin-top: 10px; text-align: center;" value="${vac.vacationStartDate}" readonly><c:if test="${vac.category ne '오전반차' and vac.category ne '오후반차'}">~<input type="date" name="end" id="endFac"  class="form-control mb-2" style="margin-left: 10px; text-align: center;" value="${vac.vacationEndDate}" readonly></c:if>
-								  
-		</tr>
-		<tr>
-			<th>총 사용일</th>
-			<td>${vac.usageTime}일</td>
-		</tr>
-		<tr>
-			<th>사유</th>
-			<td colspan="2" style="height:300px;" >${vac.vacationReason}</td>
-		</tr>
-	</table>
-	</c:if>
-	
-	<c:if test="${list.formTitle eq '휴직원' or list.formTitle eq '복직원'}">
-	<table id="leaveDraftContent">
-		<tr>
-			<th>휴직 기간</th>
-				<td><input type="date" class="form-control mb-2" name="startDate" value="${lv.leaveStartDate}" readonly><p>~</p><input type="date" name="endDate" class="form-control mb-2" value="${lv.leaveEndDate}" readonly></td>
-			</tr>
-		<tr>
-			<th>사유</th>
-			<td colspan="2">${lv.leaveReason}</td>
-		</tr>
-	</table>
-	</c:if>
-	<br/>
-	<label>첨부파일 : 
-	<c:choose>
-	        <c:when test="${not empty fileList}">
-	            <c:forEach items="${fileList}" var="file">
-	                <a href="download.do?file=${file.serverFileName}">${file.oriFileName}<br/></a>
-	            </c:forEach>
-	        </c:when>
-	        <c:otherwise>
-	            없음
-	        </c:otherwise>
-	    </c:choose>
-	</label>
-	</div>
-	</div>
-	
-	<div id="bottom">
-	<c:if test="${hTitle ne 'waiting'}">
-	<input type="button" class="btn btn-secondary" value="취소" style="display:none;" onclick="location.href='waitingList.go'"/>
-	</c:if>
-	<c:if test="${category eq '합의' && hTitle eq 'waiting'}">
-		<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
-	    <input type="button" class="btn btn-primary"  style="float:right;" value="합의" data-toggle="modal" data-target="#opinionWrite"/>
-	    <input type="button" class="btn btn-primary"  style="float:right; margin-right:10px;" value="거부" data-toggle="modal" data-target="#opinionWrite"/>
-	</c:if>
-	<c:if test="${category ne '합의' && hTitle eq 'waiting'}">
-		<input type="button" class="btn btn-secondary" value="취소" onclick="location.href='waitingList.go'"/>
-	    <input type="button" class="btn btn-primary"  style="float:right;" value="결재" data-toggle="modal" data-target="#opinionWrite"/>
-	    <input type="button" class="btn btn-primary"  style="float:right; margin-right:10px;" value="반려" data-toggle="modal" data-target="#opinionWrite"/>
-	</c:if>
-	</div>
-	
-	
-	</div>	
+	</div><!-- container-fluid contentField 끝 -->
 </body>
 
 <script>
@@ -475,21 +457,18 @@ th {
 	    updateModalContent('approve');
 	    $('#approvalAction').val('결재');
 	    $('#lastOrder').val($('#approvalLine tr:last').index()+1);
-	    // $('#order').val($('#approvalLine tr:last').index()+1);
 	});
 
 	$('input[value="반려"]').click(function () {
 	    updateModalContent('reject');
 	    $('#approvalAction').val('반려'); 
 	    $('#lastOrder').val($('#approvalLine tr:last').index()+1);
-	    // $('#order').val($('#approvalLine tr:last').index()+1);
 	});
 
 	$('input[value="합의"]').click(function () {
 	    updateModalContent('agreement');
 	    $('#approvalAction').val('합의');
 	    $('#lastOrder').val($('#approvalLine tr:last').index()+1);
-	    // $('#order').val($('#approvalLine tr:last').index()+1);
 	    console.log("합의");
 	});
 
@@ -497,7 +476,6 @@ th {
 	    updateModalContent('rejection');
 	    $('#approvalAction').val('거부'); 
 	    $('#lastOrder').val($('#approvalLine tr:last').index()+1);
-	    // $('#order').val($('#approvalLine tr:last').index()+1);    
 	});
 
 	$('#summernote').summernote({
@@ -508,7 +486,6 @@ th {
 	});
 	
 	$('#summernote').summernote('disable');
-
 
 	function openOpinion(opinion) {
 	    $('#opinionText').val(opinion);
@@ -531,9 +508,9 @@ th {
 	    	modalTitle = '거부하기';
 	    	modalButtonText = '거부';
 	    }
-	    $('.modal-title').text(modalTitle);
-	    $('.modal-footer button[class="btn btn-primary"]').text(modalButtonText);
 	    
+	    $('.modal-title').text(modalTitle);
+	    $('.modal-footer button[class="btn btn-primary"]').text(modalButtonText);	    
 	}
 
 	$('.modal-footer button[class="btn btn-primary"]').click(function () {

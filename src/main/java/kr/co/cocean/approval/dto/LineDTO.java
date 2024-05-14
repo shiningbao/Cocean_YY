@@ -11,20 +11,18 @@ public class LineDTO {
 	    private String employeeID;
 	    private String approvalOrder;
 
-
-
 	    public String getEmployeeID() {
 			return employeeID;
 		}
-
+	    
 		public void setEmployeeID(String employeeID) {
 			this.employeeID = employeeID;
 		}
-
+		
 		public String getApprovalOrder() {
 			return approvalOrder;
 		}
-
+		
 		public void setApprovalOrder(String approvalOrder) {
 			this.approvalOrder = approvalOrder;
 		}
